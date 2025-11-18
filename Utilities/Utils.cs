@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Drawing;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Utilities
@@ -13,18 +10,91 @@ namespace Utilities
     public static class Utils
     {
         #region VariablesGlobales
-        public static string nwtr => ConfigurationManager.AppSettings["nwtr"];
-        public static string clbdd = "Consultando la base de datos... ";
-        public static string oueclbdd = "Ocurrio un error con la base de datos:\n";
-        public static string oue = "Ocurrio un error:\n";
-        //public static string nwtr = "» Northwind Traders Ver 5.0 Arquitectura en capas «";
-        public static string preguntaCerrar = "¿Esta seguro de querer cerrar el formulario?, si responde SI, se perderan los datos no guardados";
-        public static string insertandoRegistro = "Insertando registro en la base de datos...";
-        public static string modificandoRegistro = "Modificando registro en la base de datos...";
-        public static string eliminandoRegistro = "Eliminando registro en la base de datos...";
-        public static string errorCriterioSelec = "Error: Proporcione los criterios de selección";
-        public static string noDatos = "No se encontraron datos para mostrar en el reporte";
+            public static string nwtr => ConfigurationManager.AppSettings["nwtr"];
+            public const string clbdd = "Consultando la base de datos... ";
+            public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
+            public const string oue = "Ocurrio un error:\n";
+            public const string preguntaCerrar = "¿Esta seguro de querer cerrar el formulario?, si responde SI, se perderan los datos no guardados";
+            public const string insertandoRegistro = "Insertando registro en la base de datos...";
+            public const string modificandoRegistro = "Modificando registro en la base de datos...";
+            public const string eliminandoRegistro = "Eliminando registro en la base de datos...";
+            public const string errorCriterioSelec = "Error: Proporcione los criterios de selección";
+            public const string noDatos = "No se encontraron datos para mostrar en el reporte";
         #endregion
+
+        public static void ConfDgv(DataGridView dgv)
+        {
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.AllowUserToOrderColumns = false;
+            dgv.MultiSelect = false;
+            dgv.ReadOnly = true;
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = SystemColors.GradientActiveCaption;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.GradientActiveCaption;
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold);
+            dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+            dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.BackgroundColor = SystemColors.GradientInactiveCaption;
+            dgv.RowHeadersVisible = false;
+            dgv.BorderStyle = BorderStyle.FixedSingle;
+            dgv.AutoResizeColumns();
+        }
+
+
+        public static void MsgCatchOue(Exception ex, Action actualizarBarraEstado)
+        {
+            MsgError(Utils.oue + ex.Message);
+            actualizarBarraEstado?.Invoke();
+        }
+
+        public static void MsgCatchOueclbdd(SqlException ex, Action actualizarBarraEstado)
+        {
+            if (ex.Number == 53) // Error de conexión
+                MsgError("No se pudo conectar a la base de datos.\n\nVerifique su conexión.");
+            else
+                MsgError(Utils.oueclbdd + ex.Message);
+            actualizarBarraEstado?.Invoke();
+        }
+
+        // Métodos específicos que llaman al genérico
+        public static void MsgWarning(string mensaje) =>
+            MostrarMensaje(mensaje, icono: MessageBoxIcon.Warning);
+
+        public static void MsgExclamation(string mensaje) =>
+            MostrarMensaje(mensaje, icono: MessageBoxIcon.Exclamation);
+
+        public static void MsgError(string mensaje) =>
+            MostrarMensaje(mensaje, icono: MessageBoxIcon.Error);
+
+        public static void MsgInformation(string mensaje) =>
+            MostrarMensaje(mensaje, icono: MessageBoxIcon.Information);
+
+        public static DialogResult MsgQuestion(string mensaje) =>
+            MostrarMensaje(mensaje, botones: MessageBoxButtons.YesNo, icono: MessageBoxIcon.Question, defaultButton: MessageBoxDefaultButton.Button2);
+
+        public static DialogResult MsgCerrarForm() =>
+            MostrarMensaje(preguntaCerrar, botones: MessageBoxButtons.YesNo, icono: MessageBoxIcon.Question, defaultButton: MessageBoxDefaultButton.Button2);
+        // Método genérico
+        public static DialogResult MostrarMensaje(
+            string mensaje,
+            string titulo = null,
+            MessageBoxButtons botones = MessageBoxButtons.OK,
+            MessageBoxIcon icono = MessageBoxIcon.Information,
+            MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
+        {
+            return MessageBox.Show(
+                mensaje,
+                titulo ?? nwtr,
+                botones,
+                icono,
+                defaultButton
+            );
+        }
 
         public static void AgregarFormularioEnTab(TabControl tabControl, Form formulario, string titulo)
         {
@@ -138,6 +208,60 @@ namespace Utilities
                 else
                     //MDIPrincipal.ActualizarBarraDeEstado();
                     actualizarBarraDeEstado?.Invoke();
+            }
+        }
+
+        // Método para pintar GroupBox con borde negro y texto negro
+        public static void GrbPaint(Form form, object sender, PaintEventArgs e)
+        {
+            GroupBox groupBox = sender as GroupBox;
+            if (groupBox != null)
+            {
+                DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.Black);
+            }
+        }
+
+        // Método para pintar GroupBox con borde gris y texto negro
+        public static void GrbPaint2(Form form, object sender, PaintEventArgs e)
+        {
+            GroupBox groupBox = sender as GroupBox;
+            if (groupBox != null)
+            {
+                DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.LightSlateGray);
+            }
+        }
+
+        // Método genérico para dibujar cualquier GroupBox
+        public static void DrawGroupBox(Form form, GroupBox box, Graphics g, Color textColor, Color borderColor)
+        {
+            if (box != null)
+            {
+                using (Brush textBrush = new SolidBrush(textColor))
+                using (Brush borderBrush = new SolidBrush(borderColor))
+                using (Pen borderPen = new Pen(borderBrush))
+                {
+                    SizeF strSize = g.MeasureString(box.Text, box.Font);
+                    Rectangle rect = new Rectangle(
+                        box.ClientRectangle.X,
+                        box.ClientRectangle.Y + (int)(strSize.Height / 2),
+                        box.ClientRectangle.Width - 1,
+                        box.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
+
+                    // Limpiar el área con el color de fondo del formulario
+                    g.Clear(form.BackColor);
+                    // Dibujar el texto del GroupBox
+                    g.DrawString(box.Text, box.Font, textBrush, box.Padding.Left, 0);
+                    // Dibujar los bordes
+                    // Izquierda
+                    g.DrawLine(borderPen, rect.Location, new Point(rect.X, rect.Y + rect.Height));
+                    // Derecha
+                    g.DrawLine(borderPen, new Point(rect.X + rect.Width, rect.Y), new Point(rect.X + rect.Width, rect.Y + rect.Height));
+                    // Abajo
+                    g.DrawLine(borderPen, new Point(rect.X, rect.Y + rect.Height), new Point(rect.X + rect.Width, rect.Y + rect.Height));
+                    // Arriba (partido en dos para dejar espacio al texto)
+                    g.DrawLine(borderPen, new Point(rect.X, rect.Y), new Point(rect.X + box.Padding.Left, rect.Y));
+                    g.DrawLine(borderPen, new Point(rect.X + box.Padding.Left + (int)(strSize.Width), rect.Y), new Point(rect.X + rect.Width, rect.Y));
+                }
             }
         }
     }

@@ -171,10 +171,11 @@
             this.grbBuscar.Margin = new System.Windows.Forms.Padding(5);
             this.grbBuscar.Name = "grbBuscar";
             this.grbBuscar.Padding = new System.Windows.Forms.Padding(5);
-            this.grbBuscar.Size = new System.Drawing.Size(405, 501);
+            this.grbBuscar.Size = new System.Drawing.Size(405, 498);
             this.grbBuscar.TabIndex = 2;
             this.grbBuscar.TabStop = false;
             this.grbBuscar.Text = "»   Buscar empleados:   «";
+            this.grbBuscar.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // btnLimpiar
             // 
@@ -412,6 +413,7 @@
             // 
             // picFoto
             // 
+            this.picFoto.Image = global::NorthwindTradersV5EnCapas.Properties.Resources.FotoPerfil;
             this.picFoto.Location = new System.Drawing.Point(486, 91);
             this.picFoto.Margin = new System.Windows.Forms.Padding(5);
             this.picFoto.Name = "picFoto";
@@ -536,10 +538,11 @@
             this.grbEmpleado.Margin = new System.Windows.Forms.Padding(5);
             this.grbEmpleado.Name = "grbEmpleado";
             this.grbEmpleado.Padding = new System.Windows.Forms.Padding(5);
-            this.grbEmpleado.Size = new System.Drawing.Size(1260, 501);
+            this.grbEmpleado.Size = new System.Drawing.Size(874, 498);
             this.grbEmpleado.TabIndex = 3;
             this.grbEmpleado.TabStop = false;
             this.grbEmpleado.Text = "»   Empleado:   «";
+            this.grbEmpleado.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // btnCargar
             // 
@@ -693,6 +696,8 @@
             // 
             // txtId
             // 
+            this.txtId.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtId.Enabled = false;
             this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtId.Location = new System.Drawing.Point(146, 21);
@@ -790,7 +795,7 @@
             this.txtDomicilio.Margin = new System.Windows.Forms.Padding(5);
             this.txtDomicilio.MaxLength = 60;
             this.txtDomicilio.Name = "txtDomicilio";
-            this.txtDomicilio.Size = new System.Drawing.Size(169, 23);
+            this.txtDomicilio.Size = new System.Drawing.Size(295, 23);
             this.txtDomicilio.TabIndex = 31;
             // 
             // txtTitulo
@@ -826,7 +831,6 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.AutoScrollMinSize = new System.Drawing.Size(1300, 800);
             this.panel1.AutoSize = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.grbEmpleado);
@@ -838,7 +842,7 @@
             this.panel1.Margin = new System.Windows.Forms.Padding(5);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
-            this.panel1.Size = new System.Drawing.Size(1733, 998);
+            this.panel1.Size = new System.Drawing.Size(1350, 998);
             this.panel1.TabIndex = 2;
             // 
             // grbEmpleados
@@ -851,10 +855,11 @@
             this.grbEmpleados.Margin = new System.Windows.Forms.Padding(5);
             this.grbEmpleados.Name = "grbEmpleados";
             this.grbEmpleados.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.grbEmpleados.Size = new System.Drawing.Size(1691, 363);
+            this.grbEmpleados.Size = new System.Drawing.Size(1305, 363);
             this.grbEmpleados.TabIndex = 1;
             this.grbEmpleados.TabStop = false;
             this.grbEmpleados.Text = "»   Empleados:   «";
+            this.grbEmpleados.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // dgv
             // 
@@ -864,7 +869,7 @@
             this.dgv.Margin = new System.Windows.Forms.Padding(5);
             this.dgv.Name = "dgv";
             this.dgv.RowHeadersWidth = 51;
-            this.dgv.Size = new System.Drawing.Size(1651, 311);
+            this.dgv.Size = new System.Drawing.Size(1265, 311);
             this.dgv.TabIndex = 0;
             // 
             // tabcOperacion
@@ -879,7 +884,7 @@
             this.tabcOperacion.Margin = new System.Windows.Forms.Padding(5);
             this.tabcOperacion.Name = "tabcOperacion";
             this.tabcOperacion.SelectedIndex = 0;
-            this.tabcOperacion.Size = new System.Drawing.Size(1687, 69);
+            this.tabcOperacion.Size = new System.Drawing.Size(1305, 69);
             this.tabcOperacion.TabIndex = 0;
             this.tabcOperacion.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabcOperacion_DrawItem);
             // 
@@ -890,7 +895,7 @@
             this.tbpListar.Margin = new System.Windows.Forms.Padding(5);
             this.tbpListar.Name = "tbpListar";
             this.tbpListar.Padding = new System.Windows.Forms.Padding(5);
-            this.tbpListar.Size = new System.Drawing.Size(1679, 40);
+            this.tbpListar.Size = new System.Drawing.Size(1297, 40);
             this.tbpListar.TabIndex = 0;
             this.tbpListar.Text = "   Consultar empleado   ";
             this.tbpListar.UseVisualStyleBackColor = true;
@@ -979,13 +984,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1733, 998);
+            this.ClientSize = new System.Drawing.Size(1350, 998);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmEmpleadosCrud";
             this.Text = "» Mantenimiento de empleados «";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmEmpleadosCrud_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmEmpleadosCrud_FormClosed);
             this.Load += new System.EventHandler(this.FrmEmpleadosCrud_Load);
             this.grbBuscar.ResumeLayout(false);
             this.grbBuscar.PerformLayout();
