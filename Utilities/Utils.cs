@@ -22,6 +22,103 @@ namespace Utilities
             public const string noDatos = "No se encontraron datos para mostrar en el reporte";
         #endregion
 
+        public static void ValidaTxtBIdIni(TextBox txtBIdIni, TextBox txtBIdFin)
+        {
+            int numBIdIni = 0, numBIdFin = 0;
+            if (txtBIdIni.Text != "")
+            {
+                if (int.TryParse(txtBIdIni.Text, out int numTxtBIdIni))
+                {
+                    if (numTxtBIdIni == 0)
+                    {
+                        MessageBox.Show("El valor del Id inicial no puede ser cero", Utils.nwtr, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtBIdIni.Text = "1";
+                        txtBIdIni.Focus();
+                        return;
+                    }
+                    numBIdIni = numTxtBIdIni;
+                    if (txtBIdFin.Text == "")
+                        txtBIdFin.Text = txtBIdIni.Text;
+                }
+                else
+                    MessageBox.Show("Por favor ingrese un número valido", Utils.nwtr, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            if (txtBIdFin.Text != "")
+            {
+                if (int.TryParse(txtBIdFin.Text, out int numTxtBIdFin))
+                {
+                    numBIdFin = numTxtBIdFin;
+                }
+                else
+                    MessageBox.Show("Por favor ingrese un número valido", Utils.nwtr, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            if (numBIdFin < numBIdIni)
+                txtBIdFin.Text = txtBIdIni.Text;
+        }
+
+        public static void ValidaTxtBIdFin(TextBox txtBIdIni, TextBox txtBIdFin)
+        {
+            int numBIdIni = 0, numBIdFin = 0;
+            if (txtBIdIni.Text != "")
+            {
+                if (int.TryParse(txtBIdIni.Text, out int numTxtBIdIni))
+                {
+                    numBIdIni = numTxtBIdIni;
+                }
+                else
+                    MessageBox.Show("Por favor ingrese un número valido", Utils.nwtr, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                txtBIdIni.Text = txtBIdFin.Text;
+            }
+            if (txtBIdFin.Text != "")
+            {
+                if (int.TryParse(txtBIdFin.Text, out int numTxtBIdFin))
+                {
+                    if (numTxtBIdFin == 0)
+                    {
+                        MessageBox.Show("El valor del Id final no puede ser cero", Utils.nwtr, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtBIdFin.Text = "1";
+                        txtBIdFin.Focus();
+                        Utils.ValidaTxtBIdIni(txtBIdIni, txtBIdFin);
+                        return;
+                    }
+                    numBIdFin = numTxtBIdFin;
+                }
+                else
+                    MessageBox.Show("Por favor ingrese un número valido", Utils.nwtr, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            if (numBIdIni > numBIdFin)
+                txtBIdIni.Text = txtBIdFin.Text;
+        }
+
+        public static void ValidarDigitosConPunto(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+                e.Handled = true;
+            // valida que exista solo un punto decimal
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
+                e.Handled = true;
+            // forzar que solo se capturen como máximo dos dígitos despues del punto decimal
+            if (e.KeyChar != 8)
+            {
+                string numsDecimales = (sender as TextBox).Text + e.KeyChar;
+                if ((sender as TextBox).Text.IndexOf('.') > -1)
+                {
+                    int posComienzo = (sender as TextBox).Text.IndexOf('.');
+                    numsDecimales = numsDecimales.Substring(posComienzo, numsDecimales.Length - posComienzo);
+                    if (numsDecimales.Length > 3)
+                        e.Handled = true;
+                }
+            }
+        }
+
+        public static void ValidarDigitosSinPunto(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !(char.IsDigit(e.KeyChar) || (int)e.KeyChar == 8);
+        }
+
         public static void ConfDgv(DataGridView dgv)
         {
             dgv.AllowUserToAddRows = false;
@@ -44,7 +141,6 @@ namespace Utilities
             dgv.BorderStyle = BorderStyle.FixedSingle;
             dgv.AutoResizeColumns();
         }
-
 
         public static void MsgCatchOue(Exception ex, Action actualizarBarraEstado)
         {

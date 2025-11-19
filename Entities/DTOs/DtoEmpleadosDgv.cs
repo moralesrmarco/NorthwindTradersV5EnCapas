@@ -2,7 +2,7 @@
 
 namespace Entities.DTOs
 {
-    public class DtoEmpleadosGrid
+    public class DtoEmpleadosDgv
     {
         public int EmployeeID { get; set; }
         public string FirstName { get; set; }

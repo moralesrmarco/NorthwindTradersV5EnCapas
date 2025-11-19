@@ -137,6 +137,7 @@
             this.btnBuscar.TabIndex = 12;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // grbBuscar
             // 
@@ -187,6 +188,7 @@
             this.btnLimpiar.TabIndex = 11;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // cboBPais
             // 
@@ -289,6 +291,8 @@
             this.txtBIdFin.Size = new System.Drawing.Size(95, 23);
             this.txtBIdFin.TabIndex = 1;
             this.txtBIdFin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBIdFin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBIdFin_KeyPress);
+            this.txtBIdFin.Leave += new System.EventHandler(this.txtBIdFin_Leave);
             // 
             // txtBIdIni
             // 
@@ -300,6 +304,8 @@
             this.txtBIdIni.Size = new System.Drawing.Size(95, 23);
             this.txtBIdIni.TabIndex = 0;
             this.txtBIdIni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBIdIni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBIdIni_KeyPress);
+            this.txtBIdIni.Leave += new System.EventHandler(this.txtBIdIni_Leave);
             // 
             // label14
             // 
@@ -917,7 +923,7 @@
             this.tbpRegistrar.Margin = new System.Windows.Forms.Padding(5);
             this.tbpRegistrar.Name = "tbpRegistrar";
             this.tbpRegistrar.Padding = new System.Windows.Forms.Padding(5);
-            this.tbpRegistrar.Size = new System.Drawing.Size(1679, 40);
+            this.tbpRegistrar.Size = new System.Drawing.Size(1297, 40);
             this.tbpRegistrar.TabIndex = 1;
             this.tbpRegistrar.Text = "   Registrar empleado   ";
             this.tbpRegistrar.UseVisualStyleBackColor = true;
@@ -938,7 +944,7 @@
             this.tbpModificar.Location = new System.Drawing.Point(4, 25);
             this.tbpModificar.Margin = new System.Windows.Forms.Padding(5);
             this.tbpModificar.Name = "tbpModificar";
-            this.tbpModificar.Size = new System.Drawing.Size(1679, 40);
+            this.tbpModificar.Size = new System.Drawing.Size(1297, 40);
             this.tbpModificar.TabIndex = 2;
             this.tbpModificar.Text = "   Modificar empleado   ";
             this.tbpModificar.UseVisualStyleBackColor = true;
@@ -960,7 +966,7 @@
             this.tbpEliminar.Location = new System.Drawing.Point(4, 25);
             this.tbpEliminar.Margin = new System.Windows.Forms.Padding(5);
             this.tbpEliminar.Name = "tbpEliminar";
-            this.tbpEliminar.Size = new System.Drawing.Size(1679, 40);
+            this.tbpEliminar.Size = new System.Drawing.Size(1297, 40);
             this.tbpEliminar.TabIndex = 3;
             this.tbpEliminar.Text = "   Eliminar empleado   ";
             this.tbpEliminar.UseVisualStyleBackColor = true;

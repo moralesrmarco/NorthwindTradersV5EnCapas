@@ -42,8 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\DtoEmpleadosBuscar.cs" />
-    <Compile Include="DTOs\DtoEmpleadosGrid.cs" />
-    <Compile Include="Employee.cs" />
+    <Compile Include="DTOs\DtoEmpleadosDgv.cs" />
+    <Compile Include="DTOs\DtoEmpleadosPaisesCbo.cs" />
+    <Compile Include="Empleado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

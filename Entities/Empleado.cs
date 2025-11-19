@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    public class Employee
+    public class Empleado
     {
         public int EmployeeID { get; set; }
         public string LastName { get; set; }
