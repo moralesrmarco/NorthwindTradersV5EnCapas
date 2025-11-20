@@ -22,7 +22,7 @@ namespace Entities
         public string Notes { get; set; }
         public int? ReportsTo { get; set; }
         public string PhotoPath { get; set; }
-        public int RowVersion { get; set; }
+        public byte[] RowVersion { get; set; }
 
         public string NameByFirstName
         {

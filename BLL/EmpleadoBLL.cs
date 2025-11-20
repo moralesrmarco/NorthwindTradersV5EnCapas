@@ -10,19 +10,46 @@ namespace BLL
     public class EmpleadoBLL
     {
 
-        private readonly EmpleadoDAL employeeDAL;
+        private readonly EmpleadoDAL empleadoDAL;
 
         public EmpleadoBLL(string connectionString)
         {
-            employeeDAL = new EmpleadoDAL(connectionString);
+            empleadoDAL = new EmpleadoDAL(connectionString);
         }
 
-        public DataTable ObtenerEmpleadosReportaaCbo()
+        public int Insertar(Empleado empleado)
+        {
+            try
+            {
+                int numRegs = 0;
+                numRegs = empleadoDAL.Insertar(empleado);
+                return numRegs;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Empleado ObtenerEmpleadoPorId(Empleado empleado)
+        {
+            try
+            {
+                empleado = empleadoDAL.ObtenerEmpleadoPorId(empleado);
+                return empleado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public DataTable ObtenerEmpleadoReportaaCbo()
         {
             try
             {
                 var empleados = new DataTable();
-                empleados = employeeDAL.ObtenerEmpleadosReportaaCbo();
+                empleados = empleadoDAL.ObtenerEmpleadoReportaaCbo();
                 return empleados;
             }
             catch (Exception)
@@ -36,7 +63,7 @@ namespace BLL
             try
             {
                 List<DtoEmpleadosDgv> employees = new List<DtoEmpleadosDgv>();
-                employees = employeeDAL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
+                employees = empleadoDAL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
                 return employees;
             }
             catch (Exception)
@@ -50,7 +77,7 @@ namespace BLL
             try
             {
                 List<DtoEmpleadosPaisesCbo> paises = new List<DtoEmpleadosPaisesCbo>();
-                paises = employeeDAL.ObtenerEmpleadosPaisesCbo();
+                paises = empleadoDAL.ObtenerEmpleadosPaisesCbo();
                 return paises;
             }
             catch (Exception)

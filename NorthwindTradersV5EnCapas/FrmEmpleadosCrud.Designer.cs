@@ -561,6 +561,7 @@
             this.btnCargar.Text = "Cargar imagen...";
             this.btnCargar.UseVisualStyleBackColor = true;
             this.btnCargar.Visible = false;
+            this.btnCargar.Click += new System.EventHandler(this.btnCargar_Click);
             // 
             // label31
             // 
@@ -574,7 +575,7 @@
             // 
             // txtNotas
             // 
-            this.txtNotas.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.txtNotas.BackColor = System.Drawing.SystemColors.Window;
             this.txtNotas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNotas.Location = new System.Drawing.Point(356, 287);
             this.txtNotas.Margin = new System.Windows.Forms.Padding(5);
@@ -668,6 +669,7 @@
             this.btnOperacion.TabIndex = 55;
             this.btnOperacion.Text = "Imprimir empleado";
             this.btnOperacion.UseVisualStyleBackColor = true;
+            this.btnOperacion.Click += new System.EventHandler(this.btnOperacion_Click);
             // 
             // label16
             // 
@@ -702,16 +704,17 @@
             // 
             // txtId
             // 
-            this.txtId.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.txtId.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtId.Enabled = false;
-            this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtId.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txtId.Location = new System.Drawing.Point(146, 21);
             this.txtId.Margin = new System.Windows.Forms.Padding(5);
             this.txtId.MaxLength = 10;
             this.txtId.Name = "txtId";
             this.txtId.ReadOnly = true;
-            this.txtId.Size = new System.Drawing.Size(139, 23);
+            this.txtId.Size = new System.Drawing.Size(139, 26);
             this.txtId.TabIndex = 26;
             // 
             // label27
@@ -877,6 +880,7 @@
             this.dgv.RowHeadersWidth = 51;
             this.dgv.Size = new System.Drawing.Size(1265, 311);
             this.dgv.TabIndex = 0;
+            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             // 
             // tabcOperacion
             // 
@@ -893,6 +897,7 @@
             this.tabcOperacion.Size = new System.Drawing.Size(1305, 69);
             this.tabcOperacion.TabIndex = 0;
             this.tabcOperacion.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabcOperacion_DrawItem);
+            this.tabcOperacion.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabcOperacion_Selected);
             // 
             // tbpListar
             // 

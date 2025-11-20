@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Utilities
@@ -14,13 +16,191 @@ namespace Utilities
             public const string clbdd = "Consultando la base de datos... ";
             public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
             public const string oue = "Ocurrio un error:\n";
-            public const string preguntaCerrar = "¿Esta seguro de querer cerrar el formulario?, si responde SI, se perderan los datos no guardados";
+            public const string preguntaCerrar = "Se detectaron cambios en los datos del formulario.\n\n¿Esta seguro de querer cerrar el formulario?, si responde SI, se perderan los datos no guardados";
             public const string insertandoRegistro = "Insertando registro en la base de datos...";
             public const string modificandoRegistro = "Modificando registro en la base de datos...";
             public const string eliminandoRegistro = "Eliminando registro en la base de datos...";
             public const string errorCriterioSelec = "Error: Proporcione los criterios de selección";
             public const string noDatos = "No se encontraron datos para mostrar en el reporte";
         #endregion
+
+        // Los siguientes tres métodos trabajan juntos para detectar cambios en TextBox y ComboBox,
+        // para que funcionen los metodos FormClosing de los formularios de mantenimiento
+        // Método recursivo para recorrer todos los controles anidados
+        private static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control ctrl in parent.Controls)
+            {
+                yield return ctrl;
+                // Recorrer hijos si existen
+                foreach (var child in GetAllControls(ctrl))
+                    yield return child;
+            }
+        }
+
+        // Captura valores iniciales SOLO de TextBox y ComboBox,
+        // ignorando los que empiezan con txtB o cboB
+        public static Dictionary<string, object> CapturarValoresOriginales(Control parent)
+        {
+            var valores = new Dictionary<string, object>(StringComparer.Ordinal);
+            foreach (Control ctrl in GetAllControls(parent))
+            {
+                var name = ctrl.Name;
+                if (string.IsNullOrEmpty(name)) continue;
+
+                if (ctrl is TextBox txt)
+                {
+                    if (!name.StartsWith("txtB", StringComparison.OrdinalIgnoreCase))
+                        valores[name] = txt.Text ?? string.Empty;
+                }
+                else if (ctrl is ComboBox cbo)
+                {
+                    if (!name.StartsWith("cboB", StringComparison.OrdinalIgnoreCase))
+                        valores[name] = cbo.SelectedIndex;
+                }
+                else if (ctrl is CheckBox chk)
+                {
+                    if (!name.StartsWith("chkB", StringComparison.OrdinalIgnoreCase))
+                        valores[name] = chk.Checked;
+                }
+                else if (ctrl is DateTimePicker dtp)
+                {
+                    if (!name.StartsWith("dtpB", StringComparison.OrdinalIgnoreCase))
+                        valores[name] = dtp.Value;
+                }
+                else if (ctrl is NumericUpDown nud)
+                {
+                    if (!name.StartsWith("nudB", StringComparison.OrdinalIgnoreCase))
+                        valores[name] = nud.Value;
+                }
+            }
+            return valores;
+        }
+
+        // Compara valores actuales contra los originales
+        // Ahora recibe también el ErrorProvider
+        public static bool HayCambios(Control parent, Dictionary<string, object> valoresOriginales, ErrorProvider errorProvider)
+        {
+            if (valoresOriginales == null)
+            {
+                // sin baseline, lanza excepción
+                throw new Exception("Error al ejecutar el metodo HayCambios, el diccionario de valores originales no puede ser nulo.");
+            }
+            bool hayCambios = false;
+
+            // Limpiar errores previos
+            errorProvider.Clear();
+
+            foreach (Control ctrl in GetAllControls(parent))
+            {
+                var name = ctrl.Name;
+                if (string.IsNullOrEmpty(name)) continue;
+
+                if (ctrl is TextBox txt)
+                {
+                    if (name.StartsWith("txtB", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = txt.Text ?? string.Empty;
+                        if (!Equals(original, actual))
+                        {
+                            hayCambios = true;
+                            errorProvider.SetError(txt, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                        }
+                    }
+                }
+                else if (ctrl is ComboBox cbo)
+                {
+                    if (name.StartsWith("cboB", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = cbo.SelectedIndex;
+                        if (!Equals(original, actual))
+                        {
+                            hayCambios = true;
+                            errorProvider.SetError(cbo, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                        }
+                    }
+                }
+                else if (ctrl is CheckBox chk)
+                {
+                    if (name.StartsWith("chkB", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = chk.Checked;
+                        if (!Equals(original, actual))
+                        {
+                            hayCambios = true;
+                            errorProvider.SetError(chk, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                        }
+                    }
+                }
+                else if (ctrl is DateTimePicker dtp)
+                {
+                    if (name.StartsWith("dtpB", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = dtp.Value;
+                        if (!Equals(original, actual))
+                        {
+                            hayCambios = true;
+                            errorProvider.SetError(dtp, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                        }
+                    }
+                }
+                else if (ctrl is NumericUpDown nud)
+                {
+                    if (name.StartsWith("nudB", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = nud.Value;
+                        if (!Equals(original, actual))
+                        {
+                            hayCambios = true;
+                            errorProvider.SetError(nud, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                        }
+                    }
+                }
+            }
+            return hayCambios;
+        }
+
+        public static byte[] StripOleHeader(byte[] oleBytes, int employeeId)
+        {
+            if (oleBytes == null || oleBytes.Length == 0)
+                return oleBytes;
+            const int OLE_HEADER_LENGTH = 78; // Tamaño típico del encabezado OLE
+            int offset = (employeeId <= 8 && oleBytes.Length > OLE_HEADER_LENGTH)
+            ? OLE_HEADER_LENGTH
+            : 0;
+
+            int length = oleBytes.Length - offset;
+            if (length <= 0)
+                return Array.Empty<byte>();
+
+            var imageBytes = new byte[length];
+            Buffer.BlockCopy(oleBytes, offset, imageBytes, 0, length);
+            return imageBytes;
+        }
+
+        public static byte[] ImageToByteArray(Image image)
+        {
+            if (image == null)
+                return null;
+            using (var clone = new Bitmap(image))
+            using (var ms = new MemoryStream())
+            {
+                clone.Save(ms, ImageFormat.Jpeg);
+                return ms.ToArray();
+            }
+        }
 
         public static void ValidaTxtBIdIni(TextBox txtBIdIni, TextBox txtBIdFin)
         {
@@ -222,34 +402,52 @@ namespace Utilities
 
         public static void CerrarTodasLasPestañas(TabControl tabControl)
         {
-            // Opción 2 (más segura): recorrer y cerrar formularios incrustados antes de limpiar
+            // Usamos una lista temporal para las páginas que sí se pueden quitar
+            var paginasParaQuitar = new List<TabPage>();
             foreach (TabPage page in tabControl.TabPages)
             {
+                Form form = null;
                 foreach (Control ctrl in page.Controls)
                 {
-                    if (ctrl is Form form)
+                    if (ctrl is Form f)
                     {
-                        form.Close(); // cerrar el formulario incrustado
+                        form = f;
+                        f.Close(); // dispara FormClosing
+                        break;
                     }
                 }
+                // Solo marcamos la página para quitar si el form se cerró de verdad
+                if (form == null || form.IsDisposed)
+                {
+                    paginasParaQuitar.Add(page);
+                }
             }
-            tabControl.TabPages.Clear();
+            // Ahora sí quitamos solo las pestañas que se cerraron
+            foreach (var page in paginasParaQuitar)
+            {
+                tabControl.TabPages.Remove(page);
+            }
         }
 
         public static void CerrarPestañaSeleccionada(TabControl tabControl)
         {
             if (tabControl.SelectedTab != null)
             {
-                // Cerrar el formulario incrustado si existe
+                Form form = null;
                 foreach (Control ctrl in tabControl.SelectedTab.Controls)
                 {
-                    if (ctrl is Form form)
+                    if (ctrl is Form f)
                     {
-                        form.Close();
+                        form = f;
+                        f.Close();
+                        break;
                     }
                 }
-                // Quitar la pestaña seleccionada
-                tabControl.TabPages.Remove(tabControl.SelectedTab);
+                // Solo quitar la pestaña si el formulario se cerró de verdad
+                if (form == null || form.IsDisposed)
+                {
+                    tabControl.TabPages.Remove(tabControl.SelectedTab);
+                }
             }
         }
 

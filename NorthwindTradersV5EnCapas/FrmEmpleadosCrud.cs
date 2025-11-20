@@ -1,8 +1,11 @@
 ﻿using BLL;
+using Entities;
 using Entities.DTOs;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using Utilities;
 
@@ -12,15 +15,16 @@ namespace NorthwindTradersV5EnCapas
     {
 
         string connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
-        private EmpleadoBLL employeeBLL;
-        // si es true significa que realizara busqueda con los criterios proporcionados 
-        // si es false significa que obtendra los ultimos 20 registros y no hay criterios
-        private bool EjecutarConfDgv = true; 
+        private EmpleadoBLL empleadoBLL;
+        private bool EjecutarConfDgv = true;
+        bool EventoCargado = true;
+        OpenFileDialog openFileDialog;
+        private Dictionary<string, object> valoresOriginales;
 
         public FrmEmpleadosCrud()
         {
             InitializeComponent();
-            employeeBLL = new EmpleadoBLL(connectionString);
+            empleadoBLL = new EmpleadoBLL(connectionString);
         }
 
         private void FrmEmpleadosCrud_Load(object sender, EventArgs e)
@@ -43,12 +47,17 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmEmpleadosCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tabcOperacion.SelectedTab != tbpListar)
-                if (txtId.Text.Trim() != "" || txtNombres.Text.Trim() != "" || txtApellidos.Text.Trim() != "" || txtTitulo.Text.Trim() != "" || txtTitCortesia.Text.Trim() != "" || txtDomicilio.Text.Trim() != "" || txtCiudad.Text.Trim() != "" || txtRegion.Text.Trim() != "" || txtCodigoP.Text.Trim() != "" || txtPais.Text.Trim() != "" || txtTelefono.Text.Trim() != "" || txtExtension.Text.Trim() != "" || dtpFNacimiento.Value != dtpFNacimiento.MinDate || dtpFContratacion.Value != dtpFContratacion.MinDate || txtNotas.Text.Trim() != "" || cboReportaA.SelectedIndex > 0)
+            // pone un error con errorprovider en cada control que ha cambiado
+            if (tabcOperacion.SelectedTab != tbpListar & tabcOperacion.SelectedTab != tbpEliminar)
+            {
+                if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 {
                     if (Utils.MsgCerrarForm() == DialogResult.No)
+                    {
                         e.Cancel = true;
+                    }
                 }
+            }
         }
 
         private void DeshabilitarControles()
@@ -57,13 +66,14 @@ namespace NorthwindTradersV5EnCapas
             txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCodigoP.ReadOnly = true;
             txtPais.ReadOnly = txtTelefono.ReadOnly = txtExtension.ReadOnly = true;
             dtpFNacimiento.Enabled = dtpFContratacion.Enabled = false;
-            txtNotas.ReadOnly = false;
+            txtNotas.ReadOnly = true;
             cboReportaA.Enabled = false;
             picFoto.Enabled = false;
             btnCargar.Enabled = false;
+            txtNotas.BackColor = SystemColors.Control;
         }
 
-        private void HabiliarControles()
+        private void HabilitarControles()
         {
             txtNombres.ReadOnly = txtApellidos.ReadOnly = txtTitulo.ReadOnly = false;
             txtTitCortesia.ReadOnly = false;
@@ -72,6 +82,7 @@ namespace NorthwindTradersV5EnCapas
             txtNotas.ReadOnly = false;
             dtpFNacimiento.Enabled = dtpFContratacion.Enabled = cboReportaA.Enabled = true;
             picFoto.Enabled = true;
+            txtNotas.BackColor = SystemColors.Window;
             //btnCargar.Enabled = true;  // no se debe habilitar este control para los registros 1 al 8
         }
 
@@ -80,7 +91,7 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var paises = employeeBLL.ObtenerEmpleadosPaisesCbo();
+                var paises = empleadoBLL.ObtenerEmpleadosPaisesCbo();
                 cboBPais.DataSource = paises;
                 cboBPais.ValueMember = "Id";
                 cboBPais.DisplayMember = "Pais";
@@ -98,7 +109,7 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var empleados = employeeBLL.ObtenerEmpleadosReportaaCbo();
+                var empleados = empleadoBLL.ObtenerEmpleadoReportaaCbo();
                 cboReportaA.DataSource = empleados;
                 cboReportaA.ValueMember = "Id";
                 cboReportaA.DisplayMember = "Nombre";
@@ -130,7 +141,7 @@ namespace NorthwindTradersV5EnCapas
                     Pais = cboBPais.SelectedValue.ToString(),
                     Telefono = txtBTelefono.Text.Trim()
                 };
-                var empleados = employeeBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
+                var empleados = empleadoBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
                 dgv.DataSource = empleados;
                 if (EjecutarConfDgv)
                 {
@@ -307,5 +318,250 @@ namespace NorthwindTradersV5EnCapas
             return valida;
         }
 
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (tabcOperacion.SelectedTab != tbpRegistrar)
+            {
+                DeshabilitarControles();
+                DataGridViewRow dgvr = dgv.CurrentRow;
+                txtId.Text = dgvr.Cells["EmployeeID"].Value.ToString();
+                Empleado empleado = new Empleado();
+                empleado.EmployeeID = Convert.ToInt32(txtId.Text);
+                try
+                {
+                    empleado = empleadoBLL.ObtenerEmpleadoPorId(empleado);
+                    if (empleado != null)
+                    {
+                        if (empleado.BirthDate != null)
+                            dtpFNacimiento.Value = empleado.BirthDate.Value;
+                        else
+                            dtpFNacimiento.Value = dtpFNacimiento.MinDate;
+                        if (empleado.HireDate != null)
+                            dtpFContratacion.Value = empleado.HireDate.Value;
+                        else
+                            dtpFContratacion.Value = dtpFContratacion.MinDate;
+                        if (empleado.Photo != null)
+                        {
+                            if (empleado.EmployeeID <= 8)
+                                btnCargar.Enabled = false;
+                            else
+                                btnCargar.Enabled = true;
+                            using (var ms = new MemoryStream(empleado.Photo))
+                                picFoto.Image = Image.FromStream(ms);
+                        }
+                        else
+                            picFoto.Image = null;
+                        if (empleado.ReportsTo != null)
+                            cboReportaA.SelectedValue = empleado.ReportsTo.Value;
+                        else
+                            cboReportaA.SelectedValue = 0;
+                        txtId.Tag = empleado.RowVersion;
+                        txtNombres.Text = empleado.FirstName;
+                        txtApellidos.Text = empleado.LastName;
+                        txtTitulo.Text = empleado.Title;
+                        txtTitCortesia.Text = empleado.TitleOfCourtesy;
+                        txtDomicilio.Text = empleado.Address;
+                        txtCiudad.Text = empleado.City;
+                        txtRegion.Text = empleado.Region;
+                        txtCodigoP.Text = empleado.PostalCode;
+                        txtPais.Text = empleado.Country;
+                        txtTelefono.Text = empleado.HomePhone;
+                        txtExtension.Text = empleado.Extension;
+                        txtNotas.Text = empleado.Notes;
+                        // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
+                        CargarValoresOriginales();
+                    }
+                    else
+                    {
+                        Utils.MsgError($"No se encontró el empleado con Id: {txtId.Text}, es posible que otro usuario lo haya eliminado previamente");
+                        ActualizaDgv();
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    U.MsgCatchOue(ex);
+                }
+                if (tabcOperacion.SelectedTab == tbpListar)
+                {
+                    btnOperacion.Visible = true;
+                    btnOperacion.Enabled = true;
+                    btnCargar.Visible = false;
+                }
+                if (tabcOperacion.SelectedTab == tbpModificar)
+                {
+                    HabilitarControles();
+                    btnOperacion.Visible = true;
+                    btnOperacion.Enabled = true;
+                    btnCargar.Visible = true;
+                }
+                else if (tabcOperacion.SelectedTab == tbpEliminar)
+                {
+                    btnOperacion.Enabled = true;
+                    btnOperacion.Visible = true;
+                    btnCargar.Visible = false;
+                }
+            }
+        }
+
+        void ActualizaDgv() => btnLimpiar.PerformClick();
+
+        private void tabcOperacion_Selected(object sender, TabControlEventArgs e)
+        {
+            BorrarDatosEmpleado();
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab == tbpRegistrar)
+            {
+                if (EventoCargado)
+                {
+                    dgv.CellClick -= new DataGridViewCellEventHandler(dgv_CellClick);
+                    EventoCargado = false;
+                }
+                BorrarDatosBusqueda();
+                HabilitarControles();
+                btnOperacion.Text = "Registrar empleado";
+                btnOperacion.Visible = true;
+                btnOperacion.Enabled = true;
+                btnCargar.Enabled = true;
+                btnCargar.Visible = true;
+                cboReportaA.SelectedValue = -1;
+
+                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                CargarValoresOriginales();
+            }
+            else
+            {
+                if (!EventoCargado)
+                {
+                    dgv.CellClick += new DataGridViewCellEventHandler(dgv_CellClick);
+                    EventoCargado = true;
+                }
+                DeshabilitarControles();
+                btnOperacion.Enabled = false;
+                btnCargar.Enabled = false;
+                if (tabcOperacion.SelectedTab == tbpListar)
+                {
+                    btnOperacion.Text = "Imprimir empleado";
+                    btnOperacion.Visible = true;
+                    btnOperacion.Enabled = true;
+                    btnCargar.Visible = false;
+                    btnCargar.Enabled = false;
+                }
+                else if (tabcOperacion.SelectedTab == tbpModificar)
+                {
+                    btnOperacion.Text = "Modificar empleado";
+                    btnOperacion.Visible = true;
+                    btnOperacion.Enabled = false;
+                    btnCargar.Visible = true;
+                    btnCargar.Enabled = false;
+                }
+                else if (tabcOperacion.SelectedTab == tbpEliminar)
+                {
+                    btnOperacion.Text = "Eliminar empleado";
+                    btnOperacion.Visible = true;
+                    btnOperacion.Enabled = false;
+                    btnCargar.Visible = false;
+                    btnCargar.Enabled = false;
+                }
+            }
+        }
+
+        private void btnCargar_Click(object sender, EventArgs e)
+        {
+            // Mostrar el cuadro de diálogo OpenFileDialog
+            //La instrucción siguiente es para que nos muestre todos los tipos juntos
+            openFileDialog = new OpenFileDialog();
+            //openFileDialog.Filter = "Archivos de imagen (*.jpg, *.jpeg, *.png, *.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
+            openFileDialog.InitialDirectory = "c:\\Imágenes\\";
+            //La instrucción siguiente es para que nos muestre varias filas en el openfiledialog que nos permita abrir por un tipo especifico
+            openFileDialog.Filter = "Archivos jpg (*.jpg)|*.jpg|Archivos jpeg (*.jpeg)|*.jpeg|Archivos png (*.png)|*.png|Archivos bmp (*.bmp)|*.bmp";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Cargar la imagen seleccionada en un objeto Image
+                Image image = Image.FromFile(openFileDialog.FileName);
+
+                // Mostrar la imagen en un control PictureBox
+                picFoto.Image = image;
+                errorProvider1.SetError(btnCargar, "");
+            }
+        }
+
+        private void LlenarCombos()
+        {
+            LlenarCboPais();
+            LlenarCboReportaA();
+        }
+
+        private void btnOperacion_Click(object sender, EventArgs e)
+        {
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab == tbpListar)
+            {
+                //FrmRptEmpleado frmRptEmpleado = new FrmRptEmpleado();
+                //frmRptEmpleado.Owner = this;
+                //frmRptEmpleado.Id = int.Parse(txtId.Text);
+                //frmRptEmpleado.ShowDialog();
+            }
+            else if (tabcOperacion.SelectedTab == tbpRegistrar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var empleado = new Empleado
+                        {
+                            FirstName = txtNombres.Text.Trim(),
+                            LastName = txtApellidos.Text.Trim(),
+                            Title = txtTitulo.Text.Trim(),
+                            TitleOfCourtesy = txtTitCortesia.Text.Trim(),
+                            BirthDate = dtpFNacimiento.Value == dtpFNacimiento.MinDate ? (DateTime?)null : dtpFNacimiento.Value,
+                            HireDate = dtpFContratacion.Value == dtpFContratacion.MinDate ? (DateTime?)null : dtpFContratacion.Value,
+                            Address = txtDomicilio.Text.Trim(),
+                            City = txtCiudad.Text.Trim(),
+                            Region = txtRegion.Text.Trim(),
+                            PostalCode = txtCodigoP.Text.Trim(),
+                            Country = txtPais.Text.Trim(),
+                            HomePhone = txtTelefono.Text.Trim(),
+                            Extension = txtExtension.Text.Trim(),
+                            Notes = txtNotas.Text.Trim(),
+                            ReportsTo = cboReportaA.SelectedValue.ToString() == "0" ? (int?)null : Convert.ToInt32(cboReportaA.SelectedValue),
+                            Photo = picFoto.Image != null ? Utils.ImageToByteArray(picFoto.Image) : null
+                        };
+                        int numRegs = empleadoBLL.Insertar(empleado);
+                        if (numRegs > 0)
+                        {
+                            txtId.Text = empleado.EmployeeID.ToString();
+                            Utils.MsgInformation($"El empleado con Id: {txtId.Text} y Nombre: {txtNombres.Text} {txtApellidos.Text} se registró satisfactoriamente");
+                        }
+                        else
+                        {
+                            Utils.MsgError($"El empleado con Nombre: {txtNombres.Text} {txtApellidos.Text} NO fue registrado en la base de datos");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    HabilitarControles();
+                    btnOperacion.Enabled = true;
+                    btnCargar.Enabled = true;
+                    LlenarCombos();
+                    ActualizaDgv();
+                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                    CargarValoresOriginales();
+                }
+            }
+        }
+
+        private void CargarValoresOriginales()
+        {
+            // Captura inicial usando la utilidad
+            valoresOriginales = Utils.CapturarValoresOriginales(this);
+        }
     }
 }
