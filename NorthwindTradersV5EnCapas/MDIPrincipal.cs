@@ -179,8 +179,6 @@ namespace NorthwindTradersV5EnCapas
 
         private void mantenimientoDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //CloseForms();
-            //Utils.OpenForm<FrmEmpleadosCrud>(this);
             FrmEmpleadosCrud frm = new FrmEmpleadosCrud();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de empleados «");
         }
@@ -191,5 +189,10 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de FrmPruebaScroll «");
         }
 
+        private void frmIconosSystemIconsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmIconosSystemIcons frm = new FrmIconosSystemIcons();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de FrmIconosSystemIcons «");
+        }
     }
 }

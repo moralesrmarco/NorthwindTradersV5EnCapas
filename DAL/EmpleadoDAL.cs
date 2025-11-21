@@ -63,6 +63,55 @@ namespace DAL
             return numRegs;
         }
 
+        public int Actualizar(Empleado empleado)
+        {
+            int numRegs = 0;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                {
+                    con.Open();
+                    using (var cmd = new SqlCommand("SpEmpleadoActualizar", con))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("Id", empleado.EmployeeID);
+                        cmd.Parameters.AddWithValue("Nombres", empleado.FirstName);
+                        cmd.Parameters.AddWithValue("Apellidos", empleado.LastName);
+                        cmd.Parameters.AddWithValue("Titulo", empleado.Title);
+                        cmd.Parameters.AddWithValue("TitCortesia", empleado.TitleOfCourtesy);
+                        cmd.Parameters.AddWithValue("FNacimiento", empleado.BirthDate);
+                        cmd.Parameters.AddWithValue("FContratacion", empleado.HireDate);
+                        cmd.Parameters.AddWithValue("Domicilio", empleado.Address);
+                        cmd.Parameters.AddWithValue("Ciudad", empleado.City);
+                        cmd.Parameters.AddWithValue("Region", string.IsNullOrWhiteSpace(empleado.Region) ? (object)DBNull.Value : (object)empleado.Region);
+                        cmd.Parameters.AddWithValue("CodigoP", string.IsNullOrWhiteSpace(empleado.PostalCode) ? (object)DBNull.Value : (object)empleado.PostalCode);
+                        cmd.Parameters.AddWithValue("Pais", empleado.Country);
+                        cmd.Parameters.AddWithValue("Telefono", string.IsNullOrWhiteSpace(empleado.HomePhone) ? (object)DBNull.Value : (object)empleado.HomePhone);
+                        cmd.Parameters.AddWithValue("Extension", string.IsNullOrWhiteSpace(empleado.Extension) ? (object)DBNull.Value : (object)empleado.Extension);
+                        cmd.Parameters.AddWithValue("Notas", string.IsNullOrWhiteSpace(empleado.Notes) ? (object)DBNull.Value : (object)empleado.Notes);
+                        var reportaA = cmd.Parameters.Add("Reportaa", SqlDbType.Int);
+                        reportaA.Value = empleado.ReportsTo.HasValue && empleado.ReportsTo.Value != 0
+                            ? (object)empleado.ReportsTo.Value
+                            : DBNull.Value;
+                        var byteFoto = cmd.Parameters.Add("Foto", SqlDbType.VarBinary, empleado.Photo?.Length ?? -1);
+                        byteFoto.Value = (object)empleado.Photo ?? DBNull.Value;
+                        var rowVersion = cmd.Parameters.Add("RowVersion", SqlDbType.Timestamp);
+                        rowVersion.Value = empleado.RowVersion ?? (object)DBNull.Value;
+                        // Parámetro de retorno
+                        var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                        returnParameter.Direction = ParameterDirection.ReturnValue;
+                        cmd.ExecuteNonQuery();
+                        numRegs = (int)returnParameter.Value;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return numRegs;
+        }
+
         public Empleado ObtenerEmpleadoPorId(Empleado empleado)
         {
             try

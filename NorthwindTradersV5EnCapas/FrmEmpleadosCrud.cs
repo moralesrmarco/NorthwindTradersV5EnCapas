@@ -52,7 +52,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 {
-                    if (Utils.MsgCerrarForm() == DialogResult.No)
+                    if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
                     {
                         e.Cancel = true;
                     }
@@ -320,6 +320,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            BorrarMensajesError();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
             {
                 DeshabilitarControles();
@@ -350,7 +351,10 @@ namespace NorthwindTradersV5EnCapas
                                 picFoto.Image = Image.FromStream(ms);
                         }
                         else
+                        {
                             picFoto.Image = null;
+                            btnCargar.Enabled = true;
+                        }
                         if (empleado.ReportsTo != null)
                             cboReportaA.SelectedValue = empleado.ReportsTo.Value;
                         else
@@ -373,7 +377,7 @@ namespace NorthwindTradersV5EnCapas
                     }
                     else
                     {
-                        Utils.MsgError($"No se encontró el empleado con Id: {txtId.Text}, es posible que otro usuario lo haya eliminado previamente");
+                        U.NotificacionError($"No se encontró el empleado con Id: {txtId.Text}." + Utils.erfep);
                         ActualizaDgv();
                         return;
                     }
@@ -533,14 +537,16 @@ namespace NorthwindTradersV5EnCapas
                             Photo = picFoto.Image != null ? Utils.ImageToByteArray(picFoto.Image) : null
                         };
                         int numRegs = empleadoBLL.Insertar(empleado);
+                        string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)
                         {
                             txtId.Text = empleado.EmployeeID.ToString();
-                            Utils.MsgInformation($"El empleado con Id: {txtId.Text} y Nombre: {txtNombres.Text} {txtApellidos.Text} se registró satisfactoriamente");
+                            idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
+                            U.NotificacionInformation(idyNombre + Utils.srs);
                         }
                         else
                         {
-                            Utils.MsgError($"El empleado con Nombre: {txtNombres.Text} {txtApellidos.Text} NO fue registrado en la base de datos");
+                            U.NotificacionError(idyNombre + Utils.nfrs);
                         }
                     }
                     catch (Exception ex)
@@ -554,6 +560,57 @@ namespace NorthwindTradersV5EnCapas
                     ActualizaDgv();
                     // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
                     CargarValoresOriginales();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpModificar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var empleado = new Empleado
+                        {
+                            EmployeeID = Convert.ToInt32(txtId.Text),
+                            FirstName = txtNombres.Text.Trim(),
+                            LastName = txtApellidos.Text.Trim(),
+                            Title = txtTitulo.Text.Trim(),
+                            TitleOfCourtesy = txtTitCortesia.Text.Trim(),
+                            BirthDate = dtpFNacimiento.Value == dtpFNacimiento.MinDate ? (DateTime?)null : dtpFNacimiento.Value,
+                            HireDate = dtpFContratacion.Value == dtpFContratacion.MinDate ? (DateTime?)null : dtpFContratacion.Value,
+                            Address = txtDomicilio.Text.Trim(),
+                            City = txtCiudad.Text.Trim(),
+                            Region = txtRegion.Text.Trim(),
+                            PostalCode = txtCodigoP.Text.Trim(),
+                            Country = txtPais.Text.Trim(),
+                            HomePhone = txtTelefono.Text.Trim(),
+                            Extension = txtExtension.Text.Trim(),
+                            Notes = txtNotas.Text.Trim(),
+                            ReportsTo = cboReportaA.SelectedValue.ToString() == "0" ? (int?)null : Convert.ToInt32(cboReportaA.SelectedValue),
+                            Photo = (picFoto.Image != null && Convert.ToInt32(txtId.Text) > 8)
+                                ? Utils.ImageToByteArray(picFoto.Image)
+                                : null,
+                            RowVersion = txtId.Tag as byte[]
+                        };
+                        int numRegs = empleadoBLL.Actualizar(empleado);
+                        string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombre + Utils.sms);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombre + Utils.nfmfe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombre + Utils.nfmfm);
+                        else
+                           U.NotificacionError(idyNombre + Utils.nfmmd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCombos();
+                    ActualizaDgv();
                 }
             }
         }

@@ -31,6 +31,20 @@ namespace BLL
             }
         }
 
+        public int Actualizar(Empleado empleado)
+        {
+            try
+            {
+                int numRegs = 0;
+                numRegs = empleadoDAL.Actualizar(empleado);
+                return numRegs;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public Empleado ObtenerEmpleadoPorId(Empleado empleado)
         {
             try

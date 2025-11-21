@@ -16,12 +16,19 @@ namespace Utilities
             public const string clbdd = "Consultando la base de datos... ";
             public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
             public const string oue = "Ocurrio un error:\n";
-            public const string preguntaCerrar = "Se detectaron cambios en los datos del formulario.\n\n¿Esta seguro de querer cerrar el formulario?, si responde SI, se perderan los datos no guardados";
+            public const string preguntaCerrar = "Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
             public const string insertandoRegistro = "Insertando registro en la base de datos...";
             public const string modificandoRegistro = "Modificando registro en la base de datos...";
             public const string eliminandoRegistro = "Eliminando registro en la base de datos...";
             public const string errorCriterioSelec = "Error: Proporcione los criterios de selección";
-            public const string noDatos = "No se encontraron datos para mostrar en el reporte";
+            public const string noDatos = "No se encontraron datos para mostrar en el reporte.";
+            public const string srs = "\n[green]Se registró satisfactoriamente.";
+            public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
+            public const string sms = "\n[green]Se modificó satisfactoriamente.";
+            public const string nfmfe = "\n[red]NO fue modificado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfmfm = "\n[red]NO fue modificado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfmmd = "\n[red]NO fue modificado en la base de datos por un motivo desconocido.";
+            public const string erfep = "\n[red]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         #endregion
 
         // Los siguientes tres métodos trabajan juntos para detectar cambios en TextBox y ComboBox,

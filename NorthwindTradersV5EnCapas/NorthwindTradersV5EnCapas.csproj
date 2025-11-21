@@ -53,6 +53,18 @@
     <Compile Include="FrmEmpleadosCrud.Designer.cs">
       <DependentUpon>FrmEmpleadosCrud.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmIconosSystemIcons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmIconosSystemIcons.Designer.cs">
+      <DependentUpon>FrmIconosSystemIcons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmNotificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNotificacion.Designer.cs">
+      <DependentUpon>FrmNotificacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPruebaScroll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +82,9 @@
     <Compile Include="U.cs" />
     <EmbeddedResource Include="FrmEmpleadosCrud.resx">
       <DependentUpon>FrmEmpleadosCrud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNotificacion.resx">
+      <DependentUpon>FrmNotificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDIPrincipal.resx">
       <DependentUpon>MDIPrincipal.cs</DependentUpon>
