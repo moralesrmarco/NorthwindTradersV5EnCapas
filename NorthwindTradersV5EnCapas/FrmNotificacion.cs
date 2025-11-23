@@ -17,7 +17,7 @@ namespace NorthwindTradersV5EnCapas
             this.Icon = icono; // Ícono de la ventana
 
             // Configurar RichTextBox
-            richTextBox1.BackColor = this.BackColor;
+            //richTextBox1.BackColor = this.BackColor;
 
             // Procesar el mensaje con tags de color
             MostrarMensajeConTags(mensaje);
@@ -80,11 +80,11 @@ namespace NorthwindTradersV5EnCapas
             richTextBox1.Clear();
             // Divide por saltos de línea
             string[] parrafos = mensaje.Split(new[] { "\n" }, StringSplitOptions.None);
-            foreach (var p in parrafos)
+            //foreach (var p in parrafos)
+            for (int i = 0; i < parrafos.Length; i++)
             {
+                string texto = parrafos[i];
                 Color color = Color.Black; // default
-                string texto = p;
-
                 // Detectar tag al inicio
                 if (texto.StartsWith("[black]"))
                 {
@@ -106,12 +106,22 @@ namespace NorthwindTradersV5EnCapas
                     color = Color.Blue;
                     texto = texto.Replace("[blue]", "");
                 }
+                else if (texto.StartsWith("[orange]"))
+                {
+                    color = Color.OrangeRed;
+                    texto = texto.Replace("[orange]", "");
+                }
                 // Aplica formato
                 richTextBox1.SelectionStart = richTextBox1.TextLength;
                 richTextBox1.SelectionLength = 0;
                 richTextBox1.SelectionColor = color;
                 richTextBox1.SelectionFont = new Font("Segoe UI", 10, FontStyle.Bold);
-                richTextBox1.AppendText(texto + Environment.NewLine + Environment.NewLine);
+                richTextBox1.AppendText(texto);
+                // Solo agregar salto si no es el último párrafo
+                if (i < parrafos.Length - 1)
+                {
+                    richTextBox1.AppendText(Environment.NewLine + Environment.NewLine);
+                }
             }
         }
 

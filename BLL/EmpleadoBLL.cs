@@ -10,94 +10,98 @@ namespace BLL
     public class EmpleadoBLL
     {
 
-        private readonly EmpleadoDAL empleadoDAL;
+        private readonly EmpleadoDAL _empleadoDAL;
 
         public EmpleadoBLL(string connectionString)
         {
-            empleadoDAL = new EmpleadoDAL(connectionString);
+            _empleadoDAL = new EmpleadoDAL(connectionString);
         }
 
         public int Insertar(Empleado empleado)
         {
-            try
-            {
-                int numRegs = 0;
-                numRegs = empleadoDAL.Insertar(empleado);
-                return numRegs;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _empleadoDAL.Insertar(empleado);
         }
 
         public int Actualizar(Empleado empleado)
         {
-            try
-            {
-                int numRegs = 0;
-                numRegs = empleadoDAL.Actualizar(empleado);
-                return numRegs;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _empleadoDAL.Actualizar(empleado);
         }
 
-        public Empleado ObtenerEmpleadoPorId(Empleado empleado)
+        public int Eliminar(int empleadoId, byte[] rowVersion)
         {
-            try
-            {
-                empleado = empleadoDAL.ObtenerEmpleadoPorId(empleado);
-                return empleado;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _empleadoDAL.Eliminar(empleadoId, rowVersion);
         }
 
         public DataTable ObtenerEmpleadoReportaaCbo()
         {
-            try
-            {
-                var empleados = new DataTable();
-                empleados = empleadoDAL.ObtenerEmpleadoReportaaCbo();
-                return empleados;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _empleadoDAL.ObtenerEmpleadoReportaaCbo();
         }
 
         public List<DtoEmpleadosDgv> ObtenerEmpleadosDgv(bool selectorRealizaBusqueda, DtoEmpleadosBuscar dtoEmpleadosBuscar)
         {
-            try
-            {
-                List<DtoEmpleadosDgv> employees = new List<DtoEmpleadosDgv>();
-                employees = empleadoDAL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
-                return employees;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _empleadoDAL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
         }
 
         public List<DtoEmpleadosPaisesCbo> ObtenerEmpleadosPaisesCbo()
         {
-            try
+            return _empleadoDAL.ObtenerEmpleadosPaisesCbo();
+        }
+
+
+        /// <summary>
+        /// Obtiene un empleado por su ID.
+        /// </summary>
+        public Empleado ObtenerEmpleadoPorId(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("El ID del empleado debe ser mayor a cero.", nameof(id));
+
+            return _empleadoDAL.ObtenerEmpleadoPorId(id);
+        }
+
+        /// <summary>
+        /// Obtiene un empleado con su jefe y subordinados.
+        /// </summary>
+        public Empleado ObtenerEmpleadoConJerarquia(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("El ID del empleado debe ser mayor a cero.", nameof(id));
+
+            return _empleadoDAL.ObtenerEmpleadoConJerarquia(id);
+        }
+
+        /// <summary>
+        /// Obtiene la lista de empleados que reportan a un jefe específico.
+        /// </summary>
+        public List<Empleado> ObtenerEmpleadoConSubordinados(int managerId)
+        {
+            if (managerId <= 0)
+                throw new ArgumentException("El ID del jefe debe ser mayor a cero.", nameof(managerId));
+
+            return _empleadoDAL.ObtenerEmpleadoConSubordinados(managerId);
+        }
+
+        /// <summary>
+        /// Ejemplo de regla de negocio: validar si un empleado tiene jefe asignado.
+        /// </summary>
+        public bool TieneJefe(int id)
+        {
+            var empleado = _empleadoDAL.ObtenerEmpleadoPorId(id);
+            return empleado?.ReportsTo != null;
+        }
+
+        /// <summary>
+        /// Ejemplo de regla de negocio: obtener el nombre completo del jefe de un empleado.
+        /// </summary>
+        public string ObtenerNombreDelJefe(int id)
+        {
+            var empleado = _empleadoDAL.ObtenerEmpleadoPorId(id);
+            if (empleado?.ReportsTo != null)
             {
-                List<DtoEmpleadosPaisesCbo> paises = new List<DtoEmpleadosPaisesCbo>();
-                paises = empleadoDAL.ObtenerEmpleadosPaisesCbo();
-                return paises;
+                var jefe = _empleadoDAL.ObtenerEmpleadoPorId(empleado.ReportsTo.Value);
+                return jefe?.NameByLastName ?? "Sin jefe";
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return "Sin jefe";
         }
 
     }

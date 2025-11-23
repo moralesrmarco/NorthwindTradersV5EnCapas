@@ -56,16 +56,16 @@ namespace NorthwindTradersV5EnCapas
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Window;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Location = new System.Drawing.Point(0, 10);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(471, 202);
+            this.richTextBox1.Size = new System.Drawing.Size(471, 194);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(429, 11);
+            this.btnAceptar.Location = new System.Drawing.Point(429, 10);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(106, 32);
             this.btnAceptar.TabIndex = 0;
@@ -75,7 +75,7 @@ namespace NorthwindTradersV5EnCapas
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(10, 9);
+            this.pictureBox1.Location = new System.Drawing.Point(10, 14);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(50, 50);
             this.pictureBox1.TabIndex = 0;
@@ -83,7 +83,7 @@ namespace NorthwindTradersV5EnCapas
             // 
             // btnSi
             // 
-            this.btnSi.Location = new System.Drawing.Point(307, 11);
+            this.btnSi.Location = new System.Drawing.Point(307, 10);
             this.btnSi.Name = "btnSi";
             this.btnSi.Size = new System.Drawing.Size(106, 32);
             this.btnSi.TabIndex = 1;
@@ -93,7 +93,7 @@ namespace NorthwindTradersV5EnCapas
             // 
             // btnNo
             // 
-            this.btnNo.Location = new System.Drawing.Point(429, 11);
+            this.btnNo.Location = new System.Drawing.Point(429, 10);
             this.btnNo.Name = "btnNo";
             this.btnNo.Size = new System.Drawing.Size(106, 32);
             this.btnNo.TabIndex = 1;
@@ -121,7 +121,7 @@ namespace NorthwindTradersV5EnCapas
             this.splitContainer1.Panel2.Controls.Add(this.btnAceptar);
             this.splitContainer1.Panel2.Controls.Add(this.btnSi);
             this.splitContainer1.Size = new System.Drawing.Size(556, 269);
-            this.splitContainer1.SplitterDistance = 222;
+            this.splitContainer1.SplitterDistance = 224;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -138,8 +138,8 @@ namespace NorthwindTradersV5EnCapas
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(0, 0, 5, 0);
-            this.splitContainer2.Size = new System.Drawing.Size(536, 202);
+            this.splitContainer2.Panel2.Padding = new System.Windows.Forms.Padding(0, 10, 5, 0);
+            this.splitContainer2.Size = new System.Drawing.Size(536, 204);
             this.splitContainer2.SplitterDistance = 56;
             this.splitContainer2.TabIndex = 0;
             // 

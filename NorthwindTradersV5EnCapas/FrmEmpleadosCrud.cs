@@ -4,6 +4,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -15,16 +16,17 @@ namespace NorthwindTradersV5EnCapas
     {
 
         string connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
-        private EmpleadoBLL empleadoBLL;
+        private EmpleadoBLL _empleadoBLL;
         private bool EjecutarConfDgv = true;
         bool EventoCargado = true;
         OpenFileDialog openFileDialog;
         private Dictionary<string, object> valoresOriginales;
+        private byte[] fotoOriginalOle = null;
 
         public FrmEmpleadosCrud()
         {
             InitializeComponent();
-            empleadoBLL = new EmpleadoBLL(connectionString);
+            _empleadoBLL = new EmpleadoBLL(connectionString);
         }
 
         private void FrmEmpleadosCrud_Load(object sender, EventArgs e)
@@ -91,7 +93,7 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var paises = empleadoBLL.ObtenerEmpleadosPaisesCbo();
+                var paises = _empleadoBLL.ObtenerEmpleadosPaisesCbo();
                 cboBPais.DataSource = paises;
                 cboBPais.ValueMember = "Id";
                 cboBPais.DisplayMember = "Pais";
@@ -109,7 +111,7 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var empleados = empleadoBLL.ObtenerEmpleadoReportaaCbo();
+                var empleados = _empleadoBLL.ObtenerEmpleadoReportaaCbo();
                 cboReportaA.DataSource = empleados;
                 cboReportaA.ValueMember = "Id";
                 cboReportaA.DisplayMember = "Nombre";
@@ -141,7 +143,7 @@ namespace NorthwindTradersV5EnCapas
                     Pais = cboBPais.SelectedValue.ToString(),
                     Telefono = txtBTelefono.Text.Trim()
                 };
-                var empleados = empleadoBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
+                var empleados = _empleadoBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
                 dgv.DataSource = empleados;
                 if (EjecutarConfDgv)
                 {
@@ -327,10 +329,9 @@ namespace NorthwindTradersV5EnCapas
                 DataGridViewRow dgvr = dgv.CurrentRow;
                 txtId.Text = dgvr.Cells["EmployeeID"].Value.ToString();
                 Empleado empleado = new Empleado();
-                empleado.EmployeeID = Convert.ToInt32(txtId.Text);
                 try
                 {
-                    empleado = empleadoBLL.ObtenerEmpleadoPorId(empleado);
+                    empleado = _empleadoBLL.ObtenerEmpleadoPorId(Convert.ToInt32(txtId.Text));
                     if (empleado != null)
                     {
                         if (empleado.BirthDate != null)
@@ -343,7 +344,8 @@ namespace NorthwindTradersV5EnCapas
                             dtpFContratacion.Value = dtpFContratacion.MinDate;
                         if (empleado.Photo != null)
                         {
-                            if (empleado.EmployeeID <= 8)
+                            fotoOriginalOle = empleado.Photo;
+                            if (empleado.EmployeeID <= 9)
                                 btnCargar.Enabled = false;
                             else
                                 btnCargar.Enabled = true;
@@ -377,7 +379,7 @@ namespace NorthwindTradersV5EnCapas
                     }
                     else
                     {
-                        U.NotificacionError($"No se encontró el empleado con Id: {txtId.Text}." + Utils.erfep);
+                        U.NotificacionWarning($"No se encontró el empleado con Id: {txtId.Text}." + Utils.erfep);
                         ActualizaDgv();
                         return;
                     }
@@ -503,10 +505,10 @@ namespace NorthwindTradersV5EnCapas
             BorrarMensajesError();
             if (tabcOperacion.SelectedTab == tbpListar)
             {
-                //FrmRptEmpleado frmRptEmpleado = new FrmRptEmpleado();
+                FrmRptEmpleado frmRptEmpleado = new FrmRptEmpleado();
                 //frmRptEmpleado.Owner = this;
                 //frmRptEmpleado.Id = int.Parse(txtId.Text);
-                //frmRptEmpleado.ShowDialog();
+                frmRptEmpleado.ShowDialog();
             }
             else if (tabcOperacion.SelectedTab == tbpRegistrar)
             {
@@ -536,7 +538,7 @@ namespace NorthwindTradersV5EnCapas
                             ReportsTo = cboReportaA.SelectedValue.ToString() == "0" ? (int?)null : Convert.ToInt32(cboReportaA.SelectedValue),
                             Photo = picFoto.Image != null ? Utils.ImageToByteArray(picFoto.Image) : null
                         };
-                        int numRegs = empleadoBLL.Insertar(empleado);
+                        int numRegs = _empleadoBLL.Insertar(empleado);
                         string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)
                         {
@@ -589,12 +591,17 @@ namespace NorthwindTradersV5EnCapas
                             Extension = txtExtension.Text.Trim(),
                             Notes = txtNotas.Text.Trim(),
                             ReportsTo = cboReportaA.SelectedValue.ToString() == "0" ? (int?)null : Convert.ToInt32(cboReportaA.SelectedValue),
-                            Photo = (picFoto.Image != null && Convert.ToInt32(txtId.Text) > 8)
-                                ? Utils.ImageToByteArray(picFoto.Image)
-                                : null,
                             RowVersion = txtId.Tag as byte[]
                         };
-                        int numRegs = empleadoBLL.Actualizar(empleado);
+                        if (Convert.ToInt32(txtId.Text) <= 9)
+                        {
+                            empleado.Photo = fotoOriginalOle; // conservas el OLE original
+                        }
+                        else
+                        {
+                            empleado.Photo = Utils.ImageToByteArray(picFoto.Image);
+                        }
+                        int numRegs = _empleadoBLL.Actualizar(empleado);
                         string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombre + Utils.sms);
@@ -604,6 +611,34 @@ namespace NorthwindTradersV5EnCapas
                             U.NotificacionError(idyNombre + Utils.nfmfm);
                         else
                            U.NotificacionError(idyNombre + Utils.nfmmd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCombos();
+                    ActualizaDgv();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpEliminar)
+            {
+                if (U.NotificacionQuestion($"[orange]¿Está seguro de eliminar el empleado con Id: {txtId.Text} y Nombre: {txtNombres.Text} {txtApellidos.Text}?") == DialogResult.Yes)
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var empleado = new Empleado();
+                        int numRegs = _empleadoBLL.Eliminar(Convert.ToInt32(txtId.Text), (byte[])txtId.Tag);
+                        string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombre + Utils.ses);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombre + Utils.nfefe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombre + Utils.nfefm);
+                        else
+                            U.NotificacionError(idyNombre + Utils.nfemd);
                     }
                     catch (Exception ex)
                     {

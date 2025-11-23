@@ -28,7 +28,11 @@ namespace Utilities
             public const string nfmfe = "\n[red]NO fue modificado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfmfm = "\n[red]NO fue modificado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfmmd = "\n[red]NO fue modificado en la base de datos por un motivo desconocido.";
-            public const string erfep = "\n[red]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string ses = "\n[green]Se eliminó satisfactoriamente.";
+            public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
         #endregion
 
         // Los siguientes tres métodos trabajan juntos para detectar cambios en TextBox y ComboBox,
@@ -184,7 +188,7 @@ namespace Utilities
             if (oleBytes == null || oleBytes.Length == 0)
                 return oleBytes;
             const int OLE_HEADER_LENGTH = 78; // Tamaño típico del encabezado OLE
-            int offset = (employeeId <= 8 && oleBytes.Length > OLE_HEADER_LENGTH)
+            int offset = (employeeId <= 9 && oleBytes.Length > OLE_HEADER_LENGTH)
             ? OLE_HEADER_LENGTH
             : 0;
 

@@ -96,6 +96,7 @@ namespace NorthwindTradersV5EnCapas
         {
             Utils.MsgCatchOue(ex, () => MDIPrincipal.ActualizarBarraDeEstado());
         }
+        
         public static void MsgWarning(string mensaje) => Utils.MsgWarning(mensaje);
 
         public static void MsgExclamation(string mensaje) => Utils.MsgExclamation(mensaje);

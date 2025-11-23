@@ -179,20 +179,30 @@ namespace NorthwindTradersV5EnCapas
 
         private void mantenimientoDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ActualizarBarraDeEstado();
             FrmEmpleadosCrud frm = new FrmEmpleadosCrud();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de empleados «");
         }
 
         private void frmPruebaScrollToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ActualizarBarraDeEstado();
             FrmPruebaScroll frm = new FrmPruebaScroll();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de FrmPruebaScroll «");
         }
 
         private void frmIconosSystemIconsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ActualizarBarraDeEstado();
             FrmIconosSystemIcons frm = new FrmIconosSystemIcons();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de FrmIconosSystemIcons «");
+        }
+
+        private void frmEjemploUsoJerarquiaClaseEmpleadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ActualizarBarraDeEstado();
+            FrmEjemploUsoJerarquiaClaseEmpleado frm = new FrmEjemploUsoJerarquiaClaseEmpleado();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Ejemplo uso jerarquía clase Empleado «");
         }
     }
 }

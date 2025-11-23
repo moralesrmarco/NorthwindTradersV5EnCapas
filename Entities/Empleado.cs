@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Entities
 {
@@ -20,9 +21,11 @@ namespace Entities
         public string Extension { get; set; }
         public byte[] Photo { get; set; }
         public string Notes { get; set; }
-        public int? ReportsTo { get; set; }
         public string PhotoPath { get; set; }
         public byte[] RowVersion { get; set; }
+
+        // Clave foránea hacia otro empleado
+        public int? ReportsTo { get; set; }
 
         public string NameByFirstName
         {
@@ -34,6 +37,14 @@ namespace Entities
             get { return LastName + ", " + FirstName; }
         }
 
-        public string ReportsToName { get; set; }
+        // Propiedades de navegación (no automáticas en ADO.NET, las llenas tú en la capa DAL/BLL)
+        public Empleado Jefe { get; set; }
+
+        public List<Empleado> EmpleadosSubordinados { get; set; } = new List<Empleado>();
+
+        public override string ToString()
+        {
+            return NameByFirstName;
+        }
     }
 }
