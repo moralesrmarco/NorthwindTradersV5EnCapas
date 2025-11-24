@@ -66,6 +66,24 @@ namespace BLL
         }
 
         /// <summary>
+        /// Obtiene todos los empleados y carga la referencia al jefe de cada uno.
+        /// </summary>
+        public List<Empleado> ObtenerTodosLosEmpleados()
+        {
+            var empleados = _empleadoDAL.ObtenerTodosLosEmpleados();
+
+            foreach (var empleado in empleados)
+            {
+                if (empleado.ReportsTo.HasValue)
+                {
+                    // Traer al jefe desde DAL
+                    empleado.Jefe = _empleadoDAL.ObtenerEmpleadoPorId(empleado.ReportsTo.Value);
+                }
+            }
+            return empleados;
+        }
+
+        /// <summary>
         /// Obtiene un empleado con su jefe y subordinados.
         /// </summary>
         public Empleado ObtenerEmpleadoConJerarquia(int id)

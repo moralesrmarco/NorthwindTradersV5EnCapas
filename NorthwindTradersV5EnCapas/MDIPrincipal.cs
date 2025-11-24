@@ -32,9 +32,16 @@ namespace NorthwindTradersV5EnCapas
             TabControlPrincipal.DrawItem += TabControlPrincipal_DrawItem;
             Instance = this;
             this.Text = Utils.nwtr;
+            // Suscribirse al evento de Utils
+            Utils.FormularioAgregado += (form) =>
+            {
+                ActualizarBarraDeEstado();
+            };
         }
 
         private void TabControlPrincipal_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
+
+        private void TabControlPrincipal_SelectedIndexChanged(object sender, EventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
         private void MDIPrincipal_Load(object sender, EventArgs e)
         {
@@ -179,30 +186,47 @@ namespace NorthwindTradersV5EnCapas
 
         private void mantenimientoDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActualizarBarraDeEstado();
+            //ActualizarBarraDeEstado();
             FrmEmpleadosCrud frm = new FrmEmpleadosCrud();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de empleados «");
         }
 
         private void frmPruebaScrollToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActualizarBarraDeEstado();
+            //ActualizarBarraDeEstado();
             FrmPruebaScroll frm = new FrmPruebaScroll();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de FrmPruebaScroll «");
         }
 
         private void frmIconosSystemIconsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActualizarBarraDeEstado();
+            //ActualizarBarraDeEstado();
             FrmIconosSystemIcons frm = new FrmIconosSystemIcons();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de FrmIconosSystemIcons «");
         }
 
         private void frmEjemploUsoJerarquiaClaseEmpleadoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ActualizarBarraDeEstado();
+            //ActualizarBarraDeEstado();
             FrmEjemploUsoJerarquiaClaseEmpleado frm = new FrmEjemploUsoJerarquiaClaseEmpleado();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Ejemplo uso jerarquía clase Empleado «");
         }
+
+        private void reporteDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteDeEmpleadosConFotoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteDeEmpleadosConFoto2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmRptEmpleado2 frm = new FrmRptEmpleado2();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados con foto 2 «");
+        }
+
     }
 }

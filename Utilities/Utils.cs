@@ -35,6 +35,8 @@ namespace Utilities
             public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
         #endregion
 
+        public static event Action<Form> FormularioAgregado;
+
         // Los siguientes tres métodos trabajan juntos para detectar cambios en TextBox y ComboBox,
         // para que funcionen los metodos FormClosing de los formularios de mantenimiento
         // Método recursivo para recorrer todos los controles anidados
@@ -408,6 +410,8 @@ namespace Utilities
             // Seleccionar la pestaña recién agregada
             tabControl.SelectedTab = nuevaPestaña;
             // Mostrar el formulario incrustado
+            // Disparar evento
+            FormularioAgregado?.Invoke(formulario);
             formulario.Show();
         }
 

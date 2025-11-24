@@ -326,6 +326,32 @@ namespace DAL
             return empleado;
         }
 
+        public List<Empleado> ObtenerTodosLosEmpleados()
+        {
+            var empleados = new List<Empleado>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpEmpleadoObtenerTodos", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            empleados.Add(MapearEmpleado(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return empleados;
+        }
+
         // Obtiene un empleado junto con su jefe y sus subordinados
         // este metodo no lo estoy usando pero puede ser util para futuras funcionalidades
         // muestra la estructura jerarquica de la implementación de los metodos de un empleado
