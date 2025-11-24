@@ -249,7 +249,10 @@ namespace DAL
                                     City = rdr["City"]?.ToString(),
                                     Country = rdr["Country"]?.ToString(),
                                     Photo = rdr["Photo"] is DBNull ? null : (byte[])rdr["Photo"],
-                                    ReportsToName = rdr["ReportsToName"]?.ToString(),
+                                    //ReportsToName = rdr["ReportsToName"]?.ToString(),
+                                    ReportsToName = string.IsNullOrEmpty(Convert.ToString(rdr["ReportsToName"]))
+                                        ? "N/A"
+                                        : Convert.ToString(rdr["ReportsToName"])
                                 };
                                 employees.Add(employee);
                             }

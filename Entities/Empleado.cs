@@ -34,7 +34,12 @@ namespace Entities
 
         public string NameByLastName
         {
-            get { return LastName + ", " + FirstName; }
+            get 
+            { 
+                    return string.IsNullOrWhiteSpace(FirstName)
+                        ? LastName 
+                        : LastName + ", " + FirstName; 
+            }
         }
 
         // Propiedades de navegación (no automáticas en ADO.NET, las llenas tú en la capa DAL/BLL)
@@ -50,7 +55,20 @@ namespace Entities
         // Propiedades adicionales para facilitar el acceso al nombre del jefe desde el reportviewer
         public string JefeNameByLastName
         {
-            get { return Jefe != null ? Jefe.NameByLastName : ""; }
+            get 
+            {
+                //return Jefe != null ? Jefe.NameByLastName : ""; 
+                // Si no hay jefe, devuelve "N/A"
+                if (Jefe == null)
+                    return "N/A";
+
+                // Si el FirstName está vacío, devuelve solo el LastName
+                if (string.IsNullOrEmpty(Jefe.FirstName))
+                    return Jefe.LastName;
+
+                // Caso normal: "Apellido, Nombre"
+                return Jefe.LastName + ", " + Jefe.FirstName;
+            }
         }
 
         public string JefeNameByFirstName

@@ -214,7 +214,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void reporteDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptEmpleados frm = new FrmRptEmpleados();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados «");
         }
 
         private void reporteDeEmpleadosConFotoToolStripMenuItem_Click(object sender, EventArgs e)

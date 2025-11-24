@@ -2,28 +2,30 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
+using System.Data;
 using System.Windows.Forms;
 using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmRptEmpleado2 : Form
+    public partial class FrmRptEmpleados : Form
     {
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private EmpleadoBLL _empleadoBLL;
 
-        public FrmRptEmpleado2()
+        public FrmRptEmpleados()
         {
             InitializeComponent();
+            WindowState = FormWindowState.Maximized;
             _empleadoBLL = new EmpleadoBLL(_connectionString);
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
 
-        private void FrmRptEmpleado2_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
+        private void FrmRptEmpleados_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmRptEmpleado2_Load(object sender, EventArgs e)
+        private void FrmRptEmpleados_Load(object sender, EventArgs e)
         {
             try
             {

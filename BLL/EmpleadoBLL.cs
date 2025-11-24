@@ -47,7 +47,6 @@ namespace BLL
             return _empleadoDAL.ObtenerEmpleadosPaisesCbo();
         }
 
-
         /// <summary>
         /// Obtiene un empleado por su ID.
         /// </summary>
@@ -58,9 +57,20 @@ namespace BLL
 
             //return _empleadoDAL.ObtenerEmpleadoPorId(id);
             var empleado = _empleadoDAL.ObtenerEmpleadoPorId(id);
-            if (empleado != null && empleado.ReportsTo.HasValue)
+            if (empleado != null)
             {
-                empleado.Jefe = _empleadoDAL.ObtenerEmpleadoPorId(empleado.ReportsTo.Value);
+                if (empleado.ReportsTo.HasValue)
+                    empleado.Jefe = _empleadoDAL.ObtenerEmpleadoPorId(empleado.ReportsTo.Value);
+            }
+            else 
+            {
+                // Si no tiene jefe, asignamos un objeto Empleado con LastName = "N/A"
+                empleado.Jefe = new Empleado
+                {
+                    EmployeeID = 0,
+                    LastName = "N/A",
+                    FirstName = string.Empty
+                };
             }
             return empleado;
         }
