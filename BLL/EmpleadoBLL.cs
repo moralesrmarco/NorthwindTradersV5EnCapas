@@ -12,9 +12,9 @@ namespace BLL
 
         private readonly EmpleadoDAL _empleadoDAL;
 
-        public EmpleadoBLL(string connectionString)
+        public EmpleadoBLL(string _connectionString)
         {
-            _empleadoDAL = new EmpleadoDAL(connectionString);
+            _empleadoDAL = new EmpleadoDAL(_connectionString);
         }
 
         public int Insertar(Empleado empleado)
@@ -56,7 +56,13 @@ namespace BLL
             if (id <= 0)
                 throw new ArgumentException("El ID del empleado debe ser mayor a cero.", nameof(id));
 
-            return _empleadoDAL.ObtenerEmpleadoPorId(id);
+            //return _empleadoDAL.ObtenerEmpleadoPorId(id);
+            var empleado = _empleadoDAL.ObtenerEmpleadoPorId(id);
+            if (empleado != null && empleado.ReportsTo.HasValue)
+            {
+                empleado.Jefe = _empleadoDAL.ObtenerEmpleadoPorId(empleado.ReportsTo.Value);
+            }
+            return empleado;
         }
 
         /// <summary>
@@ -103,6 +109,7 @@ namespace BLL
             }
             return "Sin jefe";
         }
+
 
     }
 }

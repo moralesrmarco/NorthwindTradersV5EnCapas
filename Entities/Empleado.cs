@@ -46,5 +46,16 @@ namespace Entities
         {
             return NameByFirstName;
         }
+
+        // Propiedades adicionales para facilitar el acceso al nombre del jefe desde el reportviewer
+        public string JefeNameByLastName
+        {
+            get { return Jefe != null ? Jefe.NameByLastName : ""; }
+        }
+
+        public string JefeNameByFirstName
+        {
+            get { return Jefe != null ? Jefe.NameByFirstName : ""; }
+        }
     }
 }

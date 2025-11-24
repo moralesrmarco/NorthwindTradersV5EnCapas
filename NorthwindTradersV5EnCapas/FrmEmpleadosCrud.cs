@@ -15,7 +15,7 @@ namespace NorthwindTradersV5EnCapas
     public partial class FrmEmpleadosCrud : Form
     {
 
-        string connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
+        string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private EmpleadoBLL _empleadoBLL;
         private bool EjecutarConfDgv = true;
         bool EventoCargado = true;
@@ -26,7 +26,7 @@ namespace NorthwindTradersV5EnCapas
         public FrmEmpleadosCrud()
         {
             InitializeComponent();
-            _empleadoBLL = new EmpleadoBLL(connectionString);
+            _empleadoBLL = new EmpleadoBLL(_connectionString);
         }
 
         private void FrmEmpleadosCrud_Load(object sender, EventArgs e)
@@ -506,8 +506,7 @@ namespace NorthwindTradersV5EnCapas
             if (tabcOperacion.SelectedTab == tbpListar)
             {
                 FrmRptEmpleado frmRptEmpleado = new FrmRptEmpleado();
-                //frmRptEmpleado.Owner = this;
-                //frmRptEmpleado.Id = int.Parse(txtId.Text);
+                frmRptEmpleado.Id = int.Parse(txtId.Text);
                 frmRptEmpleado.ShowDialog();
             }
             else if (tabcOperacion.SelectedTab == tbpRegistrar)
