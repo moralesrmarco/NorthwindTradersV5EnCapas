@@ -129,10 +129,10 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                DtoEmpleadosBuscar dtoEmpleadosBuscar = new DtoEmpleadosBuscar
+                DtoEmpleadosBuscar criterios = new DtoEmpleadosBuscar
                 {
-                    IdIni = string.IsNullOrEmpty(txtBIdIni.Text) ? 0 : Convert.ToInt32(txtBIdIni.Text),
-                    IdFin = string.IsNullOrEmpty(txtBIdFin.Text) ? 0 : Convert.ToInt32(txtBIdFin.Text),
+                    IdIniTxt = txtBIdIni.Text,
+                    IdFinTxt = txtBIdFin.Text,
                     Nombres = txtBNombres.Text.Trim(),
                     Apellidos = txtBApellidos.Text.Trim(),
                     Titulo = txtBTitulo.Text.Trim(),
@@ -143,17 +143,14 @@ namespace NorthwindTradersV5EnCapas
                     Pais = cboBPais.SelectedValue.ToString(),
                     Telefono = txtBTelefono.Text.Trim()
                 };
-                var empleados = _empleadoBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
-                dgv.DataSource = empleados;
+                var resultado = _empleadoBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, criterios);
+                dgv.DataSource = resultado.Empleados;
                 if (EjecutarConfDgv)
                 {
                     ConfDgv();
                     EjecutarConfDgv = false;
                 }
-                if (!selectorRealizaBusqueda)
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {dgv.RowCount} empleados registrados");
-                else
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgv.RowCount} registros");
+                MDIPrincipal.ActualizarBarraDeEstado(resultado.MensajeEstado);
             }
             catch (Exception ex)
             {
@@ -234,25 +231,13 @@ namespace NorthwindTradersV5EnCapas
             dtpFContratacion.Value = dtpFContratacion.MinDate;
         }
 
-        void txtBIdIni_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            Utils.ValidarDigitosSinPunto(sender, e);
-        }
+        void txtBId_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
 
-        void txtBIdFin_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            Utils.ValidarDigitosSinPunto(sender, e);
-        }
+        private void txtBId_Enter(object sender, EventArgs e) => ((TextBox)sender).SelectAll();
 
-        void txtBIdIni_Leave(object sender, EventArgs e)
-        {
-            Utils.ValidaTxtBIdIni(txtBIdIni, txtBIdFin);
-        }
+        private void txtBIdIni_Leave_1(object sender, EventArgs e) => Utils.ValidaTxtBIdIni(txtBIdIni, txtBIdFin);
 
-        void txtBIdFin_Leave(object sender, EventArgs e)
-        {
-            Utils.ValidaTxtBIdFin(txtBIdIni, txtBIdFin);
-        }
+        private void txtBIdFin_TextChanged(object sender, EventArgs e) => Utils.ValidaTxtBIdFin(txtBIdIni, txtBIdFin);
 
         private bool ValidarControles()
         {

@@ -4,6 +4,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace BLL
 {
@@ -34,17 +35,62 @@ namespace BLL
 
         public DataTable ObtenerEmpleadoReportaaCbo()
         {
-            return _empleadoDAL.ObtenerEmpleadoReportaaCbo();
+            var empleados = _empleadoDAL.ObtenerEmpleadoReportaaCbo();
+            DataRow filaSeleccione = empleados.NewRow();
+            filaSeleccione["Id"] = -1;
+            filaSeleccione["Nombre"] = "»--- Seleccione ---«";
+            filaSeleccione["Orden"] = 0; // necesario para ordenar primero
+            empleados.Rows.Add(filaSeleccione);
+            DataRow filaNA = empleados.NewRow();
+            filaNA["Id"] = 0;
+            filaNA["Nombre"] = "N/A";
+            filaNA["Orden"] = 1; // necesario para ordenar segundo
+            empleados.Rows.Add(filaNA);
+            // Para los demás, asigna Orden = 2
+            foreach (DataRow row in empleados.Rows)
+            {
+                if (row["Orden"] == DBNull.Value)
+                    row["Orden"] = 2;
+            }
+            // Crear vista ordenada
+            DataView vista = empleados.DefaultView;
+            vista.Sort = "Orden ASC, Nombre ASC";
+            return vista.ToTable();
         }
 
-        public List<DtoEmpleadosDgv> ObtenerEmpleadosDgv(bool selectorRealizaBusqueda, DtoEmpleadosBuscar dtoEmpleadosBuscar)
+
+        public (List<DtoEmpleadosDgv> Empleados, string MensajeEstado) ObtenerEmpleadosDgv(bool selectorRealizaBusqueda, DtoEmpleadosBuscar criterios)
         {
-            return _empleadoDAL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, dtoEmpleadosBuscar);
+            criterios.IdIni = string.IsNullOrEmpty(criterios.IdIniTxt) ? 0 : Convert.ToInt32(criterios.IdIniTxt);
+            criterios.IdFin = string.IsNullOrEmpty(criterios.IdFinTxt) ? 0 : Convert.ToInt32(criterios.IdFinTxt);
+
+            var empleadosRaw = _empleadoDAL.ObtenerEmpleadosDgvRaw(selectorRealizaBusqueda, criterios);
+
+            var empleados = empleadosRaw.Select(e => new DtoEmpleadosDgv
+            {
+                EmployeeID = Convert.ToInt32(e.EmployeeID),
+                FirstName = e.FirstName is DBNull ? null : e.FirstName.ToString(),
+                LastName = e.LastName is DBNull ? null : e.LastName.ToString(),
+                Title = e.Title is DBNull ? null : e.Title.ToString(),
+                BirthDate = e.BirthDate is DBNull ? null : (DateTime?)Convert.ToDateTime(e.BirthDate),
+                City = e.City is DBNull ? null : e.City.ToString(),
+                Country = e.Country is DBNull ? null : e.Country.ToString(),
+                Photo = e.Photo is DBNull ? null : (byte[])e.Photo,
+                ReportsToName = string.IsNullOrEmpty(Convert.ToString(e.ReportsToName))
+                                    ? "N/A"
+                                    : Convert.ToString(e.ReportsToName)
+            }).ToList();
+            string mensaje = selectorRealizaBusqueda
+                    ? $"Se encontraron {empleados.Count} registros"
+                    : $"Se muestran los últimos {empleados.Count} empleados registrados";
+            return (empleados, mensaje);
         }
 
         public List<DtoEmpleadosPaisesCbo> ObtenerEmpleadosPaisesCbo()
         {
-            return _empleadoDAL.ObtenerEmpleadosPaisesCbo();
+            var paises = _empleadoDAL.ObtenerEmpleadosPaisesCbo();
+            paises.Insert(0, new DtoEmpleadosPaisesCbo { Id = "", Pais = "»--- Seleccione ---«" });
+            return paises;
         }
 
         /// <summary>
@@ -54,8 +100,6 @@ namespace BLL
         {
             if (id <= 0)
                 throw new ArgumentException("El ID del empleado debe ser mayor a cero.", nameof(id));
-
-            //return _empleadoDAL.ObtenerEmpleadoPorId(id);
             var empleado = _empleadoDAL.ObtenerEmpleadoPorId(id);
             if (empleado != null)
             {

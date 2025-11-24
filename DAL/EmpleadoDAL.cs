@@ -160,9 +160,9 @@ namespace DAL
             return dt;
         }
 
-        public List<DtoEmpleadosDgv> ObtenerEmpleadosDgv(bool selectorRealizaBusqueda, DtoEmpleadosBuscar dtoEmpleadosBuscar)
+        public List<DtoEmpleadosDgvRaw> ObtenerEmpleadosDgvRaw(bool selectorRealizaBusqueda, DtoEmpleadosBuscar criterios)
         {
-            List<DtoEmpleadosDgv> employees = new List<DtoEmpleadosDgv>();
+            List<DtoEmpleadosDgvRaw> employees = new List<DtoEmpleadosDgvRaw>();
             string query;
             if (!selectorRealizaBusqueda)
             {
@@ -220,17 +220,17 @@ namespace DAL
                 {
                     if (selectorRealizaBusqueda)
                     {
-                        cmd.Parameters.AddWithValue("@IdIni", dtoEmpleadosBuscar.IdIni);
-                        cmd.Parameters.AddWithValue("@IdFin", dtoEmpleadosBuscar.IdFin);
-                        cmd.Parameters.AddWithValue("@Nombres", dtoEmpleadosBuscar.Nombres);
-                        cmd.Parameters.AddWithValue("@Apellidos", dtoEmpleadosBuscar.Apellidos);
-                        cmd.Parameters.AddWithValue("@Titulo", dtoEmpleadosBuscar.Titulo);
-                        cmd.Parameters.AddWithValue("@Domicilio", dtoEmpleadosBuscar.Domicilio);
-                        cmd.Parameters.AddWithValue("@Ciudad", dtoEmpleadosBuscar.Ciudad);
-                        cmd.Parameters.AddWithValue("@Region", dtoEmpleadosBuscar.Region);
-                        cmd.Parameters.AddWithValue("@CodigoP", dtoEmpleadosBuscar.CodigoP);
-                        cmd.Parameters.AddWithValue("@Pais", dtoEmpleadosBuscar.Pais);
-                        cmd.Parameters.AddWithValue("@Telefono", dtoEmpleadosBuscar.Telefono);
+                        cmd.Parameters.AddWithValue("@IdIni", criterios.IdIni);
+                        cmd.Parameters.AddWithValue("@IdFin", criterios.IdFin);
+                        cmd.Parameters.AddWithValue("@Nombres", criterios.Nombres);
+                        cmd.Parameters.AddWithValue("@Apellidos", criterios.Apellidos);
+                        cmd.Parameters.AddWithValue("@Titulo", criterios.Titulo);
+                        cmd.Parameters.AddWithValue("@Domicilio", criterios.Domicilio);
+                        cmd.Parameters.AddWithValue("@Ciudad", criterios.Ciudad);
+                        cmd.Parameters.AddWithValue("@Region", criterios.Region);
+                        cmd.Parameters.AddWithValue("@CodigoP", criterios.CodigoP);
+                        cmd.Parameters.AddWithValue("@Pais", criterios.Pais);
+                        cmd.Parameters.AddWithValue("@Telefono", criterios.Telefono);
                     }
                     con.Open();
                     using (var rdr = cmd.ExecuteReader())
@@ -239,20 +239,17 @@ namespace DAL
                         {
                             while (rdr.Read())
                             {
-                                DtoEmpleadosDgv employee = new DtoEmpleadosDgv
+                                DtoEmpleadosDgvRaw employee = new DtoEmpleadosDgvRaw()
                                 {
-                                    EmployeeID = Convert.ToInt32(rdr["EmployeeID"]),
-                                    LastName = rdr["LastName"]?.ToString(),
-                                    FirstName = rdr["FirstName"]?.ToString(),
-                                    Title = rdr["Title"]?.ToString(),
-                                    BirthDate = rdr["BirthDate"] is DBNull ? null : (DateTime?)Convert.ToDateTime(rdr["BirthDate"]),
-                                    City = rdr["City"]?.ToString(),
-                                    Country = rdr["Country"]?.ToString(),
-                                    Photo = rdr["Photo"] is DBNull ? null : (byte[])rdr["Photo"],
-                                    //ReportsToName = rdr["ReportsToName"]?.ToString(),
-                                    ReportsToName = string.IsNullOrEmpty(Convert.ToString(rdr["ReportsToName"]))
-                                        ? "N/A"
-                                        : Convert.ToString(rdr["ReportsToName"])
+                                    EmployeeID = rdr["EmployeeID"],
+                                    LastName = rdr["LastName"],
+                                    FirstName = rdr["FirstName"],
+                                    Title = rdr["Title"],
+                                    BirthDate = rdr["BirthDate"],
+                                    City = rdr["City"],
+                                    Country = rdr["Country"],
+                                    Photo = rdr["Photo"],
+                                    ReportsToName = rdr["ReportsToName"]
                                 };
                                 employees.Add(employee);
                             }
@@ -270,7 +267,7 @@ namespace DAL
         public List<DtoEmpleadosPaisesCbo> ObtenerEmpleadosPaisesCbo()
         {
             List<DtoEmpleadosPaisesCbo> paises = new List<DtoEmpleadosPaisesCbo>();
-            string query = "SELECT '' As Id, '»--- Seleccione ---«' As Pais UNION ALL SELECT DISTINCT Country As Id, Country As Pais FROM Employees ORDER BY Pais;";
+            string query = "SELECT DISTINCT Country As Id, Country As Pais FROM Employees ORDER BY Pais;";
             try
             {
                 using (var con = new SqlConnection(_connectionString))

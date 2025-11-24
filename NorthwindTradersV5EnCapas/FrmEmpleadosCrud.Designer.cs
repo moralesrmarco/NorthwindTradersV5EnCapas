@@ -291,8 +291,10 @@
             this.txtBIdFin.Size = new System.Drawing.Size(95, 23);
             this.txtBIdFin.TabIndex = 1;
             this.txtBIdFin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBIdFin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBIdFin_KeyPress);
-            this.txtBIdFin.Leave += new System.EventHandler(this.txtBIdFin_Leave);
+            this.txtBIdFin.Click += new System.EventHandler(this.txtBId_Enter);
+            this.txtBIdFin.TextChanged += new System.EventHandler(this.txtBIdFin_TextChanged);
+            this.txtBIdFin.Enter += new System.EventHandler(this.txtBId_Enter);
+            this.txtBIdFin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBId_KeyPress);
             // 
             // txtBIdIni
             // 
@@ -304,8 +306,10 @@
             this.txtBIdIni.Size = new System.Drawing.Size(95, 23);
             this.txtBIdIni.TabIndex = 0;
             this.txtBIdIni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBIdIni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBIdIni_KeyPress);
-            this.txtBIdIni.Leave += new System.EventHandler(this.txtBIdIni_Leave);
+            this.txtBIdIni.Click += new System.EventHandler(this.txtBId_Enter);
+            this.txtBIdIni.Enter += new System.EventHandler(this.txtBId_Enter);
+            this.txtBIdIni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBId_KeyPress);
+            this.txtBIdIni.Leave += new System.EventHandler(this.txtBIdIni_Leave_1);
             // 
             // label14
             // 

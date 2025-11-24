@@ -13,5 +13,8 @@
         public string CodigoP { get; set; }
         public string Pais { get; set; }
         public string Telefono { get; set; }
+
+        public string IdIniTxt { get; set; }
+        public string IdFinTxt { get; set; }
     }
 }
