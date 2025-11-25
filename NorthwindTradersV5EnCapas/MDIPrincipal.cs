@@ -230,5 +230,10 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados con foto 2 «");
         }
 
+        private void mantenimientoDeClientesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmClientesCrud frm = new FrmClientesCrud();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de clientes «");
+        }
     }
 }

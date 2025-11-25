@@ -4,7 +4,6 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
