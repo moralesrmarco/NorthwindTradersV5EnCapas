@@ -143,13 +143,13 @@ namespace NorthwindTradersV5EnCapas
                     Telefono = txtBTelefono.Text.Trim()
                 };
                 var resultado = _empleadoBLL.ObtenerEmpleadosDgv(selectorRealizaBusqueda, criterios);
-                dgv.DataSource = resultado.Empleados;
+                dgv.DataSource = resultado.empleados;
                 if (EjecutarConfDgv)
                 {
                     ConfDgv();
                     EjecutarConfDgv = false;
                 }
-                MDIPrincipal.ActualizarBarraDeEstado(resultado.MensajeEstado);
+                MDIPrincipal.ActualizarBarraDeEstado(resultado.mensajeEstado);
             }
             catch (Exception ex)
             {
@@ -605,13 +605,12 @@ namespace NorthwindTradersV5EnCapas
             }
             else if (tabcOperacion.SelectedTab == tbpEliminar)
             {
-                if (U.NotificacionQuestion($"[orange]¿Está seguro de eliminar el empleado con Id: {txtId.Text} y Nombre: {txtNombres.Text} {txtApellidos.Text}?") == DialogResult.Yes)
+                if (U.NotificacionQuestion($"[orange]¿Está seguro de eliminar el empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}?") == DialogResult.Yes)
                 {
                     MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
                     btnOperacion.Enabled = false;
                     try
                     {
-                        var empleado = new Empleado();
                         int numRegs = _empleadoBLL.Eliminar(Convert.ToInt32(txtId.Text), (byte[])txtId.Tag);
                         string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)

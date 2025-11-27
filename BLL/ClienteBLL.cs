@@ -1,10 +1,7 @@
 ﻿using DAL;
-using System;
+using Entities;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
@@ -28,5 +25,33 @@ namespace BLL
             return paises;
         }
 
+        public (List<Cliente> clientes, string mensajeEstado) ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios)
+        {
+            var clientes = _clienteDAL.ObtenerClientes(selectorRealizaBusqueda, criterios);
+            string mensajeEstado = selectorRealizaBusqueda
+                ? $"Se encontraron {clientes.Count} cliente(s)."
+                : $"Se muestran los primeros {clientes.Count} cliente(s) registrados.";
+            return (clientes, mensajeEstado);
+        }
+
+        public Cliente ObtenerClientePorId(string idCliente)
+        {
+            return _clienteDAL.ObtenerClientePorId(idCliente);
+        }
+
+        public int Insertar(Cliente cliente)
+        {
+            return _clienteDAL.Insertar(cliente);
+        }
+
+        public int Actualizar(Cliente cliente)
+        {
+            return _clienteDAL.Actualizar(cliente);
+        }
+
+        public int Eliminar(string clienteId, byte[] rowVersion)
+        {
+            return _clienteDAL.Eliminar(clienteId, rowVersion);
+        }
     }
 }

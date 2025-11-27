@@ -59,7 +59,7 @@ namespace BLL
         }
 
 
-        public (List<DtoEmpleadosDgv> Empleados, string MensajeEstado) ObtenerEmpleadosDgv(bool selectorRealizaBusqueda, DtoEmpleadosBuscar criterios)
+        public (List<DtoEmpleadosDgv> empleados, string mensajeEstado) ObtenerEmpleadosDgv(bool selectorRealizaBusqueda, DtoEmpleadosBuscar criterios)
         {
             criterios.IdIni = string.IsNullOrEmpty(criterios.IdIniTxt) ? 0 : Convert.ToInt32(criterios.IdIniTxt);
             criterios.IdFin = string.IsNullOrEmpty(criterios.IdFinTxt) ? 0 : Convert.ToInt32(criterios.IdFinTxt);
@@ -81,8 +81,8 @@ namespace BLL
                                     : Convert.ToString(e.ReportsToName)
             }).ToList();
             string mensaje = selectorRealizaBusqueda
-                    ? $"Se encontraron {empleados.Count} registros"
-                    : $"Se muestran los últimos {empleados.Count} empleados registrados";
+                    ? $"Se encontraron {empleados.Count} empleado(s)."
+                    : $"Se muestran los últimos {empleados.Count} empleado(s) registrados.";
             return (empleados, mensaje);
         }
 

@@ -417,12 +417,12 @@
             this.txtId.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtId.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtId.Location = new System.Drawing.Point(233, 23);
             this.txtId.Margin = new System.Windows.Forms.Padding(5);
             this.txtId.MaxLength = 5;
             this.txtId.Name = "txtId";
-            this.txtId.Size = new System.Drawing.Size(132, 26);
+            this.txtId.Size = new System.Drawing.Size(132, 24);
             this.txtId.TabIndex = 26;
             this.txtId.TextChanged += new System.EventHandler(this.txtId_TextChanged);
             this.txtId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtId_KeyDown);

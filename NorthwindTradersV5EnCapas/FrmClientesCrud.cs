@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Entities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,7 +51,7 @@ namespace NorthwindTradersV5EnCapas
             DeshabilitarControles();
             LlenarCboPais();
             Utils.ConfDgv(dgv);
-            LlenarDgv(null);
+            LlenarDgv(false);
         }
 
         private void DeshabilitarControles()
@@ -88,32 +89,32 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        void LlenarDgv(object sender)
+        void LlenarDgv(bool selectorRealizaBusqueda)
         {
             try
             {
-                //MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                //Cliente clienteBuscar = new Cliente()
-                //{
-                //    CustomerID = txtBId.Text,
-                //    CompanyName = txtBCompañia.Text,
-                //    ContactName = txtBContacto.Text,
-                //    Address = txtBDomicilio.Text,
-                //    City = txtBCiudad.Text,
-                //    Region = txtBRegion.Text,
-                //    PostalCode = txtBCodigoP.Text,
-                //    Country = cboBPais.SelectedValue.ToString(),
-                //    Phone = txtBTelefono.Text,
-                //    Fax = txtBFax.Text
-                //};
-                //var dt = clienteRepository.ObtenerClientes(sender, clienteBuscar);
-                //dgv.DataSource = dt;
-                //Utils.ConfDgv(dgv);
-                //ConfDgv();
-                //if (sender == null)
-                //    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los primeros {dgv.RowCount} clientes registrados");
-                //else
-                //    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgv.RowCount} registros");
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                Cliente criterios = new Cliente()
+                {
+                    CustomerID = txtBId.Text,
+                    CompanyName = txtBCompañia.Text,
+                    ContactName = txtBContacto.Text,
+                    Address = txtBDomicilio.Text,
+                    City = txtBCiudad.Text,
+                    Region = txtBRegion.Text,
+                    PostalCode = txtBCodigoP.Text,
+                    Country = cboBPais.SelectedValue.ToString(),
+                    Phone = txtBTelefono.Text,
+                    Fax = txtBFax.Text
+                };
+                var resultado = _clienteBLL.ObtenerClientes(selectorRealizaBusqueda, criterios);
+                dgv.DataSource = resultado.clientes;
+                if (EjecutarConfDgv)
+                {
+                    ConfDgv();
+                    EjecutarConfDgv = false;
+                }
+                MDIPrincipal.ActualizarBarraDeEstado(resultado.mensajeEstado);
             }
             catch (Exception ex)
             {
@@ -123,15 +124,30 @@ namespace NorthwindTradersV5EnCapas
 
         private void ConfDgv()
         {
-            //dgv.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //dgv.Columns["Código postal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //dgv.Columns["País"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //dgv.Columns["Teléfono"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //dgv.Columns["Fax"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //dgv.Columns["Ciudad"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns["Región"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns["Código postal"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns["País"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns["RowVersion"].Visible = false;
+
+            dgv.Columns["CustomerID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["PostalCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["Country"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["Phone"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["Fax"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            dgv.Columns["City"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns["Region"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns["PostalCode"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns["Country"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dgv.Columns["CustomerID"].HeaderText = "Id";
+            dgv.Columns["CompanyName"].HeaderText = "Nombre de compañía";
+            dgv.Columns["ContactName"].HeaderText = "Nombre del contacto";
+            dgv.Columns["ContactTitle"].HeaderText = "Título del contacto";
+            dgv.Columns["Address"].HeaderText = "Domicilio";
+            dgv.Columns["City"].HeaderText = "Ciudad";
+            dgv.Columns["Region"].HeaderText = "Región";
+            dgv.Columns["PostalCode"].HeaderText = "Código postal";
+            dgv.Columns["Country"].HeaderText = "País";
+            dgv.Columns["Phone"].HeaderText = "Teléfono";
+            dgv.Columns["Fax"].HeaderText = "Fax";
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -140,7 +156,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarDatosCliente();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
                 DeshabilitarControles();
-            LlenarDgv(sender);
+            LlenarDgv(true);
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -150,7 +166,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarDatosCliente();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
                 DeshabilitarControles();
-            LlenarDgv(null);
+            LlenarDgv(false);
         }
 
         void BorrarMensajesError() => errorProvider1.Clear();
@@ -276,6 +292,8 @@ namespace NorthwindTradersV5EnCapas
                 txtId.ReadOnly = false;
                 btnOperacion.Text = "Registrar cliente";
                 btnOperacion.Enabled = true;
+                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                CargarValoresOriginales();
             }
             else
             {
@@ -303,187 +321,182 @@ namespace NorthwindTradersV5EnCapas
 
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //if (tabcOperacion.SelectedTab != tbpRegistrar)
-            //{
-            //    DeshabilitarControles();
-            //    DataGridViewRow dgvr = dgv.CurrentRow;
-            //    txtId.Text = dgvr.Cells["Id"].Value.ToString();
-            //    Cliente cliente = new Cliente();
-            //    cliente.CustomerID = txtId.Text;
-            //    try
-            //    {
-            //        cliente = clienteRepository.ObtenerCliente(cliente);
-            //        if (cliente != null)
-            //        {
-            //            txtId.Tag = cliente.RowVersion;
-            //            txtCompañia.Text = cliente.CompanyName;
-            //            txtContacto.Text = cliente.ContactName;
-            //            txtTitulo.Text = cliente.ContactTitle;
-            //            txtDomicilio.Text = cliente.Address;
-            //            txtCiudad.Text = cliente.City;
-            //            txtRegion.Text = cliente.Region;
-            //            txtCodigoP.Text = cliente.PostalCode;
-            //            txtPais.Text = cliente.Country;
-            //            txtTelefono.Text = cliente.Phone;
-            //            txtFax.Text = cliente.Fax;
-            //        }
-            //        else
-            //        {
-            //            Utils.MensajeError($"No se encontró el cliente con Id: {txtId.Text}, es posible que otro usuario lo haya eliminado previamente");
-            //            ActualizaDgv();
-            //            return;
-            //        }
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab != tbpRegistrar)
+            {
+                DeshabilitarControles();
+                DataGridViewRow dgvr = dgv.CurrentRow;
+                txtId.Text = dgvr.Cells["CustomerID"].Value.ToString();
+                Cliente cliente = new Cliente();
+                cliente.CustomerID = txtId.Text;
+                try
+                {
+                    cliente = _clienteBLL.ObtenerClientePorId(txtId.Text);
+                    if (cliente != null)
+                    {
+                        txtId.Tag = cliente.RowVersion;
+                        txtCompañia.Text = cliente.CompanyName;
+                        txtContacto.Text = cliente.ContactName;
+                        txtTitulo.Text = cliente.ContactTitle;
+                        txtDomicilio.Text = cliente.Address;
+                        txtCiudad.Text = cliente.City;
+                        txtRegion.Text = cliente.Region;
+                        txtCodigoP.Text = cliente.PostalCode;
+                        txtPais.Text = cliente.Country;
+                        txtTelefono.Text = cliente.Phone;
+                        txtFax.Text = cliente.Fax;
+                        // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
+                        CargarValoresOriginales();
+                    }
+                    else
+                    {
+                        U.NotificacionWarning($"No se encontró el cliente con Id: {txtId.Text}." + Utils.erfep);
+                        ActualizaDgv();
+                        return;
+                    }
 
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        U.MsgCatchOue(ex);
-            //    }
-            //    if (tabcOperacion.SelectedTab == tbpModificar)
-            //    {
-            //        HabilitarControles();
-            //        txtId.Enabled = false;
-            //        btnOperacion.Enabled = true;
-            //    }
-            //    else if (tabcOperacion.SelectedTab == tbpEliminar)
-            //    {
-            //        btnOperacion.Visible = true;
-            //        btnOperacion.Enabled = true;
-            //    }
-            //}
+                }
+                catch (Exception ex)
+                {
+                    U.MsgCatchOue(ex);
+                }
+                if (tabcOperacion.SelectedTab == tbpModificar)
+                {
+                    HabilitarControles();
+                    txtId.Enabled = false;
+                    btnOperacion.Enabled = true;
+                }
+                else if (tabcOperacion.SelectedTab == tbpEliminar)
+                {
+                    btnOperacion.Visible = true;
+                    btnOperacion.Enabled = true;
+                }
+            }
         }
 
         private void btnOperacion_Click(object sender, EventArgs e)
         {
-            //    BorrarMensajesError();
-            //    if (tabcOperacion.SelectedTab == tbpRegistrar)
-            //    {
-            //        if (ValidarControles())
-            //        {
-            //            MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
-            //            DeshabilitarControles();
-            //            btnOperacion.Enabled = false;
-            //            try
-            //            {
-            //                var cliente = new Cliente
-            //                {
-            //                    CustomerID = txtId.Text.Trim(),
-            //                    CompanyName = txtCompañia.Text.Trim(),
-            //                    ContactName = txtContacto.Text.Trim(),
-            //                    ContactTitle = txtTitulo.Text.Trim(),
-            //                    Address = txtDomicilio.Text.Trim(),
-            //                    City = txtCiudad.Text.Trim(),
-            //                    Region = string.IsNullOrWhiteSpace(txtRegion.Text.Trim()) ? null : txtRegion.Text.Trim(),
-            //                    PostalCode = string.IsNullOrWhiteSpace(txtCodigoP.Text.Trim()) ? null : txtCodigoP.Text.Trim(),
-            //                    Country = txtPais.Text.Trim(),
-            //                    Phone = txtTelefono.Text.Trim(),
-            //                    Fax = string.IsNullOrWhiteSpace(txtFax.Text.Trim()) ? null : txtFax.Text.Trim()
-            //                };
-            //                int numRegs = clienteRepository.Insertar(cliente);
-            //                if (numRegs > 0)
-            //                    Utils.MensajeInformation($"El cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} se registró satisfactoriamente");
-            //                else
-            //                    Utils.MensajeError($"El cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} NO fue registrado en la base de datos");
-            //            }
-            //            catch (MySqlException ex)
-            //            {
-            //                Utils.MsgCatchOueclbdd(ex);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Utils.MsgCatchOue(ex);
-            //            }
-            //            LlenarCboPais();
-            //            HabilitarControles();
-            //            btnOperacion.Enabled = true;
-            //            ActualizaDgv();
-            //        }
-            //    }
-            //    else if (tabcOperacion.SelectedTab == tbpModificar)
-            //    {
-            //        if (txtId.Text == "")
-            //        {
-            //            Utils.MensajeExclamation("Seleccione el cliente a modificar");
-            //            return;
-            //        }
-            //        if (ValidarControles())
-            //        {
-            //            MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
-            //            DeshabilitarControles();
-            //            btnOperacion.Enabled = false;
-            //            try
-            //            {
-            //                var cliente = new Cliente()
-            //                {
-            //                    CustomerID = txtId.Text,
-            //                    CompanyName = txtCompañia.Text,
-            //                    ContactName = txtContacto.Text,
-            //                    ContactTitle = txtTitulo.Text,
-            //                    Address = txtDomicilio.Text,
-            //                    City = txtCiudad.Text,
-            //                    Region = txtRegion.Text,
-            //                    PostalCode = txtCodigoP.Text,
-            //                    Country = txtPais.Text,
-            //                    Phone = txtTelefono.Text,
-            //                    Fax = txtFax.Text,
-            //                    RowVersion = (int)txtId.Tag
-            //                };
-            //                int numRegs = clienteRepository.Actualizar(cliente);
-            //                if (numRegs > 0)
-            //                    Utils.MensajeInformation($"El cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} se modificó satisfactoriamente");
-            //                else
-            //                    Utils.MensajeError($"El cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} NO fue modificado en la base de datos, es posible que otro usuario lo haya modificado o eliminado previamente");
-
-            //            }
-            //            catch (MySqlException ex)
-            //            {
-            //                Utils.MsgCatchOueclbdd(ex);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Utils.MsgCatchOue(ex);
-            //            }
-            //            LlenarCboPais();
-            //            ActualizaDgv();
-            //        }
-            //    }
-            //    else if (tabcOperacion.SelectedTab == tbpEliminar)
-            //    {
-            //        if (txtId.Text == "")
-            //        {
-            //            Utils.MensajeExclamation("Seleccione el cliente a eliminar");
-            //            return;
-            //        }
-            //        if (Utils.MensajeQuestion($"¿Esta seguro de eliminar el cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text}?") == DialogResult.Yes)
-            //        {
-            //            MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
-            //            btnOperacion.Enabled = false;
-            //            try
-            //            {
-            //                var cliente = new Cliente();
-            //                cliente.CustomerID = txtId.Text;
-            //                cliente.RowVersion = (int)txtId.Tag;
-            //                int numRegs = clienteRepository.Eliminar(cliente);
-            //                if (numRegs > 0)
-            //                    Utils.MensajeInformation($"El cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} se eliminó satisfactoriamente");
-            //                else
-            //                    Utils.MensajeExclamation($"El cliente con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} NO se eliminó en la base de datos, es posible que otro usuario lo haya modificado o eliminado previamente");
-            //            }
-            //            catch (MySqlException ex)
-            //            {
-            //                Utils.MsgCatchOueclbdd(ex);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Utils.MsgCatchOue(ex);
-            //            }
-            //            LlenarCboPais();
-            //            ActualizaDgv();
-            //        }
-            //    }
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab == tbpRegistrar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var cliente = new Cliente
+                        {
+                            CustomerID = txtId.Text.Trim(),
+                            CompanyName = txtCompañia.Text.Trim(),
+                            ContactName = txtContacto.Text.Trim(),
+                            ContactTitle = txtTitulo.Text.Trim(),
+                            Address = txtDomicilio.Text.Trim(),
+                            City = txtCiudad.Text.Trim(),
+                            Region = string.IsNullOrWhiteSpace(txtRegion.Text.Trim()) ? null : txtRegion.Text.Trim(),
+                            PostalCode = string.IsNullOrWhiteSpace(txtCodigoP.Text.Trim()) ? null : txtCodigoP.Text.Trim(),
+                            Country = txtPais.Text.Trim(),
+                            Phone = txtTelefono.Text.Trim(),
+                            Fax = string.IsNullOrWhiteSpace(txtFax.Text.Trim()) ? null : txtFax.Text.Trim()
+                        };
+                        int numRegs = _clienteBLL.Insertar(cliente);
+                        string idyNombreCompania = $"El cliente con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombreCompania + Utils.srs);
+                        else
+                            U.NotificacionError(idyNombreCompania + Utils.nfrs);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCboPais();
+                    HabilitarControles();
+                    btnOperacion.Enabled = true;
+                    ActualizaDgv();
+                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                    CargarValoresOriginales();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpModificar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var cliente = new Cliente()
+                        {
+                            CustomerID = txtId.Text,
+                            CompanyName = txtCompañia.Text,
+                            ContactName = txtContacto.Text,
+                            ContactTitle = txtTitulo.Text,
+                            Address = txtDomicilio.Text,
+                            City = txtCiudad.Text,
+                            Region = txtRegion.Text,
+                            PostalCode = txtCodigoP.Text,
+                            Country = txtPais.Text,
+                            Phone = txtTelefono.Text,
+                            Fax = txtFax.Text,
+                            RowVersion = txtId.Tag as byte[]
+                        };
+                        int numRegs = _clienteBLL.Actualizar(cliente);
+                        string idyNombreCompania = $"El cliente con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombreCompania + Utils.sms);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombreCompania + Utils.nfmfe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombreCompania + Utils.nfmfm);
+                        else
+                            U.NotificacionError(idyNombreCompania + Utils.nfmmd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCboPais();
+                    ActualizaDgv();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpEliminar)
+            {
+                if (U.NotificacionQuestion($"[orange]¿Esta seguro de eliminar el cliente con Id: {txtId.Text} - Nombre de Compañía: {txtCompañia.Text}?") == DialogResult.Yes)
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        int numRegs = _clienteBLL.Eliminar(txtId.Text, txtId.Tag as byte[]);
+                        string idyNombreCompania = $"El cliente con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombreCompania + Utils.ses);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombreCompania + Utils.nfefe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombreCompania + Utils.nfefm);
+                        else
+                            U.NotificacionError(idyNombreCompania + Utils.nfemd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCboPais();
+                    ActualizaDgv();
+                }
+            }
         }
 
         void ActualizaDgv() => btnLimpiar.PerformClick();
 
+        private void CargarValoresOriginales()
+        {
+            // Captura inicial usando la utilidad
+            valoresOriginales = Utils.CapturarValoresOriginales(this);
+        }
     }
 }
