@@ -9,7 +9,6 @@ namespace NorthwindTradersV5EnCapas
     {
         private int childFormNumber = 0;
         public static MDIPrincipal Instance { get; private set; }
-        //private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2"].ConnectionString;
 
         public ToolStripStatusLabel ToolStripEstado
         {
@@ -249,22 +248,26 @@ namespace NorthwindTradersV5EnCapas
 
         private void directorioDeClientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptClientes frm = new FrmRptClientes();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            FrmRptClientesyProveedoresDirectorio frm = new FrmRptClientesyProveedoresDirectorio();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores «");
         }
 
         private void directorioDeClientesYProveedoresPorCiudadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            FrmRptClientesyProveedoresDirectorioxCiudad frm = new FrmRptClientesyProveedoresDirectorioxCiudad();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por ciudad «");
         }
 
         private void directorioDeClientesYProveedoresPorPaísToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            FrmRptClientesyProveedoresDirectorioxPais frm = new FrmRptClientesyProveedoresDirectorioxPais();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por país «");
         }
     }
 }

@@ -37,7 +37,7 @@ namespace DAL
             return dt;
         }
 
-        public List<Cliente> ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios)
+        public List<Cliente> ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios, bool top100 = false)
         {
             List<Cliente> clientes = new List<Cliente>();
             try
@@ -66,6 +66,8 @@ namespace DAL
                         cmd.CommandText = "SpClienteObtener";
                         cmd.CommandType = CommandType.StoredProcedure;
                     }
+                    if (top100)
+                        cmd.Parameters.AddWithValue("@top100", true);
                     con.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -246,7 +248,7 @@ namespace DAL
         {
             List<DtoClienteProveedor> clientesProveedores = new List<DtoClienteProveedor>();
             string query = string.Empty;
-            if (nombreDeFormulario == "FrmClientesyProveedoresDirectorio")
+            if (nombreDeFormulario == "FrmClientesyProveedoresDirectorio" || nombreDeFormulario == "FrmRptClientesyProveedoresDirectorio")
             {
                 if (checkBoxClientes & checkBoxProveedores)
                     query = "Select * from VwClientesProveedores Order by Relation, CompanyName;";
@@ -255,7 +257,7 @@ namespace DAL
                 else if (!checkBoxClientes & checkBoxProveedores)
                     query = "Select * from VwClientesProveedores Where Relation = 'Proveedor' Order by CompanyName;";
             }
-            else if (nombreDeFormulario == "FrmClientesyProveedoresDirectorioxCiudad")
+            else if (nombreDeFormulario == "FrmClientesyProveedoresDirectorioxCiudad" || nombreDeFormulario == "FrmRptClientesyProveedoresDirectorioxCiudad")
             {
                 if (comboBoxSelectedValue == "aaaaa" & checkBoxClientes & checkBoxProveedores)
                     query = "Select * from VwClientesProveedores Order by City, Country, CompanyName";
@@ -291,7 +293,7 @@ namespace DAL
                     query = $"Select * from VwClientesProveedores Where City = '{ciudad}' And Country = '{pais}' And Relation = 'Proveedor' Order by Country, CompanyName";
                 }
             }
-            else if (nombreDeFormulario == "FrmClientesyProveedoresDirectorioxPais")
+            else if (nombreDeFormulario == "FrmClientesyProveedoresDirectorioxPais" || nombreDeFormulario == "FrmRptClientesyProveedoresDirectorioxPais")
             {
                 if (comboBoxSelectedValue == "aaaaa" & checkBoxClientes & checkBoxProveedores)
                     query = "Select * from VwClientesProveedores Order by Country, City, CompanyName";

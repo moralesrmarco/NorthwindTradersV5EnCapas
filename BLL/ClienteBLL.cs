@@ -27,9 +27,9 @@ namespace BLL
             return paises;
         }
 
-        public (List<Cliente> clientes, string mensajeEstado) ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios)
+        public (List<Cliente> clientes, string mensajeEstado) ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios, bool top100 = false)
         {
-            var clientes = _clienteDAL.ObtenerClientes(selectorRealizaBusqueda, criterios);
+            var clientes = _clienteDAL.ObtenerClientes(selectorRealizaBusqueda, criterios, top100);
             string mensajeEstado = selectorRealizaBusqueda
                 ? $"Se encontraron {clientes.Count} cliente(s)."
                 : $"Se muestran los primeros {clientes.Count} cliente(s) registrados.";
