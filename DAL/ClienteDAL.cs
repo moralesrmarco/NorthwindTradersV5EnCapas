@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -239,6 +240,174 @@ namespace DAL
                 throw;
             }
             return numRegs;
+        }
+
+        public List<DtoClienteProveedor> ObtenerClientesProveedores(string nombreDeFormulario, string comboBoxSelectedValue, bool checkBoxClientes, bool checkBoxProveedores)
+        {
+            List<DtoClienteProveedor> clientesProveedores = new List<DtoClienteProveedor>();
+            string query = string.Empty;
+            if (nombreDeFormulario == "FrmClientesyProveedoresDirectorio")
+            {
+                if (checkBoxClientes & checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Order by Relation, CompanyName;";
+                else if (checkBoxClientes & !checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Where Relation = 'Cliente' Order by CompanyName;";
+                else if (!checkBoxClientes & checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Where Relation = 'Proveedor' Order by CompanyName;";
+            }
+            else if (nombreDeFormulario == "FrmClientesyProveedoresDirectorioxCiudad")
+            {
+                if (comboBoxSelectedValue == "aaaaa" & checkBoxClientes & checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Order by City, Country, CompanyName";
+                else if (comboBoxSelectedValue != "aaaaa" & checkBoxClientes & checkBoxProveedores)
+                {
+                    // comboBoxSelectedValue = "Aachen, Germany"
+                    var partes = comboBoxSelectedValue.Split(',');
+                    // Trim para quitar espacios en blanco
+                    var ciudad = partes[0].Trim();
+                    var pais = partes.Length > 1 ? partes[1].Trim() : string.Empty;
+                    query = $"Select * from VwClientesProveedores Where City = '{ciudad}' And Country = '{pais}' Order by Country, CompanyName";
+                }
+                else if (comboBoxSelectedValue == "aaaaa" & checkBoxClientes & !checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Where Relation = 'Cliente' Order by City, Country, CompanyName";
+                else if (comboBoxSelectedValue == "aaaaa" & !checkBoxClientes & checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Where Relation = 'Proveedor' Order by City, Country, CompanyName";
+                else if (comboBoxSelectedValue != "aaaaa" & checkBoxClientes & !checkBoxProveedores)
+                {
+                    // comboBoxSelectedValue = "Aachen, Germany"
+                    var partes = comboBoxSelectedValue.Split(',');
+                    // Trim para quitar espacios en blanco
+                    var ciudad = partes[0].Trim();
+                    var pais = partes.Length > 1 ? partes[1].Trim() : string.Empty;
+                    query = $"Select * from VwClientesProveedores Where City = '{ciudad}' And Country = '{pais}' And Relation = 'Cliente' Order by Country, CompanyName";
+                }
+                else if (comboBoxSelectedValue != "aaaaa" & !checkBoxClientes & checkBoxProveedores)
+                {
+                    // comboBoxSelectedValue = "Aachen, Germany"
+                    var partes = comboBoxSelectedValue.Split(',');
+                    // Trim para quitar espacios en blanco
+                    var ciudad = partes[0].Trim();
+                    var pais = partes.Length > 1 ? partes[1].Trim() : string.Empty;
+                    query = $"Select * from VwClientesProveedores Where City = '{ciudad}' And Country = '{pais}' And Relation = 'Proveedor' Order by Country, CompanyName";
+                }
+            }
+            else if (nombreDeFormulario == "FrmClientesyProveedoresDirectorioxPais")
+            {
+                if (comboBoxSelectedValue == "aaaaa" & checkBoxClientes & checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Order by Country, City, CompanyName";
+                else if (comboBoxSelectedValue != "aaaaa" & checkBoxClientes & checkBoxProveedores)
+                    query = $"Select * from VwClientesProveedores Where Country = '{comboBoxSelectedValue}' Order by City, CompanyName";
+                else if (comboBoxSelectedValue == "aaaaa" & checkBoxClientes & !checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Where Relation = 'Cliente' Order by Country, City, CompanyName";
+                else if (comboBoxSelectedValue == "aaaaa" & !checkBoxClientes & checkBoxProveedores)
+                    query = "Select * from VwClientesProveedores Where Relation = 'Proveedor' Order by Country, City, CompanyName";
+                else if (comboBoxSelectedValue != "aaaaa" & checkBoxClientes & !checkBoxProveedores)
+                    query = $"Select * from VwClientesProveedores Where Country = '{comboBoxSelectedValue}' And Relation = 'Cliente' Order by City, CompanyName";
+                else if (comboBoxSelectedValue != "aaaaa" & !checkBoxClientes & checkBoxProveedores)
+                    query = $"Select * from VwClientesProveedores Where Country = '{comboBoxSelectedValue}' And Relation = 'Proveedor' Order by City, CompanyName";
+            }
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var clienteProveedor = new DtoClienteProveedor
+                                {
+                                    CompanyName = reader["CompanyName"].ToString(),
+                                    Contact = reader["Contact"].ToString(),
+                                    Relation = reader["Relation"].ToString(),
+                                    Address = reader["Address"].ToString(),
+                                    City = reader["City"].ToString(),
+                                    Region = reader["Region"].ToString(),
+                                    PostalCode = reader["PostalCode"].ToString(),
+                                    Country = reader["Country"].ToString(),
+                                    Phone = reader["Phone"].ToString(),
+                                    Fax = reader["Fax"].ToString()
+                                };
+                                clientesProveedores.Add(clienteProveedor);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return clientesProveedores;
+        }
+
+        public List<DtoCiudadPaisVwClientesProveedores> ObtenerCiudadPaisVwCliProvCbo()
+        {
+            List<DtoCiudadPaisVwClientesProveedores> ciudadesPaises = new List<DtoCiudadPaisVwClientesProveedores>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpClientesProveedoresCiudadPaisVwCliProvCbo", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var ciudadPais = new DtoCiudadPaisVwClientesProveedores()
+                                {
+                                    CiudadPais = reader["CiudadPais"].ToString()
+                                };
+                                ciudadesPaises.Add(ciudadPais);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ciudadesPaises;
+        }
+
+        public List<DtoPaisVwClientesProveedores> ObtenerPaisVwCliProvCbo()
+        {
+            List<DtoPaisVwClientesProveedores> paises = new List<DtoPaisVwClientesProveedores>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpClientesProveedoresPaisVwCliProvCbo", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                var pais = new DtoPaisVwClientesProveedores()
+                                {
+                                    Pais = reader["Pais"].ToString()
+                                };
+                                paises.Add(pais);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return paises;
         }
     }
 }

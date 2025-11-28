@@ -1,5 +1,7 @@
 ﻿using DAL;
 using Entities;
+using Entities.DTOs;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 
@@ -52,6 +54,43 @@ namespace BLL
         public int Eliminar(string clienteId, byte[] rowVersion)
         {
             return _clienteDAL.Eliminar(clienteId, rowVersion);
+        }
+
+        public List<DtoClienteProveedor> ObtenerClientesProveedores(string nombreDeFormulario, string comboBoxSelectedValue, bool checkBoxClientes, bool checkBoxProveedores)
+        {
+            return _clienteDAL.ObtenerClientesProveedores(nombreDeFormulario, comboBoxSelectedValue, checkBoxClientes, checkBoxProveedores);
+        }
+
+        public List<KeyValuePair<string, string>> ObtenerCiudadPaisVwCliProvCbo()
+        {
+            var ciudadesPaises = _clienteDAL.ObtenerCiudadPaisVwCliProvCbo();
+            var ciudadesPaisesKvp = new List<KeyValuePair<string, string>>();
+            // Insertar opción "Seleccione"
+            ciudadesPaisesKvp.Add(new KeyValuePair<string, string>("»--- Seleccione ---«", " "));
+            // Insertar opción "Todas las ciudades"
+            ciudadesPaisesKvp.Add(new KeyValuePair<string, string>("»--- Todas las ciudades ---«", "aaaaa"));
+            // Agregar el resto de ciudades desde la DAL
+            foreach (var item in ciudadesPaises)
+            {
+                ciudadesPaisesKvp.Add(new KeyValuePair<string, string>(item.CiudadPais, item.CiudadPais));
+            }
+            return ciudadesPaisesKvp;
+        }
+
+        public List<KeyValuePair<string, string>> ObtenerPaisVwCliProvCbo()
+        {
+            var paises = _clienteDAL.ObtenerPaisVwCliProvCbo();
+            var paisesKvp = new List<KeyValuePair<string, string>>();
+            // Insertar opción "Seleccione"
+            paisesKvp.Add(new KeyValuePair<string, string>("»--- Seleccione ---«", " "));
+            // Insertar opción "Todas las ciudades"
+            paisesKvp.Add(new KeyValuePair<string, string>("»--- Todos los países ---«", "aaaaa"));
+            // Agregar el resto de ciudades desde la DAL
+            foreach (var item in paises)
+            {
+                paisesKvp.Add(new KeyValuePair<string, string>(item.Pais, item.Pais));
+            }
+            return paisesKvp;
         }
     }
 }

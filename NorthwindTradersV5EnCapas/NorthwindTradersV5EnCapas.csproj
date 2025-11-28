@@ -71,6 +71,24 @@
     <Compile Include="FrmClientesCrud.Designer.cs">
       <DependentUpon>FrmClientesCrud.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmClientesyProveedoresDirectorio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmClientesyProveedoresDirectorio.Designer.cs">
+      <DependentUpon>FrmClientesyProveedoresDirectorio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmClientesyProveedoresDirectorioxCiudad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmClientesyProveedoresDirectorioxCiudad.Designer.cs">
+      <DependentUpon>FrmClientesyProveedoresDirectorioxCiudad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmClientesyProveedoresDirectorioxPais.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmClientesyProveedoresDirectorioxPais.Designer.cs">
+      <DependentUpon>FrmClientesyProveedoresDirectorioxPais.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmEjemploUsoJerarquiaClaseEmpleado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +161,15 @@
     <EmbeddedResource Include="FrmClientesCrud.resx">
       <DependentUpon>FrmClientesCrud.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmClientesyProveedoresDirectorio.resx">
+      <DependentUpon>FrmClientesyProveedoresDirectorio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmClientesyProveedoresDirectorioxCiudad.resx">
+      <DependentUpon>FrmClientesyProveedoresDirectorioxCiudad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmClientesyProveedoresDirectorioxPais.resx">
+      <DependentUpon>FrmClientesyProveedoresDirectorioxPais.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmEjemploUsoJerarquiaClaseEmpleado.resx">
       <DependentUpon>FrmEjemploUsoJerarquiaClaseEmpleado.cs</DependentUpon>
     </EmbeddedResource>
@@ -177,6 +204,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RptClientesyProveedoresDirectorio.rdlc" />
     <EmbeddedResource Include="RptEmpleado.rdlc" />
     <EmbeddedResource Include="RptEmpleados.rdlc" />
     <EmbeddedResource Include="RptEmpleadosConFoto.rdlc" />

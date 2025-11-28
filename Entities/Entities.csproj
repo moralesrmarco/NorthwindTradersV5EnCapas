@@ -42,10 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cliente.cs" />
+    <Compile Include="DTOs\DtoCiudadPaisVwClientesProveedores.cs" />
+    <Compile Include="DTOs\DtoClienteProveedor.cs" />
     <Compile Include="DTOs\DtoEmpleadosDgvRaw.cs" />
     <Compile Include="DTOs\DtoEmpleadosBuscar.cs" />
     <Compile Include="DTOs\DtoEmpleadosDgv.cs" />
     <Compile Include="DTOs\DtoEmpleadosPaisesCbo.cs" />
+    <Compile Include="DTOs\DtoPaisVwClientesProveedores.cs" />
     <Compile Include="Empleado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
