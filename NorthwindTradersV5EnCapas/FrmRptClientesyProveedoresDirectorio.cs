@@ -2,6 +2,7 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
+using System.Drawing;
 using System.Windows.Forms;
 using Utilities;
 
@@ -51,6 +52,7 @@ namespace NorthwindTradersV5EnCapas
                 string nombreDeFormulario = "FrmRptClientesyProveedoresDirectorio";
                 var clientesyProveedores = _clienteBLL.ObtenerClientesProveedores(nombreDeFormulario, string.Empty, checkBoxClientes.Checked, checkBoxProveedores.Checked);
                 MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {clientesyProveedores.Count} registros");
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", clientesyProveedores));
                 ReportParameter rp = new ReportParameter("titulo", titulo);

@@ -10,7 +10,7 @@ namespace DAL
 {
 
     //La tabla Employees de Northwind tiene una relación jerárquica consigo misma: cada empleado puede tener un jefe(ReportsTo) que también es un empleado
-    // la relación FK_Employees_Employees se modela directamente en tu clase de entidad como propiedades que reflejen la jerarquía
+    // la relación FK_Employees_Employees se modela directamente en su clase de entidad como propiedades que reflejen la jerarquía
 
     public class EmpleadoDAL
     {
