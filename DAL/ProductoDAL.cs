@@ -1,0 +1,113 @@
+﻿using Entities.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace DAL
+{
+    public class ProductoDAL
+    {
+        private readonly string _connectionString;
+
+        public ProductoDAL(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public List<DtoProductosPorProveedor> ObtenerProductosPorProveedor()
+        {
+            var productosPorProveedor = new List<DtoProductosPorProveedor>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProductosPorProveedorObtener", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var dto = new DtoProductosPorProveedor
+                            {
+                                ProductID = reader["ProductID"] != DBNull.Value ? Convert.ToInt32(reader["ProductID"]) : (int?)null,
+                                ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : "Sin producto",
+                                CompanyName = reader["CompanyName"] != DBNull.Value ? reader["CompanyName"].ToString() : string.Empty,
+                                QuantityPerUnit = reader["QuantityPerUnit"] != DBNull.Value ? reader["QuantityPerUnit"].ToString() : string.Empty,
+                                UnitPrice = reader["UnitPrice"] != DBNull.Value ? (decimal?)Convert.ToDecimal(reader["UnitPrice"]) : (decimal?)null,
+                                UnitsInStock = reader["UnitsInStock"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsInStock"]) : (short?)null,
+                                UnitsOnOrder = reader["UnitsOnOrder"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsOnOrder"]) : (short?)null,
+                                ReorderLevel = reader["ReorderLevel"] != DBNull.Value ? (short?)Convert.ToInt16(reader["ReorderLevel"]) : (short?)null,
+                                Discontinued = reader["Discontinued"] != DBNull.Value && Convert.ToBoolean(reader["Discontinued"]),
+                                CategoryName = reader["CategoryName"] != DBNull.Value ? reader["CategoryName"].ToString() : "Sin categoría"
+                            };
+                            productosPorProveedor.Add(dto);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return productosPorProveedor;
+        }
+
+        public List<DtoProductosProveedoresConDetProv> ObtenerProductosProveedoresConDetProv(bool top100)
+        {
+            var productosPorProveedor = new List<DtoProductosProveedoresConDetProv>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProductosConCategoriaProveedorDgv", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@top100", top100);
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var dto = new DtoProductosProveedoresConDetProv
+                            {
+                                // Suppliers
+                                SupplierID = reader["SupplierID"] != DBNull.Value ? Convert.ToInt32(reader["SupplierID"]) : 0,
+                                CompanyName = reader["CompanyName"] != DBNull.Value ? reader["CompanyName"].ToString() : string.Empty,
+                                ContactName = reader["ContactName"] != DBNull.Value ? reader["ContactName"].ToString() : string.Empty,
+                                ContactTitle = reader["ContactTitle"] != DBNull.Value ? reader["ContactTitle"].ToString() : string.Empty,
+                                Address = reader["Address"] != DBNull.Value ? reader["Address"].ToString() : string.Empty,
+                                City = reader["City"] != DBNull.Value ? reader["City"].ToString() : string.Empty,
+                                Region = reader["Region"] != DBNull.Value ? reader["Region"].ToString() : string.Empty,
+                                PostalCode = reader["PostalCode"] != DBNull.Value ? reader["PostalCode"].ToString() : string.Empty,
+                                Country = reader["Country"] != DBNull.Value ? reader["Country"].ToString() : string.Empty,
+                                Phone = reader["Phone"] != DBNull.Value ? reader["Phone"].ToString() : string.Empty,
+                                Fax = reader["Fax"] != DBNull.Value ? reader["Fax"].ToString() : string.Empty,
+
+                                // Products
+                                ProductID = reader["ProductID"] != DBNull.Value ? (int?)Convert.ToInt32(reader["ProductID"]) : null,
+                                ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : string.Empty,
+                                QuantityPerUnit = reader["QuantityPerUnit"] != DBNull.Value ? reader["QuantityPerUnit"].ToString() : string.Empty,
+                                UnitPrice = reader["UnitPrice"] != DBNull.Value ? (decimal?)Convert.ToDecimal(reader["UnitPrice"]) : null,
+                                UnitsInStock = reader["UnitsInStock"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsInStock"]) : null,
+                                UnitsOnOrder = reader["UnitsOnOrder"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsOnOrder"]) : null,
+                                ReorderLevel = reader["ReorderLevel"] != DBNull.Value ? (short?)Convert.ToInt16(reader["ReorderLevel"]) : null,
+                                Discontinued = reader["Discontinued"] != DBNull.Value && Convert.ToBoolean(reader["Discontinued"]),
+
+                                // Categories
+                                CategoryName = reader["CategoryName"] != DBNull.Value ? reader["CategoryName"].ToString() : string.Empty
+                            };
+
+                            productosPorProveedor.Add(dto);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return productosPorProveedor;
+        }
+    }
+}
