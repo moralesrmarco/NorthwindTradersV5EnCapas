@@ -192,7 +192,7 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(261, 335);
+            this.btnBuscar.Location = new System.Drawing.Point(261, 327);
             this.btnBuscar.Margin = new System.Windows.Forms.Padding(4);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(133, 28);
@@ -204,7 +204,7 @@
             // btnLimpiar
             // 
             this.btnLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLimpiar.Location = new System.Drawing.Point(128, 335);
+            this.btnLimpiar.Location = new System.Drawing.Point(128, 327);
             this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(133, 28);
@@ -645,7 +645,7 @@
             this.grbBuscar.Margin = new System.Windows.Forms.Padding(4);
             this.grbBuscar.Name = "grbBuscar";
             this.grbBuscar.Padding = new System.Windows.Forms.Padding(4);
-            this.grbBuscar.Size = new System.Drawing.Size(405, 372);
+            this.grbBuscar.Size = new System.Drawing.Size(405, 367);
             this.grbBuscar.TabIndex = 7;
             this.grbBuscar.TabStop = false;
             this.grbBuscar.Text = "»   Buscar clientes:   «";
@@ -734,7 +734,7 @@
             this.grbCliente.Margin = new System.Windows.Forms.Padding(4);
             this.grbCliente.Name = "grbCliente";
             this.grbCliente.Padding = new System.Windows.Forms.Padding(4);
-            this.grbCliente.Size = new System.Drawing.Size(829, 372);
+            this.grbCliente.Size = new System.Drawing.Size(829, 367);
             this.grbCliente.TabIndex = 8;
             this.grbCliente.TabStop = false;
             this.grbCliente.Text = "»   Cliente:   «";

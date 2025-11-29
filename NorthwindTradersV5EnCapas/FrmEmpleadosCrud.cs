@@ -234,9 +234,16 @@ namespace NorthwindTradersV5EnCapas
 
         private void txtBId_Enter(object sender, EventArgs e) => ((TextBox)sender).SelectAll();
 
-        private void txtBIdIni_Leave_1(object sender, EventArgs e) => Utils.ValidaTxtBIdIni(txtBIdIni, txtBIdFin);
-
-        private void txtBIdFin_TextChanged(object sender, EventArgs e) => Utils.ValidaTxtBIdFin(txtBIdIni, txtBIdFin);
+        void txtBId_Leave(object sender, EventArgs e)
+        {
+            // Castear el objeto que disparó el evento
+            TextBox tb = sender as TextBox;
+            if (tb == null) return; // seguridad
+            if (tb == txtBIdIni)
+                Utils.ValidaTxtBIdIni(txtBIdIni, txtBIdFin);
+            else if (tb == txtBIdFin)
+                Utils.ValidaTxtBIdFin(txtBIdIni, txtBIdFin);
+        }
 
         private bool ValidarControles()
         {

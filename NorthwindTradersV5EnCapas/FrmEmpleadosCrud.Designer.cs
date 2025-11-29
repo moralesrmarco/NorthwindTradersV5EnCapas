@@ -168,11 +168,11 @@
             this.grbBuscar.Controls.Add(this.label15);
             this.grbBuscar.Controls.Add(this.label5);
             this.grbBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbBuscar.Location = new System.Drawing.Point(28, 473);
+            this.grbBuscar.Location = new System.Drawing.Point(28, 481);
             this.grbBuscar.Margin = new System.Windows.Forms.Padding(5);
             this.grbBuscar.Name = "grbBuscar";
             this.grbBuscar.Padding = new System.Windows.Forms.Padding(5);
-            this.grbBuscar.Size = new System.Drawing.Size(405, 498);
+            this.grbBuscar.Size = new System.Drawing.Size(405, 475);
             this.grbBuscar.TabIndex = 2;
             this.grbBuscar.TabStop = false;
             this.grbBuscar.Text = "»   Buscar empleados:   «";
@@ -292,9 +292,9 @@
             this.txtBIdFin.TabIndex = 1;
             this.txtBIdFin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBIdFin.Click += new System.EventHandler(this.txtBId_Enter);
-            this.txtBIdFin.TextChanged += new System.EventHandler(this.txtBIdFin_TextChanged);
             this.txtBIdFin.Enter += new System.EventHandler(this.txtBId_Enter);
             this.txtBIdFin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBId_KeyPress);
+            this.txtBIdFin.Leave += new System.EventHandler(this.txtBId_Leave);
             // 
             // txtBIdIni
             // 
@@ -309,7 +309,7 @@
             this.txtBIdIni.Click += new System.EventHandler(this.txtBId_Enter);
             this.txtBIdIni.Enter += new System.EventHandler(this.txtBId_Enter);
             this.txtBIdIni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBId_KeyPress);
-            this.txtBIdIni.Leave += new System.EventHandler(this.txtBIdIni_Leave_1);
+            this.txtBIdIni.Leave += new System.EventHandler(this.txtBId_Leave);
             // 
             // label14
             // 
@@ -544,11 +544,11 @@
             this.grbEmpleado.Controls.Add(this.txtApellidos);
             this.grbEmpleado.Controls.Add(this.txtNombres);
             this.grbEmpleado.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbEmpleado.Location = new System.Drawing.Point(459, 473);
+            this.grbEmpleado.Location = new System.Drawing.Point(459, 481);
             this.grbEmpleado.Margin = new System.Windows.Forms.Padding(5);
             this.grbEmpleado.Name = "grbEmpleado";
             this.grbEmpleado.Padding = new System.Windows.Forms.Padding(5);
-            this.grbEmpleado.Size = new System.Drawing.Size(874, 498);
+            this.grbEmpleado.Size = new System.Drawing.Size(874, 475);
             this.grbEmpleado.TabIndex = 3;
             this.grbEmpleado.TabStop = false;
             this.grbEmpleado.Text = "»   Empleado:   «";
@@ -710,7 +710,6 @@
             // 
             this.txtId.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtId.Enabled = false;
             this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtId.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txtId.Location = new System.Drawing.Point(146, 21);

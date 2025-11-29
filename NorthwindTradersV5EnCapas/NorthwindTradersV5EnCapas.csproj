@@ -113,6 +113,12 @@
     <Compile Include="FrmNotificacion.Designer.cs">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmProveedoresCrud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProveedoresCrud.Designer.cs">
+      <DependentUpon>FrmProveedoresCrud.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmProveedoresProductos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNotificacion.resx">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProveedoresCrud.resx">
+      <DependentUpon>FrmProveedoresCrud.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProveedoresProductos.resx">
       <DependentUpon>FrmProveedoresProductos.cs</DependentUpon>

@@ -272,7 +272,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void mantenimientoDeProveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmProveedoresCrud frm = new FrmProveedoresCrud();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de proveedores «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem2_Click(object sender, EventArgs e)

@@ -33,12 +33,8 @@ namespace NorthwindTradersV5EnCapas
             if (tabcOperacion.SelectedTab != tbpListar & tabcOperacion.SelectedTab != tbpEliminar)
             {
                 if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                {
                     if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                    {
                         e.Cancel = true;
-                    }
-                }
             }
         }
 
@@ -200,19 +196,13 @@ namespace NorthwindTradersV5EnCapas
         {
             // Castear el objeto que disparó el evento
             TextBox tb = sender as TextBox;
-
             if (tb == null) return; // seguridad
-
             if (tb == txtId)
-            {
                 // Lógica para txtId
                 tb.Text = Regex.Replace(tb.Text, @"[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]", "");
-            }
             else if (tb == txtBId)
-            {
                 // Lógica para txtBid (similar pero aplicado a txtBid)
                 tb.Text = Regex.Replace(tb.Text, @"[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]", "");
-            }
         }
 
         // txtBId tambien se engancha al mismo evento
