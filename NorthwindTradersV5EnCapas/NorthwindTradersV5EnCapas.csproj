@@ -173,6 +173,12 @@
     <Compile Include="FrmRptEmpleadosConFoto.Designer.cs">
       <DependentUpon>FrmRptEmpleadosConFoto.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmRptProdPorProvConDetProv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRptProdPorProvConDetProv.Designer.cs">
+      <DependentUpon>FrmRptProdPorProvConDetProv.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmRptProductosPorProveedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +254,9 @@
     <EmbeddedResource Include="FrmRptEmpleadosConFoto.resx">
       <DependentUpon>FrmRptEmpleadosConFoto.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmRptProdPorProvConDetProv.resx">
+      <DependentUpon>FrmRptProdPorProvConDetProv.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmRptProductosPorProveedor.resx">
       <DependentUpon>FrmRptProductosPorProveedor.cs</DependentUpon>
     </EmbeddedResource>
@@ -274,6 +283,7 @@
     <EmbeddedResource Include="RptEmpleado.rdlc" />
     <EmbeddedResource Include="RptEmpleados.rdlc" />
     <EmbeddedResource Include="RptEmpleadosConFoto.rdlc" />
+    <EmbeddedResource Include="RptProdPorProvConDetProv.rdlc" />
     <EmbeddedResource Include="RptProductosPorProveedor.rdlc" />
     <EmbeddedResource Include="RptProveedores.rdlc" />
     <None Include="NorthwindDataSet.xsc">
@@ -291,6 +301,7 @@
     <None Include="Properties\DataSources\Entities.Cliente.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoClienteProveedor.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedor.datasource" />
+    <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedorConDetProv.datasource" />
     <None Include="Properties\DataSources\Entities.Empleado.datasource" />
     <None Include="Properties\DataSources\Entities.Proveedor.datasource" />
     <None Include="Properties\Settings.settings">

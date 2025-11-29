@@ -1,8 +1,6 @@
 ﻿using DAL;
-using Entities;
 using Entities.DTOs;
 using System.Collections.Generic;
-using System.Data;
 
 namespace BLL
 {
@@ -20,5 +18,9 @@ namespace BLL
             return _productoDAL.ObtenerProductosPorProveedor();
         }
 
+        public List<DtoProductosPorProveedorConDetProv> ObtenerProductosPorProveedorConDetProv()
+        {
+            return _productoDAL.ObtenerProductosPorProveedorConDetProv();
+        }
     }
 }

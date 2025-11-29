@@ -331,7 +331,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void reporteDeProductosPorProveedorConDetalleDelProveedorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptProdPorProvConDetProv frm = new FrmRptProdPorProvConDetProv();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor con detalle del proveedor «");
         }
     }
 }

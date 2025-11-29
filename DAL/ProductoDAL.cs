@@ -54,22 +54,21 @@ namespace DAL
             return productosPorProveedor;
         }
 
-        public List<DtoProductosProveedoresConDetProv> ObtenerProductosProveedoresConDetProv(bool top100)
+        public List<DtoProductosPorProveedorConDetProv> ObtenerProductosPorProveedorConDetProv()
         {
-            var productosPorProveedor = new List<DtoProductosProveedoresConDetProv>();
+            var productosPorProveedor = new List<DtoProductosPorProveedorConDetProv>();
             try
             {
                 using (var con = new SqlConnection(_connectionString))
-                using (var cmd = new SqlCommand("SpProductosConCategoriaProveedorDgv", con))
+                using (var cmd = new SqlCommand("SpProductosPorProveedorConDetProvObtener", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@top100", top100);
                     con.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var dto = new DtoProductosProveedoresConDetProv
+                            var dto = new DtoProductosPorProveedorConDetProv
                             {
                                 // Suppliers
                                 SupplierID = reader["SupplierID"] != DBNull.Value ? Convert.ToInt32(reader["SupplierID"]) : 0,
@@ -86,7 +85,7 @@ namespace DAL
 
                                 // Products
                                 ProductID = reader["ProductID"] != DBNull.Value ? (int?)Convert.ToInt32(reader["ProductID"]) : null,
-                                ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : string.Empty,
+                                ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : "Sin producto",
                                 QuantityPerUnit = reader["QuantityPerUnit"] != DBNull.Value ? reader["QuantityPerUnit"].ToString() : string.Empty,
                                 UnitPrice = reader["UnitPrice"] != DBNull.Value ? (decimal?)Convert.ToDecimal(reader["UnitPrice"]) : null,
                                 UnitsInStock = reader["UnitsInStock"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsInStock"]) : null,
@@ -95,7 +94,7 @@ namespace DAL
                                 Discontinued = reader["Discontinued"] != DBNull.Value && Convert.ToBoolean(reader["Discontinued"]),
 
                                 // Categories
-                                CategoryName = reader["CategoryName"] != DBNull.Value ? reader["CategoryName"].ToString() : string.Empty
+                                CategoryName = reader["CategoryName"] != DBNull.Value ? reader["CategoryName"].ToString() : "Sin categoría"
                             };
 
                             productosPorProveedor.Add(dto);

@@ -1,6 +1,6 @@
 ﻿namespace Entities.DTOs
 {
-    public class DtoProductosProveedoresConDetProv
+    public class DtoProductosPorProveedorConDetProv
     {
         // Suppliers
         public int SupplierID { get; set; }
