@@ -301,7 +301,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void directorioDeProveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptProveedores frm = new FrmRptProveedores();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de proveedores «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem3_Click(object sender, EventArgs e)

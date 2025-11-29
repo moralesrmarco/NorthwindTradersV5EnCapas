@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entities;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -11,6 +13,47 @@ namespace DAL
         public ProveedorDAL(string connectionString)
         {
             _connectionString = connectionString;
+        }
+
+        public List<Proveedor> ObtenerProveedores(bool selectorRealizaBusqueda, Proveedor criterios, bool top100)
+        {
+            var proveedores = new List<Proveedor>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProveedorObtener", con))
+                { 
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@top100", top100);
+                    con.Open();
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var proveedor = new Proveedor
+                            {
+                                SupplierID = dr["SupplierID"] != DBNull.Value ? Convert.ToInt32(dr["SupplierID"]) : 0,
+                                CompanyName = dr["CompanyName"] != DBNull.Value ? dr["CompanyName"].ToString() : null,
+                                ContactName = dr["ContactName"] != DBNull.Value ? dr["ContactName"].ToString() : null,
+                                ContactTitle = dr["ContactTitle"] != DBNull.Value ? dr["ContactTitle"].ToString() : null,
+                                Address = dr["Address"] != DBNull.Value ? dr["Address"].ToString() : null,
+                                City = dr["City"] != DBNull.Value ? dr["City"].ToString() : null,
+                                Region = dr["Region"] != DBNull.Value ? dr["Region"].ToString() : null,
+                                PostalCode = dr["PostalCode"] != DBNull.Value ? dr["PostalCode"].ToString() : null,
+                                Country = dr["Country"] != DBNull.Value ? dr["Country"].ToString() : null,
+                                Phone = dr["Phone"] != DBNull.Value ? dr["Phone"].ToString() : null,
+                                Fax = dr["Fax"] != DBNull.Value ? dr["Fax"].ToString() : null
+                            };
+                            proveedores.Add(proveedor);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return proveedores;
         }
 
         public DataSet ObtenerProveedoresProductosDgv()

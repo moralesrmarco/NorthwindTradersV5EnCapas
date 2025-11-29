@@ -1,9 +1,8 @@
-﻿using System;
+﻿using BLL;
+using System;
 using System.Configuration;
 using System.Windows.Forms;
 using Utilities;
-using Entities;
-using BLL;
 
 namespace NorthwindTradersV5EnCapas
 {
