@@ -235,24 +235,21 @@ namespace DAL
                     con.Open();
                     using (var rdr = cmd.ExecuteReader())
                     {
-                        if (rdr.HasRows)
+                        while (rdr.Read())
                         {
-                            while (rdr.Read())
+                            DtoEmpleadosDgvRaw employee = new DtoEmpleadosDgvRaw()
                             {
-                                DtoEmpleadosDgvRaw employee = new DtoEmpleadosDgvRaw()
-                                {
-                                    EmployeeID = rdr["EmployeeID"],
-                                    LastName = rdr["LastName"],
-                                    FirstName = rdr["FirstName"],
-                                    Title = rdr["Title"],
-                                    BirthDate = rdr["BirthDate"],
-                                    City = rdr["City"],
-                                    Country = rdr["Country"],
-                                    Photo = rdr["Photo"],
-                                    ReportsToName = rdr["ReportsToName"]
-                                };
-                                employees.Add(employee);
-                            }
+                                EmployeeID = rdr["EmployeeID"],
+                                LastName = rdr["LastName"],
+                                FirstName = rdr["FirstName"],
+                                Title = rdr["Title"],
+                                BirthDate = rdr["BirthDate"],
+                                City = rdr["City"],
+                                Country = rdr["Country"],
+                                Photo = rdr["Photo"],
+                                ReportsToName = rdr["ReportsToName"]
+                            };
+                            employees.Add(employee);
                         }
                     }
                 }

@@ -51,6 +51,7 @@
     <Compile Include="DTOs\DtoPaisVwClientesProveedores.cs" />
     <Compile Include="DTOs\DtoProductosPorProveedor.cs" />
     <Compile Include="DTOs\DtoProductosPorProveedorConDetProv.cs" />
+    <Compile Include="DTOs\DtoProveedoresBuscar.cs" />
     <Compile Include="Empleado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proveedor.cs" />

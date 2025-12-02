@@ -37,7 +37,7 @@ namespace DAL
             return dt;
         }
 
-        public List<Cliente> ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios, bool top100 = false)
+        public List<Cliente> ObtenerClientes(bool selectorRealizaBusqueda, Cliente criterios, bool top100)
         {
             List<Cliente> clientes = new List<Cliente>();
             try
@@ -46,10 +46,10 @@ namespace DAL
                 using (var cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     if (selectorRealizaBusqueda)
                     {
                         cmd.CommandText = "SpClienteBuscar";
-                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Id", criterios.CustomerID);
                         cmd.Parameters.AddWithValue("@Compañia", criterios.CompanyName);
                         cmd.Parameters.AddWithValue("@Contacto", criterios.ContactName);
@@ -64,35 +64,30 @@ namespace DAL
                     else
                     {
                         cmd.CommandText = "SpClienteObtener";
-                        cmd.CommandType = CommandType.StoredProcedure;
-                    }
-                    if (top100)
-                        cmd.Parameters.AddWithValue("@top100", true);
+                        cmd.Parameters.AddWithValue("@top100", top100);
+                    }                        
                     con.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.HasRows)
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            var cliente = new Cliente
                             {
-                                var cliente = new Cliente
-                                {
-                                    CustomerID = reader.IsDBNull(reader.GetOrdinal("CustomerID")) ? null : reader["CustomerID"].ToString(),
-                                    CompanyName = reader.IsDBNull(reader.GetOrdinal("CompanyName")) ? null : reader["CompanyName"].ToString(),
-                                    ContactName = reader.IsDBNull(reader.GetOrdinal("ContactName")) ? null : reader["ContactName"].ToString(),
-                                    ContactTitle = reader.IsDBNull(reader.GetOrdinal("ContactTitle")) ? null : reader["ContactTitle"].ToString(),
-                                    Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? null : reader["Address"].ToString(),
-                                    City = reader.IsDBNull(reader.GetOrdinal("City")) ? null : reader["City"].ToString(),
-                                    Region = reader.IsDBNull(reader.GetOrdinal("Region")) ? null : reader["Region"].ToString(),
-                                    PostalCode = reader.IsDBNull(reader.GetOrdinal("PostalCode")) ? null : reader["PostalCode"].ToString(),
-                                    Country = reader.IsDBNull(reader.GetOrdinal("Country")) ? null : reader["Country"].ToString(),
-                                    Phone = reader.IsDBNull(reader.GetOrdinal("Phone")) ? null : reader["Phone"].ToString(),
-                                    Fax = reader.IsDBNull(reader.GetOrdinal("Fax")) ? null : reader["Fax"].ToString()
-                                    // la siguiente linea esta comentada porque causa un error a la hora de ejecutar la renderizacion del DataGridView en la capa de presentacion
-                                    //RowVersion = reader.IsDBNull(reader.GetOrdinal("RowVersion")) ? null : (byte[])reader["RowVersion"]
-                                };
-                                clientes.Add(cliente);
-                            }
+                                CustomerID = reader.IsDBNull(reader.GetOrdinal("CustomerID")) ? null : reader["CustomerID"].ToString(),
+                                CompanyName = reader.IsDBNull(reader.GetOrdinal("CompanyName")) ? null : reader["CompanyName"].ToString(),
+                                ContactName = reader.IsDBNull(reader.GetOrdinal("ContactName")) ? null : reader["ContactName"].ToString(),
+                                ContactTitle = reader.IsDBNull(reader.GetOrdinal("ContactTitle")) ? null : reader["ContactTitle"].ToString(),
+                                Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? null : reader["Address"].ToString(),
+                                City = reader.IsDBNull(reader.GetOrdinal("City")) ? null : reader["City"].ToString(),
+                                Region = reader.IsDBNull(reader.GetOrdinal("Region")) ? null : reader["Region"].ToString(),
+                                PostalCode = reader.IsDBNull(reader.GetOrdinal("PostalCode")) ? null : reader["PostalCode"].ToString(),
+                                Country = reader.IsDBNull(reader.GetOrdinal("Country")) ? null : reader["Country"].ToString(),
+                                Phone = reader.IsDBNull(reader.GetOrdinal("Phone")) ? null : reader["Phone"].ToString(),
+                                Fax = reader.IsDBNull(reader.GetOrdinal("Fax")) ? null : reader["Fax"].ToString()
+                                // la siguiente linea esta comentada porque causa un error a la hora de ejecutar la renderizacion del DataGridView en la capa de presentacion
+                                //RowVersion = reader.IsDBNull(reader.GetOrdinal("RowVersion")) ? null : (byte[])reader["RowVersion"]
+                            };
+                            clientes.Add(cliente);
                         }
                     }
                 }

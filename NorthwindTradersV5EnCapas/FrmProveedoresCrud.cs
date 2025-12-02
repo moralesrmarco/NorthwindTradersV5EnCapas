@@ -1,4 +1,6 @@
 ﻿using BLL;
+using Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,7 +44,8 @@ namespace NorthwindTradersV5EnCapas
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             DeshabilitarControles();
             LlenarCboPais();
-            LlenarDgv(null);
+            Utils.ConfDgv(Dgv);
+            LlenarDgv(false);
         }
 
         private void DeshabilitarControles()
@@ -63,12 +66,13 @@ namespace NorthwindTradersV5EnCapas
         {
             try
             {
-                //MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                //var dt = repo.ObtenerPaisesProveedores();
-                //MDIPrincipal.ActualizarBarraDeEstado();
-                //cboBPais.DataSource = dt;
-                //cboBPais.ValueMember = "Id";
-                //cboBPais.DisplayMember = "Pais";
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                var paises = _proveedorBLL.ObtenerProveedorPaisesCbo();
+                MDIPrincipal.ActualizarBarraDeEstado();
+                cboBPais.DataSource = paises;
+                cboBPais.ValueMember = "Id";
+                cboBPais.DisplayMember = "Pais";
+                cboBPais.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -76,33 +80,36 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        void LlenarDgv(object sender)
+        void LlenarDgv(bool selectorRealizaBusqueda)
         {
             try
             {
-                //MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                //DtoProveedoresBuscar dtoProveedoresBuscar = new DtoProveedoresBuscar
-                //{
-                //    IdIni = string.IsNullOrEmpty(txtBIdIni.Text) ? 0 : int.Parse(txtBIdIni.Text),
-                //    IdFin = string.IsNullOrEmpty(txtBIdFin.Text) ? 0 : int.Parse(txtBIdFin.Text),
-                //    CompanyName = txtBCompañia.Text.Trim(),
-                //    ContactName = txtBContacto.Text.Trim(),
-                //    Address = txtBDomicilio.Text.Trim(),
-                //    City = txtBCiudad.Text.Trim(),
-                //    Region = txtBRegion.Text.Trim(),
-                //    PostalCode = txtBCodigoP.Text.Trim(),
-                //    Country = cboBPais.SelectedValue.ToString(),
-                //    Phone = txtBTelefono.Text.Trim(),
-                //    Fax = txtBFax.Text.Trim()
-                //};
-                //var dt = repo.ObtenerProveedores(sender, dtoProveedoresBuscar);
-                //Dgv.DataSource = dt;
-                //Utils.ConfDgv(Dgv);
-                //ConfDgv();
-                //if (sender == null)
-                //    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {Dgv.RowCount} proveedores registrados");
-                //else
-                //    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registros");
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                DtoProveedoresBuscar criterios = new DtoProveedoresBuscar
+                {
+                    IdIni = string.IsNullOrWhiteSpace(txtBIdIni.Text) ? 0 : int.Parse(txtBIdIni.Text),
+                    IdFin = string.IsNullOrWhiteSpace(txtBIdFin.Text) ? 0 : int.Parse(txtBIdFin.Text),
+                    CompanyName = txtBCompañia.Text.Trim(),
+                    ContactName = txtBContacto.Text.Trim(),
+                    Address = txtBDomicilio.Text.Trim(),
+                    City = txtBCiudad.Text.Trim(),
+                    Region = txtBRegion.Text.Trim(),
+                    PostalCode = txtBCodigoP.Text.Trim(),
+                    Country = cboBPais.SelectedValue.ToString(),
+                    Phone = txtBTelefono.Text.Trim(),
+                    Fax = txtBFax.Text.Trim()
+                };
+                var proveedores = _proveedorBLL.ObtenerProveedores(selectorRealizaBusqueda, criterios, false);
+                Dgv.DataSource =proveedores;
+                if (EjecutarConfDgv)
+                {
+                    ConfDgv();
+                    EjecutarConfDgv = false;
+                }
+                if (selectorRealizaBusqueda)
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registros");
+                else
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {Dgv.RowCount} proveedores registrados");
             }
             catch (Exception ex)
             {
@@ -112,6 +119,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void ConfDgv()
         {
+            Dgv.Columns["RowVersion"].Visible = false;
+
             Dgv.Columns["SupplierID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Dgv.Columns["ContactTitle"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Dgv.Columns["City"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -144,7 +153,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarMensajesError();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
                 DeshabilitarControles();
-            LlenarDgv(sender);
+            LlenarDgv(true);
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -154,7 +163,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarDatosProveedor();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
                 DeshabilitarControles();
-            LlenarDgv(null);
+            LlenarDgv(false);
         }
 
         void BorrarMensajesError() => errorProvider1.Clear();
@@ -232,49 +241,51 @@ namespace NorthwindTradersV5EnCapas
 
         private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //if (tabcOperacion.SelectedTab != tbpRegistrar)
-            //{
-            //    DeshabilitarControles();
-            //    DataGridViewRow dgvr = Dgv.CurrentRow;
-            //    txtId.Text = dgvr.Cells["SupplierID"].Value.ToString();
-            //    Proveedor proveedor = new Proveedor();
-            //    proveedor.SupplierID = Convert.ToInt32(txtId.Text);
-            //    try
-            //    {
-            //        proveedor = repo.ObtenerProveedor(proveedor);
-            //        if (proveedor != null) 
-            //        { 
-            //            txtId.Tag = proveedor.RowVersion;
-            //            txtCompañia.Text = proveedor.CompanyName;
-            //            txtContacto.Text = proveedor.ContactName;
-            //            txtTitulo.Text = proveedor.ContactTitle;
-            //            txtDomicilio.Text = proveedor.Address;
-            //            txtCiudad.Text = proveedor.City;
-            //            txtRegion.Text = proveedor.Region;
-            //            txtCodigoP.Text = proveedor.PostalCode;
-            //            txtPais.Text = proveedor.Country;
-            //            txtTelefono.Text = proveedor.Phone;
-            //            txtFax.Text = proveedor.Fax;
-            //        }
-            //        else
-            //        {
-            //            Utils.MensajeError($"No se encontró el proveedor con Id: {txtId.Text}, es posible que otro usuario lo haya eliminado previamente");
-            //            ActualizaDgv();
-            //            return;
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Utils.MsgCatchOue(ex);
-            //    }
-            //    if (tabcOperacion.SelectedTab == tbpModificar)
-            //    {
-            //        HabilitarControles();
-            //        btnOperacion.Enabled = true;
-            //    }
-            //    else if (tabcOperacion.SelectedTab == tbpEliminar)
-            //        btnOperacion.Enabled = true;
-            //}
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab != tbpRegistrar)
+            {
+                DeshabilitarControles();
+                DataGridViewRow dgvr = Dgv.CurrentRow;
+                txtId.Text = dgvr.Cells["SupplierID"].Value.ToString();
+                Proveedor proveedor = new Proveedor();
+                try
+                {
+                    proveedor = _proveedorBLL.ObtenerProveedorPorId(Convert.ToInt32(txtId.Text));
+                    if (proveedor != null)
+                    {
+                        txtId.Tag = proveedor.RowVersion;
+                        txtCompañia.Text = proveedor.CompanyName;
+                        txtContacto.Text = proveedor.ContactName;
+                        txtTitulo.Text = proveedor.ContactTitle;
+                        txtDomicilio.Text = proveedor.Address;
+                        txtCiudad.Text = proveedor.City;
+                        txtRegion.Text = proveedor.Region;
+                        txtCodigoP.Text = proveedor.PostalCode;
+                        txtPais.Text = proveedor.Country;
+                        txtTelefono.Text = proveedor.Phone;
+                        txtFax.Text = proveedor.Fax;
+                        // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
+                        CargarValoresOriginales();
+                    }
+                    else
+                    {
+                        U.NotificacionWarning($"No se encontró el proveedor con Id: {txtId.Text}." + Utils.erfep);
+                        ActualizaDgv();
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    U.MsgCatchOue(ex);
+                }
+                if (tabcOperacion.SelectedTab == tbpModificar)
+                {
+                    HabilitarControles();
+                    btnOperacion.Enabled = true;
+                }
+                else if (tabcOperacion.SelectedTab == tbpEliminar)
+                    btnOperacion.Enabled = true;
+            }
         }
 
         void ActualizaDgv() => btnLimpiar.PerformClick();
@@ -295,6 +306,8 @@ namespace NorthwindTradersV5EnCapas
                 btnOperacion.Text = "Registrar proveedor";
                 btnOperacion.Visible = true;
                 btnOperacion.Enabled = true;
+                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                CargarValoresOriginales();
             }
             else
             {
@@ -322,139 +335,125 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnOperacion_Click(object sender, EventArgs e)
         {
-            //BorrarMensajesError();
-            //if (tabcOperacion.SelectedTab == tbpRegistrar)
-            //{
-            //    if (ValidarControles())
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
-            //        DeshabilitarControles();
-            //        btnOperacion.Enabled = false;
-            //        try
-            //        {
-            //            var proveedor = new Proveedor
-            //            {
-            //                CompanyName = txtCompañia.Text.Trim(),
-            //                ContactName = txtContacto.Text.Trim(),
-            //                ContactTitle = txtTitulo.Text.Trim(),
-            //                Address = txtDomicilio.Text.Trim(),
-            //                City = txtCiudad.Text.Trim(),
-            //                Region = txtRegion.Text.Trim(),
-            //                PostalCode = txtCodigoP.Text.Trim(),
-            //                Country = txtPais.Text.Trim(),
-            //                Phone = txtTelefono.Text.Trim(),
-            //                Fax = txtFax.Text.Trim()
-            //            };
-            //            int numRegs = repo.Insertar(proveedor);
-            //            if (numRegs > 0)
-            //            {
-            //                txtId.Text = proveedor.SupplierID.ToString();
-            //                Utils.MensajeInformation($"El proveedor con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} se registró satisfactoriamente");
-            //            }
-            //            else
-            //                Utils.MensajeError($"El proveedor con Nombre de Compañía: {txtCompañia.Text} NO fue registrado en la base de datos");
-            //        }
-            //        catch (MySqlException ex)
-            //        {
-            //            Utils.MsgCatchOueclbdd(ex);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Utils.MsgCatchOue(ex);
-            //        }
-            //        LlenarCboPais();
-            //        HabilitarControles();
-            //        btnOperacion.Enabled = true;
-            //        ActualizaDgv();
-            //    }
-            //}
-            //else if (tabcOperacion.SelectedTab == tbpModificar)
-            //{
-            //    if (txtId.Text == "")
-            //    {
-            //        Utils.MensajeExclamation("Seleccione el proveedor a modificar");
-            //        return;
-            //    }
-            //    if (ValidarControles())
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
-            //        DeshabilitarControles();
-            //        btnOperacion.Enabled = false;
-            //        try
-            //        {
-            //            var proveedor = new Proveedor
-            //            {
-            //                SupplierID = int.Parse(txtId.Text),
-            //                CompanyName = txtCompañia.Text.Trim(),
-            //                ContactName = txtContacto.Text.Trim(),
-            //                ContactTitle = txtTitulo.Text.Trim(),
-            //                Address = txtDomicilio.Text.Trim(),
-            //                City = txtCiudad.Text.Trim(),
-            //                Region = txtRegion.Text.Trim(),
-            //                PostalCode = txtCodigoP.Text.Trim(),
-            //                Country = txtPais.Text.Trim(),
-            //                Phone = txtTelefono.Text.Trim(),
-            //                Fax = txtFax.Text.Trim(),
-            //                RowVersion = (int)txtId.Tag
-            //            };
-            //            int numRegs = repo.Actualizar(proveedor);
-            //            if (numRegs > 0)
-            //            {
-            //                Utils.MensajeInformation($"El proveedor con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} se modificó satisfactoriamente");
-            //            }
-            //            else
-            //            {
-            //                Utils.MensajeError($"El proveedor con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} NO fue modificado en la base de datos, es posible que otro usuario lo haya modificado o eliminado previamente");
-            //                ActualizaDgv();
-            //                return;
-            //            }
-            //        }
-            //        catch (MySqlException ex)
-            //        {
-            //            Utils.MsgCatchOueclbdd(ex);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Utils.MsgCatchOue(ex);
-            //        }
-            //        LlenarCboPais();
-            //        ActualizaDgv();
-            //    }
-            //}
-            //else if (tabcOperacion.SelectedTab == tbpEliminar)
-            //{
-            //    if (txtId.Text == "")
-            //    {
-            //        Utils.MensajeExclamation("Seleccione el proveedor a eliminar");
-            //        return;
-            //    }
-            //    if (Utils.MensajeQuestion($"¿Está seguro de eliminar el proveedor con Id: {txtId.Text} y Nombre de compañía: {txtCompañia.Text}?") == DialogResult.Yes)
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
-            //        btnOperacion.Enabled = false;
-            //        try
-            //        {
-            //            var proveedor = new Proveedor();
-            //            proveedor.SupplierID = Convert.ToInt32(txtId.Text);
-            //            proveedor.RowVersion = (int)txtId.Tag;
-            //            int numRegs = repo.Eliminar(proveedor);
-            //            if (numRegs > 0)
-            //                Utils.MensajeInformation($"El proveedor con Id: {txtId.Text} y Nombre de compañía: {txtCompañia.Text} se eliminó satisfactoriamente");
-            //            else
-            //                Utils.MensajeExclamation($"El proveedor con Id: {txtId.Text} y Nombre de Compañía: {txtCompañia.Text} NO se eliminó en la base de datos, es posible que otro usuario lo haya modificado o eliminado previamente");
-            //        }
-            //        catch (MySqlException ex)
-            //        {
-            //            Utils.MsgCatchOueclbdd(ex);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Utils.MsgCatchOue(ex);
-            //        }
-            //        LlenarCboPais();
-            //        ActualizaDgv();
-            //    }
-            //}
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab == tbpRegistrar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var proveedor = new Proveedor
+                        {
+                            CompanyName = txtCompañia.Text.Trim(),
+                            ContactName = txtContacto.Text.Trim(),
+                            ContactTitle = txtTitulo.Text.Trim(),
+                            Address = txtDomicilio.Text.Trim(),
+                            City = txtCiudad.Text.Trim(),
+                            Region = string.IsNullOrWhiteSpace(txtRegion.Text.Trim()) ? null : txtRegion.Text.Trim(),
+                            PostalCode = string.IsNullOrWhiteSpace(txtCodigoP.Text.Trim()) ? null : txtCodigoP.Text.Trim(),
+                            Country = txtPais.Text.Trim(),
+                            Phone = txtTelefono.Text.Trim(),
+                            Fax = string.IsNullOrWhiteSpace(txtFax.Text.Trim()) ? null : txtFax.Text.Trim()
+                        };
+                        int numRegs = _proveedorBLL.Insertar(proveedor);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registros");
+                        string idyNombreCompania = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                        if (numRegs > 0)
+                        {
+                            txtId.Text = proveedor.SupplierID.ToString();
+                            idyNombreCompania = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                            U.NotificacionInformation(idyNombreCompania + Utils.srs);
+                        }
+                        else
+                            U.NotificacionError(idyNombreCompania + Utils.nfrs);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCboPais();
+                    HabilitarControles();
+                    btnOperacion.Enabled = true;
+                    ActualizaDgv();
+                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                    CargarValoresOriginales();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpModificar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var proveedor = new Proveedor
+                        {
+                            SupplierID = int.Parse(txtId.Text),
+                            CompanyName = txtCompañia.Text.Trim(),
+                            ContactName = txtContacto.Text.Trim(),
+                            ContactTitle = txtTitulo.Text.Trim(),
+                            Address = txtDomicilio.Text.Trim(),
+                            City = txtCiudad.Text.Trim(),
+                            Region = txtRegion.Text.Trim(),
+                            PostalCode = txtCodigoP.Text.Trim(),
+                            Country = txtPais.Text.Trim(),
+                            Phone = txtTelefono.Text.Trim(),
+                            Fax = txtFax.Text.Trim(),
+                            RowVersion = txtId.Tag as byte[]
+                        };
+                        int numRegs = _proveedorBLL.Actualizar(proveedor);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registros");
+                        string idyNombreCompania = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombreCompania + Utils.sms);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombreCompania + Utils.nfmfe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombreCompania + Utils.nfmfm);
+                        else
+                            U.NotificacionError(idyNombreCompania + Utils.nfmmd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCboPais();
+                    ActualizaDgv();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpEliminar)
+            {
+                if (U.NotificacionQuestion($"[orange]¿Está seguro de eliminar el proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}?") == DialogResult.Yes)
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        int numRegs = _proveedorBLL.Eliminar(Convert.ToInt32(txtId.Text), (byte[]) txtId.Tag);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registros");
+                        string idyNombre = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombre + Utils.ses);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombre + Utils.nfefe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombre + Utils.nfefm);
+                        else
+                            U.NotificacionError(idyNombre + Utils.nfemd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCboPais();
+                    ActualizaDgv();
+                }
+            }
         }
 
         private void CargarValoresOriginales()

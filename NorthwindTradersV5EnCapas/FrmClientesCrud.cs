@@ -123,6 +123,9 @@ namespace NorthwindTradersV5EnCapas
             dgv.Columns["RowVersion"].Visible = false;
 
             dgv.Columns["CustomerID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["ContactTitle"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["City"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["Region"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["PostalCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["Country"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["Phone"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -318,7 +321,6 @@ namespace NorthwindTradersV5EnCapas
                 DataGridViewRow dgvr = dgv.CurrentRow;
                 txtId.Text = dgvr.Cells["CustomerID"].Value.ToString();
                 Cliente cliente = new Cliente();
-                cliente.CustomerID = txtId.Text;
                 try
                 {
                     cliente = _clienteBLL.ObtenerClientePorId(txtId.Text);
@@ -391,6 +393,7 @@ namespace NorthwindTradersV5EnCapas
                             Fax = string.IsNullOrWhiteSpace(txtFax.Text.Trim()) ? null : txtFax.Text.Trim()
                         };
                         int numRegs = _clienteBLL.Insertar(cliente);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registros");
                         string idyNombreCompania = $"El cliente con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombreCompania + Utils.srs);
@@ -434,6 +437,7 @@ namespace NorthwindTradersV5EnCapas
                             RowVersion = txtId.Tag as byte[]
                         };
                         int numRegs = _clienteBLL.Actualizar(cliente);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registros");
                         string idyNombreCompania = $"El cliente con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombreCompania + Utils.sms);
@@ -461,6 +465,7 @@ namespace NorthwindTradersV5EnCapas
                     try
                     {
                         int numRegs = _clienteBLL.Eliminar(txtId.Text, txtId.Tag as byte[]);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registros");
                         string idyNombreCompania = $"El cliente con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombreCompania + Utils.ses);

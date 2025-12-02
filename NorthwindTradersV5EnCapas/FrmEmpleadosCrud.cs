@@ -529,6 +529,7 @@ namespace NorthwindTradersV5EnCapas
                             Photo = picFoto.Image != null ? Utils.ImageToByteArray(picFoto.Image) : null
                         };
                         int numRegs = _empleadoBLL.Insertar(empleado);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registros");
                         string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)
                         {
@@ -592,6 +593,7 @@ namespace NorthwindTradersV5EnCapas
                             empleado.Photo = Utils.ImageToByteArray(picFoto.Image);
                         }
                         int numRegs = _empleadoBLL.Actualizar(empleado);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registros");
                         string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombre + Utils.sms);
@@ -619,6 +621,7 @@ namespace NorthwindTradersV5EnCapas
                     try
                     {
                         int numRegs = _empleadoBLL.Eliminar(Convert.ToInt32(txtId.Text), (byte[])txtId.Tag);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registros");
                         string idyNombre = $"El empleado con Id: {txtId.Text} - Nombre: {txtNombres.Text} {txtApellidos.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombre + Utils.ses);
