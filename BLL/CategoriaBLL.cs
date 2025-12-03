@@ -40,5 +40,11 @@ namespace BLL
         {
             return _categoriaDAL.ObtenerCategoriasProductosDgv();
         }
+
+        public DataTable ObtenerProductosPorCategoriaListado()
+        {
+            return _categoriaDAL.ObtenerProductosPorCategoriaListado();
+        }
+
     }
 }

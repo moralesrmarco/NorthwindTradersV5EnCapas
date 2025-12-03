@@ -1,0 +1,80 @@
+﻿using BLL;
+using System;
+using System.Configuration;
+using System.Windows.Forms;
+using Utilities;
+
+namespace NorthwindTradersV5EnCapas
+{
+    public partial class FrmProductosPorCategoriasListado : Form
+    {
+
+        string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
+        CategoriaBLL _categoriaBLL;
+
+        private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
+
+        private void FrmProductosPorCategoriasListado_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
+
+        public FrmProductosPorCategoriasListado()
+        {
+            InitializeComponent();
+            WindowState = FormWindowState.Maximized;
+            _categoriaBLL = new CategoriaBLL(_connectionString);
+        }
+
+        private void FrmProductosPorCategoriasListado_Load(object sender, EventArgs e)
+        {
+            Utils.ConfDgv(DgvListado);
+            LlenarDgv();
+            ConfDgv();
+        }
+
+        private void LlenarDgv()
+        {
+            try
+            {
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                var dt = _categoriaBLL.ObtenerProductosPorCategoriaListado();
+                DgvListado.DataSource = dt;
+                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {DgvListado.RowCount} registros");
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+            }
+        }
+
+        private void ConfDgv()
+        {
+            DgvListado.Columns["ProductID"].Visible = false;
+
+            DgvListado.Columns["CategoryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvListado.Columns["UnitPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvListado.Columns["UnitsInStock"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvListado.Columns["UnitsOnOrder"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvListado.Columns["ReorderLevel"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvListado.Columns["Discontinued"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            DgvListado.Columns["UnitPrice"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            DgvListado.Columns["UnitsInStock"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            DgvListado.Columns["UnitsOnOrder"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            DgvListado.Columns["ReorderLevel"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            DgvListado.Columns["UnitPrice"].DefaultCellStyle.Format = "c";
+            DgvListado.Columns["UnitsInStock"].DefaultCellStyle.Format = "N0";
+            DgvListado.Columns["UnitsOnOrder"].DefaultCellStyle.Format = "N0";
+            DgvListado.Columns["ReorderLevel"].DefaultCellStyle.Format = "N0";
+
+            DgvListado.Columns["CategoryName"].HeaderText = "Categoría";
+            DgvListado.Columns["ProductName"].HeaderText = "Producto";
+            DgvListado.Columns["QuantityPerUnit"].HeaderText = "Cantidad por unidad";
+            DgvListado.Columns["UnitPrice"].HeaderText = "Precio";
+            DgvListado.Columns["UnitsInStock"].HeaderText = "Unidades en inventario";
+            DgvListado.Columns["UnitsOnOrder"].HeaderText = "Unidades en pedido";
+            DgvListado.Columns["ReorderLevel"].HeaderText = "Punto de pedido";
+            DgvListado.Columns["Discontinued"].HeaderText = "Descontinuado";
+            DgvListado.Columns["CompanyName"].HeaderText = "Proveedor";
+        }
+    }
+}

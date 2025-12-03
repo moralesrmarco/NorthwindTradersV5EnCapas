@@ -176,6 +176,11 @@ namespace NorthwindTradersV5EnCapas
             Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
         }
 
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
+        }
+
         private void mantenimientoDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //ActualizarBarraDeEstado();
@@ -350,17 +355,20 @@ namespace NorthwindTradersV5EnCapas
 
         private void listadoDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmProductosPorCategoriasListado frm = new FrmProductosPorCategoriasListado();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de productos por categoría «");
         }
 
         private void reporteDeCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptCategorias frm = new FrmRptCategorias();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías «");
         }
 
         private void reporteDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
+
     }
 }

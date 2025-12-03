@@ -125,6 +125,12 @@
     <Compile Include="FrmNotificacion.Designer.cs">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmProductosPorCategoriasListado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProductosPorCategoriasListado.Designer.cs">
+      <DependentUpon>FrmProductosPorCategoriasListado.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmProveedoresCrud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +148,12 @@
     </Compile>
     <Compile Include="FrmPruebaScroll.Designer.cs">
       <DependentUpon>FrmPruebaScroll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRptCategorias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRptCategorias.Designer.cs">
+      <DependentUpon>FrmRptCategorias.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmRptClientes.cs">
       <SubType>Form</SubType>
@@ -246,11 +258,17 @@
     <EmbeddedResource Include="FrmNotificacion.resx">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmProductosPorCategoriasListado.resx">
+      <DependentUpon>FrmProductosPorCategoriasListado.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmProveedoresCrud.resx">
       <DependentUpon>FrmProveedoresCrud.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProveedoresProductos.resx">
       <DependentUpon>FrmProveedoresProductos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRptCategorias.resx">
+      <DependentUpon>FrmRptCategorias.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRptClientes.resx">
       <DependentUpon>FrmRptClientes.cs</DependentUpon>
@@ -298,6 +316,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RptCategorias.rdlc" />
     <EmbeddedResource Include="RptClientes.rdlc" />
     <EmbeddedResource Include="RptClientesyProveedoresDirectorio.rdlc" />
     <EmbeddedResource Include="RptClientesyProveedoresDirectorioxCiudad.rdlc" />
@@ -347,6 +366,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Categorias.png" />
+    <None Include="Resources\btnCerrarWindow.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

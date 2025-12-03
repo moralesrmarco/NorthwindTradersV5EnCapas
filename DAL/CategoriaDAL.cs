@@ -179,5 +179,31 @@ namespace DAL
             }
             return ds;
         }
+
+        public DataTable ObtenerProductosPorCategoriaListado()
+        {
+            var dt = new DataTable();
+            try 
+            { 
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandText = "SELECT * FROM VwProductosPorCategoriaListado order by CategoryName, ProductName;",
+                    CommandType = CommandType.Text
+                })
+                {
+                    using (var dap = new SqlDataAdapter(cmd))
+                    {
+                        dap.Fill(dt);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return dt;
+        }
     }
 }

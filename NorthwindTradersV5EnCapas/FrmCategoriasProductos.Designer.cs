@@ -131,7 +131,6 @@
             this.Name = "FrmCategoriasProductos";
             this.Padding = new System.Windows.Forms.Padding(20);
             this.Text = "» Consulta de productos por categoría «";
-            this.Activated += new System.EventHandler(this.FrmCategoriasProductos_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmCategoriasProductos_FormClosed);
             this.Load += new System.EventHandler(this.FrmCategoriasProductos_Load);
             this.Shown += new System.EventHandler(this.FrmCategoriasProductos_Shown);
