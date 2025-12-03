@@ -18,6 +18,8 @@ namespace NorthwindTradersV5EnCapas
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
+            // Suscripción al evento
+            bsProveedores.ListChanged += bsProveedores_ListChanged;
             _proveedorBLL = new ProveedorBLL(_connectionString);
         }
 
@@ -49,10 +51,27 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var ds = _proveedorBLL.ObtenerProveedoresProductosDgv();
+
                 bsProveedores.DataSource = ds;
                 bsProveedores.DataMember = "Proveedores";
+
                 bsProductos.DataSource = bsProveedores;
                 bsProductos.DataMember = "ProveedoresProductos";
+
+                // necesario para que funcione el ordenamiento al hacer clic en el encabezado de columna del dataGridView maestro
+                DgvProveedores.AutoGenerateColumns = true;   // 🔑
+                DgvProveedores.DataSource = bsProveedores;
+
+                DgvProductos.AutoGenerateColumns = true;
+                DgvProductos.DataSource = bsProductos;
+
+                // 🔑 habilitar ordenamiento automático
+                foreach (DataGridViewColumn col in DgvProveedores.Columns)
+                    col.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                // Actualiza después de que el mensaje de UI regrese al loop (binding ya estable)
+                BeginInvoke((Action)(ActualizarEstadoProveedores));
+
             }
             catch (Exception ex)
             {
@@ -124,10 +143,51 @@ namespace NorthwindTradersV5EnCapas
             DgvProductos.Columns["CategoryName"].HeaderText = "Categoría";
             DgvProductos.Columns["Description"].HeaderText = "Descripción de categoría";
             DgvProductos.Columns["CompanyName"].HeaderText = "Proveedor";
+
+            DgvProductos.Columns["ProductID"].DisplayIndex = 0;
+            DgvProductos.Columns["ProductName"].DisplayIndex = 1;
+            DgvProductos.Columns["QuantityPerUnit"].DisplayIndex = 2;
+            DgvProductos.Columns["UnitPrice"].DisplayIndex = 3;
+            DgvProductos.Columns["UnitsInStock"].DisplayIndex = 4;
+            DgvProductos.Columns["UnitsOnOrder"].DisplayIndex = 5;
+            DgvProductos.Columns["ReorderLevel"].DisplayIndex = 6;
+            DgvProductos.Columns["Discontinued"].DisplayIndex = 7;
+            DgvProductos.Columns["CategoryName"].DisplayIndex = 8;
+            DgvProductos.Columns["Description"].DisplayIndex = 9;
+            DgvProductos.Columns["CompanyName"].DisplayIndex = 10;
         }
 
-        private void DgvProveedores_SelectionChanged(object sender, EventArgs e) => MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {DgvProveedores.RowCount} registros en proveedores y {DgvProductos.RowCount} registros de productos; del proveedor {DgvProveedores.CurrentRow.Cells["CompanyName"].Value}");
+        private void DgvProveedores_SelectionChanged(object sender, EventArgs e) => ActualizarEstadoProveedores();
+            
+        private void DgvProveedores_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e) => ActualizarEstadoProveedores();
 
-        private void DgvProveedores_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {DgvProveedores.RowCount} registros en proveedores");
+        private void FrmProveedoresProductos_Shown(object sender, EventArgs e) => ActualizarEstadoProveedores();
+
+        // Si cambian los datos (filtros, reload, etc.), refresca
+        private void bsProveedores_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e) => ActualizarEstadoProveedores();
+
+        private void ActualizarEstadoProveedores()
+        {
+            // Conteo lógico desde el BindingSource (maestro)
+            int totalProveedores = bsProveedores?.Count ?? 0;
+
+            // Conteo visible desde el grid (por si hay filtros/ocultas)
+            int filasVisibles = DgvProveedores.Rows.GetRowCount(DataGridViewElementStates.Visible);
+
+            // Nombre de proveedor seleccionado (seguro)
+            string proveedor = null;
+            if (DgvProveedores.CurrentRow != null &&
+                DgvProveedores.CurrentRow.Cells["CompanyName"].Value != null)
+            {
+                proveedor = DgvProveedores.CurrentRow.Cells["CompanyName"].Value.ToString();
+            }
+
+            string msg = proveedor == null
+                ? $"Se encontraron {totalProveedores} proveedores (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} productos."
+                : $"Se encontraron {totalProveedores} proveedores (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} productos, del proveedor {proveedor}";
+
+            MDIPrincipal.ActualizarBarraDeEstado(msg);
+        }
+
     }
 }

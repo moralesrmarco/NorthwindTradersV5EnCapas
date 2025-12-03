@@ -146,5 +146,38 @@ namespace DAL
             }
             return categorias;
         }
+
+        public DataSet ObtenerCategoriasProductosDgv()
+        {
+            var ds = new DataSet();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                {
+                    using (var dapCategorias = new SqlDataAdapter("SpCategoriaObtener", con))
+                    {
+                        dapCategorias.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        dapCategorias.SelectCommand.Parameters.AddWithValue("@top100", true);
+                        dapCategorias.Fill(ds, "Categorias");
+                    }
+                    using (var dapProductos = new SqlDataAdapter("SpProductosConCategoriaProveedorDgv", con))
+                    {
+                        dapProductos.SelectCommand.CommandType = CommandType.StoredProcedure;
+                        dapProductos.SelectCommand.Parameters.AddWithValue("@top100", true);
+                        dapProductos.Fill(ds, "Productos");
+                    }
+                }
+                // Quitar columnas que me causan conflicto al pintar el DataGridView
+                ds.Tables["Categorias"].Columns.Remove("RowVersion");
+                // en la siguiente instrucción se deben de proporcionar los nombres de los campos (alias) que devuelve el store procedure
+                DataRelation dataRelation = new DataRelation("CategoriasProductos", ds.Tables["Categorias"].Columns["CategoryID"], ds.Tables["Productos"].Columns["CategoryID"]);
+                ds.Relations.Add(dataRelation);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ds;
+        }
     }
 }

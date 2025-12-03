@@ -87,7 +87,6 @@ namespace NorthwindTradersV5EnCapas
                 };
                 // La siguientes 2 instrucciones son necesarias para poder manejar el LlenarDgv sin realizar una recarga del registro de la categoria, como en los otros metodos de los demas FrmCrud...
                 // cambia mucho la estructuración, ojo no modificar.
-
                 var categorias = _categoriaBLL.ObtenerCategorias(selectorRealizaBusqueda, criterios, false);
                 var categoriasSinRowVersionTimeStamp = categorias
                                                         .Select(c => new Categoria

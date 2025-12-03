@@ -344,7 +344,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void consultaDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmCategoriasProductos frm = new FrmCategoriasProductos();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por categoría «");
         }
 
         private void listadoDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)

@@ -2,6 +2,7 @@
 using Entities;
 using Entities.DTOs;
 using System.Collections.Generic;
+using System.Data;
 
 namespace BLL
 {
@@ -35,5 +36,9 @@ namespace BLL
             return _categoriaDAL.ObtenerCategorias(selectorRealizaBusqueda, criterios, top100);
         }
 
+        public DataSet ObtenerCategoriasProductosDgv()
+        {
+            return _categoriaDAL.ObtenerCategoriasProductosDgv();
+        }
     }
 }
