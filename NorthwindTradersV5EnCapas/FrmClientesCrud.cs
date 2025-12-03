@@ -31,11 +31,9 @@ namespace NorthwindTradersV5EnCapas
         private void FrmClientesCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (tabcOperacion.SelectedTab != tbpListar & tabcOperacion.SelectedTab != tbpEliminar)
-            {
                 if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                     if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
                         e.Cancel = true;
-            }
         }
 
         private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);

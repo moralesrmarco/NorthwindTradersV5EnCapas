@@ -50,15 +50,9 @@ namespace NorthwindTradersV5EnCapas
         {
             // pone un error con errorprovider en cada control que ha cambiado
             if (tabcOperacion.SelectedTab != tbpListar & tabcOperacion.SelectedTab != tbpEliminar)
-            {
                 if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                {
                     if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                    {
                         e.Cancel = true;
-                    }
-                }
-            }
         }
 
         private void DeshabilitarControles()

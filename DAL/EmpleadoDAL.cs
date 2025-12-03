@@ -93,7 +93,6 @@ namespace DAL
                     reportaA.Value = empleado.ReportsTo.HasValue && empleado.ReportsTo.Value != 0
                         ? (object)empleado.ReportsTo.Value
                         : DBNull.Value;
-                    //var byteFoto = cmd.Parameters.Add("@Foto", SqlDbType.VarBinary, empleado.Photo?.Length ?? -1);
                     var byteFoto = cmd.Parameters.Add("@Foto", SqlDbType.Image);
                     byteFoto.Value = (object)empleado.Photo ?? DBNull.Value;
                     var rowVersion = cmd.Parameters.Add("@RowVersion", SqlDbType.Binary, 8);
