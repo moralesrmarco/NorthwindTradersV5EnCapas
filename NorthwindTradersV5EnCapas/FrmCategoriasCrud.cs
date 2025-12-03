@@ -417,7 +417,10 @@ namespace NorthwindTradersV5EnCapas
                     MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
                     try
                     {
-                        int numRegs = _categoriaBLL.Eliminar(Convert.ToInt32(txtId.Text), txtId.Tag as byte[]);
+                        // las siguientes dos lineas son necesarias ojo no eliminar
+                        long valor = long.Parse(txtId.Tag.ToString());
+                        byte[] rowVersion = BitConverter.GetBytes(valor);
+                        int numRegs = _categoriaBLL.Eliminar(Convert.ToInt32(txtId.Text), rowVersion);
                         MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registros");
                         string idyNombreCategoria = $"La categoría con Id: {txtId.Text} - Nombre de categoría: {txtCategoria.Text}:";
                         if (numRegs > 0)
