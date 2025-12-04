@@ -113,12 +113,6 @@
     <Compile Include="FrmEmpleadosCrud.Designer.cs">
       <DependentUpon>FrmEmpleadosCrud.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmIconosSystemIcons.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmIconosSystemIcons.Designer.cs">
-      <DependentUpon>FrmIconosSystemIcons.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmNotificacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,12 +136,6 @@
     </Compile>
     <Compile Include="FrmProveedoresProductos.Designer.cs">
       <DependentUpon>FrmProveedoresProductos.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmPruebaScroll.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmPruebaScroll.Designer.cs">
-      <DependentUpon>FrmPruebaScroll.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmRptCategorias.cs">
       <SubType>Form</SubType>
@@ -208,6 +196,12 @@
     </Compile>
     <Compile Include="FrmRptProdPorProvConDetProv.Designer.cs">
       <DependentUpon>FrmRptProdPorProvConDetProv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmRptProductosPorCategorias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRptProductosPorCategorias.Designer.cs">
+      <DependentUpon>FrmRptProductosPorCategorias.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmRptProductosPorProveedor.cs">
       <SubType>Form</SubType>
@@ -297,6 +291,9 @@
     <EmbeddedResource Include="FrmRptProdPorProvConDetProv.resx">
       <DependentUpon>FrmRptProdPorProvConDetProv.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmRptProductosPorCategorias.resx">
+      <DependentUpon>FrmRptProductosPorCategorias.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmRptProductosPorProveedor.resx">
       <DependentUpon>FrmRptProductosPorProveedor.cs</DependentUpon>
     </EmbeddedResource>
@@ -325,9 +322,11 @@
     <EmbeddedResource Include="RptEmpleados.rdlc" />
     <EmbeddedResource Include="RptEmpleadosConFoto.rdlc" />
     <EmbeddedResource Include="RptProdPorProvConDetProv.rdlc" />
+    <EmbeddedResource Include="RptProductosPorCategorias.rdlc" />
     <EmbeddedResource Include="RptProductosPorProveedor.rdlc" />
     <EmbeddedResource Include="RptProveedores.rdlc" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Entities.Categoria.datasource" />
     <None Include="Properties\DataSources\Entities.Cliente.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoClienteProveedor.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedor.datasource" />

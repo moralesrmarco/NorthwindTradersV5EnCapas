@@ -55,8 +55,12 @@
     <Compile Include="DTOs\DtoProductosPorProveedorConDetProv.cs" />
     <Compile Include="DTOs\DtoProveedoresBuscar.cs" />
     <Compile Include="Empleado.cs" />
+    <Compile Include="Venta.cs" />
+    <Compile Include="VentaDetalle.cs" />
+    <Compile Include="Producto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proveedor.cs" />
+    <Compile Include="Transportista.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//https://www.youtube.com/watch?v=VjBAQV_cFxM&list=PLgvaYP_E7xkKhk3QYJCvNXndiypRugCrf&index=6
+using System;
 using System.Collections.Generic;
 
 namespace Entities
@@ -75,5 +76,9 @@ namespace Entities
         {
             get { return Jefe != null ? Jefe.NameByFirstName : ""; }
         }
+
+        // del diagrama entidad-relación podemos ver que 
+        // un empleado puede tener muchos órdenes asociadas
+        public List<Venta> Ventas { get; set; } = new List<Venta>();
     }
 }

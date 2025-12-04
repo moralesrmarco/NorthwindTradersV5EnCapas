@@ -2,7 +2,6 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
-using System.Data;
 using System.Windows.Forms;
 using Utilities;
 
@@ -31,28 +30,6 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var categorias = _categoriaBLL.ObtenerCategorias(false, null, true);
                 OleImageHelper.CleanOleHeader(categorias, "CategoryID", "Picture", 1, 8);
-                // esto si lo ubieramos hecho "a mano"
-                //foreach (var cat in categorias)
-                //{
-                //    if (cat.Picture != null)
-                //    {
-                //        if (cat.CategoryID >= 1 && cat.CategoryID <= 8)
-                //        {
-                //            // El encabezado OLE en Northwind suele ser de 78 bytes
-                //            const int OLE_HEADER_LENGTH = 78;
-
-                //            if (cat.Picture.Length > OLE_HEADER_LENGTH)
-                //            {
-                //                byte[] cleanImage = new byte[cat.Picture.Length - OLE_HEADER_LENGTH];
-                //                Array.Copy(cat.Picture, OLE_HEADER_LENGTH, cleanImage, 0, cleanImage.Length);
-
-                //                // Reemplazamos la imagen con la versión limpia
-                //                cat.Picture = cleanImage;
-                //            }
-                //        }
-                //        // Si es mayor que 8, no hacemos nada
-                //    }
-                //}
                 MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {categorias.Count} registros");
                 ReportDataSource reportDataSource = new ReportDataSource("DataSet1", categorias);
                 reportViewer1.LocalReport.DataSources.Clear();

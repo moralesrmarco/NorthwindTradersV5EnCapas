@@ -1,4 +1,6 @@
-﻿using System;
+﻿//https://www.youtube.com/watch?v=VjBAQV_cFxM&list=PLgvaYP_E7xkKhk3QYJCvNXndiypRugCrf&index=6
+using System;
+using System.Collections.Generic;
 
 namespace Entities
 {
@@ -18,5 +20,9 @@ namespace Entities
                 ? BitConverter.ToInt64(RowVersion, 0).ToString()
                 : string.Empty;
         }
+
+        // del diagrama entidad-relacion podemos ver que
+        // una categoria tiene muchos productos asociados
+        public List<Producto> Productos { get; set; } = new List<Producto>();
     }
 }
