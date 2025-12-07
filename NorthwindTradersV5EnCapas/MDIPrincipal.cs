@@ -339,10 +339,10 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por categoría «");
         }
 
-        private void listadoDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void listadoDeCategoríasConProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmProductosPorCategoriasListado frm = new FrmProductosPorCategoriasListado();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de productos por categoría «");
+            FrmCategoriasConProductosListado frm = new FrmCategoriasConProductosListado();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de categorías con productos «");
         }
 
         private void reporteDeCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -351,9 +351,10 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías «");
         }
 
-        private void reporteDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void reporteDeCategoríasConProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptCategoriasConProductos frm = new FrmRptCategoriasConProductos();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
         }
 
     }

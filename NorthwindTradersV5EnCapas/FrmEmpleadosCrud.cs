@@ -160,8 +160,10 @@ namespace NorthwindTradersV5EnCapas
             dgv.Columns["Country"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["ReportsToName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-            dgv.Columns["Photo"].Width = 20;
-            dgv.Columns["Photo"].DefaultCellStyle.Padding = new Padding(2, 2, 2, 2);
+            dgv.Columns["Photo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv.Columns["Photo"].Width = 80;
+            dgv.RowTemplate.Height = 80;
+            dgv.Columns["Photo"].DefaultCellStyle.Padding = new Padding(4);
             ((DataGridViewImageColumn)dgv.Columns["Photo"]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
             dgv.Columns["Title"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;

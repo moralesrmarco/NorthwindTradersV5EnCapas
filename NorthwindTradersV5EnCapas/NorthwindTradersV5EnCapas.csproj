@@ -119,11 +119,11 @@
     <Compile Include="FrmNotificacion.Designer.cs">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmProductosPorCategoriasListado.cs">
+    <Compile Include="FrmCategoriasConProductosListado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmProductosPorCategoriasListado.Designer.cs">
-      <DependentUpon>FrmProductosPorCategoriasListado.cs</DependentUpon>
+    <Compile Include="FrmCategoriasConProductosListado.Designer.cs">
+      <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmProveedoresCrud.cs">
       <SubType>Form</SubType>
@@ -197,11 +197,11 @@
     <Compile Include="FrmRptProdPorProvConDetProv.Designer.cs">
       <DependentUpon>FrmRptProdPorProvConDetProv.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmRptProductosPorCategorias.cs">
+    <Compile Include="FrmRptCategoriasConProductos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmRptProductosPorCategorias.Designer.cs">
-      <DependentUpon>FrmRptProductosPorCategorias.cs</DependentUpon>
+    <Compile Include="FrmRptCategoriasConProductos.Designer.cs">
+      <DependentUpon>FrmRptCategoriasConProductos.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmRptProductosPorProveedor.cs">
       <SubType>Form</SubType>
@@ -252,8 +252,8 @@
     <EmbeddedResource Include="FrmNotificacion.resx">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmProductosPorCategoriasListado.resx">
-      <DependentUpon>FrmProductosPorCategoriasListado.cs</DependentUpon>
+    <EmbeddedResource Include="FrmCategoriasConProductosListado.resx">
+      <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProveedoresCrud.resx">
       <DependentUpon>FrmProveedoresCrud.cs</DependentUpon>
@@ -291,8 +291,8 @@
     <EmbeddedResource Include="FrmRptProdPorProvConDetProv.resx">
       <DependentUpon>FrmRptProdPorProvConDetProv.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmRptProductosPorCategorias.resx">
-      <DependentUpon>FrmRptProductosPorCategorias.cs</DependentUpon>
+    <EmbeddedResource Include="FrmRptCategoriasConProductos.resx">
+      <DependentUpon>FrmRptCategoriasConProductos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRptProductosPorProveedor.resx">
       <DependentUpon>FrmRptProductosPorProveedor.cs</DependentUpon>
@@ -322,16 +322,18 @@
     <EmbeddedResource Include="RptEmpleados.rdlc" />
     <EmbeddedResource Include="RptEmpleadosConFoto.rdlc" />
     <EmbeddedResource Include="RptProdPorProvConDetProv.rdlc" />
-    <EmbeddedResource Include="RptProductosPorCategorias.rdlc" />
+    <EmbeddedResource Include="RptCategoriasConProductos.rdlc" />
     <EmbeddedResource Include="RptProductosPorProveedor.rdlc" />
     <EmbeddedResource Include="RptProveedores.rdlc" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Entities.Categoria.datasource" />
     <None Include="Properties\DataSources\Entities.Cliente.datasource" />
+    <None Include="Properties\DataSources\Entities.DTOs.DtoCategoriasConProductos.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoClienteProveedor.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedor.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedorConDetProv.datasource" />
     <None Include="Properties\DataSources\Entities.Empleado.datasource" />
+    <None Include="Properties\DataSources\Entities.Producto.datasource" />
     <None Include="Properties\DataSources\Entities.Proveedor.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

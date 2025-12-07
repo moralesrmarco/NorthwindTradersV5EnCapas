@@ -105,9 +105,9 @@ namespace NorthwindTradersV5EnCapas
                     EjecutarConfDgv = false;
                 }
                 if (selectorRealizaBusqueda)
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registros");
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registro(s)");
                 else
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran las últimas {Dgv.RowCount} categorías registradas");
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran las últimas {Dgv.RowCount} categoría(s) registrada(s)");
             }
             catch (Exception ex)
             {
@@ -125,8 +125,11 @@ namespace NorthwindTradersV5EnCapas
 
             Dgv.Columns["CategoryID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             Dgv.Columns["CategoryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            Dgv.Columns["Picture"].Width = 50;
-            Dgv.Columns["Picture"].DefaultCellStyle.Padding = new Padding(4, 4, 4, 4);
+
+            Dgv.Columns["Picture"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            Dgv.Columns["Picture"].Width = 80;
+            Dgv.RowTemplate.Height = 80;
+            Dgv.Columns["Picture"].DefaultCellStyle.Padding = new Padding(4);
             ((DataGridViewImageColumn)Dgv.Columns["Picture"]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
             Dgv.Columns["CategoryID"].HeaderText = "Id";
@@ -340,7 +343,7 @@ namespace NorthwindTradersV5EnCapas
                             Picture = fileFoto
                         };
                         int numRegs = _categoriaBLL.Insertar(categoria);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registros");
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registro(s)");
                         string idyNombreCategoria = $"La categoría con Id: {txtId.Text} - Nombre de categoria: {txtCategoria.Text}:";
                         if (numRegs > 0)
                         {
@@ -389,7 +392,7 @@ namespace NorthwindTradersV5EnCapas
                         long valor = long.Parse(txtId.Tag.ToString());
                         categoria.RowVersion = BitConverter.GetBytes(valor);
                         int numRegs = _categoriaBLL.Actualizar(categoria);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registros");
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
                         string idyNombreCategoria = $"La categoría con Id: {txtId.Text} - Nombre de categoría: {txtCategoria.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombreCategoria + Utils.sms);
@@ -420,7 +423,7 @@ namespace NorthwindTradersV5EnCapas
                         long valor = long.Parse(txtId.Tag.ToString());
                         byte[] rowVersion = BitConverter.GetBytes(valor);
                         int numRegs = _categoriaBLL.Eliminar(Convert.ToInt32(txtId.Text), rowVersion);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registros");
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
                         string idyNombreCategoria = $"La categoría con Id: {txtId.Text} - Nombre de categoría: {txtCategoria.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombreCategoria + Utils.ses);

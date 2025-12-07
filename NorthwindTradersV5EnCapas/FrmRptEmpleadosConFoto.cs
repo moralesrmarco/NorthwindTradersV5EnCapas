@@ -30,7 +30,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var empleados = _empleadoBLL.ObtenerTodosLosEmpleados();
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {empleados.Count} registros");
+                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {empleados.Count} registro(s)");
                 var rds = new ReportDataSource("DataSet1", empleados);
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(rds);

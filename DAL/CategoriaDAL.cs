@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.Remoting.Messaging;
 
 namespace DAL
 {
@@ -204,6 +205,57 @@ namespace DAL
                 throw;
             }
             return dt;
+        }
+
+        public List<Categoria> ObtenerCategoriasConProductos()
+        {
+            var categorias = new List<Categoria>();
+            using (var con = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("Select * from VwCategoriasConProductos", con))
+            {
+                con.Open();
+                using (var dr = cmd.ExecuteReader())
+                {
+                    Categoria categoriaActual = null;
+                    while (dr.Read())
+                    {
+                        string categoriaNombre = dr["CategoryName"] != DBNull.Value ? dr["CategoryName"].ToString() : null;
+                        // Si cambiamos de categoría, creamos una nueva
+                        if ((categoriaActual == null || categoriaActual.CategoryName != categoriaNombre))
+                        {
+                            categoriaActual = new Categoria()
+                            {
+                                CategoryName = dr["CategoryName"] != DBNull.Value ? dr["CategoryName"].ToString() : null,
+                                Productos = new List<Producto>()
+                            };
+                            categorias.Add(categoriaActual);
+                        }
+                        // Añadir el producto si existe
+                        if (dr["ProductID"] != DBNull.Value)
+                        {
+                            var producto = new Producto()
+                            {
+                                ProductID = Convert.ToInt32(dr["ProductID"]),
+                                ProductName = dr["ProductName"].ToString(),
+                                QuantityPerUnit = dr["QuantityPerUnit"] != DBNull.Value ? dr["QuantityPerUnit"].ToString() : null,
+                                UnitPrice = dr["UnitPrice"] != DBNull.Value ? (decimal?)Convert.ToDecimal(dr["UnitPrice"]) : null,
+                                UnitsInStock = dr["UnitsInStock"] != DBNull.Value ? (short?)Convert.ToInt16(dr["UnitsInStock"]) : null,
+                                UnitsOnOrder = dr["UnitsOnOrder"] != DBNull.Value ? (short?)Convert.ToInt16(dr["UnitsOnOrder"]) : null,
+                                ReorderLevel = dr["ReorderLevel"] != DBNull.Value ? (short?)Convert.ToInt16(dr["ReorderLevel"]) : null,
+                                Discontinued = Convert.ToBoolean(dr["Discontinued"]),
+                                Categoria = categoriaActual, // relacion inversa
+
+                                Proveedor = dr.IsDBNull(dr.GetOrdinal("CompanyName")) ? null : new Proveedor
+                                {
+                                    CompanyName = dr.IsDBNull(dr.GetOrdinal("CompanyName")) ? null : dr.GetString(dr.GetOrdinal("CompanyName"))
+                                }
+                            };
+                            categoriaActual.Productos.Add(producto);
+                        }
+                    }
+                }
+            }
+            return categorias;
         }
     }
 }

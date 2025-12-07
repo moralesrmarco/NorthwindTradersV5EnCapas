@@ -1,6 +1,6 @@
 ﻿namespace NorthwindTradersV5EnCapas
 {
-    partial class FrmProductosPorCategoriasListado
+    partial class FrmCategoriasConProductosListado
     {
         /// <summary>
         /// Required designer variable.
@@ -46,7 +46,7 @@
             this.GrbListado.Size = new System.Drawing.Size(1252, 704);
             this.GrbListado.TabIndex = 0;
             this.GrbListado.TabStop = false;
-            this.GrbListado.Text = "»   Listado de productos por categorías:   «";
+            this.GrbListado.Text = "» Listado de categorías con productos «";
             this.GrbListado.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // DgvListado
@@ -60,7 +60,7 @@
             this.DgvListado.Size = new System.Drawing.Size(1192, 625);
             this.DgvListado.TabIndex = 0;
             // 
-            // FrmProductosPorCategoriasListado
+            // FrmCategoriasConProductosListado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -68,11 +68,11 @@
             this.ControlBox = false;
             this.Controls.Add(this.GrbListado);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FrmProductosPorCategoriasListado";
+            this.Name = "FrmCategoriasConProductosListado";
             this.Padding = new System.Windows.Forms.Padding(30);
-            this.Text = "» Listado de productos por categorías: «";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmProductosPorCategoriasListado_FormClosed);
-            this.Load += new System.EventHandler(this.FrmProductosPorCategoriasListado_Load);
+            this.Text = "» Listado de categorías con productos «";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmCategoriaConProductos_FormClosed);
+            this.Load += new System.EventHandler(this.FrmCategoriasConProductosListado_Load);
             this.GrbListado.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DgvListado)).EndInit();
             this.ResumeLayout(false);

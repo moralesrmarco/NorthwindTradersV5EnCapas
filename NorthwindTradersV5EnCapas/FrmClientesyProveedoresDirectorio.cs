@@ -1,6 +1,7 @@
 ﻿using BLL;
 using System;
 using System.Configuration;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -52,7 +53,29 @@ namespace NorthwindTradersV5EnCapas
                 var clientesProveedores = _clienteBLL.ObtenerClientesProveedores(nombreDeFormulario, string.Empty, checkBoxClientes.Checked, checkBoxProveedores.Checked);
                 Dgv.DataSource = clientesProveedores;
                 ConfDgv();
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {clientesProveedores.Count} registros.");
+                int totalClientes = clientesProveedores.Count(cp => cp.Relation == "Cliente");
+                int totalProveedores = clientesProveedores.Count(cp => cp.Relation == "Proveedor");
+                string leyenda = string.Empty;
+                // Si hay clientes, agregamos su conteo
+                if (totalClientes > 0)
+                    leyenda = $"Se encontraron {totalClientes} cliente(s)";
+                // Si hay proveedores, agregamos su conteo
+                if (totalProveedores > 0)
+                {
+                    // Si ya había clientes, concatenamos con " y "
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $" y {totalProveedores} proveedor(es)";
+                    else
+                        leyenda = $"Se encontraron {totalProveedores} proveedor(es)";
+                }
+                // Mostrar total solo si ambos son mayores que cero
+                if (totalClientes > 0 && totalProveedores > 0)
+                    leyenda += $" (total: {totalClientes + totalProveedores})";
+                // Mostrar en la barra de estado
+                if (!string.IsNullOrEmpty(leyenda))
+                    MDIPrincipal.ActualizarBarraDeEstado(leyenda);
+                else
+                    MDIPrincipal.ActualizarBarraDeEstado("No se encontraron registros");
             }
             catch (Exception ex)
             {

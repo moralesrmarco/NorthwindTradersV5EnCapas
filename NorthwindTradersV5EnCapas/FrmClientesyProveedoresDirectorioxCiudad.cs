@@ -1,6 +1,7 @@
 ﻿using BLL;
 using System;
 using System.Configuration;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -65,9 +66,49 @@ namespace NorthwindTradersV5EnCapas
                 else if (comboBox.SelectedValue.ToString() != "aaaaa" & !checkBoxClientes.Checked & checkBoxProveedores.Checked)
                     titulo = $"» Directorio de proveedores por ciudad [ Ciudad: {comboBox.SelectedValue.ToString()} ] «";
                 Grb.Text = titulo;
-                Dgv.DataSource = _clienteBLL.ObtenerClientesProveedores(nombreDeFormulario, comboBox.SelectedValue.ToString(), checkBoxClientes.Checked, checkBoxProveedores.Checked);
+
+                var clientesProveedores = _clienteBLL.ObtenerClientesProveedores(
+                    nombreDeFormulario,
+                    comboBox.SelectedValue.ToString(),
+                    checkBoxClientes.Checked,
+                    checkBoxProveedores.Checked
+                );
+
+                Dgv.DataSource = clientesProveedores;
                 ConfDgv();
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registros");
+
+                // Conteos
+                int totalClientes = clientesProveedores.Count(cp => cp.Relation == "Cliente");
+                int totalProveedores = clientesProveedores.Count(cp => cp.Relation == "Proveedor");
+                int total = totalClientes + totalProveedores;
+                // Conteo de ciudades distintas
+                int totalCiudades = clientesProveedores
+                    .Select(cp => cp.City) // ajusta al nombre real de la propiedad
+                    .Where(c => !string.IsNullOrEmpty(c))
+                    .Distinct()
+                    .Count();
+                string leyenda = string.Empty;
+                if (totalClientes > 0)
+                    leyenda = $"Se encontraron {totalClientes} cliente(s)";
+                if (totalProveedores > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $" y {totalProveedores} proveedor(es)";
+                    else
+                        leyenda = $"Se encontraron {totalProveedores} proveedor(es)";
+                }
+                if (totalClientes > 0 && totalProveedores > 0)
+                    leyenda += $" (total: {total})";
+                if (totalCiudades > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $", en {totalCiudades} ciudad(es)";
+                    else
+                        leyenda = $"Se encontraron registros en {totalCiudades} ciudad(es)";
+                }
+                if (string.IsNullOrEmpty(leyenda))
+                    leyenda = "No se encontraron registros";
+                MDIPrincipal.ActualizarBarraDeEstado(leyenda);
             }
             catch (Exception ex)
             {

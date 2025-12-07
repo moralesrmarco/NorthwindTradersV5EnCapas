@@ -108,9 +108,9 @@ namespace NorthwindTradersV5EnCapas
                     EjecutarConfDgv = false;
                 }
                 if (selectorRealizaBusqueda)
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registros");
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registro(s)");
                 else
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {Dgv.RowCount} proveedores registrados");
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {Dgv.RowCount} proveedor(es) registrado(s)");
             }
             catch (Exception ex)
             {
@@ -360,7 +360,7 @@ namespace NorthwindTradersV5EnCapas
                             Fax = string.IsNullOrWhiteSpace(txtFax.Text.Trim()) ? null : txtFax.Text.Trim()
                         };
                         int numRegs = _proveedorBLL.Insertar(proveedor);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registros");
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registro(s)");
                         string idyNombreCompania = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
                         if (numRegs > 0)
                         {
@@ -408,7 +408,7 @@ namespace NorthwindTradersV5EnCapas
                             RowVersion = txtId.Tag as byte[]
                         };
                         int numRegs = _proveedorBLL.Actualizar(proveedor);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registros");
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
                         string idyNombreCompania = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombreCompania + Utils.sms);
@@ -436,7 +436,7 @@ namespace NorthwindTradersV5EnCapas
                     try
                     {
                         int numRegs = _proveedorBLL.Eliminar(Convert.ToInt32(txtId.Text), (byte[]) txtId.Tag);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registros");
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
                         string idyNombre = $"El proveedor con Id: {txtId.Text} - Nombre de compañía: {txtCompañia.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idyNombre + Utils.ses);

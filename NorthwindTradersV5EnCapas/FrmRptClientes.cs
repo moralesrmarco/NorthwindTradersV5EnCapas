@@ -29,7 +29,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var resultado = _clienteBLL.ObtenerClientes(false, null, true);
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {resultado.clientes.Count} registros");
+                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {resultado.clientes.Count} registro(s)");
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", resultado.clientes));
                 reportViewer1.RefreshReport();

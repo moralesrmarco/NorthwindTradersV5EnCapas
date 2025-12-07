@@ -1,6 +1,6 @@
 ﻿namespace NorthwindTradersV5EnCapas
 {
-    partial class FrmRptProductosPorCategorias
+    partial class FrmRptCategoriasConProductos
     {
         /// <summary>
         /// Required designer variable.
@@ -44,31 +44,31 @@
             this.groupBox1.Size = new System.Drawing.Size(740, 390);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "» Reporte de productos por categorías «";
+            this.groupBox1.Text = "» Reporte de categorías con productos «";
             this.groupBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // reportViewer1
             // 
             this.reportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "NorthwindTradersV4MySql.RptProductosPorCategorias.rdlc";
+            this.reportViewer1.LocalReport.ReportEmbeddedResource = "NorthwindTradersV5EnCapas.RptCategoriasConProductos.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(30, 49);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ServerReport.BearerToken = null;
             this.reportViewer1.Size = new System.Drawing.Size(680, 311);
             this.reportViewer1.TabIndex = 0;
             // 
-            // FrmRptProductosPorCategorias
+            // FrmRptCategoriasConProductos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
-            this.Name = "FrmRptProductosPorCategorias";
+            this.Name = "FrmRptCategoriasConProductos";
             this.Padding = new System.Windows.Forms.Padding(30);
-            this.Text = "» Reporte de productos por categorías «";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmRptProductosPorCategorias_FormClosed);
-            this.Load += new System.EventHandler(this.FrmRptProductosPorCategorias_Load);
+            this.Text = "» Reporte de categorías con productos «";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmRptCategoriasConProductos_FormClosed);
+            this.Load += new System.EventHandler(this.FrmRptCategoriasConProductos_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 

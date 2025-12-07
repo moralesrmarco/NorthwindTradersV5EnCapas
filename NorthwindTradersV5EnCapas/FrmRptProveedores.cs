@@ -30,7 +30,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var proveedores = _proveedorBLL.ObtenerProveedores(false, null, true);
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {proveedores.Count} registros");
+                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {proveedores.Count} registro(s)");
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", proveedores));
                 reportViewer1.RefreshReport();

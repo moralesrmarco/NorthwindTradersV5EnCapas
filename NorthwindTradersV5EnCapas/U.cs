@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
 using Utilities;
 
@@ -25,31 +26,37 @@ namespace NorthwindTradersV5EnCapas
 
         public static DialogResult NotificacionInformation(string mensaje)
         {
+            SystemSounds.Asterisk.Play();
             return ShowNotificacion(mensaje, NotificationType.Information, NotificationMode.Aceptar);
         }
 
         public static DialogResult NotificacionError(string mensaje)
         {
+            SystemSounds.Hand.Play(); // Sonido de error (ícono de mano)
             return ShowNotificacion(mensaje, NotificationType.Error, NotificationMode.Aceptar);
         }
 
         public static DialogResult NotificacionWarning(string mensaje)
         {
+            SystemSounds.Exclamation.Play();
             return ShowNotificacion(mensaje, NotificationType.Warning, NotificationMode.Aceptar);
         }
 
         public static DialogResult NotificacionQuestion(string mensaje)
         {
+            SystemSounds.Question.Play();
             return ShowNotificacion(mensaje, NotificationType.Question, NotificationMode.SiNo);
         }
 
         public static DialogResult NotificacionShield(string mensaje)
         {
+            SystemSounds.Beep.Play();
             return ShowNotificacion(mensaje, NotificationType.Shield, NotificationMode.Aceptar);
         }
 
         public static DialogResult NotificacionDefault(string mensaje)
         {
+            SystemSounds.Beep.Play();
             return ShowNotificacion(mensaje, NotificationType.Default, NotificationMode.Aceptar);
         }
 

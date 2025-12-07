@@ -183,8 +183,8 @@ namespace NorthwindTradersV5EnCapas
             }
 
             string msg = proveedor == null
-                ? $"Se encontraron {totalProveedores} proveedores (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} productos."
-                : $"Se encontraron {totalProveedores} proveedores (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} productos, del proveedor {proveedor}";
+                ? $"Se encontraron {totalProveedores} proveedor(es) (visible(s): {filasVisibles}) y {bsProductos?.Count ?? 0} producto(s)."
+                : $"Se encontraron {totalProveedores} proveedor(es) (visible(s): {filasVisibles}) y {bsProductos?.Count ?? 0} producto(s), del proveedor {proveedor}";
 
             MDIPrincipal.ActualizarBarraDeEstado(msg);
         }

@@ -3,6 +3,7 @@ using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -51,7 +52,25 @@ namespace NorthwindTradersV5EnCapas
                 groupBox1.Text = titulo;
                 string nombreDeFormulario = "FrmRptClientesyProveedoresDirectorio";
                 var clientesyProveedores = _clienteBLL.ObtenerClientesProveedores(nombreDeFormulario, string.Empty, checkBoxClientes.Checked, checkBoxProveedores.Checked);
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {clientesyProveedores.Count} registros");
+                // Conteos
+                int totalClientes = clientesyProveedores.Count(cp => cp.Relation == "Cliente");
+                int totalProveedores = clientesyProveedores.Count(cp => cp.Relation == "Proveedor");
+                int total = totalClientes + totalProveedores;
+                string leyenda = string.Empty;
+                if (totalClientes > 0)
+                    leyenda = $"Se encontraron {totalClientes} cliente(s)";
+                if (totalProveedores > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $" y {totalProveedores} proveedor(es)";
+                    else
+                        leyenda = $"Se encontraron {totalProveedores} proveedor(es)";
+                }
+                if (totalClientes > 0 && totalProveedores > 0)
+                    leyenda += $" (total: {total})";
+                if (string.IsNullOrEmpty(leyenda))
+                    leyenda = "No se encontraron registros";
+                MDIPrincipal.ActualizarBarraDeEstado(leyenda);
                 reportViewer1.BackColor = Color.White;
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", clientesyProveedores));

@@ -44,6 +44,7 @@
     <Compile Include="Categoria.cs" />
     <Compile Include="Cliente.cs" />
     <Compile Include="DTOs\DtoCategoriasBuscar.cs" />
+    <Compile Include="DTOs\DtoCategoriasConProductos.cs" />
     <Compile Include="DTOs\DtoCiudadPaisVwClientesProveedores.cs" />
     <Compile Include="DTOs\DtoClienteProveedor.cs" />
     <Compile Include="DTOs\DtoEmpleadosDgvRaw.cs" />

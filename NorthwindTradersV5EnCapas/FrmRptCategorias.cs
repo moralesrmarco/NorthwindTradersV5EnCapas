@@ -30,7 +30,7 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var categorias = _categoriaBLL.ObtenerCategorias(false, null, true);
                 OleImageHelper.CleanOleHeader(categorias, "CategoryID", "Picture", 1, 8);
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {categorias.Count} registros");
+                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {categorias.Count} registro(s)");
                 ReportDataSource reportDataSource = new ReportDataSource("DataSet1", categorias);
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(reportDataSource);

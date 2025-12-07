@@ -84,8 +84,11 @@ namespace NorthwindTradersV5EnCapas
         {
             dgv.Columns["CategoryId"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["CategoryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns["Picture"].Width = 50;
-            dgv.Columns["Picture"].DefaultCellStyle.Padding = new Padding(4, 4, 4, 4);
+
+            dgv.Columns["Picture"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv.Columns["Picture"].Width = 80;
+            dgv.RowTemplate.Height = 80;
+            dgv.Columns["Picture"].DefaultCellStyle.Padding = new Padding(4);
             ((DataGridViewImageColumn)dgv.Columns["Picture"]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
             dgv.Columns["CategoryId"].HeaderText = "Id";
@@ -109,7 +112,6 @@ namespace NorthwindTradersV5EnCapas
             dgv.Columns["UnitsOnOrder"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["ReorderLevel"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["CompanyName"].AutoSizeMode= DataGridViewAutoSizeColumnMode.AllCells;
-
             dgv.Columns["Discontinued"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["CategoryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -174,8 +176,8 @@ namespace NorthwindTradersV5EnCapas
             }
 
             string msg = categoria == null
-                ? $"Se encontraron {totalCategorias} categorías (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} productos."
-                : $"Se encontraron {totalCategorias} categorías (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} productos, en la categoría {categoria}";
+                ? $"Se encontraron {totalCategorias} categoría(s) (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} producto(s)."
+                : $"Se encontraron {totalCategorias} categoría(s) (visibles: {filasVisibles}) y {bsProductos?.Count ?? 0} producto(s), en la categoría {categoria}";
 
             MDIPrincipal.ActualizarBarraDeEstado(msg);
         }

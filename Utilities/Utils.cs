@@ -17,9 +17,9 @@ namespace Utilities
             public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
             public const string oue = "Ocurrio un error:\n";
             public const string preguntaCerrar = "Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
-            public const string insertandoRegistro = "Insertando registro en la base de datos...";
-            public const string modificandoRegistro = "Modificando registro en la base de datos...";
-            public const string eliminandoRegistro = "Eliminando registro en la base de datos...";
+            public const string insertandoRegistro = "Insertando registro(s) en la base de datos...";
+            public const string modificandoRegistro = "Modificando registro(s) en la base de datos...";
+            public const string eliminandoRegistro = "Eliminando registro(s) en la base de datos...";
             public const string errorCriterioSelec = "[orange]     Error: Proporcione los criterios de selección.";
             public const string noDatos = "No se encontraron datos para mostrar en el reporte.";
             public const string srs = "\n[green]Se registró satisfactoriamente.";
@@ -327,11 +327,15 @@ namespace Utilities
             dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
             dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            //dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            //para evitar el parpadeo en el borde inferior del DataGridView suele deberse a problemas de redibujado cuando el contenido toca el límite visual, se modifica la siguiente propiedad
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.BackgroundColor = SystemColors.GradientInactiveCaption;
             dgv.RowHeadersVisible = false;
-            dgv.BorderStyle = BorderStyle.FixedSingle;
+            //dgv.BorderStyle = BorderStyle.FixedSingle;
+            //para evitar el parpadeo en el borde inferior del DataGridView suele deberse a problemas de redibujado cuando el contenido toca el límite visual, se modifica la siguiente propiedad
+            dgv.BorderStyle = BorderStyle.None;
             dgv.AutoResizeColumns();
         }
 

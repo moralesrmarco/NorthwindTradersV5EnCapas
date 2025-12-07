@@ -46,5 +46,10 @@ namespace BLL
             return _categoriaDAL.ObtenerProductosPorCategoriaListado();
         }
 
+        public List<Categoria> ObtenerCategoriasConProductos()
+        {
+            return _categoriaDAL.ObtenerCategoriasConProductos();
+        }
+
     }
 }

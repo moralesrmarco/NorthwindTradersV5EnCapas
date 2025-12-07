@@ -15,16 +15,11 @@ namespace NorthwindTradersV5EnCapas
 
             this.Text = Utils.nwtr;
             this.Icon = icono; // Ícono de la ventana
-
-            // Configurar RichTextBox
-            //richTextBox1.BackColor = this.BackColor;
-
             // Procesar el mensaje con tags de color
             MostrarMensajeConTags(mensaje);
 
             // Mostrar ícono en PictureBox
             pictureBox1.Image = IconToImage(icono);
-
             if (modo == NotificationMode.Aceptar)
             {
                 // Mostrar solo botón Aceptar

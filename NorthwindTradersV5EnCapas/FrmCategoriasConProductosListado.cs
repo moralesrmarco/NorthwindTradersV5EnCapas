@@ -1,12 +1,14 @@
 ﻿using BLL;
 using System;
 using System.Configuration;
+using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmProductosPorCategoriasListado : Form
+    public partial class FrmCategoriasConProductosListado : Form
     {
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
@@ -14,16 +16,16 @@ namespace NorthwindTradersV5EnCapas
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
 
-        private void FrmProductosPorCategoriasListado_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
+        private void FrmCategoriaConProductos_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        public FrmProductosPorCategoriasListado()
+        public FrmCategoriasConProductosListado()
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _categoriaBLL = new CategoriaBLL(_connectionString);
         }
 
-        private void FrmProductosPorCategoriasListado_Load(object sender, EventArgs e)
+        private void FrmCategoriasConProductosListado_Load(object sender, EventArgs e)
         {
             Utils.ConfDgv(DgvListado);
             LlenarDgv();
@@ -37,7 +39,24 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var dt = _categoriaBLL.ObtenerProductosPorCategoriaListado();
                 DgvListado.DataSource = dt;
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {DgvListado.RowCount} registros");
+                // Total de categorías distintas
+                int totalCategorias = dt.AsEnumerable()
+                    .Select(r => r.Field<string>("CategoryName"))
+                    .Distinct()
+                    .Count();
+                // Total de productos (ignorando nulos)
+                int totalProductos = dt.AsEnumerable()
+                    .Count(r => !r.IsNull("ProductID"));
+                // Total de proveedores distintos
+                int totalProveedores = dt.AsEnumerable()
+                    .Where(r => !r.IsNull("CompanyName"))
+                    .Select(r => r.Field<string>("CompanyName"))
+                    .Distinct()
+                    .Count();
+                // Actualizar barra de estado
+                MDIPrincipal.ActualizarBarraDeEstado(
+                    $"Se encontraron {totalCategorias} categoría(s), {totalProductos} producto(s) y {totalProveedores} proveedor(es) distinto(s)"
+                );
             }
             catch (Exception ex)
             {
@@ -76,5 +95,6 @@ namespace NorthwindTradersV5EnCapas
             DgvListado.Columns["Discontinued"].HeaderText = "Descontinuado";
             DgvListado.Columns["CompanyName"].HeaderText = "Proveedor";
         }
+
     }
 }
