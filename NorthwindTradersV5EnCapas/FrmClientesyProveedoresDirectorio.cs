@@ -53,29 +53,47 @@ namespace NorthwindTradersV5EnCapas
                 var clientesProveedores = _clienteBLL.ObtenerClientesProveedores(nombreDeFormulario, string.Empty, checkBoxClientes.Checked, checkBoxProveedores.Checked);
                 Dgv.DataSource = clientesProveedores;
                 ConfDgv();
+                // Conteos
                 int totalClientes = clientesProveedores.Count(cp => cp.Relation == "Cliente");
                 int totalProveedores = clientesProveedores.Count(cp => cp.Relation == "Proveedor");
+                int total = totalClientes + totalProveedores;
+                // Conteo de ciudades distintas
+                int totalCiudades = clientesProveedores
+                    .Select(cp => cp.City?.Trim()) // quita espacios
+                    .Where(c => !string.IsNullOrEmpty(c)) // descarta vacíos
+                    .Distinct(StringComparer.OrdinalIgnoreCase) // ignora mayúsculas/minúsculas
+                    .Count();
+                // Conteo de países distintos
+                int totalPaises = clientesProveedores
+                    .Select(cp => cp.Country?.Trim()) // quita espacios
+                    .Where(p => !string.IsNullOrEmpty(p)) // descarta vacíos
+                    .Distinct(StringComparer.OrdinalIgnoreCase) // ignora mayúsculas/minúsculas
+                    .Count();
                 string leyenda = string.Empty;
-                // Si hay clientes, agregamos su conteo
                 if (totalClientes > 0)
                     leyenda = $"Se encontraron {totalClientes} cliente(s)";
-                // Si hay proveedores, agregamos su conteo
                 if (totalProveedores > 0)
                 {
-                    // Si ya había clientes, concatenamos con " y "
                     if (!string.IsNullOrEmpty(leyenda))
                         leyenda += $" y {totalProveedores} proveedor(es)";
                     else
                         leyenda = $"Se encontraron {totalProveedores} proveedor(es)";
                 }
-                // Mostrar total solo si ambos son mayores que cero
                 if (totalClientes > 0 && totalProveedores > 0)
-                    leyenda += $" (total: {totalClientes + totalProveedores})";
-                // Mostrar en la barra de estado
-                if (!string.IsNullOrEmpty(leyenda))
-                    MDIPrincipal.ActualizarBarraDeEstado(leyenda);
-                else
-                    MDIPrincipal.ActualizarBarraDeEstado("No se encontraron registros");
+                    leyenda += $" (total: {total})";
+                if (totalCiudades > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $", en {totalCiudades} ciudad(es)";
+                }
+                if (totalPaises > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $", en {totalPaises} país(es)";
+                }
+                if (string.IsNullOrEmpty(leyenda))
+                    leyenda = "No se encontraron registros";
+                MDIPrincipal.ActualizarBarraDeEstado(leyenda);
             }
             catch (Exception ex)
             {
