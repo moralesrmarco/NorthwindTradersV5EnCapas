@@ -55,7 +55,7 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(
                     $"Se encontraron {categoriasConProductos.Count} categoría(s), {productos.Count(p => p.ProductID != null)} producto(s) y {totalProveedores} proveedor(es) distinto(s)"
                 );
-                if (productos.Count > 0)
+                if (categoriasConProductos.Count > 0)
                 {
                     ReportDataSource reportDataSource = new ReportDataSource("DataSet1", productos);
                     reportViewer1.LocalReport.DataSources.Clear();
@@ -84,6 +84,7 @@ namespace NorthwindTradersV5EnCapas
                     reportViewer1.LocalReport.DataSources.Add(reportDataSource);
                     reportViewer1.LocalReport.Refresh();
                     reportViewer1.RefreshReport();
+                    MDIPrincipal.ActualizarBarraDeEstado("No se encontraron registros");
                     U.NotificacionWarning(Utils.noDatos);
                 }
             }

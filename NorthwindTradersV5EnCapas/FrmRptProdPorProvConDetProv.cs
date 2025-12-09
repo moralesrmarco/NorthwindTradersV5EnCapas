@@ -41,7 +41,23 @@ namespace NorthwindTradersV5EnCapas
                     .Select(p => new { p.ProductID, p.ProductName }) // cuenta por combinación Id + nombre para considerar los productos con el mismo nombre pero diferente Id
                     .Distinct()
                     .Count();
-                string leyenda = $"Se encontraron {totalProveedores} proveedor(es) y {totalProductos} producto(s)";
+                // Conteo de ciudades distintas
+                int totalCiudades = productosPorProveedorConDetProv
+                    .Select(cp => cp.City?.Trim()) // quita espacios
+                    .Where(c => !string.IsNullOrEmpty(c)) // descarta vacíos
+                    .Distinct(StringComparer.OrdinalIgnoreCase) // ignora mayúsculas/minúsculas
+                    .Count();
+                // Conteo de países distintos
+                int totalPaises = productosPorProveedorConDetProv
+                    .Select(cp => cp.Country?.Trim()) // quita espacios
+                    .Where(p => !string.IsNullOrEmpty(p)) // descarta vacíos
+                    .Distinct(StringComparer.OrdinalIgnoreCase) // ignora mayúsculas/minúsculas
+                    .Count();
+                string leyenda = string.Empty;
+                if (totalProveedores > 0)
+                    leyenda = $"Se encontraron {totalProveedores} proveedor(es), en {totalCiudades} ciudad(es), en {totalPaises} país(es) y {totalProductos} producto(s)";
+                else
+                    leyenda = "No se encontraron registros";
                 MDIPrincipal.ActualizarBarraDeEstado(leyenda);
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", productosPorProveedorConDetProv));
