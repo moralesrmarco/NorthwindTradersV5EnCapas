@@ -2,6 +2,7 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -30,7 +31,38 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var proveedores = _proveedorBLL.ObtenerProveedores(false, null, true);
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {proveedores.Count} registro(s)");
+                // Conteos
+                int totalProveedores = proveedores.Count();
+                // Conteo de ciudades distintas
+                int totalCiudades = proveedores
+                    .Select(cp => cp.City?.Trim()) // quita espacios
+                    .Where(c => !string.IsNullOrEmpty(c)) // descarta vacíos
+                    .Distinct(StringComparer.OrdinalIgnoreCase) // ignora mayúsculas/minúsculas
+                    .Count();
+                // Conteo de países distintos
+                int totalPaises = proveedores
+                    .Select(cp => cp.Country?.Trim()) // quita espacios
+                    .Where(p => !string.IsNullOrEmpty(p)) // descarta vacíos
+                    .Distinct(StringComparer.OrdinalIgnoreCase) // ignora mayúsculas/minúsculas
+                    .Count();
+                string leyenda = string.Empty;
+                if (totalProveedores > 0)
+                {
+                    leyenda = $"Se encontraron {totalProveedores} proveedor(es)";
+                }
+                if (totalCiudades > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $", en {totalCiudades} ciudad(es)";
+                }
+                if (totalPaises > 0)
+                {
+                    if (!string.IsNullOrEmpty(leyenda))
+                        leyenda += $", en {totalPaises} país(es)";
+                }
+                if (string.IsNullOrEmpty(leyenda))
+                    leyenda = "No se encontraron registros";
+                MDIPrincipal.ActualizarBarraDeEstado(leyenda); 
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", proveedores));
                 reportViewer1.RefreshReport();
