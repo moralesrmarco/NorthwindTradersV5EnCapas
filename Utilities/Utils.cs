@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -51,6 +52,12 @@ namespace Utilities
             string propertyName = col.DataPropertyName;
             var lista = dgv.DataSource as List<T>;
             if (lista == null || string.IsNullOrWhiteSpace(propertyName)) return;
+            // para mantener el orden de columnas que definiste por programación
+            // Guardar orden actual de columnas (DisplayIndex)
+            var ordenColumnas = dgv.Columns.Cast<DataGridViewColumn>()
+                .OrderBy(c => c.DisplayIndex)
+                .Select(c => c.Name)
+                .ToList();
 
             // Limpia flechitas de todas las columnas ordenables
             foreach (DataGridViewColumn c in dgv.Columns)
@@ -69,12 +76,72 @@ namespace Utilities
 
             dgv.Tag = asc ? "ASC" : "DESC";
 
+            // para mantener el orden de columnas que definiste por programación
+            // Restaurar orden de columnas
+            for (int i = 0; i < ordenColumnas.Count; i++)
+            {
+                dgv.Columns[ordenColumnas[i]].DisplayIndex = i;
+            }
+
             // Mostrar flechita igual que DataTable
             // Reobtener la columna después de que el DataSource se aplicó
             var refreshedCol = dgv.Columns[e.ColumnIndex];
             refreshedCol.HeaderCell.SortGlyphDirection = asc
                 ? WinFormsSortOrder.Ascending   // primer clic → flecha arriba
                 : WinFormsSortOrder.Descending; // segundo clic → flecha abajo
+        }
+
+        /// <summary>
+        /// Ordena un DataTable/DataView y muestra el glyph de ordenamiento.
+        /// </summary>
+        public static void OrdenarPorColumna(DataGridView dgv, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex < 0) return;
+
+            var col = dgv.Columns[e.ColumnIndex];
+            if (col.SortMode == DataGridViewColumnSortMode.NotSortable)
+                return;
+
+            string propertyName = col.DataPropertyName;
+            if (string.IsNullOrWhiteSpace(propertyName)) return;
+
+            // Obtener DataView desde el DataSource
+            var dv = dgv.DataSource as DataView;
+            if (dv == null)
+            {
+                var dt = dgv.DataSource as DataTable;
+                dv = dt?.DefaultView;
+            }
+            if (dv == null) return;
+
+            // Guardar orden actual de columnas
+            var ordenColumnas = dgv.Columns.Cast<DataGridViewColumn>()
+                .OrderBy(c => c.DisplayIndex)
+                .Select(c => c.Name)
+                .ToList();
+
+            // Limpiar flechitas
+            foreach (DataGridViewColumn c in dgv.Columns)
+            {
+                if (c.SortMode == DataGridViewColumnSortMode.Programmatic)
+                    c.HeaderCell.SortGlyphDirection = WinFormsSortOrder.None;
+            }
+
+            // Alternar orden
+            bool asc = dgv.Tag?.ToString() != "ASC";
+            dv.Sort = $"{propertyName} {(asc ? "ASC" : "DESC")}";
+            dgv.Tag = asc ? "ASC" : "DESC";
+
+            // Restaurar orden de columnas
+            for (int i = 0; i < ordenColumnas.Count; i++)
+            {
+                dgv.Columns[ordenColumnas[i]].DisplayIndex = i;
+            }
+
+            // Mostrar flechita
+            col.HeaderCell.SortGlyphDirection = asc
+                ? WinFormsSortOrder.Ascending
+                : WinFormsSortOrder.Descending;
         }
 
         public static event Action<Form> FormularioAgregado;

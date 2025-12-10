@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Entities.DTOs;
 using System;
 using System.Configuration;
 using System.Data;
@@ -23,6 +24,9 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _categoriaBLL = new CategoriaBLL(_connectionString);
+            // las dos siguientes lineas es para que se pueda habilitar el ordenamiento por cada columna
+            DgvListado.ColumnHeaderMouseClick += (s, e) => Utils.OrdenarPorColumna(DgvListado, e); // vinculacion del evento al metodo
+            DgvListado.DataBindingComplete += DgvListado_DataBindingComplete;
         }
 
         private void FrmCategoriasConProductosListado_Load(object sender, EventArgs e)
@@ -38,7 +42,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var dt = _categoriaBLL.ObtenerProductosPorCategoriaListado();
-                DgvListado.DataSource = dt;
+                DgvListado.DataSource = dt.DefaultView; // para activar el ordenamiento se debe enlazar al DefaultView del DataTable
                 // Total de categorías distintas
                 int totalCategorias = dt.AsEnumerable()
                     .Select(r => r.Field<string>("CategoryName"))
@@ -61,6 +65,25 @@ namespace NorthwindTradersV5EnCapas
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
+            }
+        }
+
+        private void DgvListado_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var dgv = (DataGridView)sender;
+
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                // Si la columna está ligada a un campo de datos
+                if (!string.IsNullOrEmpty(col.DataPropertyName))
+                {
+                    col.SortMode = DataGridViewColumnSortMode.Programmatic;
+                }
+                else
+                {
+                    // Columnas sin DataPropertyName (imágenes, botones, calculadas)
+                    col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
             }
         }
 

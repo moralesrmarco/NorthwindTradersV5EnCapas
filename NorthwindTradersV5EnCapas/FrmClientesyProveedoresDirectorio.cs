@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Entities.DTOs;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _clienteBLL = new ClienteBLL(_connectionString);
+            Dgv.ColumnHeaderMouseClick += Dgv_ColumnHeaderMouseClick;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -99,6 +101,12 @@ namespace NorthwindTradersV5EnCapas
             {
                 U.MsgCatchOue(ex);
             }
+        }
+
+        private void Dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
+            Utils.OrdenarPorColumna<DtoClienteProveedor>(Dgv, e);
         }
 
         private void ConfDgv()
