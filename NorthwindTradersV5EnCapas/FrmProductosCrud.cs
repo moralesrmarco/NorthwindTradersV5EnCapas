@@ -296,6 +296,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
             BorrarMensajesError();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
             {
@@ -340,6 +342,12 @@ namespace NorthwindTradersV5EnCapas
                 else if (tabcOperacion.SelectedTab == tbpEliminar)
                     btnOperacion.Enabled = true;
             }
+        }
+
+        private void Dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
+            Utils.OrdenarPorColumna<DtoProducto>(Dgv, e);
         }
 
         private void tabcOperacion_Selected(object sender, TabControlEventArgs e)
@@ -566,5 +574,6 @@ namespace NorthwindTradersV5EnCapas
             // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
         }
+
     }
 }

@@ -5,7 +5,9 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using WinFormsSortOrder = System.Windows.Forms.SortOrder;
 
 namespace Utilities
 {
@@ -34,6 +36,46 @@ namespace Utilities
             public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
         #endregion
+
+        /// <summary>
+        /// Ordena un DataGridView enlazado a una lista genérica y muestra el glyph de ordenamiento.
+        /// </summary>
+        public static void OrdenarPorColumna<T>(DataGridView dgv, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex < 0) return;
+
+            var col = dgv.Columns[e.ColumnIndex];
+            if (col.SortMode == DataGridViewColumnSortMode.NotSortable)
+                return;
+
+            string propertyName = col.DataPropertyName;
+            var lista = dgv.DataSource as List<T>;
+            if (lista == null || string.IsNullOrWhiteSpace(propertyName)) return;
+
+            // Limpia flechitas de todas las columnas ordenables
+            foreach (DataGridViewColumn c in dgv.Columns)
+            {
+                if (c.SortMode == DataGridViewColumnSortMode.Programmatic)
+                    c.HeaderCell.SortGlyphDirection = WinFormsSortOrder.None;
+            }
+
+            // Alternar orden: primer clic → ASC
+            bool asc = dgv.Tag?.ToString() != "ASC";
+            Func<T, object> keySelector = p => p.GetType().GetProperty(propertyName)?.GetValue(p);
+
+            dgv.DataSource = asc
+                ? lista.OrderBy(keySelector).ToList()
+                : lista.OrderByDescending(keySelector).ToList();
+
+            dgv.Tag = asc ? "ASC" : "DESC";
+
+            // Mostrar flechita igual que DataTable
+            // Reobtener la columna después de que el DataSource se aplicó
+            var refreshedCol = dgv.Columns[e.ColumnIndex];
+            refreshedCol.HeaderCell.SortGlyphDirection = asc
+                ? WinFormsSortOrder.Ascending   // primer clic → flecha arriba
+                : WinFormsSortOrder.Descending; // segundo clic → flecha abajo
+        }
 
         public static event Action<Form> FormularioAgregado;
 
@@ -312,6 +354,9 @@ namespace Utilities
             e.Handled = !(char.IsDigit(e.KeyChar) || (int)e.KeyChar == 8);
         }
 
+        /// <summary>
+        /// Configuración estándar para DataGridView.
+        /// </summary>
         public static void ConfDgv(DataGridView dgv)
         {
             dgv.AllowUserToAddRows = false;
@@ -339,11 +384,48 @@ namespace Utilities
             //ya no es necesaria porque se usa el doble buffer más abajo
             //dgv.BorderStyle = BorderStyle.None;
             dgv.AutoResizeColumns();
+
             //para evitar el parpadeo en el borde inferior del DataGridView suele deberse a problemas de redibujado cuando el contenido toca el límite visual.
             // Aquí activamos el doble buffer para todos los DataGridView, reduciendo el parpadeo al mínimo.
             typeof(DataGridView).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.SetProperty,
                 null, dgv, new object[] { true });
+
+            // Configurar SortMode de columnas
+            dgv.DataBindingComplete += (s, e) =>
+            {
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    // Imagen → no ordenable
+                    if (col is DataGridViewImageColumn)
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                    // Botón → no ordenable
+                    else if (col is DataGridViewButtonColumn)
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                    // CheckBox → solo ordenable si está ligado a datos
+                    else if (col is DataGridViewCheckBoxColumn)
+                    {
+                        if (!string.IsNullOrEmpty(col.DataPropertyName))
+                            col.SortMode = DataGridViewColumnSortMode.Programmatic;
+                        else
+                            col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                    // Columnas ligadas a datos → ordenables
+                    else if (!string.IsNullOrEmpty(col.DataPropertyName))
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.Programmatic;
+                    }
+                    // Todo lo demás → no ordenable
+                    else
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                }
+            };
         }
 
         public static void MsgCatchOue(Exception ex, Action actualizarBarraEstado)

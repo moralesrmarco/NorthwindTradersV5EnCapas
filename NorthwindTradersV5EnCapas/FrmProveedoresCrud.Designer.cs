@@ -610,6 +610,7 @@
             this.Dgv.Size = new System.Drawing.Size(1239, 283);
             this.Dgv.TabIndex = 0;
             this.Dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dgv_CellClick);
+            this.Dgv.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Dgv_ColumnHeaderMouseClick);
             // 
             // tbpConsultar
             // 

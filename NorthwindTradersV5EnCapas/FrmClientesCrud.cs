@@ -1,5 +1,6 @@
 ﻿using BLL;
 using Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -312,6 +313,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
             BorrarMensajesError();
             if (tabcOperacion.SelectedTab != tbpRegistrar)
             {
@@ -364,6 +367,11 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
+        private void dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
+            Utils.OrdenarPorColumna<Cliente>(dgv, e);
+        }
         private void btnOperacion_Click(object sender, EventArgs e)
         {
             BorrarMensajesError();
