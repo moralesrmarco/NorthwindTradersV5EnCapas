@@ -1,6 +1,9 @@
 ﻿using DAL;
+using Entities;
 using Entities.DTOs;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace BLL
 {
@@ -11,6 +14,36 @@ namespace BLL
         public ProductoBLL(string _connectionString)
         {
             _productoDAL = new ProductoDAL(_connectionString);
+        }
+
+        public DataTable ObtenerCategoriasCbo()
+        {
+            var categorias = _productoDAL.ObtenerCategoriasCbo();
+            DataRow filaSeleccione = categorias.NewRow();
+            filaSeleccione["CategoryID"] = 0;
+            filaSeleccione["CategoryName"] = "»--- Seleccione ---«";
+            categorias.Rows.InsertAt(filaSeleccione, 0);
+            return categorias;
+        }
+
+        public DataTable ObtenerProveedoresCbo()
+        {
+            var proveedores = _productoDAL.ObtenerProveedoresCbo();
+            DataRow filaSeleccione = proveedores.NewRow();
+            filaSeleccione["SupplierID"] = 0;
+            filaSeleccione["CompanyName"] = "»--- Seleccione ---«";
+            proveedores.Rows.InsertAt(filaSeleccione, 0);
+            return proveedores;
+        }
+
+        public List<Producto> ObtenerProductos(bool selectorRealizaBusqueda, DtoProductosBuscar criterios, bool top100)
+        {
+            return _productoDAL.ObtenerProductos(selectorRealizaBusqueda, criterios, top100);
+        }
+
+        public Producto ObtenerProductoPorId(int productId)
+        {
+            return _productoDAL.ObtenerProductoPorId(productId);
         }
 
         public List<DtoProductosPorProveedor> ObtenerProductosPorProveedor()

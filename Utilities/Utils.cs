@@ -327,16 +327,23 @@ namespace Utilities
             dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
             dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            //dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             //para evitar el parpadeo en el borde inferior del DataGridView suele deberse a problemas de redibujado cuando el contenido toca el límite visual, se modifica la siguiente propiedad
-            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            //ya no es necesaria porque se usa el doble buffer más abajo
+            //dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.BackgroundColor = SystemColors.GradientInactiveCaption;
             dgv.RowHeadersVisible = false;
-            //dgv.BorderStyle = BorderStyle.FixedSingle;
+            dgv.BorderStyle = BorderStyle.FixedSingle;
             //para evitar el parpadeo en el borde inferior del DataGridView suele deberse a problemas de redibujado cuando el contenido toca el límite visual, se modifica la siguiente propiedad
-            dgv.BorderStyle = BorderStyle.None;
+            //ya no es necesaria porque se usa el doble buffer más abajo
+            //dgv.BorderStyle = BorderStyle.None;
             dgv.AutoResizeColumns();
+            //para evitar el parpadeo en el borde inferior del DataGridView suele deberse a problemas de redibujado cuando el contenido toca el límite visual.
+            // Aquí activamos el doble buffer para todos los DataGridView, reduciendo el parpadeo al mínimo.
+            typeof(DataGridView).InvokeMember("DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.SetProperty,
+                null, dgv, new object[] { true });
         }
 
         public static void MsgCatchOue(Exception ex, Action actualizarBarraEstado)

@@ -1,4 +1,5 @@
-﻿using Entities.DTOs;
+﻿using Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,6 +16,161 @@ namespace DAL
             _connectionString = connectionString;
         }
 
+        public DataTable ObtenerCategoriasCbo()
+        {
+            var dataTable = new DataTable();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpCategoriaObtenerCbo", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var adapter = new SqlDataAdapter(cmd))
+                        adapter.Fill(dataTable);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return dataTable;
+        }
+
+        public DataTable ObtenerProveedoresCbo()
+        {
+            var dataTable = new DataTable();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProveedorObtenerCbo", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    using (var adapter = new SqlDataAdapter(cmd))
+                        adapter.Fill(dataTable);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return dataTable;
+        }
+
+        public List<Producto> ObtenerProductos(bool selectorRealizaBusqueda, DtoProductosBuscar criterios, bool top100)
+        {
+            var productos = new List<Producto>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    if (selectorRealizaBusqueda)
+                    {
+                        cmd.CommandText = "SpProductoBuscar";
+                        cmd.Parameters.AddWithValue("@IdIni", criterios.IdIni);
+                        cmd.Parameters.AddWithValue("@IdFin", criterios.IdFin);
+                        cmd.Parameters.AddWithValue("@Producto", criterios.Producto ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Categoria", criterios.Categoria);
+                        cmd.Parameters.AddWithValue("@Proveedor", criterios.Proveedor);
+                    }
+                    else
+                    {
+                        cmd.CommandText = "SpProductoObtener";
+                        cmd.Parameters.AddWithValue("@Top100", top100);
+                    }
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var producto = new Producto
+                            {
+                                ProductID = reader["ProductID"] != DBNull.Value ? Convert.ToInt32(reader["ProductID"]) : 0,
+                                ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : null,
+                                QuantityPerUnit = reader["QuantityPerUnit"] != DBNull.Value ? reader["QuantityPerUnit"].ToString() : null,
+                                UnitPrice = reader["UnitPrice"] != DBNull.Value ? (decimal?)Convert.ToDecimal(reader["UnitPrice"]) : null,
+                                UnitsInStock = reader["UnitsInStock"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsInStock"]) : null,
+                                UnitsOnOrder = reader["UnitsOnOrder"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsOnOrder"]) : null,
+                                ReorderLevel = reader["ReorderLevel"] != DBNull.Value ? (short?)Convert.ToInt16(reader["ReorderLevel"]) : null,
+                                Discontinued = reader["Discontinued"] != DBNull.Value && Convert.ToBoolean(reader["Discontinued"]),
+                                // Relación con Proveedor
+                                Proveedor = new Proveedor
+                                {
+                                    SupplierID = reader["SupplierID"] != DBNull.Value ? Convert.ToInt32(reader["SupplierID"]) : 0,
+                                    CompanyName = reader["CompanyName"] != DBNull.Value ? reader["CompanyName"].ToString() : null
+                                },
+                                // Relación con Categoria
+                                Categoria = new Categoria
+                                {
+                                    CategoryID = reader["CategoryID"] != DBNull.Value ? Convert.ToInt32(reader["CategoryID"]) : 0,
+                                    CategoryName = reader["CategoryName"] != DBNull.Value ? reader["CategoryName"].ToString() : null,
+                                    Description = reader["Description"] != DBNull.Value ? reader["Description"].ToString() : null
+                                }
+                            };
+                            productos.Add(producto);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return productos;
+        }
+
+        public Producto ObtenerProductoPorId(int productId)
+        {
+            Producto producto = new Producto();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProductoObtenerPorId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ProductID", productId);
+                    con.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            producto = new Producto
+                            {
+                                ProductID = reader["ProductID"] != DBNull.Value ? Convert.ToInt32(reader["ProductID"]) : 0,
+                                ProductName = reader["ProductName"] != DBNull.Value ? reader["ProductName"].ToString() : null,
+                                QuantityPerUnit = reader["QuantityPerUnit"] != DBNull.Value ? reader["QuantityPerUnit"].ToString() : null,
+                                UnitPrice = reader["UnitPrice"] != DBNull.Value ? (decimal?)Convert.ToDecimal(reader["UnitPrice"]) : null,
+                                UnitsInStock = reader["UnitsInStock"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsInStock"]) : null,
+                                UnitsOnOrder = reader["UnitsOnOrder"] != DBNull.Value ? (short?)Convert.ToInt16(reader["UnitsOnOrder"]) : null,
+                                ReorderLevel = reader["ReorderLevel"] != DBNull.Value ? (short?)Convert.ToInt16(reader["ReorderLevel"]) : null,
+                                Discontinued = reader["Discontinued"] != DBNull.Value && Convert.ToBoolean(reader["Discontinued"]),
+                                RowVersion = reader["RowVersion"] != DBNull.Value ? (byte[])reader["RowVersion"] : null,
+
+                                // Relación con Proveedor
+                                Proveedor = new Proveedor
+                                {
+                                    SupplierID = reader["SupplierID"] != DBNull.Value ? Convert.ToInt32(reader["SupplierID"]) : 0
+                                },
+                                // Relación con Categoria
+                                Categoria = new Categoria
+                                {
+                                    CategoryID = reader["CategoryID"] != DBNull.Value ? Convert.ToInt32(reader["CategoryID"]) : 0
+                                }
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return producto;
+        }
         public List<DtoProductosPorProveedor> ObtenerProductosPorProveedor()
         {
             var productosPorProveedor = new List<DtoProductosPorProveedor>();

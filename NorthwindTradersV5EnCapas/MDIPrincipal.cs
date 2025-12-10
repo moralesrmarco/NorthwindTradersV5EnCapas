@@ -357,5 +357,10 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
         }
 
+        private void mantenimientoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmProductosCrud frm = new FrmProductosCrud();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de productos «");
+        }
     }
 }
