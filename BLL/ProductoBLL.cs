@@ -3,7 +3,6 @@ using Entities;
 using Entities.DTOs;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace BLL
 {
@@ -14,6 +13,11 @@ namespace BLL
         public ProductoBLL(string _connectionString)
         {
             _productoDAL = new ProductoDAL(_connectionString);
+        }
+
+        public int Insertar(Producto producto)
+        {
+            return _productoDAL.Insertar(producto);
         }
 
         public DataTable ObtenerCategoriasCbo()

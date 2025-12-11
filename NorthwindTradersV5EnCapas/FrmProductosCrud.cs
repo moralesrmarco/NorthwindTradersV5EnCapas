@@ -3,8 +3,8 @@ using Entities;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -48,6 +48,10 @@ namespace NorthwindTradersV5EnCapas
         {
             tabcOperacion.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
+            // Obtener el símbolo de moneda según la configuración regional del equipo
+            string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+            // Mostrarlo en el Label
+            LblPrecio.Text = "Precio " + simboloMoneda +":";
             DeshabilitarControles();
             LlenarCboCategoria();
             LlenarCboProveedor();
@@ -57,16 +61,16 @@ namespace NorthwindTradersV5EnCapas
 
         private void DeshabilitarControles()
         {
-            txtProducto.ReadOnly = txtCantidadxU.ReadOnly = txtPrecio.ReadOnly = true;
-            txtUInventario.ReadOnly = txtUPedido.ReadOnly = txtPPedido.ReadOnly = true;
+            txtProducto.ReadOnly = txtCantidadxU.ReadOnly = true;
+            nudPPedido.ReadOnly = nudUPedido.ReadOnly = nudUInventario.ReadOnly = nudPrecio.ReadOnly = true;
             chkbDescontinuado.Enabled = false;
             cboCategoria.Enabled = cboProveedor.Enabled = false;
         }
 
         private void HabilitarControles()
         {
-            txtProducto.ReadOnly = txtCantidadxU.ReadOnly = txtPrecio.ReadOnly = false;
-            txtUInventario.ReadOnly = txtUPedido.ReadOnly = txtPPedido.ReadOnly = false;
+            txtProducto.ReadOnly = txtCantidadxU.ReadOnly = false;
+            nudPPedido.ReadOnly = nudUPedido.ReadOnly = nudUInventario.ReadOnly = nudPrecio.ReadOnly = false;
             chkbDescontinuado.Enabled = true;
             cboCategoria.Enabled = cboProveedor.Enabled = true;
         }
@@ -122,8 +126,8 @@ namespace NorthwindTradersV5EnCapas
                 if (selectorRealizaBusqueda)
                     criterios = new DtoProductosBuscar()
                     {
-                        IdIni = string.IsNullOrEmpty(txtBIdIni.Text) ? 0 : int.Parse(txtBIdIni.Text),
-                        IdFin = string.IsNullOrEmpty(txtBIdFin.Text) ? 0 : int.Parse(txtBIdFin.Text),
+                        IdIni = Convert.ToInt32(nudBIdIni.Value),
+                        IdFin = Convert.ToInt32(nudBIdFin.Value),
                         Producto = txtBProducto.Text.Trim(),
                         Categoria = cboBCategoria.SelectedValue == null ? 0 : Convert.ToInt32(cboBCategoria.SelectedValue),
                         Proveedor = cboBProveedor.SelectedValue == null ? 0 : Convert.ToInt32(cboBProveedor.SelectedValue)
@@ -224,8 +228,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void BorrarDatosProducto()
         {
-            txtId.Text = txtProducto.Text = txtCantidadxU.Text = txtPrecio.Text = "";
-            txtUInventario.Text = txtUPedido.Text = txtPPedido.Text = "";
+            txtId.Text = txtProducto.Text = txtCantidadxU.Text = "";
+            nudPPedido.Value = nudUPedido.Value = nudUInventario.Value = nudPrecio.Value = 0;
             chkbDescontinuado.Checked = false;
             cboCategoria.SelectedIndex = cboProveedor.SelectedIndex = 0;
         }
@@ -234,23 +238,9 @@ namespace NorthwindTradersV5EnCapas
 
         private void BorrarDatosBusqueda()
         {
-            txtBIdIni.Text = txtBIdFin.Text = txtBProducto.Text = "";
+            nudBIdIni.Value = nudBIdFin.Value = 0;
+            txtBProducto.Text = "";
             cboBCategoria.SelectedIndex = cboBProveedor.SelectedIndex = 0;
-        }
-
-        private void ValidarDigitosSinPunto_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
-
-        private void txtBId_Enter(object sender, EventArgs e) => ((TextBox)sender).SelectAll();
-
-        void txtBId_Leave(object sender, EventArgs e)
-        {
-            // Castear el objeto que disparó el evento
-            TextBox tb = sender as TextBox;
-            if (tb == null) return; // seguridad
-            if (tb == txtBIdIni)
-                Utils.ValidaTxtBIdIni(txtBIdIni, txtBIdFin);
-            else if (tb == txtBIdFin)
-                Utils.ValidaTxtBIdFin(txtBIdIni, txtBIdFin);
         }
 
         private bool ValidarControles()
@@ -271,25 +261,10 @@ namespace NorthwindTradersV5EnCapas
                 valida = false;
                 errorProvider1.SetError(txtProducto, "Ingrese producto");
             }
-            if (txtPrecio.Text.Trim() == "")
+            if (nudPrecio.Value == 0)
             {
                 valida = false;
-                errorProvider1.SetError(txtPrecio, "Ingrese precio");
-            }
-            if (txtUInventario.Text.Trim() == "")
-            {
-                valida = false;
-                errorProvider1.SetError(txtUInventario, "Ingrese unidades en inventario");
-            }
-            if (txtUPedido.Text.Trim() == "")
-            {
-                valida = false;
-                errorProvider1.SetError(txtUPedido, "Ingrese unidades en pedido");
-            }
-            if (txtPPedido.Text.Trim() == "")
-            {
-                valida = false;
-                errorProvider1.SetError(txtPPedido, "Ingrese punto de pedido");
+                errorProvider1.SetError(nudPrecio, "Ingrese precio");
             }
             return valida;
         }
@@ -315,10 +290,10 @@ namespace NorthwindTradersV5EnCapas
                         cboProveedor.SelectedValue = producto.Proveedor?.SupplierID ?? 0;
                         txtProducto.Text = producto.ProductName ?? "";
                         txtCantidadxU.Text = producto.QuantityPerUnit ?? "";
-                        txtPrecio.Text = (producto.UnitPrice ?? 0m).ToString("F2");
-                        txtUInventario.Text = (producto.UnitsInStock ?? 0).ToString();
-                        txtUPedido.Text = (producto.UnitsOnOrder ?? 0).ToString();
-                        txtPPedido.Text = (producto.ReorderLevel ?? 0).ToString();
+                        nudPrecio.Value = producto.UnitPrice ?? 0m;
+                        nudUInventario.Value = producto.UnitsInStock ?? 0;
+                        nudUPedido.Value = producto.UnitsOnOrder ?? 0;
+                        nudPPedido.Value = producto.ReorderLevel ?? 0;
                         chkbDescontinuado.Checked = producto.Discontinued;
                         // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
                         CargarValoresOriginales();
@@ -398,93 +373,100 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        private void txtUInventario_Validating(object sender, CancelEventArgs e)
+        private void Nud_ValueChanged(object sender, EventArgs e)
         {
-            if (txtUInventario.Text.Trim() != "")
+            // El sender es el control que disparó el evento
+            var nud = sender as NumericUpDown;
+            if (nud == null) return;
+            // Formatear con separador de miles y 2 decimales
+            nud.Text = nud.Value.ToString("N0");
+        }
+
+        private void Nud_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Bloquear punto y coma
+            if (e.KeyChar == '.' || e.KeyChar == ',')
             {
-                if (int.Parse(txtUInventario.Text) > 32767)
-                {
-                    errorProvider1.SetError(txtUInventario, "La cantidad no puede ser mayor a 32767");
-                    e.Cancel = true;
-                }
-                else
-                    errorProvider1.SetError(txtUInventario, "");
+                e.Handled = true; // Ignora la tecla
             }
         }
 
-        private void txtUPedido_Validating(object sender, CancelEventArgs e)
+        private void Nud_Enter(object sender, EventArgs e)
         {
-            if (txtUPedido.Text.Trim() != "")
+            var nud = sender as NumericUpDown;
+            // El NumericUpDown contiene un TextBox interno en Controls[1]
+            if (nud.Controls[1] is TextBox tb)
             {
-                if (int.Parse(txtUPedido.Text) > 32767)
-                {
-                    errorProvider1.SetError(txtUPedido, "La cantidad no puede ser mayor a 32767");
-                    e.Cancel = true;
-                }
-                else
-                    errorProvider1.SetError(txtUPedido, "");
+                tb.SelectAll();
             }
         }
 
-        private void txtPPedido_Validating(object sender, CancelEventArgs e)
+        private void nudPrecio_ValueChanged(object sender, EventArgs e)
         {
-            if (txtPPedido.Text.Trim() != "")
-            {
-                if (int.Parse(txtPPedido.Text) > 32767)
-                {
-                    errorProvider1.SetError(txtPPedido, "La cantidad no puede ser mayor a 32767");
-                    e.Cancel = true;
-                }
-                else
-                    errorProvider1.SetError(txtPPedido, "");
-            }
+            nudPrecio.Text = nudPrecio.Value.ToString("C2", CultureInfo.CurrentCulture);
         }
 
-        private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosConPunto(sender, e);
+        private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void btnOperacion_Click(object sender, EventArgs e)
         {
-            //BorrarMensajesError();
-            //if (tabcOperacion.SelectedTab == tbpRegistrar)
-            //{
-            //    if (ValidarControles())
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
-            //        DeshabilitarControles();
-            //        btnOperacion.Enabled = false;
-            //        try
-            //        {
-            //            var producto = new Producto
-            //            {
-            //                CategoryID = Convert.ToInt32(cboCategoria.SelectedValue),
-            //                SupplierID = Convert.ToInt32(cboProveedor.SelectedValue),
-            //                ProductName = txtProducto.Text,
-            //                QuantityPerUnit = string.IsNullOrEmpty(txtCantidadxU.Text) ? null : txtCantidadxU.Text,
-            //                UnitPrice = decimal.Parse(txtPrecio.Text),
-            //                UnitsInStock = short.Parse(txtUInventario.Text),
-            //                UnitsOnOrder = short.Parse(txtUPedido.Text),
-            //                ReorderLevel = short.Parse(txtPPedido.Text),
-            //                Discontinued = chkbDescontinuado.Checked
-            //            };
-            //            int numRegs = repo.Insertar(producto);
-            //            if (numRegs > 0)
-            //            {
-            //                txtId.Text = producto.ProductID.ToString();
-            //                Utils.MensajeInformation($"El producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text} se registró satisfactoriamente");
-            //            }
-            //            else
-            //                 Utils.MensajeError($"El producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text} NO fue registrado en la base de datos");
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Utils.MsgCatchOue(ex);
-            //        }
-            //        HabilitarControles();
-            //        btnOperacion.Enabled = true;
-            //        LlenarCombos();
-            //        ActualizaDgv();
-            //    }
-            //}
+            BorrarMensajesError();
+            if (tabcOperacion.SelectedTab == tbpRegistrar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var producto = new Producto
+                        {
+                            // Relación con Categoria
+                            Categoria = new Categoria
+                            {
+                                CategoryID = Convert.ToInt32(cboCategoria.SelectedValue)
+                            },
+
+                            // Relación con Proveedor
+                            Proveedor = new Proveedor
+                            {
+                                SupplierID = Convert.ToInt32(cboProveedor.SelectedValue)
+                            },
+                            ProductName = txtProducto.Text,
+                            QuantityPerUnit = string.IsNullOrEmpty(txtCantidadxU.Text) ? null : txtCantidadxU.Text,
+                            UnitPrice = nudPrecio.Value,
+                            UnitsInStock = Convert.ToInt16(nudUInventario.Value),
+                            UnitsOnOrder = Convert.ToInt16(nudUPedido.Value),
+                            ReorderLevel = Convert.ToInt16(nudPPedido.Value),
+                            Discontinued = chkbDescontinuado.Checked
+                        };
+                        int numRegs = _productoBLL.Insertar(producto);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs} registro(s)");
+                        string idNombreProducto = $"El producto con Id: {txtId.Text} - Nombre de producto: {txtProducto.Text}:";
+                        if (numRegs > 0)
+                        {
+                            txtId.Text = producto.ProductID.ToString();
+                            idNombreProducto = $"El producto con Id: {txtId.Text} - Nombre de producto: {txtProducto.Text}:";
+                            U.NotificacionInformation(idNombreProducto + Utils.srs);
+                        }
+                        else
+                            U.NotificacionError(idNombreProducto + Utils.nfrs);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    HabilitarControles();
+                    btnOperacion.Enabled = true;
+                    LlenarCombos();
+                    ActualizaDgv();
+                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
+                    CargarValoresOriginales();
+                }
+            }
             //else if (tabcOperacion.SelectedTab == tbpModificar)
             //{
             //    if (txtId.Text == "")
@@ -574,6 +556,5 @@ namespace NorthwindTradersV5EnCapas
             // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
         }
-
     }
 }

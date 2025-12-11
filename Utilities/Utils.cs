@@ -324,6 +324,49 @@ namespace Utilities
             }
         }
 
+        /// <summary>
+        /// Ajusta los valores de dos NumericUpDown que representan un rango (inicial y final).
+        /// Usa el parámetro sender para identificar cuál control disparó el evento.
+        /// Reglas:
+        /// - Si el evento lo dispara el inicial:
+        ///   1. Si inicial = 0 → final = 0
+        ///   2. Si inicial > 0 y final = 0 → final = inicial
+        ///   3. Si final < inicial → final = inicial
+        /// - Si el evento lo dispara el final:
+        ///   1. Si final > 0 y inicial = 0 → inicial = final
+        ///   2. Si inicial > final → inicial = final
+        ///
+        /// Con esto se garantiza siempre: 0 ≤ Inicial ≤ Final
+        /// </summary>
+        /// <param name="sender">Es el parámetro sender para identificar cuál control disparó el evento</param>
+        /// <param name="nudIni">NumericUpDown que representa el ID inicial</param>
+        /// <param name="nudFin">NumericUpDown que representa el ID final</param>
+
+        public static void ValidarRango(object sender, NumericUpDown nudIni, NumericUpDown nudFin)
+        {
+            var nudSender = sender as NumericUpDown;
+            if (nudSender == null) return;
+
+            if (nudSender == nudIni)
+            {
+                // Reglas cuando se sale del inicial
+                if (nudIni.Value == 0)
+                    nudFin.Value = 0;
+                else if (nudIni.Value > 0 && nudFin.Value == 0)
+                    nudFin.Value = nudIni.Value;
+                else if (nudFin.Value < nudIni.Value)
+                    nudFin.Value = nudIni.Value;
+            }
+            else if (nudSender == nudFin)
+            {
+                // Reglas cuando se sale del final
+                if (nudFin.Value > 0 && nudIni.Value == 0)
+                    nudIni.Value = nudFin.Value;
+                else if (nudIni.Value > nudFin.Value)
+                    nudIni.Value = nudFin.Value;
+            }
+        }
+
         public static void ValidaTxtBIdIni(TextBox txtBIdIni, TextBox txtBIdFin)
         {
             int numBIdIni = 0, numBIdFin = 0;
