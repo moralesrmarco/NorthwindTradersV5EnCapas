@@ -365,7 +365,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void listadoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmProductosListado frm = new FrmProductosListado();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de productos «");
         }
 
         private void consultaDeProductosPorCategoríaToolStripMenuItem1_Click(object sender, EventArgs e)

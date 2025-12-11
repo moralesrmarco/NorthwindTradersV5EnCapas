@@ -36,6 +36,7 @@ namespace Utilities
             public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
+            public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
         #endregion
 
         /// <summary>
@@ -182,7 +183,7 @@ namespace Utilities
                 }
                 else if (ctrl is CheckBox chk)
                 {
-                    if (!name.StartsWith("chkB", StringComparison.OrdinalIgnoreCase))
+                    if (!name.StartsWith("chkbB", StringComparison.OrdinalIgnoreCase))
                         valores[name] = chk.Checked;
                 }
                 else if (ctrl is DateTimePicker dtp)
@@ -229,7 +230,7 @@ namespace Utilities
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;
-                            errorProvider.SetError(txt, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                            errorProvider.SetError(txt, ecfm);
                         }
                     }
                 }
@@ -244,13 +245,13 @@ namespace Utilities
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;
-                            errorProvider.SetError(cbo, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                            errorProvider.SetError(cbo, ecfm);
                         }
                     }
                 }
                 else if (ctrl is CheckBox chk)
                 {
-                    if (name.StartsWith("chkB", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (name.StartsWith("chkbB", StringComparison.OrdinalIgnoreCase)) continue;
 
                     if (valoresOriginales.TryGetValue(name, out var original))
                     {
@@ -258,7 +259,7 @@ namespace Utilities
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;
-                            errorProvider.SetError(chk, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                            errorProvider.SetError(chk, ecfm);
                         }
                     }
                 }
@@ -272,7 +273,7 @@ namespace Utilities
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;
-                            errorProvider.SetError(dtp, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                            errorProvider.SetError(dtp, ecfm);
                         }
                     }
                 }
@@ -286,7 +287,7 @@ namespace Utilities
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;
-                            errorProvider.SetError(nud, "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios");
+                            errorProvider.SetError(nud, ecfm);
                         }
                     }
                 }
