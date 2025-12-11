@@ -20,6 +20,16 @@ namespace BLL
             return _productoDAL.Insertar(producto);
         }
 
+        public int Actualizar(Producto producto)
+        {
+            return _productoDAL.Actualizar(producto);
+        }
+
+        public int Eliminar(int productId, byte[] rowVersion)
+        {
+            return _productoDAL.Eliminar(productId, rowVersion);
+        }
+
         public DataTable ObtenerCategoriasCbo()
         {
             var categorias = _productoDAL.ObtenerCategoriasCbo();

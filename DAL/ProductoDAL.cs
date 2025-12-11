@@ -48,6 +48,65 @@ namespace DAL
             return numRegs;
         }
 
+        public int Actualizar(Producto producto)
+        {
+            int numRegs = 0;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProductoActualizar", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ProductID", producto.ProductID);
+                    cmd.Parameters.AddWithValue("@ProductName", producto.ProductName);
+                    cmd.Parameters.AddWithValue("@SupplierID", producto.Proveedor?.SupplierID ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CategoryID", producto.Categoria?.CategoryID ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@QuantityPerUnit", (object)producto.QuantityPerUnit ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UnitPrice", (object)producto.UnitPrice ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UnitsInStock", (object)producto.UnitsInStock ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UnitsOnOrder", (object)producto.UnitsOnOrder ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ReorderLevel", (object)producto.ReorderLevel ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Discontinued", producto.Discontinued);
+                    cmd.Parameters.AddWithValue("@RowVersion", producto.RowVersion ?? (object)DBNull.Value);
+                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    numRegs = (int)returnParameter.Value;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return numRegs;
+        }
+
+        public int Eliminar(int productId, byte[] rowVersion)
+        {
+            int numRegs = 0;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProductoEliminar", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ProductID", productId);
+                    cmd.Parameters.AddWithValue("@RowVersion", rowVersion ?? (object)DBNull.Value);
+                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    numRegs = (int)returnParameter.Value;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return numRegs;
+        }
+
         public DataTable ObtenerCategoriasCbo()
         {
             var dataTable = new DataTable();

@@ -429,7 +429,6 @@ namespace NorthwindTradersV5EnCapas
                             {
                                 CategoryID = Convert.ToInt32(cboCategoria.SelectedValue)
                             },
-
                             // Relación con Proveedor
                             Proveedor = new Proveedor
                             {
@@ -467,80 +466,85 @@ namespace NorthwindTradersV5EnCapas
                     CargarValoresOriginales();
                 }
             }
-            //else if (tabcOperacion.SelectedTab == tbpModificar)
-            //{
-            //    if (txtId.Text == "")
-            //    {
-            //        Utils.MensajeExclamation("Seleccione el producto a modificar");
-            //        return;
-            //    }
-            //    if (ValidarControles())
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
-            //        DeshabilitarControles();
-            //        btnOperacion.Enabled = false;
-            //        try
-            //        {
-            //            var producto = new Producto
-            //            {
-            //                ProductID = int.Parse(txtId.Text),
-            //                CategoryID = Convert.ToInt32(cboCategoria.SelectedValue),
-            //                SupplierID = Convert.ToInt32(cboProveedor.SelectedValue),
-            //                ProductName = txtProducto.Text,
-            //                QuantityPerUnit = string.IsNullOrEmpty(txtCantidadxU.Text) ? null : txtCantidadxU.Text,
-            //                UnitPrice = decimal.Parse(txtPrecio.Text),
-            //                UnitsInStock = short.Parse(txtUInventario.Text),
-            //                UnitsOnOrder = short.Parse(txtUPedido.Text),
-            //                ReorderLevel = short.Parse(txtPPedido.Text),
-            //                Discontinued = chkbDescontinuado.Checked,
-            //                RowVersion = (int)txtId.Tag
-            //            };
-            //            int numRegs = repo.Actualizar(producto);
-            //            if (numRegs > 0)
-            //                Utils.MensajeInformation($"El producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text} se modificó satisfactoriamente");
-            //            else
-            //                Utils.MensajeError($"El producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text} NO fue modificado en la base de datos, es posible que otro usuario lo haya modificado o eliminado previamente");
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Utils.MsgCatchOue(ex);
-            //        }
-            //        LlenarCombos();
-            //        ActualizaDgv();
-            //    }
-            //}
-            //else if (tabcOperacion.SelectedTab == tbpEliminar)
-            //{
-            //    if (txtId.Text == "")
-            //    {
-            //        Utils.MensajeExclamation("Seleccione el producto a eliminar");
-            //        return;
-            //    }
-            //    if (Utils.MensajeQuestion($"¿Está seguro de eliminar el producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text}?") == DialogResult.Yes)
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
-            //        btnOperacion.Enabled = false;
-            //        try
-            //        {
-            //            var producto = new Producto
-            //            {
-            //                ProductID = int.Parse(txtId.Text),
-            //                RowVersion = (int)txtId.Tag
-            //            };
-            //            int numRegs = repo.Eliminar(producto);
-            //            if (numRegs > 0)
-            //                Utils.MensajeInformation($"El producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text} se eliminó satisfactoriamente");
-            //            else
-            //                Utils.MensajeExclamation($"El producto con Id: {txtId.Text} y Nombre de producto: {txtProducto.Text} NO se eliminó en la base de datos, es posible que otro usuario de la red lo haya modificado o eliminado previamente");
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Utils.MsgCatchOue(ex);
-            //        }
-            //        LlenarCombos();
-            //        ActualizaDgv();
-            //    }
-            //}
+            else if (tabcOperacion.SelectedTab == tbpModificar)
+            {
+                if (ValidarControles())
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                    DeshabilitarControles();
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        var producto = new Producto
+                        {
+                            ProductID = int.Parse(txtId.Text),
+                            // Relación con Categoria
+                            Categoria = new Categoria
+                            {
+                                CategoryID = Convert.ToInt32(cboCategoria.SelectedValue)
+                            },
+                            // Relación con Proveedor
+                            Proveedor = new Proveedor
+                            {
+                                SupplierID = Convert.ToInt32(cboProveedor.SelectedValue)
+                            },
+                            ProductName = txtProducto.Text,
+                            QuantityPerUnit = string.IsNullOrEmpty(txtCantidadxU.Text) ? null : txtCantidadxU.Text,
+                            UnitPrice = nudPrecio.Value,
+                            UnitsInStock = Convert.ToInt16(nudUInventario.Value),
+                            UnitsOnOrder = Convert.ToInt16(nudUPedido.Value),
+                            ReorderLevel = Convert.ToInt16(nudPPedido.Value),
+                            Discontinued = chkbDescontinuado.Checked,
+                            RowVersion = (byte[])txtId.Tag
+                        };
+                        int numRegs = _productoBLL.Actualizar(producto);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
+                        string idNombreProducto = $"El producto con Id: {txtId.Text} - Nombre de producto: {txtProducto.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idNombreProducto + Utils.sms);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idNombreProducto + Utils.nfmfe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idNombreProducto + Utils.nfmfm);
+                        else
+                            U.NotificacionError(idNombreProducto + Utils.nfmmd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCombos();
+                    ActualizaDgv();
+                }
+            }
+            else if (tabcOperacion.SelectedTab == tbpEliminar)
+            {
+                if (U.NotificacionQuestion($"[orange]¿Está seguro de eliminar el producto con Id: {txtId.Text} - Nombre de producto: {txtProducto.Text}?") == DialogResult.Yes)
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
+                    btnOperacion.Enabled = false;
+                    try
+                    {
+                        int numRegs = _productoBLL.Eliminar(Convert.ToInt32(txtId.Text), (byte[])txtId.Tag);
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se eliminaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
+                        string idyNombre = $"El producto con Id: {txtId.Text} - Nombre de producto: {txtProducto.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idyNombre + Utils.ses);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idyNombre + Utils.nfefe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idyNombre + Utils.nfefm);
+                        else
+                            U.NotificacionError(idyNombre + Utils.nfemd);
+                    }
+                    catch (Exception ex)
+                    {
+                        U.MsgCatchOue(ex);
+                    }
+                    LlenarCombos();
+                    ActualizaDgv();
+                }
+            }
         }
 
         private void ActualizaDgv() => btnLimpiar.PerformClick();

@@ -362,5 +362,60 @@ namespace NorthwindTradersV5EnCapas
             FrmProductosCrud frm = new FrmProductosCrud();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de productos «");
         }
+
+        private void listadoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void consultaDeProductosPorCategoríaToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void consultaDeProductosPorProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void consultaAlfabéticaDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listadoDeProductosPorCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void productosPorEncimaDelPrecioPromedioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteDeProductosPorProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteAlfabéticoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reporteDeProductosPorProveedorConDetalleDelProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
