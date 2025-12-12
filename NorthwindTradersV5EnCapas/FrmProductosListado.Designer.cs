@@ -64,8 +64,6 @@
             this.tabcOperacion.SelectedIndex = 0;
             this.tabcOperacion.Size = new System.Drawing.Size(1410, 73);
             this.tabcOperacion.TabIndex = 0;
-            this.tabcOperacion.SelectedIndexChanged += new System.EventHandler(this.tabcOperacion_SelectedIndexChanged);
-            this.tabcOperacion.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabcOperacion_Selected);
             // 
             // tabpBuscarProducto
             // 
@@ -102,6 +100,7 @@
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(110, 22);
             this.nudBIdFin.TabIndex = 13;
+            this.nudBIdFin.Leave += new System.EventHandler(this.nudBIdFin_Leave);
             // 
             // nudBIdIni
             // 
@@ -114,6 +113,7 @@
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(110, 22);
             this.nudBIdIni.TabIndex = 13;
+            this.nudBIdIni.Leave += new System.EventHandler(this.nudBIdIni_Leave);
             // 
             // btnLimpiar
             // 

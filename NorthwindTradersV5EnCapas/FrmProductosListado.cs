@@ -14,7 +14,6 @@ namespace NorthwindTradersV5EnCapas
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private ProductoBLL _productoBLL;
         private bool EjecutarConfDgv = true;
-        string strProcedure = "";
 
         public FrmProductosListado()
         {
@@ -29,9 +28,11 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmProductosListado_Load(object sender, EventArgs e)
         {
+            Dgv.ColumnHeaderMouseClick += Dgv_ColumnHeaderMouseClick;
             LlenarCboCategoria();
             LlenarCboProveedor();
             Utils.ConfDgv(Dgv);
+            LlenarDgv(true);
         }
 
         private void LlenarCboCategoria()
@@ -70,23 +71,15 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            //txtIdInicial.Text = txtIdFinal.Text = 
+            nudBIdIni.Value = nudBIdFin.Value = 0;
             txtBProducto.Text = "";
             cboBCategoria.SelectedIndex = cboBProveedor.SelectedIndex = 0;
-            Dgv.DataSource = null;
-            MDIPrincipal.ActualizarBarraDeEstado();
-        }
-
-        private void btnListarTodos_Click(object sender, EventArgs e)
-        {
-            strProcedure = "spProductos";
-            LlenarDgv(sender);
+            LlenarDgv(true);
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            strProcedure = "spProductosBuscar";
-            LlenarDgv(sender);
+            LlenarDgv(true);
         }
 
         private void LlenarDgv(bool selectorRealizaBusqueda)
@@ -126,8 +119,20 @@ namespace NorthwindTradersV5EnCapas
                     SupplierID = p.Proveedor?.SupplierID ?? 0
                 }).ToList();
                 Dgv.DataSource = dtoProductos;
-                ConfDgv();
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registro(s)");
+                if (EjecutarConfDgv)
+                {
+                    ConfDgv();
+                    EjecutarConfDgv = false;
+                }
+                // Conteo de categorías y proveedores distintos
+                int totalCategorias = dtoProductos.Select(c => c.CategoryID).Distinct().Count();
+                int totalProveedores = dtoProductos.Select(p => p.SupplierID).Distinct().Count();
+                string leyenda = string.Empty;
+                if (Dgv.RowCount > 0)
+                    leyenda = $"Se encontraron {Dgv.RowCount} producto(s), en {totalCategorias} categoría(s) y {totalProveedores} proveedor(es)";
+                else
+                    leyenda = "No se encontraron registros";
+                MDIPrincipal.ActualizarBarraDeEstado(leyenda);
             }
             catch (Exception ex)
             {
@@ -174,14 +179,14 @@ namespace NorthwindTradersV5EnCapas
             Dgv.Columns["CompanyName"].HeaderText = "Proveedor";
         }
 
-        private void tabcOperacion_Selected(object sender, TabControlEventArgs e)
+        private void Dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            btnLimpiar.PerformClick();
+            // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
+            Utils.OrdenarPorColumna<DtoProducto>(Dgv, e);
         }
 
-        private void tabcOperacion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            btnLimpiar.PerformClick();
-        }
+        private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
     }
 }

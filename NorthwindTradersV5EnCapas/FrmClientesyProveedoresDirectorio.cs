@@ -13,6 +13,7 @@ namespace NorthwindTradersV5EnCapas
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         ClienteBLL _clienteBLL;
+        private bool EjecutarConfDgv = true;
 
         public FrmClientesyProveedoresDirectorio()
         {
@@ -54,7 +55,11 @@ namespace NorthwindTradersV5EnCapas
                 string nombreDeFormulario = "FrmClientesyProveedoresDirectorio";
                 var clientesProveedores = _clienteBLL.ObtenerClientesProveedores(nombreDeFormulario, string.Empty, checkBoxClientes.Checked, checkBoxProveedores.Checked);
                 Dgv.DataSource = clientesProveedores;
-                ConfDgv();
+                if (EjecutarConfDgv)
+                {
+                    ConfDgv();
+                    EjecutarConfDgv = false;
+                }
                 // Conteos
                 int totalClientes = clientesProveedores.Count(cp => cp.Relation == "Cliente");
                 int totalProveedores = clientesProveedores.Count(cp => cp.Relation == "Proveedor");
