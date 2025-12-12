@@ -18,6 +18,9 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _productoBLL = new ProductoBLL(_connectionString);
+            // las dos siguientes lineas es para que se pueda habilitar el ordenamiento por cada columna
+            Dgv.ColumnHeaderMouseClick += (s, e) => Utils.OrdenarPorColumna(Dgv, e); // vinculacion del evento al metodo
+            Dgv.DataBindingComplete += Dgv_DataBindingComplete;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -53,12 +56,31 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 var dt = _productoBLL.ObtenerProductosPorEncimaDelPrecioPromedio();
-                Dgv.DataSource = dt;
+                Dgv.DataSource = dt.DefaultView; // para activar el ordenamiento se debe enlazar al DefaultView del DataTable
                 MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {Dgv.RowCount} registro(s)");
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
+            }
+        }
+
+        private void Dgv_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var dgv = (DataGridView)sender;
+
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                // Si la columna está ligada a un campo de datos
+                if (!string.IsNullOrEmpty(col.DataPropertyName))
+                {
+                    col.SortMode = DataGridViewColumnSortMode.Programmatic;
+                }
+                else
+                {
+                    // Columnas sin DataPropertyName (imágenes, botones, calculadas)
+                    col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
             }
         }
 
