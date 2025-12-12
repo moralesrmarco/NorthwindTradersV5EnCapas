@@ -69,5 +69,15 @@ namespace BLL
         {
             return _productoDAL.ObtenerProductosPorProveedorConDetProv();
         }
+
+        public decimal ObtenerPrecioPromedio()
+        {
+            return _productoDAL.ObtenerPrecioPromedio();
+        }
+
+        public DataTable ObtenerProductosPorEncimaDelPrecioPromedio()
+        {
+            return _productoDAL.ObtenerProductosPorEncimaDelPrecioPromedio();
+        }
     }
 }

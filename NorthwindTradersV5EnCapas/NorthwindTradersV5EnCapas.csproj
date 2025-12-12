@@ -143,6 +143,12 @@
     <Compile Include="FrmProductosListado.Designer.cs">
       <DependentUpon>FrmProductosListado.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmProductosPorEncimaPrecioPromedio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProductosPorEncimaPrecioPromedio.Designer.cs">
+      <DependentUpon>FrmProductosPorEncimaPrecioPromedio.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmProveedoresCrud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProductosListado.resx">
       <DependentUpon>FrmProductosListado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProductosPorEncimaPrecioPromedio.resx">
+      <DependentUpon>FrmProductosPorEncimaPrecioPromedio.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProveedoresCrud.resx">
       <DependentUpon>FrmProveedoresCrud.cs</DependentUpon>

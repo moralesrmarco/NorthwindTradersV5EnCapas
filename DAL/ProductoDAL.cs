@@ -262,6 +262,7 @@ namespace DAL
             }
             return producto;
         }
+
         public List<DtoProductosPorProveedor> ObtenerProductosPorProveedor()
         {
             var productosPorProveedor = new List<DtoProductosPorProveedor>();
@@ -354,6 +355,42 @@ namespace DAL
                 throw;
             }
             return productosPorProveedor;
+        }
+
+        public decimal ObtenerPrecioPromedio()
+        {
+            decimal precioPromedio = 0;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("Select Avg(UnitPrice) As PrecioPromedio from products", con))
+                {
+                    con.Open();
+                    precioPromedio = Convert.ToDecimal(cmd.ExecuteScalar());
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al calcular el precio promedio: " + ex.Message);
+            }
+            return precioPromedio;
+        }
+
+        public DataTable ObtenerProductosPorEncimaDelPrecioPromedio()
+        {
+            var dt = new DataTable();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("Select * from VwProductosPorEncimaDelPrecioPromedio", con))
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al obtener los productos por encima del precio promedio: " + ex.Message);
+            }
+            return dt;
         }
     }
 }

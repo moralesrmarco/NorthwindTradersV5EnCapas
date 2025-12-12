@@ -387,14 +387,16 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta alfabética de productos «");
         }
 
-        private void listadoDeProductosPorCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void listadoDeCategoríasConProductosToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            FrmCategoriasConProductosListado frm = new FrmCategoriasConProductosListado();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de categorías con productos «");
         }
 
         private void productosPorEncimaDelPrecioPromedioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmProductosPorEncimaPrecioPromedio frm = new FrmProductosPorEncimaPrecioPromedio();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Productos por encima del precio promedio «");
         }
 
         private void reporteDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
