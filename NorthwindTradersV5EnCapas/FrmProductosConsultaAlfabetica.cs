@@ -8,14 +8,13 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmProductosListado : Form
+    public partial class FrmProductosConsultaAlfabetica : Form
     {
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private ProductoBLL _productoBLL;
-        private bool EjecutarConfDgv = true;
 
-        public FrmProductosListado()
+        public FrmProductosConsultaAlfabetica()
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
@@ -24,84 +23,21 @@ namespace NorthwindTradersV5EnCapas
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
 
-        private void FrmProductosListado_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
+        private void FrmProductosConsultaAlfabetica_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmProductosListado_Load(object sender, EventArgs e)
+        private void FrmProductosConsultaAlfabetica_Load(object sender, EventArgs e)
         {
             Dgv.ColumnHeaderMouseClick += Dgv_ColumnHeaderMouseClick;
-            LlenarCboCategoria();
-            LlenarCboProveedor();
             Utils.ConfDgv(Dgv);
-            LlenarDgv(true);
+            LlenarDgv();
         }
 
-        private void LlenarCboCategoria()
+        private void LlenarDgv()
         {
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dt = _productoBLL.ObtenerCategoriasCbo();
-                cboBCategoria.DataSource = dt;
-                cboBCategoria.DisplayMember = "CategoryName";
-                cboBCategoria.ValueMember = "CategoryID";
-                MDIPrincipal.ActualizarBarraDeEstado();
-            }
-            catch (Exception ex)
-            {
-                U.MsgCatchOue(ex);
-            }
-        }
-
-        private void LlenarCboProveedor()
-        {
-            try
-            {
-                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dt = _productoBLL.ObtenerProveedoresCbo();
-                cboBProveedor.DataSource = dt;
-                cboBProveedor.DisplayMember = "CompanyName";
-                cboBProveedor.ValueMember = "SupplierId";
-                MDIPrincipal.ActualizarBarraDeEstado();
-            }
-            catch (Exception ex)
-            {
-                U.MsgCatchOue(ex);
-            }
-        }
-
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            nudBIdIni.Value = nudBIdFin.Value = 0;
-            txtBProducto.Text = "";
-            cboBCategoria.SelectedIndex = cboBProveedor.SelectedIndex = 0;
-            LlenarDgv(true);
-        }
-
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            LlenarDgv(true);
-        }
-
-        private void LlenarDgv(bool selectorRealizaBusqueda)
-        {
-            try
-            {
-                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                DtoProductosBuscar criterios = null;
-                if (selectorRealizaBusqueda)
-                {
-                    criterios = new DtoProductosBuscar
-                    {
-                        IdIni = Convert.ToInt32(nudBIdIni.Value),
-                        IdFin = Convert.ToInt32(nudBIdFin.Value),
-                        Producto = txtBProducto.Text.Trim(),
-                        Categoria = cboBCategoria.SelectedValue == null ? 0 : Convert.ToInt32(cboBCategoria.SelectedValue),
-                        Proveedor = cboBProveedor.SelectedValue == null ? 0 : Convert.ToInt32(cboBProveedor.SelectedValue)
-                    };
-                }
-                else
-                    criterios = null;
-                var productos = _productoBLL.ObtenerProductos(selectorRealizaBusqueda, criterios, false);
+                var productos = _productoBLL.ObtenerProductos(false, null, true); // se esta reutilizando lo que ya esta programado, por eso esos parametros
                 var dtoProductos = productos.Select(p => new DtoProducto
                 {
                     ProductID = p.ProductID,
@@ -117,13 +53,11 @@ namespace NorthwindTradersV5EnCapas
                     CompanyName = p.Proveedor?.CompanyName,
                     CategoryID = p.Categoria?.CategoryID ?? 0,
                     SupplierID = p.Proveedor?.SupplierID ?? 0
-                }).ToList();
+                })
+                .OrderBy(p => p.ProductName) // se reordena para cumplir con el orden alfabético
+                .ToList();
                 Dgv.DataSource = dtoProductos;
-                if (EjecutarConfDgv)
-                {
-                    ConfDgv();
-                    EjecutarConfDgv = false;
-                }
+                ConfDgv();
                 // Conteo de categorías y proveedores distintos
                 int totalCategorias = dtoProductos.Select(c => c.CategoryID).Distinct().Count();
                 int totalProveedores = dtoProductos.Select(p => p.SupplierID).Distinct().Count();
@@ -184,9 +118,5 @@ namespace NorthwindTradersV5EnCapas
             // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
             Utils.OrdenarPorColumna<DtoProducto>(Dgv, e);
         }
-
-        private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
-
-        private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
     }
 }
