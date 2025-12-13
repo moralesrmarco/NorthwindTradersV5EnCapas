@@ -107,48 +107,6 @@ namespace DAL
             return numRegs;
         }
 
-        public DataTable ObtenerCategoriasCbo()
-        {
-            var dataTable = new DataTable();
-            try
-            {
-                using (var con = new SqlConnection(_connectionString))
-                using (var cmd = new SqlCommand("SpCategoriaObtenerCbo", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    con.Open();
-                    using (var adapter = new SqlDataAdapter(cmd))
-                        adapter.Fill(dataTable);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return dataTable;
-        }
-
-        public DataTable ObtenerProveedoresCbo()
-        {
-            var dataTable = new DataTable();
-            try
-            {
-                using (var con = new SqlConnection(_connectionString))
-                using (var cmd = new SqlCommand("SpProveedorObtenerCbo", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    con.Open();
-                    using (var adapter = new SqlDataAdapter(cmd))
-                        adapter.Fill(dataTable);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return dataTable;
-        }
-
         public List<Producto> ObtenerProductos(bool selectorRealizaBusqueda, DtoProductosBuscar criterios, bool top100)
         {
             var productos = new List<Producto>();

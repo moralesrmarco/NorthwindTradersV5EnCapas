@@ -30,26 +30,6 @@ namespace BLL
             return _productoDAL.Eliminar(productId, rowVersion);
         }
 
-        public DataTable ObtenerCategoriasCbo()
-        {
-            var categorias = _productoDAL.ObtenerCategoriasCbo();
-            DataRow filaSeleccione = categorias.NewRow();
-            filaSeleccione["CategoryID"] = 0;
-            filaSeleccione["CategoryName"] = "»--- Seleccione ---«";
-            categorias.Rows.InsertAt(filaSeleccione, 0);
-            return categorias;
-        }
-
-        public DataTable ObtenerProveedoresCbo()
-        {
-            var proveedores = _productoDAL.ObtenerProveedoresCbo();
-            DataRow filaSeleccione = proveedores.NewRow();
-            filaSeleccione["SupplierID"] = 0;
-            filaSeleccione["CompanyName"] = "»--- Seleccione ---«";
-            proveedores.Rows.InsertAt(filaSeleccione, 0);
-            return proveedores;
-        }
-
         public List<Producto> ObtenerProductos(bool selectorRealizaBusqueda, DtoProductosBuscar criterios, bool top100)
         {
             return _productoDAL.ObtenerProductos(selectorRealizaBusqueda, criterios, top100);

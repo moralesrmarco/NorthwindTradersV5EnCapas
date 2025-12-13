@@ -1,5 +1,7 @@
 ﻿using BLL;
+using BLL.Services;
 using Entities.DTOs;
+using NorthwindTradersV5EnCapas.Helpers;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -13,6 +15,8 @@ namespace NorthwindTradersV5EnCapas
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private ProductoBLL _productoBLL;
+        private readonly CategoriaService _categoriaService;
+        private readonly ProveedorService _proveedorService;
         private bool EjecutarConfDgv = true;
 
         public FrmProductosListado()
@@ -20,6 +24,8 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _productoBLL = new ProductoBLL(_connectionString);
+            _categoriaService = new CategoriaService(_connectionString);
+            _proveedorService = new ProveedorService(_connectionString);
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -40,10 +46,8 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dt = _productoBLL.ObtenerCategoriasCbo();
-                cboBCategoria.DataSource = dt;
-                cboBCategoria.DisplayMember = "CategoryName";
-                cboBCategoria.ValueMember = "CategoryID";
+                var dtCategorias = _categoriaService.ObtenerCategoriasCbo();
+                ComboBoxHelper.LlenarCbo(cboBCategoria, dtCategorias, "CategoryName", "CategoryId");
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
             catch (Exception ex)
@@ -57,10 +61,8 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dt = _productoBLL.ObtenerProveedoresCbo();
-                cboBProveedor.DataSource = dt;
-                cboBProveedor.DisplayMember = "CompanyName";
-                cboBProveedor.ValueMember = "SupplierId";
+                var dtProveedores = _proveedorService.ObtenerProveedoresCbo();
+                ComboBoxHelper.LlenarCbo(cboBProveedor, dtProveedores, "CompanyName", "SupplierId");
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
             catch (Exception ex)

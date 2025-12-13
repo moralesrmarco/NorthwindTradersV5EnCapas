@@ -1,6 +1,8 @@
 ﻿using BLL;
+using BLL.Services;
 using Entities;
 using Entities.DTOs;
+using NorthwindTradersV5EnCapas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +18,8 @@ namespace NorthwindTradersV5EnCapas
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private ProductoBLL _productoBLL;
+        private readonly CategoriaService _categoriaService;
+        private readonly ProveedorService _proveedorService;
         private bool EjecutarConfDgv = true;
         private Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
@@ -25,6 +29,8 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _productoBLL = new ProductoBLL(_connectionString);
+            _categoriaService = new CategoriaService(_connectionString);
+            _proveedorService = new ProveedorService(_connectionString);
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint(this, sender, e);
@@ -80,14 +86,10 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dtCboCategoria = _productoBLL.ObtenerCategoriasCbo();
+                var dtCboCategoria = _categoriaService.ObtenerCategoriasCbo();
                 var dtBCboCategoria = dtCboCategoria.Copy();
-                cboCategoria.DataSource = dtCboCategoria;
-                cboCategoria.DisplayMember = "CategoryName";
-                cboCategoria.ValueMember = "CategoryID";
-                cboBCategoria.DataSource = dtBCboCategoria;
-                cboBCategoria.DisplayMember = "CategoryName";
-                cboBCategoria.ValueMember = "CategoryID";
+                ComboBoxHelper.LlenarCbo(cboCategoria, dtCboCategoria, "CategoryName", "CategoryID");
+                ComboBoxHelper.LlenarCbo(cboBCategoria, dtBCboCategoria, "CategoryName", "CategoryID");
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
             catch (Exception ex)
@@ -101,14 +103,10 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dtCboProveedor = _productoBLL.ObtenerProveedoresCbo();
+                var dtCboProveedor = _proveedorService.ObtenerProveedoresCbo();
                 var dtBCboProveedor = dtCboProveedor.Copy();
-                cboProveedor.DataSource = dtCboProveedor;
-                cboProveedor.DisplayMember = "CompanyName";
-                cboProveedor.ValueMember = "SupplierID";
-                cboBProveedor.DataSource = dtBCboProveedor;
-                cboBProveedor.DisplayMember = "CompanyName";
-                cboBProveedor.ValueMember = "SupplierID";
+                ComboBoxHelper.LlenarCbo(cboProveedor, dtCboProveedor, "CompanyName", "SupplierId");
+                ComboBoxHelper.LlenarCbo(cboBProveedor, dtBCboProveedor, "CompanyName", "SupplierId");
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
             catch (Exception ex)
