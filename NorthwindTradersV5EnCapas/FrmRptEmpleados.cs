@@ -2,7 +2,7 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
-using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using Utilities;
 
@@ -19,6 +19,7 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _empleadoBLL = new EmpleadoBLL(_connectionString);
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -35,6 +36,7 @@ namespace NorthwindTradersV5EnCapas
                 var rds = new ReportDataSource("DataSet1", empleados);
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(rds);
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.RefreshReport();
                 if (empleados.Count == 0)
                     U.NotificacionWarning(Utils.noDatos);

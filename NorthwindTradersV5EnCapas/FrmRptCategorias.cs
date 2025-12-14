@@ -2,6 +2,7 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
+using System.Drawing;
 using System.Windows.Forms;
 using Utilities;
 
@@ -17,6 +18,7 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _categoriaBLL = new CategoriaBLL(_connectionString);
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -35,6 +37,7 @@ namespace NorthwindTradersV5EnCapas
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(reportDataSource);
                 reportViewer1.LocalReport.Refresh();
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.RefreshReport();
                 if (categorias.Count == 0)
                     U.NotificacionWarning(Utils.noDatos);

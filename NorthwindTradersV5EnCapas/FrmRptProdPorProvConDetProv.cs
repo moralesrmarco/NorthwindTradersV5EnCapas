@@ -2,6 +2,7 @@
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -19,6 +20,7 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _productoBLL = new ProductoBLL(_connectionString);
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -61,6 +63,7 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(leyenda);
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", productosPorProveedorConDetProv));
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.RefreshReport();
                 if (productosPorProveedorConDetProv.Count == 0)
                     U.NotificacionWarning(Utils.noDatos);

@@ -21,6 +21,7 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _clienteBLL = new ClienteBLL(_connectionString);
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -115,11 +116,11 @@ namespace NorthwindTradersV5EnCapas
                 if (string.IsNullOrEmpty(leyenda))
                     leyenda = "No se encontraron registros";
                 MDIPrincipal.ActualizarBarraDeEstado(leyenda);
-                reportViewer1.BackColor = Color.White;
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", clientesProveedores));
                 ReportParameter rp = new ReportParameter("titulo", titulo);
                 reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp });
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.RefreshReport(); 
                 if (clientesProveedores.Count == 0)
                     U.NotificacionWarning(Utils.noDatos);

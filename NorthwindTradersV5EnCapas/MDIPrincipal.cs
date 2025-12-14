@@ -405,24 +405,28 @@ namespace NorthwindTradersV5EnCapas
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos «");
         }
 
-        private void reporteDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void reporteDeProductosPorProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void reporteAlfabéticoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptProductosAlfabetico frm = new FrmRptProductosAlfabetico();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos en orden alfabético «");
         }
 
         private void reporteDeProductosPorProveedorConDetalleDelProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            FrmRptProdPorProvConDetProv frm = new FrmRptProdPorProvConDetProv();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor con detalle del proveedor «");
+        }
 
+        private void reporteDeCategoríasConProductosToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmRptCategoriasConProductos frm = new FrmRptCategoriasConProductos();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
+        }
+
+        private void reporteDeProductosPorProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmRptProductosPorProveedor frm = new FrmRptProductosPorProveedor();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor «");
         }
     }
 }

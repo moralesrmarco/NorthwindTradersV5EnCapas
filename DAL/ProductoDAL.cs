@@ -185,7 +185,7 @@ namespace DAL
                     cmd.CommandText = "SpProductoBuscarV4";
                     cmd.Parameters.AddWithValue("@IdIni", criterios.IdIni);
                     cmd.Parameters.AddWithValue("@IdFin", criterios.IdFin);
-                    cmd.Parameters.AddWithValue("@Producto", criterios.Producto);
+                    cmd.Parameters.AddWithValue("@Producto", criterios.Producto ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Categoria", criterios.Categoria);
                     cmd.Parameters.AddWithValue("@Proveedor", criterios.Proveedor);
                     cmd.Parameters.AddWithValue("@OrdenadoPor", criterios.OrdenadoPor);

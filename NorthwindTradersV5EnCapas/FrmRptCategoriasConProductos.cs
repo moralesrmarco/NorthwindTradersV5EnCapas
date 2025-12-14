@@ -4,6 +4,7 @@ using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -22,6 +23,7 @@ namespace NorthwindTradersV5EnCapas
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             _categoriaBLL = new CategoriaBLL(_connectionString);
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -55,35 +57,14 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(
                     $"Se encontraron {categoriasConProductos.Count} categoría(s), {productos.Count(p => p.ProductID != null)} producto(s) y {totalProveedores} proveedor(es) distinto(s)"
                 );
-                if (categoriasConProductos.Count > 0)
+                ReportDataSource reportDataSource = new ReportDataSource("DataSet1", productos);
+                reportViewer1.LocalReport.DataSources.Clear();
+                reportViewer1.LocalReport.DataSources.Add(reportDataSource);
+                reportViewer1.LocalReport.Refresh();
+                reportViewer1.BackColor = Color.White;
+                reportViewer1.RefreshReport();
+                if (categoriasConProductos.Count <= 0)
                 {
-                    ReportDataSource reportDataSource = new ReportDataSource("DataSet1", productos);
-                    reportViewer1.LocalReport.DataSources.Clear();
-                    reportViewer1.LocalReport.DataSources.Add(reportDataSource);
-                    reportViewer1.LocalReport.Refresh();
-                    reportViewer1.RefreshReport();
-                }
-                else
-                {
-                    reportViewer1.LocalReport.DataSources.Clear();
-                    var dt = new DataTable();
-
-                    // Definimos las columnas tal como están en tu DTO
-                    dt.Columns.Add("ProductID", typeof(int));
-                    dt.Columns.Add("ProductName", typeof(string));
-                    dt.Columns.Add("QuantityPerUnit", typeof(string));
-                    dt.Columns.Add("UnitPrice", typeof(decimal));
-                    dt.Columns.Add("UnitsInStock", typeof(short));
-                    dt.Columns.Add("UnitsOnOrder", typeof(short));
-                    dt.Columns.Add("ReorderLevel", typeof(short));
-                    dt.Columns.Add("Discontinued", typeof(bool));
-                    dt.Columns.Add("CategoryName", typeof(string));
-                    dt.Columns.Add("CompanyName", typeof(string));
-
-                    ReportDataSource reportDataSource = new ReportDataSource("DataSet1", dt);
-                    reportViewer1.LocalReport.DataSources.Add(reportDataSource);
-                    reportViewer1.LocalReport.Refresh();
-                    reportViewer1.RefreshReport();
                     MDIPrincipal.ActualizarBarraDeEstado("No se encontraron registros");
                     U.NotificacionWarning(Utils.noDatos);
                 }
@@ -92,7 +73,6 @@ namespace NorthwindTradersV5EnCapas
             {
                 U.MsgCatchOue(ex);
             }
-
         }
     }
 }

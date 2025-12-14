@@ -4,6 +4,7 @@ using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Windows.Forms;
 using Utilities;
 
@@ -20,6 +21,7 @@ namespace NorthwindTradersV5EnCapas
         {
             InitializeComponent();
             _empleadoBLL = new EmpleadoBLL(_connectionString);
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint(this, sender, e);
@@ -39,6 +41,7 @@ namespace NorthwindTradersV5EnCapas
                 // Asignar la lista como fuente de datos del informe
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", empleados));
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.RefreshReport();
                 if (empleado == null)
                 {

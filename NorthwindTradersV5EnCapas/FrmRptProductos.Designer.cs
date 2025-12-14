@@ -342,6 +342,7 @@
             // 
             // reportViewer1
             // 
+            this.reportViewer1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.reportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "NorthwindTradersV5EnCapas.RptProductos.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(30, 49);

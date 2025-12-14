@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -57,6 +58,7 @@ namespace NorthwindTradersV5EnCapas
             nudBIdFin.Leave += nudBIdFin_Leave;
             tabcOperacion.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
+            reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint2(this, sender, e);
@@ -222,6 +224,7 @@ namespace NorthwindTradersV5EnCapas
                 ReportParameter rp = new ReportParameter("titulo", titulo);
                 ReportParameter rp2 = new ReportParameter("subtitulo", subtitulo);
                 reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp, rp2 });
+                reportViewer1.BackColor = Color.White;
                 reportViewer1.RefreshReport();
                 if (dtoProductos.Count == 0)
                     U.NotificacionWarning(Utils.noDatos);
