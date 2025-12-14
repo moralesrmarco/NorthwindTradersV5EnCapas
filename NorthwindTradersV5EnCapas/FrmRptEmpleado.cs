@@ -32,13 +32,19 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var empleado = _empleadoBLL.ObtenerEmpleadoPorId(Id);
-                MDIPrincipal.ActualizarBarraDeEstado($"Se encontró el registro con el Id: {empleado.EmployeeID}");
+                if (empleado != null) 
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontró el registro con el Id: {empleado.EmployeeID}");
                 // Crear una lista con un solo empleado
                 List<Empleado> empleados = new List<Empleado> { empleado };
                 // Asignar la lista como fuente de datos del informe
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", empleados));
                 reportViewer1.RefreshReport();
+                if (empleado == null)
+                {
+                    MDIPrincipal.ActualizarBarraDeEstado(Utils.noDatos);
+                    U.NotificacionWarning(Utils.noDatos);
+                }
             }
             catch (Exception ex)
             {

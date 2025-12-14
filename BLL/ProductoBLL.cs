@@ -35,6 +35,11 @@ namespace BLL
             return _productoDAL.ObtenerProductos(selectorRealizaBusqueda, criterios, top100);
         }
 
+        public List<Producto> ObtenerProductos(DtoProductosBuscar criterios)
+        {
+            return _productoDAL.ObtenerProductos(criterios);
+        }
+
         public Producto ObtenerProductoPorId(int productId)
         {
             return _productoDAL.ObtenerProductoPorId(productId);

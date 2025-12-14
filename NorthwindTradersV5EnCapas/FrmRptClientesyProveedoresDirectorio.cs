@@ -99,6 +99,8 @@ namespace NorthwindTradersV5EnCapas
                 ReportParameter rp = new ReportParameter("titulo", titulo);
                 reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp });
                 reportViewer1.RefreshReport();
+                if (clientesProveedores.Count == 0)
+                    U.NotificacionWarning(Utils.noDatos);
             }
             catch (Exception ex)
             {

@@ -1,9 +1,12 @@
-﻿using BLL.Services;
+﻿using BLL;
+using BLL.Services;
 using Entities.DTOs;
+using Microsoft.Reporting.WinForms;
 using NorthwindTradersV5EnCapas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -14,9 +17,9 @@ namespace NorthwindTradersV5EnCapas
     {
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
+        private ProductoBLL _productoBLL;
         private readonly CategoriaService _categoriaService;
         private readonly ProveedorService _proveedorService;
-        string strProcedure = "";
         string titulo = "» Reporte de productos «";
         string subtitulo = "";
 
@@ -47,6 +50,7 @@ namespace NorthwindTradersV5EnCapas
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
+            _productoBLL = new ProductoBLL(_connectionString);
             _categoriaService = new CategoriaService(_connectionString);
             _proveedorService = new ProveedorService(_connectionString);
             nudBIdIni.Leave += nudBIdIni_Leave;
@@ -123,92 +127,106 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnImprimirTodos_Click(object sender, EventArgs e)
         {
-            strProcedure = "spProductosV2";
-            LlenarReporte(sender);
+            LlenarReporte(false);
         }
 
         private void btnImprimir_Click(object sender, EventArgs e)
         {
-            strProcedure = "spProductosBuscarV2";
-            LlenarReporte(sender);
+            LlenarReporte(true);
         }
 
         private void tabcOperacion_Selected(object sender, TabControlEventArgs e) => btnLimpiar.PerformClick();
         
         private void tabcOperacion_SelectedIndexChanged(object sender, EventArgs e) => btnLimpiar.PerformClick();
 
-        private void LlenarReporte(object sender)
+        private void LlenarReporte(bool selectorRealizaBusqueda)
         {
-            //try
-            //{
-            //    titulo = "» Reporte de todos los productos «";
-            //    subtitulo = "";
-            //    MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-            //    DtoProductosBuscar criterios = null;
-            //    if (((Button)sender).Tag.ToString() == "Imprimir")
-            //    {
-            //        criterios = new DtoProductosBuscar
-            //        {
-            //            IdIni = Convert.ToInt32(nudBIdIni.Value),
-            //            IdFin = Convert.ToInt32(nudBIdFin.Value),
-            //            Producto = txtProducto.Text.Trim(),
-            //            Categoria = cboCategoria.SelectedIndex <= 0 ? 0 : Convert.ToInt32(cboCategoria.SelectedValue),
-            //            Proveedor = cboProveedor.SelectedIndex <= 0 ? 0 : Convert.ToInt32(cboProveedor.SelectedValue),
-            //            OrdenadoPor = Cbo2OrdenadoPor.SelectedValue.ToString(),
-            //            AscDesc = Cbo2AscDesc.SelectedValue.ToString()
-            //        };
-            //        titulo = "» Reporte filtrado de productos «";
-            //        subtitulo = $"Filtrado por: ";
-            //        if (txtIdInicial.Text != "" & txtIdFinal.Text != "")
-            //            subtitulo += $" [ Id: {txtIdInicial.Text} al {txtIdFinal.Text} ] ";
-            //        if (txtProducto.Text != "")
-            //            subtitulo += $" [ Producto: {txtProducto.Text} ] ";
-            //        if (cboCategoria.SelectedIndex > 0)
-            //            subtitulo += $" [ Categoría: {cboCategoria.Text}] ";
-            //        if (cboProveedor.SelectedIndex > 0)
-            //            subtitulo += $" [ Proveedor: {cboProveedor.Text}] ";
-            //        if (subtitulo == "Filtrado por: ")
-            //        {
-            //            titulo = "» Reporte de todos los productos «";
-            //            subtitulo = "";
-            //        }
-            //        subtitulo += $" Ordenado por: [ {Cbo2OrdenadoPor.Text} ] [ {Cbo2AscDesc.Text} ]";
-            //    }
-            //    else
-            //    {
-            //        criterios = new DtoProductosBuscar
-            //        {
-            //            OrdenadoPor = Cbo1OrdenadoPor.SelectedValue.ToString(),
-            //            AscDesc = Cbo1AscDesc.SelectedValue.ToString()
-            //        };
-            //        subtitulo = $"Ordenado por: [ {Cbo1OrdenadoPor.Text} ] [ {Cbo1AscDesc.Text} ]";
-            //    }
-            //    groupBox1.Text = titulo + " | » " + subtitulo + " «";
-            //    var dt = new ProductoRepository(cnStr).RptProductosListado(dtoProductosBuscar, strProcedure);
-            //    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dt.Rows.Count} registros");
-            //    if (dt.Rows.Count > 0)
-            //    {
-            //        ReportDataSource reportDataSource = new ReportDataSource("DataSet1", dt);
-            //        reportViewer1.LocalReport.DataSources.Clear();
-            //        reportViewer1.LocalReport.DataSources.Add(reportDataSource);
-            //        ReportParameter rp = new ReportParameter("titulo", titulo);
-            //        ReportParameter rp2 = new ReportParameter("subtitulo", subtitulo);
-            //        reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp, rp2 });
-            //        reportViewer1.RefreshReport();
-            //    }
-            //    else
-            //    {
-            //        reportViewer1.LocalReport.DataSources.Clear();
-            //        ReportDataSource reportDataSource = new ReportDataSource("DataSet1", new DataTable());
-            //        reportViewer1.LocalReport.DataSources.Add(reportDataSource);
-            //        ReportParameter rp = new ReportParameter("titulo", titulo);
-            //        ReportParameter rp2 = new ReportParameter("subtitulo", subtitulo);
-            //        reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp, rp2 });
-            //        reportViewer1.RefreshReport();
-            //        U.NotificacionWarning(Utils.noDatos);
-            //    }
-            //}
-            //catch (Exception ex) { U.MsgCatchOue(ex); }
+            try
+            {
+                titulo = "» Reporte de todos los productos «";
+                subtitulo = "";
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                DtoProductosBuscar criterios = null;
+                if (selectorRealizaBusqueda)
+                {
+                    criterios = new DtoProductosBuscar
+                    {
+                        IdIni = Convert.ToInt32(nudBIdIni.Value),
+                        IdFin = Convert.ToInt32(nudBIdFin.Value),
+                        Producto = txtProducto.Text.Trim(),
+                        Categoria = cboCategoria.SelectedIndex <= 0 ? 0 : Convert.ToInt32(cboCategoria.SelectedValue),
+                        Proveedor = cboProveedor.SelectedIndex <= 0 ? 0 : Convert.ToInt32(cboProveedor.SelectedValue),
+                        OrdenadoPor = Cbo2OrdenadoPor.SelectedValue.ToString(),
+                        AscDesc = Cbo2AscDesc.SelectedValue.ToString()
+                    };
+                    titulo = "» Reporte filtrado de productos «";
+                    subtitulo = $"Filtrado por: ";
+                    if (nudBIdIni.Value != 0 & nudBIdFin.Value != 0)
+                        subtitulo += $" [ Id: {nudBIdIni.Value} al {nudBIdFin.Value} ] ";
+                    if (txtProducto.Text != "")
+                        subtitulo += $" [ Producto: {txtProducto.Text} ] ";
+                    if (cboCategoria.SelectedIndex > 0)
+                        subtitulo += $" [ Categoría: {cboCategoria.Text}] ";
+                    if (cboProveedor.SelectedIndex > 0)
+                        subtitulo += $" [ Proveedor: {cboProveedor.Text}] ";
+                    if (subtitulo == "Filtrado por: ")
+                    {
+                        titulo = "» Reporte de todos los productos «";
+                        subtitulo = "";
+                    }
+                    subtitulo += $" Ordenado por: [ {Cbo2OrdenadoPor.Text} ] [ {Cbo2AscDesc.Text} ]";
+                }
+                else
+                {
+                    criterios = new DtoProductosBuscar
+                    {
+                        IdIni = 0,
+                        IdFin = 0,
+                        Producto = "",
+                        Categoria = cboCategoria.SelectedIndex = 0,
+                        Proveedor = cboProveedor.SelectedIndex = 0,
+                        OrdenadoPor = Cbo1OrdenadoPor.SelectedValue.ToString(),
+                        AscDesc = Cbo1AscDesc.SelectedValue.ToString()
+                    };
+                    subtitulo = $"Ordenado por: [ {Cbo1OrdenadoPor.Text} ] [ {Cbo1AscDesc.Text} ]";
+                }
+                groupBox1.Text = titulo + " | » " + subtitulo + " «";
+                var productos = _productoBLL.ObtenerProductos(criterios);
+                var dtoProductos = productos.Select(p => new DtoProducto
+                {
+                    ProductID = p.ProductID,
+                    ProductName = p.ProductName,
+                    QuantityPerUnit = p.QuantityPerUnit,
+                    UnitPrice = p.UnitPrice,
+                    UnitsInStock = p.UnitsInStock,
+                    UnitsOnOrder = p.UnitsOnOrder,
+                    ReorderLevel = p.ReorderLevel,
+                    Discontinued = p.Discontinued,
+                    CategoryName = p.Categoria?.CategoryName,
+                    CompanyName = p.Proveedor?.CompanyName,
+                    CategoryID = p.Categoria?.CategoryID ?? 0,
+                    SupplierID = p.Proveedor?.SupplierID ?? 0
+                }).ToList();
+                // Conteo de categorías y proveedores distintos
+                int totalCategorias = dtoProductos.Select(c => c.CategoryID).Distinct().Count();
+                int totalProveedores = dtoProductos.Select(p => p.SupplierID).Distinct().Count();
+                string leyenda = string.Empty;
+                if (dtoProductos.Count > 0)
+                    leyenda = $"Se encontraron {dtoProductos.Count} producto(s), en {totalCategorias} categoría(s) y {totalProveedores} proveedor(es)";
+                else
+                    leyenda = "No se encontraron registros";
+                MDIPrincipal.ActualizarBarraDeEstado(leyenda);
+                ReportDataSource reportDataSource = new ReportDataSource("DataSet1", dtoProductos);
+                reportViewer1.LocalReport.DataSources.Clear();
+                reportViewer1.LocalReport.DataSources.Add(reportDataSource);
+                ReportParameter rp = new ReportParameter("titulo", titulo);
+                ReportParameter rp2 = new ReportParameter("subtitulo", subtitulo);
+                reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp, rp2 });
+                reportViewer1.RefreshReport();
+                if (dtoProductos.Count == 0)
+                    U.NotificacionWarning(Utils.noDatos);
+            }
+            catch (Exception ex) { U.MsgCatchOue(ex); }
         }
 
         private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);

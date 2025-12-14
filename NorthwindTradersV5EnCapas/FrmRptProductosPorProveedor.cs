@@ -41,11 +41,17 @@ namespace NorthwindTradersV5EnCapas
                     .Select(p => new { p.ProductID, p.ProductName }) // cuenta por combinación Id + nombre para considerar los productos con el mismo nombre pero diferente Id
                     .Distinct()
                     .Count();
-                string leyenda = $"Se encontraron {totalProveedores} proveedor(es) y {totalProductos} producto(s)";
+                string leyenda = string.Empty;
+                if (productosPorProveedor.Count > 0)
+                    leyenda = $"Se encontraron {totalProveedores} proveedor(es) y {totalProductos} producto(s)";
+                else
+                    leyenda = Utils.noDatos;
                 MDIPrincipal.ActualizarBarraDeEstado(leyenda);
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", productosPorProveedor));
                 reportViewer1.RefreshReport();
+                if (productosPorProveedor.Count == 0)
+                    U.NotificacionWarning(Utils.noDatos);
             }
             catch (Exception ex)
             {

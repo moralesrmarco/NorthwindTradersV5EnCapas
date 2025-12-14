@@ -25,7 +25,7 @@ namespace Utilities
             public const string modificandoRegistro = "Modificando registro(s) en la base de datos...";
             public const string eliminandoRegistro = "Eliminando registro(s) en la base de datos...";
             public const string errorCriterioSelec = "[orange]     Error: Proporcione los criterios de selección.";
-            public const string noDatos = "No se encontraron datos para mostrar en el reporte.";
+            public const string noDatos = "No se encontraron registros para mostrar en el reporte.";
             public const string srs = "\n[green]Se registró satisfactoriamente.";
             public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
             public const string sms = "\n[green]Se modificó satisfactoriamente.";

@@ -12,6 +12,7 @@ namespace NorthwindTradersV5EnCapas.Helpers
             cbo.DataSource = dt;
             cbo.DisplayMember = displayMember;
             cbo.ValueMember = valueMember;
+            cbo.SelectedIndex = 0;
         }
     }
 }

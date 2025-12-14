@@ -116,23 +116,13 @@ namespace NorthwindTradersV5EnCapas
                     leyenda = "No se encontraron registros";
                 MDIPrincipal.ActualizarBarraDeEstado(leyenda);
                 reportViewer1.BackColor = Color.White;
-                if (clientesProveedores.Count > 0)
-                {
-                    reportViewer1.LocalReport.DataSources.Clear();
-                    reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", clientesProveedores));
-                    ReportParameter rp = new ReportParameter("titulo", titulo);
-                    reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp });
-                    reportViewer1.RefreshReport();
-                }
-                else
-                {
-                    reportViewer1.LocalReport.DataSources.Clear();
-                    ReportDataSource reportDataSource = new ReportDataSource("DataSet1", new DataTable());
-                    reportViewer1.LocalReport.DataSources.Add(reportDataSource);
-                    reportViewer1.LocalReport.Refresh();
-                    reportViewer1.RefreshReport();
+                reportViewer1.LocalReport.DataSources.Clear();
+                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", clientesProveedores));
+                ReportParameter rp = new ReportParameter("titulo", titulo);
+                reportViewer1.LocalReport.SetParameters(new ReportParameter[] { rp });
+                reportViewer1.RefreshReport(); 
+                if (clientesProveedores.Count == 0)
                     U.NotificacionWarning(Utils.noDatos);
-                }
             }
             catch (Exception ex)
             {

@@ -1636,7 +1636,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Total de provedores distintos: </Value>
+                              <Value>Total de provedores: </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>

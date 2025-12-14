@@ -377,6 +377,7 @@
     <None Include="Properties\DataSources\Entities.Cliente.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoCategoriasConProductos.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoClienteProveedor.datasource" />
+    <None Include="Properties\DataSources\Entities.DTOs.DtoProducto.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedor.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedorConDetProv.datasource" />
     <None Include="Properties\DataSources\Entities.Empleado.datasource" />

@@ -66,6 +66,8 @@ namespace NorthwindTradersV5EnCapas
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", proveedores));
                 reportViewer1.RefreshReport();
+                if (proveedores.Count == 0)
+                    U.NotificacionWarning(Utils.noDatos);
             }
             catch (Exception ex)
             {

@@ -36,6 +36,8 @@ namespace NorthwindTradersV5EnCapas
                 reportViewer1.LocalReport.DataSources.Add(reportDataSource);
                 reportViewer1.LocalReport.Refresh();
                 reportViewer1.RefreshReport();
+                if (categorias.Count == 0)
+                    U.NotificacionWarning(Utils.noDatos);
             }
             catch (Exception ex)
             {

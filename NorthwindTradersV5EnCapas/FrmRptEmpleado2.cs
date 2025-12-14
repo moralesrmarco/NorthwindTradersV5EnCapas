@@ -34,6 +34,8 @@ namespace NorthwindTradersV5EnCapas
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(rds);
                 reportViewer1.RefreshReport();
+                if (empleados.Count == 0)
+                    U.NotificacionWarning(Utils.noDatos);
             }
             catch (Exception ex)
             {
