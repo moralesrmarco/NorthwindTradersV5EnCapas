@@ -428,5 +428,11 @@ namespace NorthwindTradersV5EnCapas
             FrmRptProductosPorProveedor frm = new FrmRptProductosPorProveedor();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor «");
         }
+
+        private void mantenimientoDePedidosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmPedidosCrud frm = new FrmPedidosCrud();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de pedidos «");
+        }
     }
 }

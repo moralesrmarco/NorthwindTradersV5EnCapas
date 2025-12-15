@@ -20,7 +20,6 @@ namespace BLL.Services
             filaSeleccione["CategoryName"] = "»--- Seleccione ---«";
             categorias.Rows.InsertAt(filaSeleccione, 0);
             return categorias;
-
         }
     }
 }

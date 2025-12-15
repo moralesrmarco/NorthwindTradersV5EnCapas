@@ -144,6 +144,8 @@
             this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TabControlPrincipal = new System.Windows.Forms.TabControl();
+            this.pedidosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mantenimientoDePedidosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -161,6 +163,7 @@
             this.proveedoresToolStripMenuItem,
             this.categoríasToolStripMenuItem,
             this.productosToolStripMenuItem,
+            this.pedidosToolStripMenuItem,
             this.toolsMenu,
             this.windowsMenu,
             this.helpMenu});
@@ -1091,6 +1094,21 @@
             this.TabControlPrincipal.TabIndex = 4;
             this.TabControlPrincipal.SelectedIndexChanged += new System.EventHandler(this.TabControlPrincipal_SelectedIndexChanged);
             // 
+            // pedidosToolStripMenuItem
+            // 
+            this.pedidosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mantenimientoDePedidosToolStripMenuItem});
+            this.pedidosToolStripMenuItem.Name = "pedidosToolStripMenuItem";
+            this.pedidosToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
+            this.pedidosToolStripMenuItem.Text = "Pedidos";
+            // 
+            // mantenimientoDePedidosToolStripMenuItem
+            // 
+            this.mantenimientoDePedidosToolStripMenuItem.Name = "mantenimientoDePedidosToolStripMenuItem";
+            this.mantenimientoDePedidosToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
+            this.mantenimientoDePedidosToolStripMenuItem.Text = "Mantenimiento de pedidos";
+            this.mantenimientoDePedidosToolStripMenuItem.Click += new System.EventHandler(this.mantenimientoDePedidosToolStripMenuItem_Click);
+            // 
             // MDIPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1236,6 +1254,8 @@
         private System.Windows.Forms.ToolStripMenuItem listadoDeCategoríasConProductosToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem reporteDeCategoríasConProductosToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem reporteDeProductosPorProveedorToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem pedidosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mantenimientoDePedidosToolStripMenuItem;
     }
 }
 
