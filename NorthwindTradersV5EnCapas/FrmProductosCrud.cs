@@ -57,7 +57,7 @@ namespace NorthwindTradersV5EnCapas
             // Obtener el símbolo de moneda según la configuración regional del equipo
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
-            LblPrecio.Text = "Precio " + simboloMoneda +":";
+            LblPrecio.Text = "Precio " + simboloMoneda + ":";
             DeshabilitarControles();
             LlenarCboCategoria();
             LlenarCboProveedor();
@@ -114,7 +114,7 @@ namespace NorthwindTradersV5EnCapas
                 U.MsgCatchOue(ex);
             }
         }
-        
+
         private void LlenarDgv(bool selectorRealizaBusqueda)
         {
             try

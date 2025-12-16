@@ -8,7 +8,7 @@ namespace NorthwindTradersV5EnCapas
 {
     public partial class FrmCategoriasProductos : Form
     {
-        
+
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         CategoriaBLL _categoriaBLL;
         BindingSource bsCategorias = new BindingSource();
@@ -111,7 +111,7 @@ namespace NorthwindTradersV5EnCapas
             dgv.Columns["UnitsInStock"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["UnitsOnOrder"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["ReorderLevel"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns["CompanyName"].AutoSizeMode= DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns["CompanyName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["Discontinued"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["CategoryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;

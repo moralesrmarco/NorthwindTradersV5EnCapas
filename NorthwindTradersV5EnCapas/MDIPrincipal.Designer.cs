@@ -109,6 +109,8 @@
             this.reporteDeProductosPorProveedorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.reporteDeProductosPorProveedorConDetalleDelProveedorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.reporteDeCategoríasConProductosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ventasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mantenimientoDeVentasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -144,8 +146,6 @@
             this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TabControlPrincipal = new System.Windows.Forms.TabControl();
-            this.pedidosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mantenimientoDePedidosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -163,7 +163,7 @@
             this.proveedoresToolStripMenuItem,
             this.categoríasToolStripMenuItem,
             this.productosToolStripMenuItem,
-            this.pedidosToolStripMenuItem,
+            this.ventasToolStripMenuItem,
             this.toolsMenu,
             this.windowsMenu,
             this.helpMenu});
@@ -810,6 +810,21 @@
             this.reporteDeCategoríasConProductosToolStripMenuItem1.Text = "Reporte de categorías con productos";
             this.reporteDeCategoríasConProductosToolStripMenuItem1.Click += new System.EventHandler(this.reporteDeCategoríasConProductosToolStripMenuItem1_Click);
             // 
+            // ventasToolStripMenuItem
+            // 
+            this.ventasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mantenimientoDeVentasToolStripMenuItem});
+            this.ventasToolStripMenuItem.Name = "ventasToolStripMenuItem";
+            this.ventasToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
+            this.ventasToolStripMenuItem.Text = "Ventas";
+            // 
+            // mantenimientoDeVentasToolStripMenuItem
+            // 
+            this.mantenimientoDeVentasToolStripMenuItem.Name = "mantenimientoDeVentasToolStripMenuItem";
+            this.mantenimientoDeVentasToolStripMenuItem.Size = new System.Drawing.Size(260, 26);
+            this.mantenimientoDeVentasToolStripMenuItem.Text = "Mantenimiento de ventas";
+            this.mantenimientoDeVentasToolStripMenuItem.Click += new System.EventHandler(this.mantenimientoDeVentasToolStripMenuItem_Click);
+            // 
             // toolsMenu
             // 
             this.toolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1094,21 +1109,6 @@
             this.TabControlPrincipal.TabIndex = 4;
             this.TabControlPrincipal.SelectedIndexChanged += new System.EventHandler(this.TabControlPrincipal_SelectedIndexChanged);
             // 
-            // pedidosToolStripMenuItem
-            // 
-            this.pedidosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mantenimientoDePedidosToolStripMenuItem});
-            this.pedidosToolStripMenuItem.Name = "pedidosToolStripMenuItem";
-            this.pedidosToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
-            this.pedidosToolStripMenuItem.Text = "Pedidos";
-            // 
-            // mantenimientoDePedidosToolStripMenuItem
-            // 
-            this.mantenimientoDePedidosToolStripMenuItem.Name = "mantenimientoDePedidosToolStripMenuItem";
-            this.mantenimientoDePedidosToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.mantenimientoDePedidosToolStripMenuItem.Text = "Mantenimiento de pedidos";
-            this.mantenimientoDePedidosToolStripMenuItem.Click += new System.EventHandler(this.mantenimientoDePedidosToolStripMenuItem_Click);
-            // 
             // MDIPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1254,8 +1254,8 @@
         private System.Windows.Forms.ToolStripMenuItem listadoDeCategoríasConProductosToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem reporteDeCategoríasConProductosToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem reporteDeProductosPorProveedorToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem pedidosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mantenimientoDePedidosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ventasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mantenimientoDeVentasToolStripMenuItem;
     }
 }
 

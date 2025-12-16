@@ -158,7 +158,7 @@ namespace NorthwindTradersV5EnCapas
         }
 
         private void DgvProveedores_SelectionChanged(object sender, EventArgs e) => ActualizarEstadoProveedores();
-            
+
         private void DgvProveedores_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e) => ActualizarEstadoProveedores();
 
         private void FrmProveedoresProductos_Shown(object sender, EventArgs e) => ActualizarEstadoProveedores();

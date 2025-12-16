@@ -989,7 +989,7 @@
             this.label4.Size = new System.Drawing.Size(883, 16);
             this.label4.TabIndex = 0;
             this.label4.Text = "Busque el empleado a eliminar y seleccionelo en la lista que se muestra, no se pu" +
-    "eden eliminar empleados que ya estan relacionados a un pedido";
+    "eden eliminar empleados que ya estan relacionados a un venta";
             // 
             // errorProvider1
             // 

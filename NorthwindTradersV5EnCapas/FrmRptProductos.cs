@@ -14,7 +14,7 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmRptProductos: Form
+    public partial class FrmRptProductos : Form
     {
 
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
@@ -66,7 +66,7 @@ namespace NorthwindTradersV5EnCapas
         private void FrmRptProductos_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
         private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
-        
+
         private void FrmRptProductos_Load(object sender, EventArgs e)
         {
             LlenarCboCategoria();
@@ -138,7 +138,7 @@ namespace NorthwindTradersV5EnCapas
         }
 
         private void tabcOperacion_Selected(object sender, TabControlEventArgs e) => btnLimpiar.PerformClick();
-        
+
         private void tabcOperacion_SelectedIndexChanged(object sender, EventArgs e) => btnLimpiar.PerformClick();
 
         private void LlenarReporte(bool selectorRealizaBusqueda)

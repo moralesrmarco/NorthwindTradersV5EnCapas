@@ -32,10 +32,10 @@ namespace DAL
                         cmd.Parameters.AddWithValue("@IdIni", criterios.IdIni);
                         cmd.Parameters.AddWithValue("@IdFin", criterios.IdFin);
                         cmd.Parameters.AddWithValue("@Cliente", criterios.Cliente);
-                        cmd.Parameters.AddWithValue("@FPedido", criterios.FPedido);
-                        cmd.Parameters.AddWithValue("@FPedidoNull", criterios.FPedidoNull);
-                        cmd.Parameters.AddWithValue("@FPedidoIni", criterios.FPedidoIni);
-                        cmd.Parameters.AddWithValue("@FPedidoFin", criterios.FPedidoFin);
+                        cmd.Parameters.AddWithValue("@FVenta", criterios.FVenta);
+                        cmd.Parameters.AddWithValue("@FVentaNull", criterios.FVentaNull);
+                        cmd.Parameters.AddWithValue("@FVentaIni", criterios.FVentaIni);
+                        cmd.Parameters.AddWithValue("@FVentaFin", criterios.FVentaFin);
                         cmd.Parameters.AddWithValue("@FRequerido", criterios.FRequerido);
                         cmd.Parameters.AddWithValue("@FRequeridoNull", criterios.FRequeridoNull);
                         cmd.Parameters.AddWithValue("@FRequeridoIni", criterios.FRequeridoIni);

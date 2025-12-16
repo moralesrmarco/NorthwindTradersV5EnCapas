@@ -590,7 +590,7 @@
             this.label4.Size = new System.Drawing.Size(837, 16);
             this.label4.TabIndex = 0;
             this.label4.Text = "Busque el cliente a eliminar y seleccionelo en la lista que se muestra, no se pue" +
-    "den eliminar clientes que ya estan relacionados a un pedido";
+    "den eliminar clientes que ya estan relacionados a un venta";
             // 
             // label17
             // 
