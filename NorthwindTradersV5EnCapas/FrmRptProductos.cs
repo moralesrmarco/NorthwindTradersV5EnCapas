@@ -56,6 +56,8 @@ namespace NorthwindTradersV5EnCapas
             _proveedorService = new ProveedorService(_connectionString);
             nudBIdIni.Leave += nudBIdIni_Leave;
             nudBIdFin.Leave += nudBIdFin_Leave;
+            nudBIdIni.Enter += Nud_Enter;
+            nudBIdFin.Enter += Nud_Enter;
             tabcOperacion.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             reportViewer1.BackColor = SystemColors.GradientInactiveCaption;
@@ -235,5 +237,14 @@ namespace NorthwindTradersV5EnCapas
         private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void Nud_Enter(object sender, EventArgs e)
+        {
+            if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
+            {
+                // Diferir la selección para que ocurra después de que el TextBox reciba el foco
+                tb.BeginInvoke((Action)(() => tb.SelectAll()));
+            }
+        }
     }
 }

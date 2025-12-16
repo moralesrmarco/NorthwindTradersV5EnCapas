@@ -26,7 +26,7 @@ namespace NorthwindTradersV5EnCapas
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
         private TabPage lastSelectedTab;
         int numDetalle = 1;
-        bool VentaGenerado = false;
+        bool VentaGenerada = false;
 
         public FrmVentasCrud()
         {
@@ -65,8 +65,8 @@ namespace NorthwindTradersV5EnCapas
             // Mostrarlo en el Label
             LblPrecio.Text = "Precio " + simboloMoneda + ":";
             LblTotal.Text = "Total " + simboloMoneda + ":";
-            dtpHoraRequerido.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
-            dtpHoraEnvio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+            dtpHoraRequerido.Value = DateTime.Today; 
+            dtpHoraEnvio.Value = DateTime.Today; 
             DeshabilitarControles();
             LlenarCboCliente();
             LlenarCboEmpleado();
@@ -187,7 +187,7 @@ namespace NorthwindTradersV5EnCapas
             if (dtpVenta.Checked == false)
             {
                 valida = false;
-                errorProvider1.SetError(dtpVenta, "Ingrese la fecha de venta");
+                errorProvider1.SetError(dtpVenta, "Ingrese la fecha de la venta");
             }
             if (cboTransportista.SelectedIndex == 0)
             {
@@ -205,7 +205,7 @@ namespace NorthwindTradersV5EnCapas
             if (cboProducto.SelectedIndex > 0)
             {
                 valida = false;
-                errorProvider1.SetError(cboProducto, "Ha seleccionado un producto y no lo ha agregado al venta");
+                errorProvider1.SetError(cboProducto, "Ha seleccionado un producto y no lo ha agregado a la venta");
             }
             return valida;
         }
@@ -249,7 +249,7 @@ namespace NorthwindTradersV5EnCapas
                 var ventas = _ventaBLL.ObtenerVentas(selectorRealizaBusqueda, criterios, false);
                 dgvVentas.DataSource = ventas;
                 if (!selectorRealizaBusqueda)
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {dgvVentas.RowCount} Ventas registrados");
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran las últimas {dgvVentas.RowCount} ventas registradas");
                 else
                     MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgvVentas.RowCount} registros");
             }
@@ -261,27 +261,27 @@ namespace NorthwindTradersV5EnCapas
 
         private void ConfDgvVentas()
         {
-            //dgvVentas.Columns["OrderId"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvVentas.Columns["OrderID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-            //dgvVentas.Columns["OrderDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            //dgvVentas.Columns["RequiredDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            //dgvVentas.Columns["ShippedDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            //dgvVentas.Columns["Shipper"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgvVentas.Columns["Employee"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvVentas.Columns["OrderDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvVentas.Columns["RequiredDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvVentas.Columns["ShippedDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvVentas.Columns["ShipperCompanyName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvVentas.Columns["EmployeeName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            //dgvVentas.Columns["OrderDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
-            //dgvVentas.Columns["RequiredDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
-            //dgvVentas.Columns["ShippedDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
+            dgvVentas.Columns["OrderDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
+            dgvVentas.Columns["RequiredDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
+            dgvVentas.Columns["ShippedDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
 
-            //dgvVentas.Columns["OrderId"].HeaderText = "Id";
-            //dgvVentas.Columns["Customer"].HeaderText = "Cliente";
-            //dgvVentas.Columns["ContactName"].HeaderText = "Nombre de contacto";
-            //dgvVentas.Columns["OrderDate"].HeaderText = "Fecha de venta";
-            //dgvVentas.Columns["RequiredDate"].HeaderText = "Fecha de entrega";
-            //dgvVentas.Columns["ShippedDate"].HeaderText = "Fecha de envío";
-            //dgvVentas.Columns["Employee"].HeaderText = "Vendedor";
-            //dgvVentas.Columns["Shipper"].HeaderText = "Compañía transportista";
-            //dgvVentas.Columns["ShipName"].HeaderText = "Enviar a";
+            dgvVentas.Columns["OrderId"].HeaderText = "Id";
+            dgvVentas.Columns["CustomerCompanyName"].HeaderText = "Cliente";
+            dgvVentas.Columns["CustomerContactName"].HeaderText = "Nombre de contacto";
+            dgvVentas.Columns["OrderDate"].HeaderText = "Fecha de venta";
+            dgvVentas.Columns["RequiredDate"].HeaderText = "Fecha de entrega";
+            dgvVentas.Columns["ShippedDate"].HeaderText = "Fecha de envío";
+            dgvVentas.Columns["EmployeeName"].HeaderText = "Vendedor";
+            dgvVentas.Columns["ShipperCompanyName"].HeaderText = "Compañía transportista";
+            dgvVentas.Columns["ShipName"].HeaderText = "Enviar a";
         }
 
         private void ConfDgvDetalle()
@@ -322,13 +322,10 @@ namespace NorthwindTradersV5EnCapas
             cboProducto.DataSource = null;
             dtpVenta.Value = dtpRequerido.Value = dtpEnvio.Value = DateTime.Now;
             dtpHoraVenta.Value = DateTime.Now;
-            dtpHoraRequerido.Value = dtpHoraEnvio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+            dtpHoraRequerido.Value = dtpHoraEnvio.Value = DateTime.Today;
             dtpRequerido.Checked = dtpEnvio.Checked = false;
             txtDirigidoa.Text = txtDomicilio.Text = txtCiudad.Text = txtRegion.Text = txtCP.Text = txtPais.Text = "";
-            txtFlete.Text = txtPrecio.Text = "$0.00";
-            txtCantidad.Text = txtUInventario.Text = "0";
-            txtDescuento.Text = "0.00";
-            txtTotal.Text = "$0.00";
+            nudFlete.Value = nudPrecio.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = nudTotal.Value = 0;
             btnNota.Visible = false;
             dgvDetalle.Rows.Clear();
         }
@@ -337,7 +334,6 @@ namespace NorthwindTradersV5EnCapas
 
         private void BorrarDatosBusqueda()
         {
-            //txtBIdInicial.Text = txtBIdFinal.Text = 
             nudBIdIni.Value = nudBIdFin.Value = 0;
             txtBCliente.Text = txtBEmpleado.Text = txtBCompañiaT.Text = txtBDirigidoa.Text = "";
             dtpBFVentaIni.Value = dtpBFVentaFin.Value = dtpBFRequeridoIni.Value = dtpBFRequeridoFin.Value = dtpBFEnvioIni.Value = dtpBFEnvioFin.Value = DateTime.Today;
@@ -345,13 +341,36 @@ namespace NorthwindTradersV5EnCapas
             chkbBFVentaNull.Checked = chkbBFRequeridoNull.Checked = chkbBFEnvioNull.Checked = false;
         }
 
-        //private void txtBIdInicial_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
+        private void Nud_ValueChanged(object sender, EventArgs e)
+        {
+            // El sender es el control que disparó el evento
+            var nud = sender as NumericUpDown;
+            if (nud == null) return;
+            // Formatear con separador de miles y 2 decimales
+            nud.Text = nud.Value.ToString("N0");
+        }
 
-        //private void txtBIdFinal_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
+        private void Nud_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Bloquear punto y coma
+            if (e.KeyChar == '.' || e.KeyChar == ',')
+            {
+                e.Handled = true; // Ignora la tecla
+            }
+        }
 
-        //private void txtBIdInicial_Leave(object sender, EventArgs e) => Utils.ValidaTxtBIdIni(txtBIdInicial, txtBIdFinal);
+        private void Nud_Enter(object sender, EventArgs e)
+        {
+            if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
+            {
+                // Diferir la selección para que ocurra después de que el TextBox reciba el foco
+                tb.BeginInvoke((Action)(() => tb.SelectAll()));
+            }
+        }
 
-        //private void txtBIdFinal_Leave(object sender, EventArgs e) => Utils.ValidaTxtBIdFin(txtBIdInicial, txtBIdFinal);
+        private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void dtpBFVentaIni_ValueChanged(object sender, EventArgs e)
         {
@@ -490,9 +509,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void cboCategoria_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtPrecio.Text = "$0.00";
-            txtUInventario.Text = "0";
-            txtCantidad.Text = "0";
+            nudPrecio.Value = nudUInventario.Value = nudCantidad.Value = 0;
             if (cboCategoria.SelectedIndex > 0)
             {
                 //try
@@ -522,7 +539,7 @@ namespace NorthwindTradersV5EnCapas
                 cboProducto.DataSource = tbl;
                 cboProducto.DisplayMember = "Producto";
                 cboProducto.ValueMember = "Id";
-                MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registros en Ventas");
+                MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registros de ventas");
             }
         }
 
@@ -797,7 +814,7 @@ namespace NorthwindTradersV5EnCapas
                     dgvVentas.CellClick -= new DataGridViewCellEventHandler(dgvVentas_CellClick);
                     EventoCargado = false;
                 }
-                VentaGenerado = false;
+                VentaGenerada = false;
                 BorrarDatosBusqueda();
                 HabilitarControles();
                 btnGenerar.Text = "Generar venta";
@@ -834,7 +851,7 @@ namespace NorthwindTradersV5EnCapas
                 }
                 else if (tabcOperacion.SelectedTab == tabpModificar)
                 {
-                    VentaGenerado = false;
+                    VentaGenerada = false;
                     btnGenerar.Text = "Modificar venta";
                     btnGenerar.Visible = true;
                     btnAgregar.Visible = false;
@@ -1204,7 +1221,7 @@ namespace NorthwindTradersV5EnCapas
             btnNota.Visible = true;
             btnNuevo.Enabled = false;
             btnNuevo.Visible = true;
-            VentaGenerado = false;
+            VentaGenerada = false;
             dgvDetalle.Columns["Eliminar"].Visible = true;
             numDetalle = 1;
         }

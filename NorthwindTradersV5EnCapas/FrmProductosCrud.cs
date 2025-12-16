@@ -391,11 +391,10 @@ namespace NorthwindTradersV5EnCapas
 
         private void Nud_Enter(object sender, EventArgs e)
         {
-            var nud = sender as NumericUpDown;
-            // El NumericUpDown contiene un TextBox interno en Controls[1]
-            if (nud.Controls[1] is TextBox tb)
+            if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
             {
-                tb.SelectAll();
+                // Diferir la selección para que ocurra después de que el TextBox reciba el foco
+                tb.BeginInvoke((Action)(() => tb.SelectAll()));
             }
         }
 

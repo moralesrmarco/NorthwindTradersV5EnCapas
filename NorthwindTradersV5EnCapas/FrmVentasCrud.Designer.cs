@@ -393,7 +393,7 @@
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(180, 37);
             this.btnNuevo.TabIndex = 20;
-            this.btnNuevo.Text = "Nuevo venta";
+            this.btnNuevo.Text = "Nueva venta";
             this.btnNuevo.UseVisualStyleBackColor = true;
             this.btnNuevo.Visible = false;
             this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
@@ -477,6 +477,7 @@
             this.nudDescuento.Name = "nudDescuento";
             this.nudDescuento.Size = new System.Drawing.Size(70, 23);
             this.nudDescuento.TabIndex = 3;
+            this.nudDescuento.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // nudCantidad
             // 
@@ -491,6 +492,9 @@
             this.nudCantidad.Size = new System.Drawing.Size(90, 23);
             this.nudCantidad.TabIndex = 2;
             this.nudCantidad.ThousandsSeparator = true;
+            this.nudCantidad.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudCantidad.Enter += new System.EventHandler(this.Nud_Enter);
+            this.nudCantidad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Nud_KeyPress);
             // 
             // nudUInventario
             // 
@@ -663,6 +667,7 @@
             this.nudFlete.Size = new System.Drawing.Size(120, 23);
             this.nudFlete.TabIndex = 7;
             this.nudFlete.ThousandsSeparator = true;
+            this.nudFlete.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // txtCP
             // 
@@ -1069,7 +1074,7 @@
             this.grbBuscar.Size = new System.Drawing.Size(396, 751);
             this.grbBuscar.TabIndex = 2;
             this.grbBuscar.TabStop = false;
-            this.grbBuscar.Text = "»   Buscar un venta:   «";
+            this.grbBuscar.Text = "»   Buscar una venta:   «";
             this.grbBuscar.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // nudBIdFin
@@ -1084,6 +1089,9 @@
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(140, 23);
             this.nudBIdFin.TabIndex = 1;
+            this.nudBIdFin.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudBIdFin.Enter += new System.EventHandler(this.Nud_Enter);
+            this.nudBIdFin.Leave += new System.EventHandler(this.nudBIdFin_Leave);
             // 
             // nudBIdIni
             // 
@@ -1097,6 +1105,9 @@
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(140, 23);
             this.nudBIdIni.TabIndex = 0;
+            this.nudBIdIni.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudBIdIni.Enter += new System.EventHandler(this.Nud_Enter);
+            this.nudBIdIni.Leave += new System.EventHandler(this.nudBIdIni_Leave);
             // 
             // btnLimpiar
             // 
@@ -1537,7 +1548,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(457, 16);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Busque la venta y seleccionelo en la lista que se muesta para ver su detalle";
+            this.label1.Text = "Busque la venta y seleccionela en la lista que se muesta para ver su detalle";
             // 
             // tabpRegistrar
             // 
@@ -1581,7 +1592,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(565, 16);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Busque la venta y seleccionelo en la lista que se muestra para que pueda modifica" +
+            this.label3.Text = "Busque la venta y seleccionela en la lista que se muestra para que pueda modifica" +
     "r sus datos";
             // 
             // tabpEliminar
@@ -1604,7 +1615,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(408, 16);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Busque la venta a eliminar y seleccionelo en la lista que se muestra";
+            this.label4.Text = "Busque la venta a eliminar y seleccionela en la lista que se muestra";
             // 
             // txtPrecio
             // 

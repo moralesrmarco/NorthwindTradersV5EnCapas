@@ -28,25 +28,44 @@ namespace DAL
                     cmd.CommandType = CommandType.StoredProcedure;
                     if (selectorRealizaBusqueda)
                     {
-                        cmd.CommandText = "SpVentasBuscar";
-                        cmd.Parameters.AddWithValue("@IdIni", criterios.IdIni);
-                        cmd.Parameters.AddWithValue("@IdFin", criterios.IdFin);
-                        cmd.Parameters.AddWithValue("@Cliente", criterios.Cliente);
-                        cmd.Parameters.AddWithValue("@FVenta", criterios.FVenta);
-                        cmd.Parameters.AddWithValue("@FVentaNull", criterios.FVentaNull);
-                        cmd.Parameters.AddWithValue("@FVentaIni", criterios.FVentaIni);
-                        cmd.Parameters.AddWithValue("@FVentaFin", criterios.FVentaFin);
-                        cmd.Parameters.AddWithValue("@FRequerido", criterios.FRequerido);
-                        cmd.Parameters.AddWithValue("@FRequeridoNull", criterios.FRequeridoNull);
-                        cmd.Parameters.AddWithValue("@FRequeridoIni", criterios.FRequeridoIni);
-                        cmd.Parameters.AddWithValue("@FRequeridoFin", criterios.FRequeridoFin);
-                        cmd.Parameters.AddWithValue("@FEnvio", criterios.FEnvio);
-                        cmd.Parameters.AddWithValue("@FEnvioNull", criterios.FEnvioNull);
-                        cmd.Parameters.AddWithValue("@FEnvioIni", criterios.FEnvioIni);
-                        cmd.Parameters.AddWithValue("@FEnvioFin", criterios.FEnvioFin);
-                        cmd.Parameters.AddWithValue("@Empleado", criterios.Empleado);
-                        cmd.Parameters.AddWithValue("@CompañiaT", criterios.CompañiaT);
-                        cmd.Parameters.AddWithValue("@DirigidoA", criterios.DirigidoA);
+                        cmd.CommandText = "SpVentaBuscar";
+                        // Numéricos
+                        cmd.Parameters.Add("@IdIni", SqlDbType.Int).Value = criterios.IdIni;
+                        cmd.Parameters.Add("@IdFin", SqlDbType.Int).Value = criterios.IdFin;
+
+                        // Strings
+                        cmd.Parameters.Add("@Cliente", SqlDbType.NVarChar, 40).Value = criterios.Cliente;
+                        cmd.Parameters.Add("@Empleado", SqlDbType.NVarChar, 31).Value = criterios.Empleado;
+                        cmd.Parameters.Add("@CompañiaT", SqlDbType.NVarChar, 40).Value = criterios.CompañiaT;
+                        cmd.Parameters.Add("@Dirigidoa", SqlDbType.NVarChar, 40).Value = criterios.DirigidoA;
+                        // Bits
+                        cmd.Parameters.Add("@FVenta", SqlDbType.Bit).Value = criterios.FVenta;
+                        cmd.Parameters.Add("@FVentaNull", SqlDbType.Bit).Value = criterios.FVentaNull;
+
+                        cmd.Parameters.Add("@FRequerido", SqlDbType.Bit).Value = criterios.FRequerido;
+                        cmd.Parameters.Add("@FRequeridoNull", SqlDbType.Bit).Value = criterios.FRequeridoNull;
+
+                        cmd.Parameters.Add("@FEnvio", SqlDbType.Bit).Value = criterios.FEnvio;
+                        cmd.Parameters.Add("@FEnvioNull", SqlDbType.Bit).Value = criterios.FEnvioNull;
+
+                        // Fechas (si son null, se manda DBNull)
+                        cmd.Parameters.Add("@FVentaIni", SqlDbType.DateTime).Value =
+                            criterios.FVentaIni.HasValue ? (object)criterios.FVentaIni.Value : DBNull.Value;
+
+                        cmd.Parameters.Add("@FVentaFin", SqlDbType.DateTime).Value =
+                            criterios.FVentaFin.HasValue ? (object)criterios.FVentaFin.Value : DBNull.Value;
+
+                        cmd.Parameters.Add("@FRequeridoIni", SqlDbType.DateTime).Value =
+                            criterios.FRequeridoIni.HasValue ? (object)criterios.FRequeridoIni.Value : DBNull.Value;
+
+                        cmd.Parameters.Add("@FRequeridoFin", SqlDbType.DateTime).Value =
+                            criterios.FRequeridoFin.HasValue ? (object)criterios.FRequeridoFin.Value : DBNull.Value;
+
+                        cmd.Parameters.Add("@FEnvioIni", SqlDbType.DateTime).Value =
+                            criterios.FEnvioIni.HasValue ? (object)criterios.FEnvioIni.Value : DBNull.Value;
+
+                        cmd.Parameters.Add("@FEnvioFin", SqlDbType.DateTime).Value =
+                            criterios.FEnvioFin.HasValue ? (object)criterios.FEnvioFin.Value : DBNull.Value;
                     }
                     else
                     {
@@ -64,7 +83,7 @@ namespace DAL
                                 Cliente = new Cliente
                                 {
                                     CustomerID = rdr["CustomerID"] as string ?? string.Empty,
-                                    CompanyName = rdr["CompanyName"] as string ?? string.Empty,
+                                    CompanyName = rdr["CustomerCompanyName"] as string ?? string.Empty,
                                     ContactName = rdr["ContactName"] as String ?? string.Empty
                                 },
                                 Empleado = new Empleado
@@ -79,7 +98,7 @@ namespace DAL
                                 Transportista = new Transportista
                                 {
                                     ShipperID = rdr["ShipperID"] as int? ?? 0,
-                                    CompanyName = rdr["CompanyName"] as string ?? string.Empty
+                                    CompanyName = rdr["ShipperCompanyName"] as string ?? string.Empty
                                 },
                                 Freight = rdr["Freight"] as decimal? ?? 0.00m,
                                 ShipName = rdr["ShipName"] as string ?? string.Empty,

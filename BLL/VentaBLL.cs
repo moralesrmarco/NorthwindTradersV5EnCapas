@@ -1,5 +1,4 @@
 ﻿using DAL;
-using Entities;
 using Entities.DTOs;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +20,13 @@ namespace BLL
             var ventas = ventasTemp.Select(v => new DtoVentaDgv
             {
                 OrderID = v.OrderID,
-                CustomerName = v.Cliente.CompanyName,
+                CustomerCompanyName = v.Cliente.CompanyName,
                 CustomerContactName = v.Cliente.ContactName,
                 OrderDate = v.OrderDate,
                 RequiredDate = v.RequiredDate,
                 ShippedDate = v.ShippedDate,
                 EmployeeName = v.Empleado.NameByLastName,
-                ShipCompanyName = v.Transportista.CompanyName,
+                ShipperCompanyName = v.Transportista.CompanyName,
                 ShipName = v.ShipName
             }).ToList();
             return ventas;

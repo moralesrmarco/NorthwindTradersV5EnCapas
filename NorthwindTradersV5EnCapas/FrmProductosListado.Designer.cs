@@ -100,6 +100,7 @@
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(110, 22);
             this.nudBIdFin.TabIndex = 13;
+            this.nudBIdFin.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdFin.Leave += new System.EventHandler(this.nudBIdFin_Leave);
             // 
             // nudBIdIni
@@ -113,6 +114,7 @@
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(110, 22);
             this.nudBIdIni.TabIndex = 13;
+            this.nudBIdIni.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdIni.Leave += new System.EventHandler(this.nudBIdIni_Leave);
             // 
             // btnLimpiar
