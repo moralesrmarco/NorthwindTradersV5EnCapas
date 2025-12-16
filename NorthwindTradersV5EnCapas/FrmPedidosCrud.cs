@@ -1,5 +1,6 @@
 ﻿using BLL;
 using BLL.Services;
+using Entities.DTOs;
 using NorthwindTradersV5EnCapas.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace NorthwindTradersV5EnCapas
     public partial class FrmPedidosCrud : Form
     {
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
-        private PedidoBLL _pedidoBLL;
+        private VentaBLL _ventaBLL;
         private readonly ClienteService _clienteService;
         private readonly EmpleadoService _empleadoService;
         private readonly TransportistaService _transportistaService;
@@ -31,7 +32,7 @@ namespace NorthwindTradersV5EnCapas
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
-            _pedidoBLL = new PedidoBLL(_connectionString);
+            _ventaBLL = new VentaBLL(_connectionString);
             _clienteService = new ClienteService(_connectionString);
             _empleadoService = new EmpleadoService(_connectionString);
             _transportistaService = new TransportistaService(_connectionString);
@@ -62,7 +63,8 @@ namespace NorthwindTradersV5EnCapas
             // Obtener el símbolo de moneda según la configuración regional del equipo
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
-            //LblPrecio.Text = "Precio " + simboloMoneda + ":";
+            LblPrecio.Text = "Precio " + simboloMoneda + ":";
+            LblTotal.Text = "Total " + simboloMoneda + ":";
             dtpHoraRequerido.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
             dtpHoraEnvio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
             DeshabilitarControles();
@@ -72,21 +74,21 @@ namespace NorthwindTradersV5EnCapas
             LlenarCboCategoria();
             Utils.ConfDgv(dgvPedidos);
             Utils.ConfDgv(dgvDetalle);
-            LlenarDgvPedidos(null);
+            LlenarDgvPedidos(false);
             ConfDgvPedidos();
             ConfDgvDetalle();
             dgvDetalle.Columns["Eliminar"].Visible = false;
-            txtPrecio.Text = txtFlete.Text = "$0.00";
-            txtDescuento.Text = "0.00";
-            txtUInventario.Text = "0";
+            //txtPrecio.Text = txtFlete.Text = "$0.00";
+            //txtDescuento.Text = "0.00";
+            //txtUInventario.Text = "0";
         }
 
         private void DeshabilitarControles()
         {
             cboCliente.Enabled = cboEmpleado.Enabled = cboTransportista.Enabled = cboCategoria.Enabled = cboProducto.Enabled = false;
             dtpPedido.Enabled = dtpHoraPedido.Enabled = dtpRequerido.Enabled = dtpHoraRequerido.Enabled = dtpEnvio.Enabled = dtpHoraEnvio.Enabled = false;
-            txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = txtFlete.ReadOnly = true;
-            txtCantidad.Enabled = txtDescuento.Enabled = false;
+            txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = true;
+            nudFlete.ReadOnly = nudCantidad.ReadOnly = nudDescuento.ReadOnly = true;
             btnAgregar.Enabled = btnGenerar.Enabled = false;
         }
 
@@ -94,18 +96,19 @@ namespace NorthwindTradersV5EnCapas
         {
             cboCliente.Enabled = cboEmpleado.Enabled = cboTransportista.Enabled = cboCategoria.Enabled = cboProducto.Enabled = true;
             dtpPedido.Enabled = dtpRequerido.Enabled = dtpEnvio.Enabled = true;
-            txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = txtFlete.ReadOnly = false;
+            txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = false;
+            nudFlete.ReadOnly = false;
             btnAgregar.Enabled = btnGenerar.Enabled = true;
         }
 
         private void HabilitarControlesProducto()
         {
-            txtCantidad.Enabled = txtDescuento.Enabled = true;
+            nudCantidad.ReadOnly = nudDescuento.ReadOnly = false;
         }
 
         private void DeshabilitarControlesProducto()
         {
-            txtCantidad.Enabled = txtDescuento.Enabled = false;
+            nudCantidad.ReadOnly = nudDescuento.ReadOnly = true;
         }
 
         private void LlenarCboCliente()
@@ -191,13 +194,13 @@ namespace NorthwindTradersV5EnCapas
                 valida = false;
                 errorProvider1.SetError(cboTransportista, "Ingrese la compañía transportista");
             }
-            string total = txtTotal.Text;
-            total = total.Replace("$", "");
-            if (txtTotal.Text == "" || decimal.Parse(total) == 0)
+            //string total = txtTotal.Text;
+            //total = total.Replace("$", "");
+            if (nudTotal.Value == 0)
             {
                 valida = false;
                 errorProvider1.SetError(btnAgregar, "Ingrese el detalle del pedido");
-                errorProvider1.SetError(txtTotal, "El total del pedido no puede ser cero");
+                errorProvider1.SetError(nudTotal, "El total del pedido no puede ser cero");
             }
             if (cboProducto.SelectedIndex > 0)
             {
@@ -207,48 +210,48 @@ namespace NorthwindTradersV5EnCapas
             return valida;
         }
 
-        private void LlenarDgvPedidos(object sender)
+        private void LlenarDgvPedidos(bool selectorRealizaBusqueda)
         {
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                //DtoPedidosBuscar dtoPedidosBuscar;
-                //if (sender != null)
-                //{
-                //    dtoPedidosBuscar = new DtoPedidosBuscar
-                //    {
-                //        IdIni = string.IsNullOrEmpty(txtBIdInicial.Text) ? 0 : int.Parse(txtBIdInicial.Text),
-                //        IdFin = string.IsNullOrEmpty(txtBIdFinal.Text) ? 0 : int.Parse(txtBIdFinal.Text),
-                //        Cliente = txtBCliente.Text.Trim(),
+                DtoVentasBuscar criterios;
+                if (selectorRealizaBusqueda == true)
+                {
+                    criterios = new DtoVentasBuscar
+                    {
+                        IdIni = Convert.ToInt32(nudBIdIni.Value),
+                        IdFin = Convert.ToInt32(nudBIdFin.Value),
+                        Cliente = txtBCliente.Text.Trim(),
 
-                //        FPedido = dtpBFPedidoIni.Checked && dtpBFPedidoFin.Checked,
-                //        FPedidoIni = (dtpBFPedidoIni.Checked && dtpBFPedidoFin.Checked) ? Convert.ToDateTime(dtpBFPedidoIni.Value.ToShortDateString() + " 00:00:00.000") : (DateTime?)null,
-                //        FPedidoFin = (dtpBFPedidoIni.Checked && dtpBFPedidoFin.Checked) ? Convert.ToDateTime(dtpBFPedidoFin.Value.ToShortDateString() + " 23:59:59.998") : (DateTime?)null,
-                //        FPedidoNull = chkBFPedidoNull.Checked,
+                        FPedido = dtpBFPedidoIni.Checked && dtpBFPedidoFin.Checked,
+                        FPedidoIni = (dtpBFPedidoIni.Checked && dtpBFPedidoFin.Checked) ? dtpBFPedidoIni.Value.Date : (DateTime?)null,
+                        FPedidoFin = (dtpBFPedidoIni.Checked && dtpBFPedidoFin.Checked) ? dtpBFPedidoFin.Value.Date.AddDays(1) : (DateTime?)null,
+                        FPedidoNull = chkbBFPedidoNull.Checked,
 
-                //        FRequerido = dtpBFRequeridoIni.Checked && dtpBFRequeridoFin.Checked,
-                //        FRequeridoIni = (dtpBFRequeridoIni.Checked && dtpBFRequeridoFin.Checked) ? Convert.ToDateTime(dtpBFRequeridoIni.Value.ToShortDateString() + " 00:00:00.000") : (DateTime?)null,
-                //        FRequeridoFin = (dtpBFRequeridoIni.Checked && dtpBFRequeridoFin.Checked) ? Convert.ToDateTime(dtpBFRequeridoFin.Value.ToShortDateString() + " 23:59:59.998") : (DateTime?)null,
-                //        FRequeridoNull = chkBFRequeridoNull.Checked,
+                        FRequerido = dtpBFRequeridoIni.Checked && dtpBFRequeridoFin.Checked,
+                        FRequeridoIni = (dtpBFRequeridoIni.Checked && dtpBFRequeridoFin.Checked) ? dtpBFRequeridoIni.Value.Date : (DateTime?)null,
+                        FRequeridoFin = (dtpBFRequeridoIni.Checked && dtpBFRequeridoFin.Checked) ? dtpBFRequeridoFin.Value.Date.AddDays(1) : (DateTime?)null,
+                        FRequeridoNull = chkbBFRequeridoNull.Checked,
 
-                //        FEnvio = dtpBFEnvioIni.Checked && dtpBFEnvioFin.Checked,
-                //        FEnvioIni = (dtpBFEnvioIni.Checked && dtpBFEnvioFin.Checked) ? Convert.ToDateTime(dtpBFEnvioIni.Value.ToShortDateString() + " 00:00:00.000") : (DateTime?)null,
-                //        FEnvioFin = (dtpBFEnvioIni.Checked && dtpBFEnvioFin.Checked) ? Convert.ToDateTime(dtpBFEnvioFin.Value.ToShortDateString() + " 23:59:59.998") : (DateTime?)null,
-                //        FEnvioNull = chkBFEnvioNull.Checked,
+                        FEnvio = dtpBFEnvioIni.Checked && dtpBFEnvioFin.Checked,
+                        FEnvioIni = (dtpBFEnvioIni.Checked && dtpBFEnvioFin.Checked) ? dtpBFEnvioIni.Value.Date : (DateTime?)null,
+                        FEnvioFin = (dtpBFEnvioIni.Checked && dtpBFEnvioFin.Checked) ? dtpBFEnvioFin.Value.Date.AddDays(1) : (DateTime?)null,
+                        FEnvioNull = chkbBFEnvioNull.Checked,
 
-                //        Empleado = txtBEmpleado.Text.Trim(),
-                //        CompañiaT = txtBCompañiaT.Text.Trim(),
-                //        DirigidoA = txtBDirigidoa.Text.Trim()
-                //    };
-                //}
-                //else
-                //    dtoPedidosBuscar = null;
-                //var dt = new PedidoRepository(cnStr).ObtenerPedidos(dtoPedidosBuscar);
-                //dgvPedidos.DataSource = dt;
-                //if (sender == null)
-                //    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {dgvPedidos.RowCount} pedidos registrados");
-                //else
-                //    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgvPedidos.RowCount} registros");
+                        Empleado = txtBEmpleado.Text.Trim(),
+                        CompañiaT = txtBCompañiaT.Text.Trim(),
+                        DirigidoA = txtBDirigidoa.Text.Trim()
+                    };
+                }
+                else
+                    criterios = null;
+                var ventas = _ventaBLL.ObtenerVentas(selectorRealizaBusqueda, criterios, false);
+                dgvPedidos.DataSource = ventas;
+                if (!selectorRealizaBusqueda)
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se muestran los últimos {dgvPedidos.RowCount} pedidos registrados");
+                else
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgvPedidos.RowCount} registros");
             }
             catch (Exception ex)
             {
@@ -296,7 +299,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarMensajesError();
             if (tabcOperacion.SelectedTab != tabpRegistrar)
                 DeshabilitarControles();
-            LlenarDgvPedidos(sender);
+            LlenarDgvPedidos(true);
             dgvPedidos.Focus();
         }
 
@@ -307,7 +310,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarDatosBusqueda();
             if (tabcOperacion.SelectedTab != tabpRegistrar)
                 DeshabilitarControles();
-            LlenarDgvPedidos(null);
+            LlenarDgvPedidos(false);
             dgvPedidos.Focus();
         }
 
@@ -334,26 +337,28 @@ namespace NorthwindTradersV5EnCapas
 
         private void BorrarDatosBusqueda()
         {
-            txtBIdInicial.Text = txtBIdFinal.Text = txtBCliente.Text = txtBEmpleado.Text = txtBCompañiaT.Text = txtBDirigidoa.Text = "";
+            //txtBIdInicial.Text = txtBIdFinal.Text = 
+            nudBIdIni.Value = nudBIdFin.Value = 0;
+            txtBCliente.Text = txtBEmpleado.Text = txtBCompañiaT.Text = txtBDirigidoa.Text = "";
             dtpBFPedidoIni.Value = dtpBFPedidoFin.Value = dtpBFRequeridoIni.Value = dtpBFRequeridoFin.Value = dtpBFEnvioIni.Value = dtpBFEnvioFin.Value = DateTime.Today;
             dtpBFPedidoIni.Checked = dtpBFPedidoFin.Checked = dtpBFRequeridoIni.Checked = dtpBFRequeridoFin.Checked = dtpBFEnvioIni.Checked = dtpBFEnvioFin.Checked = false;
-            chkBFPedidoNull.Checked = chkBFRequeridoNull.Checked = chkBFEnvioNull.Checked = false;
+            chkbBFPedidoNull.Checked = chkbBFRequeridoNull.Checked = chkbBFEnvioNull.Checked = false;
         }
 
-        private void txtBIdInicial_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
+        //private void txtBIdInicial_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
 
-        private void txtBIdFinal_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
+        //private void txtBIdFinal_KeyPress(object sender, KeyPressEventArgs e) => Utils.ValidarDigitosSinPunto(sender, e);
 
-        private void txtBIdInicial_Leave(object sender, EventArgs e) => Utils.ValidaTxtBIdIni(txtBIdInicial, txtBIdFinal);
+        //private void txtBIdInicial_Leave(object sender, EventArgs e) => Utils.ValidaTxtBIdIni(txtBIdInicial, txtBIdFinal);
 
-        private void txtBIdFinal_Leave(object sender, EventArgs e) => Utils.ValidaTxtBIdFin(txtBIdInicial, txtBIdFinal);
+        //private void txtBIdFinal_Leave(object sender, EventArgs e) => Utils.ValidaTxtBIdFin(txtBIdInicial, txtBIdFinal);
 
         private void dtpBFPedidoIni_ValueChanged(object sender, EventArgs e)
         {
             if (dtpBFPedidoIni.Checked)
             {
                 dtpBFPedidoFin.Checked = true;
-                chkBFPedidoNull.Checked = false;
+                chkbBFPedidoNull.Checked = false;
             }
             else
                 dtpBFPedidoFin.Checked = false;
@@ -364,7 +369,7 @@ namespace NorthwindTradersV5EnCapas
             if (dtpBFPedidoFin.Checked)
             {
                 dtpBFPedidoIni.Checked = true;
-                chkBFPedidoNull.Checked = false;
+                chkbBFPedidoNull.Checked = false;
             }
             else
                 dtpBFPedidoIni.Checked = false;
@@ -375,7 +380,7 @@ namespace NorthwindTradersV5EnCapas
             if (dtpBFRequeridoIni.Checked)
             {
                 dtpBFRequeridoFin.Checked = true;
-                chkBFRequeridoNull.Checked = false;
+                chkbBFRequeridoNull.Checked = false;
             }
             else
                 dtpBFRequeridoFin.Checked = false;
@@ -386,7 +391,7 @@ namespace NorthwindTradersV5EnCapas
             if (dtpBFRequeridoFin.Checked)
             {
                 dtpBFRequeridoIni.Checked = true;
-                chkBFRequeridoNull.Checked = false;
+                chkbBFRequeridoNull.Checked = false;
             }
             else
                 dtpBFRequeridoIni.Checked = false;
@@ -397,7 +402,7 @@ namespace NorthwindTradersV5EnCapas
             if (dtpBFEnvioIni.Checked)
             {
                 dtpBFEnvioFin.Checked = true;
-                chkBFEnvioNull.Checked = false;
+                chkbBFEnvioNull.Checked = false;
             }
             else
                 dtpBFEnvioFin.Checked = false;
@@ -408,7 +413,7 @@ namespace NorthwindTradersV5EnCapas
             if (dtpBFEnvioFin.Checked)
             {
                 dtpBFEnvioIni.Checked = true;
-                chkBFEnvioNull.Checked = false;
+                chkbBFEnvioNull.Checked = false;
             }
             else
                 dtpBFEnvioIni.Checked = false;
@@ -416,7 +421,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void chkBFPedidoNull_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkBFPedidoNull.Checked)
+            if (chkbBFPedidoNull.Checked)
             {
                 dtpBFPedidoIni.Checked = false;
                 dtpBFPedidoFin.Checked = false;
@@ -425,7 +430,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void chkBFRequeridoNull_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkBFRequeridoNull.Checked)
+            if (chkbBFRequeridoNull.Checked)
             {
                 dtpBFRequeridoIni.Checked = false;
                 dtpBFRequeridoFin.Checked = false;
@@ -434,7 +439,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void chkBFEnvioNull_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkBFEnvioNull.Checked)
+            if (chkbBFEnvioNull.Checked)
             {
                 dtpBFEnvioIni.Checked = false;
                 dtpBFEnvioFin.Checked = false;
@@ -1066,7 +1071,7 @@ namespace NorthwindTradersV5EnCapas
             //        btnNuevo.Enabled = true;
             //        btnNuevo.Visible = true;
             //        BorrarDatosBusqueda();
-            //        LlenarDgvPedidos(null);
+            //        LlenarDgvPedidos(false);
             //        dgvDetalle.Rows.Clear();
             //        dgvDetalle.Columns["Eliminar"].Visible = false;
             //        LlenarDatosDetallePedido();
@@ -1124,7 +1129,7 @@ namespace NorthwindTradersV5EnCapas
             //        btnNota.Enabled = true;
             //        btnNota.Visible = true;
             //        btnNuevo.Visible = false;
-            //        LlenarDgvPedidos(null);
+            //        LlenarDgvPedidos(false);
             //    }
             //}
             //else if (tabcOperacion.SelectedTab == tabpEliminar)
@@ -1160,7 +1165,7 @@ namespace NorthwindTradersV5EnCapas
             //        if (numRegs > 0)
             //        {
             //            BorrarDatosBusqueda();
-            //            LlenarDgvPedidos(null);
+            //            LlenarDgvPedidos(false);
             //        }
             //    }
             //    else

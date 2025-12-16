@@ -45,7 +45,7 @@
     <Compile Include="ClienteDAL.cs" />
     <Compile Include="EmpleadoDAL.cs" />
     <Compile Include="Helpers\ComboDataHelper.cs" />
-    <Compile Include="PedidoDAL.cs" />
+    <Compile Include="VentaDAL.cs" />
     <Compile Include="ProductoDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProveedorDAL.cs" />
