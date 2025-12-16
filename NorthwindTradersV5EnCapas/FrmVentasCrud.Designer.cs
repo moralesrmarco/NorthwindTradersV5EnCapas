@@ -1510,6 +1510,7 @@
             this.dgvVentas.Size = new System.Drawing.Size(1518, 283);
             this.dgvVentas.TabIndex = 0;
             this.dgvVentas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVentas_CellClick);
+            this.dgvVentas.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvVentas_ColumnHeaderMouseClick);
             // 
             // tabcOperacion
             // 

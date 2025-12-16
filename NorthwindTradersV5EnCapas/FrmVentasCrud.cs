@@ -259,6 +259,12 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
+        private void dgvVentas_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
+            Utils.OrdenarPorColumna<DtoVentaDgv>(dgvVentas, e);
+        }
+
         private void ConfDgvVentas()
         {
             dgvVentas.Columns["OrderID"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1289,11 +1295,6 @@ namespace NorthwindTradersV5EnCapas
             //    return false;
             //}
             return rowVersionOk;
-        }
-
-        private void frmVentasCrud_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
         }
     }
 }
