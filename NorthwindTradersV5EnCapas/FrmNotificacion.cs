@@ -9,15 +9,28 @@ namespace NorthwindTradersV5EnCapas
     public partial class FrmNotificacion : Form
     {
 
-        public FrmNotificacion(string mensaje, Icon icono, NotificationMode modo = NotificationMode.Aceptar)
+        public FrmNotificacion(string mensaje, Icon icono, Color colorTexto, NotificationMode modo = NotificationMode.Aceptar)
         {
             InitializeComponent();
 
             this.Text = Utils.nwtr;
             this.Icon = icono; // Ícono de la ventana
-            // Procesar el mensaje con tags de color
-            MostrarMensajeConTags(mensaje);
-
+            // Verificar si el mensaje contiene tags
+            if (ContieneTags(mensaje))
+            {
+                // Procesar el mensaje con tags de color
+                MostrarMensajeConTags(mensaje);
+            }
+            else
+            {
+                // Respetar formato actual del RichTextBox
+                richTextBox1.Clear();
+                richTextBox1.SelectionFont = new Font("Segoe UI", 4, FontStyle.Regular);
+                richTextBox1.AppendText(Environment.NewLine);
+                richTextBox1.SelectionColor = colorTexto;
+                richTextBox1.SelectionFont = new Font("Segoe UI", 10, FontStyle.Bold);
+                richTextBox1.AppendText(mensaje);
+            }
             // Mostrar ícono en PictureBox
             pictureBox1.Image = IconToImage(icono);
             if (modo == NotificationMode.Aceptar)
@@ -41,6 +54,15 @@ namespace NorthwindTradersV5EnCapas
                 this.AcceptButton = btnNo;
                 this.CancelButton = btnNo;
             }
+        }
+
+        private bool ContieneTags(string mensaje)
+        {
+            return mensaje.Contains("[black]") ||
+                   mensaje.Contains("[green]") ||
+                   mensaje.Contains("[red]") ||
+                   mensaje.Contains("[blue]") ||
+                   mensaje.Contains("[orange]");
         }
 
         private Image IconToImage(Icon icon)
@@ -75,6 +97,9 @@ namespace NorthwindTradersV5EnCapas
             richTextBox1.Clear();
             // Divide por saltos de línea
             string[] parrafos = mensaje.Split(new[] { "\n" }, StringSplitOptions.None);
+            // Línea en blanco inicial
+            richTextBox1.SelectionFont = new Font("Segoe UI", 4, FontStyle.Regular);
+            richTextBox1.AppendText(Environment.NewLine);
             //foreach (var p in parrafos)
             for (int i = 0; i < parrafos.Length; i++)
             {

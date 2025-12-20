@@ -1,4 +1,5 @@
 ﻿using DAL;
+using Entities;
 using Entities.DTOs;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,16 @@ namespace BLL
             }).ToList();
             return ventas;
         }
+
+        public Venta ObtenerVentaPorId(int orderId)
+        {
+            return _ventaDAL.ObtenerVentaPorId(orderId);
+        }
+
+        public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
+        {
+            return _ventaDAL.ObtenerVentaDetallePorVentaId(orderId);
+        }
+
     }
 }

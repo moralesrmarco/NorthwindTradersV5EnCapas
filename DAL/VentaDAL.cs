@@ -119,5 +119,135 @@ namespace DAL
             }
             return ventas; 
         }
+
+        public DtoEnvioInformacion ObtenerUltimaInformacionDeEnvio(string customerId)
+        {
+            DtoEnvioInformacion dtoEnvioInformacion = null;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaObtenerUltimaInformacionDeEnvio", con))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                    var dt = new DataTable();
+                    da.Fill(dt);
+                    if (dt.Rows.Count == 0)
+                        return null;
+                    DataRow row = dt.Rows[0];
+                    dtoEnvioInformacion = new DtoEnvioInformacion
+                    {
+                        ShipName = row["ShipName"] == DBNull.Value ? string.Empty : row["ShipName"].ToString(),
+                        ShipAddress = row["ShipAddress"] == DBNull.Value ? string.Empty : row["ShipAddress"].ToString(),
+                        ShipCity = row["ShipCity"] == DBNull.Value ? string.Empty : row["ShipCity"].ToString(),
+                        ShipRegion = row["ShipRegion"] == DBNull.Value ? string.Empty : row["ShipRegion"].ToString(),
+                        ShipPostalCode = row["ShipPostalCode"] == DBNull.Value ? string.Empty : row["ShipPostalCode"].ToString(),
+                        ShipCountry = row["ShipCountry"] == DBNull.Value ? string.Empty : row["ShipCountry"].ToString()
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la información de envío: " + ex.Message);
+            }
+            return dtoEnvioInformacion;
+        }
+
+        public Venta ObtenerVentaPorId(int orderId)
+        {
+            Venta venta = null;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaObtenerPorId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", orderId);
+                    con.Open();
+                    using (var rdr = cmd.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (rdr.Read())
+                        {
+                            venta = new Venta()
+                            {
+                                OrderID = rdr.GetInt32(rdr.GetOrdinal("OrderID")),
+                                Cliente = new Cliente
+                                {
+                                    CustomerID = rdr.IsDBNull(rdr.GetOrdinal("CustomerID")) ? null : rdr.GetString(rdr.GetOrdinal("CustomerID"))
+                                },
+                                Empleado = new Empleado
+                                {
+                                    EmployeeID = rdr.GetInt32(rdr.GetOrdinal("EmployeeID"))
+                                },
+                                OrderDate = rdr.IsDBNull(rdr.GetOrdinal("OrderDate")) ? (DateTime?)null : rdr.GetDateTime(rdr.GetOrdinal("OrderDate")),
+                                RequiredDate = rdr.IsDBNull(rdr.GetOrdinal("RequiredDate")) ? (DateTime?)null : rdr.GetDateTime(rdr.GetOrdinal("RequiredDate")),
+                                ShippedDate = rdr.IsDBNull(rdr.GetOrdinal("ShippedDate")) ? (DateTime?)null : rdr.GetDateTime(rdr.GetOrdinal("ShippedDate")),
+                                Transportista = new Transportista
+                                {
+                                    ShipperID = rdr.GetInt32(rdr.GetOrdinal("ShipVia"))
+                                },
+                                Freight = rdr.IsDBNull(rdr.GetOrdinal("Freight")) ? (decimal?)null : rdr.GetDecimal(rdr.GetOrdinal("Freight")),
+                                ShipName = rdr.IsDBNull(rdr.GetOrdinal("ShipName")) ? null : rdr.GetString(rdr.GetOrdinal("ShipName")),
+                                ShipAddress = rdr.IsDBNull(rdr.GetOrdinal("ShipAddress")) ? null : rdr.GetString(rdr.GetOrdinal("ShipAddress")),
+                                ShipCity = rdr.IsDBNull(rdr.GetOrdinal("ShipCity")) ? null : rdr.GetString(rdr.GetOrdinal("ShipCity")),
+                                ShipRegion = rdr.IsDBNull(rdr.GetOrdinal("ShipRegion")) ? null : rdr.GetString(rdr.GetOrdinal("ShipRegion")),
+                                ShipPostalCode = rdr.IsDBNull(rdr.GetOrdinal("ShipPostalCode")) ? null : rdr.GetString(rdr.GetOrdinal("ShipPostalCode")),
+                                ShipCountry = rdr.IsDBNull(rdr.GetOrdinal("ShipCountry")) ? null : rdr.GetString(rdr.GetOrdinal("ShipCountry")),
+                                RowVersion = rdr.IsDBNull(rdr.GetOrdinal("RowVersion")) ? null : (byte[])rdr["RowVersion"]
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la venta por ID: " + ex.Message);
+            }
+            return venta;
+        }
+
+        public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
+        {
+            List<VentaDetalle> ventaDetalles = new List<VentaDetalle>();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaDetalleObtenerPorVentaId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", orderId);
+                    con.Open();
+                    using (var rdr = cmd.ExecuteReader(CommandBehavior.SingleResult))
+                    {
+                        while (rdr.Read())
+                        {
+                            var ventaDetalle = new VentaDetalle
+                            {
+                                Venta = new Venta
+                                {
+                                    OrderID = rdr.GetInt32(rdr.GetOrdinal("OrderID"))
+                                },
+                                Producto = new Producto
+                                {
+                                    ProductID = rdr.GetInt32(rdr.GetOrdinal("ProductID")),
+                                    ProductName = rdr.IsDBNull(rdr.GetOrdinal("ProductName")) ? null : rdr.GetString(rdr.GetOrdinal("ProductName"))
+                                },
+                                UnitPrice = rdr.GetDecimal(rdr.GetOrdinal("UnitPrice")),
+                                Quantity = rdr.GetInt16(rdr.GetOrdinal("Quantity")),
+                                Discount = (decimal)rdr.GetFloat(rdr.GetOrdinal("Discount")),
+                                RowVersion = rdr.IsDBNull(rdr.GetOrdinal("RowVersion")) ? null : (byte[])rdr["RowVersion"]
+                            };
+                            ventaDetalles.Add(ventaDetalle);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los detalles de la venta: " + ex.Message);
+            }
+            return ventaDetalles;
+        }
     }
 }

@@ -93,7 +93,7 @@ namespace NorthwindTradersV5EnCapas
                     break;
             }
 
-            using (var frm = new FrmNotificacion(mensaje, icono, modo))
+            using (var frm = new FrmNotificacion(mensaje, icono, colorTexto, modo))
             {
                 return frm.ShowDialog();
             }

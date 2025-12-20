@@ -32,15 +32,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.grbDetalle = new System.Windows.Forms.GroupBox();
             this.dgvDetalle = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Descuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.ProductoId = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.RowVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtFlete = new System.Windows.Forms.TextBox();
             this.txtUInventario = new System.Windows.Forms.TextBox();
             this.grbVenta = new System.Windows.Forms.GroupBox();
@@ -147,6 +138,15 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtPrecio = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Descuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ProductoId = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.RowVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.grbDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).BeginInit();
@@ -232,80 +232,6 @@
             this.dgvDetalle.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetalle_CellClick);
             this.dgvDetalle.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvDetalle_CellFormatting);
             // 
-            // Id
-            // 
-            this.Id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Id.HeaderText = "Id";
-            this.Id.MinimumWidth = 6;
-            this.Id.Name = "Id";
-            this.Id.Width = 50;
-            // 
-            // Producto
-            // 
-            this.Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Producto.HeaderText = "Producto";
-            this.Producto.MinimumWidth = 6;
-            this.Producto.Name = "Producto";
-            // 
-            // Precio
-            // 
-            this.Precio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Precio.HeaderText = "Precio";
-            this.Precio.MinimumWidth = 6;
-            this.Precio.Name = "Precio";
-            this.Precio.Width = 83;
-            // 
-            // Cantidad
-            // 
-            this.Cantidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Cantidad.HeaderText = "Cantidad";
-            this.Cantidad.MinimumWidth = 6;
-            this.Cantidad.Name = "Cantidad";
-            this.Cantidad.Width = 101;
-            // 
-            // Descuento
-            // 
-            this.Descuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Descuento.HeaderText = "Descuento";
-            this.Descuento.MinimumWidth = 6;
-            this.Descuento.Name = "Descuento";
-            this.Descuento.Width = 114;
-            // 
-            // Importe
-            // 
-            this.Importe.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Importe.HeaderText = "Importe";
-            this.Importe.MinimumWidth = 6;
-            this.Importe.Name = "Importe";
-            this.Importe.Width = 91;
-            // 
-            // Eliminar
-            // 
-            this.Eliminar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Eliminar.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.Eliminar.HeaderText = "Eliminar";
-            this.Eliminar.MinimumWidth = 6;
-            this.Eliminar.Name = "Eliminar";
-            this.Eliminar.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Eliminar.Width = 72;
-            // 
-            // ProductoId
-            // 
-            this.ProductoId.HeaderText = "ProductoId";
-            this.ProductoId.MinimumWidth = 6;
-            this.ProductoId.Name = "ProductoId";
-            this.ProductoId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ProductoId.Visible = false;
-            this.ProductoId.Width = 125;
-            // 
-            // RowVersion
-            // 
-            this.RowVersion.HeaderText = "RowVersion";
-            this.RowVersion.MinimumWidth = 6;
-            this.RowVersion.Name = "RowVersion";
-            this.RowVersion.Visible = false;
-            this.RowVersion.Width = 125;
-            // 
             // txtFlete
             // 
             this.txtFlete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -316,9 +242,6 @@
             this.txtFlete.Size = new System.Drawing.Size(169, 23);
             this.txtFlete.TabIndex = 7;
             this.txtFlete.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtFlete.Enter += new System.EventHandler(this.txtFlete_Enter);
-            this.txtFlete.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFlete_KeyPress);
-            this.txtFlete.Leave += new System.EventHandler(this.txtFlete_Leave);
             // 
             // txtUInventario
             // 
@@ -373,6 +296,7 @@
             // nudTotal
             // 
             this.nudTotal.DecimalPlaces = 2;
+            this.nudTotal.Enabled = false;
             this.nudTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudTotal.Location = new System.Drawing.Point(142, 383);
             this.nudTotal.Maximum = new decimal(new int[] {
@@ -381,6 +305,7 @@
             0,
             0});
             this.nudTotal.Name = "nudTotal";
+            this.nudTotal.ReadOnly = true;
             this.nudTotal.Size = new System.Drawing.Size(250, 26);
             this.nudTotal.TabIndex = 21;
             this.nudTotal.ThousandsSeparator = true;
@@ -467,6 +392,7 @@
             // nudDescuento
             // 
             this.nudDescuento.DecimalPlaces = 2;
+            this.nudDescuento.Enabled = false;
             this.nudDescuento.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudDescuento.Location = new System.Drawing.Point(858, 61);
             this.nudDescuento.Maximum = new decimal(new int[] {
@@ -481,6 +407,7 @@
             // 
             // nudCantidad
             // 
+            this.nudCantidad.Enabled = false;
             this.nudCantidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudCantidad.Location = new System.Drawing.Point(631, 61);
             this.nudCantidad.Maximum = new decimal(new int[] {
@@ -498,7 +425,7 @@
             // 
             // nudUInventario
             // 
-            this.nudUInventario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudUInventario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudUInventario.Location = new System.Drawing.Point(444, 61);
             this.nudUInventario.Maximum = new decimal(new int[] {
             32767,
@@ -506,7 +433,6 @@
             0,
             0});
             this.nudUInventario.Name = "nudUInventario";
-            this.nudUInventario.ReadOnly = true;
             this.nudUInventario.Size = new System.Drawing.Size(90, 23);
             this.nudUInventario.TabIndex = 9;
             this.nudUInventario.ThousandsSeparator = true;
@@ -514,7 +440,7 @@
             // nudPrecio
             // 
             this.nudPrecio.DecimalPlaces = 2;
-            this.nudPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudPrecio.Location = new System.Drawing.Point(129, 61);
             this.nudPrecio.Maximum = new decimal(new int[] {
             1000000,
@@ -522,7 +448,6 @@
             0,
             0});
             this.nudPrecio.Name = "nudPrecio";
-            this.nudPrecio.ReadOnly = true;
             this.nudPrecio.Size = new System.Drawing.Size(120, 23);
             this.nudPrecio.TabIndex = 4;
             this.nudPrecio.ThousandsSeparator = true;
@@ -656,6 +581,7 @@
             // nudFlete
             // 
             this.nudFlete.DecimalPlaces = 2;
+            this.nudFlete.Enabled = false;
             this.nudFlete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudFlete.Location = new System.Drawing.Point(619, 110);
             this.nudFlete.Maximum = new decimal(new int[] {
@@ -1465,9 +1391,6 @@
             this.txtDescuento.Size = new System.Drawing.Size(65, 23);
             this.txtDescuento.TabIndex = 4;
             this.txtDescuento.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtDescuento.Enter += new System.EventHandler(this.txtDescuento_Enter);
-            this.txtDescuento.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDescuento_KeyPress);
-            this.txtDescuento.Leave += new System.EventHandler(this.txtDescuento_Leave);
             // 
             // txtCantidad
             // 
@@ -1479,9 +1402,6 @@
             this.txtCantidad.Size = new System.Drawing.Size(105, 23);
             this.txtCantidad.TabIndex = 3;
             this.txtCantidad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtCantidad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCantidad_KeyPress);
-            this.txtCantidad.Leave += new System.EventHandler(this.txtCantidad_Leave);
-            this.txtCantidad.Validating += new System.ComponentModel.CancelEventHandler(this.txtCantidad_Validating);
             // 
             // grbVentas
             // 
@@ -1633,6 +1553,80 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // Id
+            // 
+            this.Id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Id.HeaderText = "#";
+            this.Id.MinimumWidth = 6;
+            this.Id.Name = "Id";
+            this.Id.Width = 46;
+            // 
+            // Producto
+            // 
+            this.Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Producto.HeaderText = "Producto";
+            this.Producto.MinimumWidth = 6;
+            this.Producto.Name = "Producto";
+            // 
+            // Precio
+            // 
+            this.Precio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Precio.HeaderText = "Precio";
+            this.Precio.MinimumWidth = 6;
+            this.Precio.Name = "Precio";
+            this.Precio.Width = 83;
+            // 
+            // Cantidad
+            // 
+            this.Cantidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Cantidad.HeaderText = "Cantidad";
+            this.Cantidad.MinimumWidth = 6;
+            this.Cantidad.Name = "Cantidad";
+            this.Cantidad.Width = 101;
+            // 
+            // Descuento
+            // 
+            this.Descuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Descuento.HeaderText = "Descuento";
+            this.Descuento.MinimumWidth = 6;
+            this.Descuento.Name = "Descuento";
+            this.Descuento.Width = 114;
+            // 
+            // Importe
+            // 
+            this.Importe.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Importe.HeaderText = "Importe";
+            this.Importe.MinimumWidth = 6;
+            this.Importe.Name = "Importe";
+            this.Importe.Width = 91;
+            // 
+            // Eliminar
+            // 
+            this.Eliminar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Eliminar.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Eliminar.HeaderText = "Eliminar";
+            this.Eliminar.MinimumWidth = 6;
+            this.Eliminar.Name = "Eliminar";
+            this.Eliminar.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Eliminar.Width = 72;
+            // 
+            // ProductoId
+            // 
+            this.ProductoId.HeaderText = "ProductoId";
+            this.ProductoId.MinimumWidth = 6;
+            this.ProductoId.Name = "ProductoId";
+            this.ProductoId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ProductoId.Visible = false;
+            this.ProductoId.Width = 125;
+            // 
+            // RowVersion
+            // 
+            this.RowVersion.HeaderText = "RowVersion";
+            this.RowVersion.MinimumWidth = 6;
+            this.RowVersion.Name = "RowVersion";
+            this.RowVersion.Visible = false;
+            this.RowVersion.Width = 125;
+            // 
             // FrmVentasCrud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
@@ -1782,19 +1776,10 @@
         private System.Windows.Forms.Label LblTotal;
         private System.Windows.Forms.Button btnGenerar;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Producto;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Descuento;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Importe;
-        private System.Windows.Forms.DataGridViewButtonColumn Eliminar;
-        private System.Windows.Forms.DataGridViewButtonColumn ProductoId;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.TextBox txtUInventario;
         private System.Windows.Forms.Button btnNota;
         private System.Windows.Forms.Button btnNuevo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RowVersion;
         private System.Windows.Forms.NumericUpDown nudBIdFin;
         private System.Windows.Forms.NumericUpDown nudBIdIni;
         private System.Windows.Forms.NumericUpDown nudFlete;
@@ -1803,5 +1788,14 @@
         private System.Windows.Forms.NumericUpDown nudCantidad;
         private System.Windows.Forms.NumericUpDown nudDescuento;
         private System.Windows.Forms.NumericUpDown nudTotal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Producto;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Descuento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Importe;
+        private System.Windows.Forms.DataGridViewButtonColumn Eliminar;
+        private System.Windows.Forms.DataGridViewButtonColumn ProductoId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RowVersion;
     }
 }
