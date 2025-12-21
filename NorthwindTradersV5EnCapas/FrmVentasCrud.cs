@@ -1,5 +1,6 @@
 ﻿using BLL;
 using BLL.Services;
+using Entities;
 using Entities.DTOs;
 using NorthwindTradersV5EnCapas.Helpers;
 using System;
@@ -24,7 +25,6 @@ namespace NorthwindTradersV5EnCapas
         private readonly CategoriaService _categoriaService;
         private readonly ProductoService _productoService;
         private readonly VentaService _ventaService;
-        private bool EjecutarConfDgv = true;
         private Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
         private TabPage lastSelectedTab;
@@ -66,7 +66,6 @@ namespace NorthwindTradersV5EnCapas
             tabcOperacion.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
-            nudCantidad.Validating += nudCantidad_Validating;
             // Obtener el símbolo de moneda según la configuración regional del equipo
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
@@ -85,6 +84,12 @@ namespace NorthwindTradersV5EnCapas
             ConfDgvVentas();
             ConfDgvDetalle();
             dgvDetalle.Columns["Eliminar"].Visible = false;
+            DeshabilitarPrecioUInventario();
+            InicializarCboProducto();
+        }
+
+        private void DeshabilitarPrecioUInventario()
+        {
             nudPrecio.ReadOnly = true;
             nudPrecio.InterceptArrowKeys = false;
             nudPrecio.Controls[0].Enabled = false;
@@ -93,13 +98,66 @@ namespace NorthwindTradersV5EnCapas
             nudUInventario.Controls[0].Enabled = false;
         }
 
+        private void DeshabilitarCantidadDescuentoTotal()
+        {
+            nudCantidad.ReadOnly = true;
+            nudCantidad.InterceptArrowKeys = false;
+            nudCantidad.Controls[0].Enabled = false;
+            nudDescuento.ReadOnly = true;
+            nudDescuento.InterceptArrowKeys = false;
+            nudDescuento.Controls[0].Enabled = false;
+            nudTotal.ReadOnly = true;
+            nudTotal.InterceptArrowKeys = false;
+            nudTotal.Controls[0].Enabled = false;
+        }
+
+        private void DeshabilitarFlete()
+        {
+            nudFlete.ReadOnly = true;
+            nudFlete.InterceptArrowKeys = false;
+            nudFlete.Controls[0].Enabled = false;
+        }
+
+        private void HabilitarFlete()
+        {
+            nudFlete.ReadOnly = false;
+            nudFlete.InterceptArrowKeys = true;
+            nudFlete.Controls[0].Enabled = true;
+        }
+
+        private void HabilitarCantidadDescuento()
+        {
+            nudCantidad.ReadOnly = false;
+            nudCantidad.InterceptArrowKeys = true;
+            nudCantidad.Controls[0].Enabled = true;
+            nudDescuento.ReadOnly = false;
+            nudDescuento.InterceptArrowKeys = true;
+            nudDescuento.Controls[0].Enabled = true;
+        }
+
+        private void InicializarCboProducto()
+        {
+            DataTable dtCboProductos = new DataTable();
+            dtCboProductos.Columns.Add("ProductID", typeof(int));
+            dtCboProductos.Columns.Add("ProductName", typeof(string));
+            DataRow dr = dtCboProductos.NewRow();
+            dr["ProductID"] = 0;
+            dr["ProductName"] = "«--- Seleccione ---»";
+            dtCboProductos.Rows.Add(dr);
+            cboProducto.DataSource = dtCboProductos;
+            cboProducto.DisplayMember = "ProductName";
+            cboProducto.ValueMember = "ProductID";
+            cboProducto.Enabled = false;
+        }
+
         private void DeshabilitarControles()
         {
             cboCliente.Enabled = cboEmpleado.Enabled = cboTransportista.Enabled = cboCategoria.Enabled = cboProducto.Enabled = false;
             dtpVenta.Enabled = dtpHoraVenta.Enabled = dtpRequerido.Enabled = dtpHoraRequerido.Enabled = dtpEnvio.Enabled = dtpHoraEnvio.Enabled = false;
             txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = true;
-            nudFlete.ReadOnly = nudCantidad.ReadOnly = nudDescuento.ReadOnly = true;
             btnAgregar.Enabled = btnGenerar.Enabled = false;
+            DeshabilitarCantidadDescuentoTotal();
+            DeshabilitarFlete();
         }
 
         private void HabilitarControles()
@@ -108,19 +166,13 @@ namespace NorthwindTradersV5EnCapas
             cboProducto.Enabled = false;
             dtpVenta.Enabled = dtpRequerido.Enabled = dtpEnvio.Enabled = true;
             txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = false;
-            nudFlete.ReadOnly = false;
+            HabilitarFlete();
             btnAgregar.Enabled = btnGenerar.Enabled = true;
         }
 
-        private void HabilitarControlesProducto()
-        {
-            nudCantidad.ReadOnly = nudDescuento.ReadOnly = false;
-        }
+        private void HabilitarControlesProducto() => HabilitarCantidadDescuento();
 
-        private void DeshabilitarControlesProducto()
-        {
-            nudCantidad.ReadOnly = nudDescuento.ReadOnly = true;
-        }
+        private void DeshabilitarControlesProducto() => DeshabilitarCantidadDescuentoTotal();
 
         private void LlenarCboCliente()
         {
@@ -205,8 +257,6 @@ namespace NorthwindTradersV5EnCapas
                 valida = false;
                 errorProvider1.SetError(cboTransportista, "Ingrese la compañía transportista");
             }
-            //string total = txtTotal.Text;
-            //total = total.Replace("$", "");
             if (nudTotal.Value == 0)
             {
                 valida = false;
@@ -216,7 +266,7 @@ namespace NorthwindTradersV5EnCapas
             if (cboProducto.SelectedIndex > 0)
             {
                 valida = false;
-                errorProvider1.SetError(cboProducto, "Ha seleccionado un producto y no lo ha agregado a la venta");
+                errorProvider1.SetError(cboProducto, "Se ha seleccionado un producto y no lo ha agregado a la venta");
             }
             return valida;
         }
@@ -308,6 +358,23 @@ namespace NorthwindTradersV5EnCapas
             dgvDetalle.Columns["Cantidad"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvDetalle.Columns["Descuento"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvDetalle.Columns["Importe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvDetalle.Columns["ImporteDelDescuento"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvDetalle.Columns["ImporteConDescuento"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvDetalle.Columns["TasaIVA"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvDetalle.Columns["ImporteDelIVA"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvDetalle.Columns["Subtotal"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvDetalle.Columns["Id"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["Precio"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["Cantidad"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["Importe"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["Descuento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["ImporteDelDescuento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["ImporteConDescuento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["TasaIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["ImporteDelIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["Subtotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -336,16 +403,21 @@ namespace NorthwindTradersV5EnCapas
             txtId.Text = "";
             txtId.Tag = null;
             cboCliente.SelectedIndex = cboEmpleado.SelectedIndex = cboTransportista.SelectedIndex = cboCategoria.SelectedIndex = 0;
-            cboProducto.DataSource = null;
+            InicializarCboProducto();
             dtpVenta.Value = dtpRequerido.Value = dtpEnvio.Value = DateTime.Now;
             dtpHoraVenta.Value = DateTime.Now;
             dtpHoraRequerido.Value = dtpHoraEnvio.Value = DateTime.Today;
             dtpRequerido.Checked = dtpEnvio.Checked = false;
             txtDirigidoa.Text = txtDomicilio.Text = txtCiudad.Text = txtRegion.Text = txtCP.Text = txtPais.Text = "";
-            nudFlete.Value = nudPrecio.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = nudTotal.Value = 0;
             btnNota.Visible = false;
+            InicializarValoresVenta();
+            InicializarValoresAgregarProducto();
             dgvDetalle.Rows.Clear();
         }
+
+        private void InicializarValoresAgregarProducto() => nudPrecio.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = 0;
+
+        private void InicializarValoresVenta() => nudFlete.Value = nudTotal.Value = 0;
 
         private void BorrarMensajesError() => errorProvider1.Clear();
 
@@ -395,16 +467,6 @@ namespace NorthwindTradersV5EnCapas
             {
                 U.NotificacionWarning("La cantidad de unidades vendidas no puede ser mayor a la existencia en inventario");
                 nudCantidad.Value = nudUInventario.Value;
-            }
-        }
-
-        private void nudCantidad_Validating(object sender, CancelEventArgs e)
-        {
-            if (nudCantidad.Value <= 0)
-            {
-                U.NotificacionWarning("La cantidad de unidades vendidas no puede ser 0");
-                nudCantidad.Value = 1;
-                e.Cancel = true; // aquí sí funciona
             }
         }
 
@@ -545,7 +607,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void cboCategoria_SelectedIndexChanged(object sender, EventArgs e)
         {
-            nudPrecio.Value = nudUInventario.Value = nudCantidad.Value = 0;
+            InicializarValoresAgregarProducto();
             if (cboCategoria.SelectedIndex > 0)
             {
                 try
@@ -566,17 +628,7 @@ namespace NorthwindTradersV5EnCapas
             else
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                DataTable dtCboProductos = new DataTable();
-                dtCboProductos.Columns.Add("ProductID", typeof(int));
-                dtCboProductos.Columns.Add("ProductName", typeof(string));
-                DataRow dr = dtCboProductos.NewRow();
-                dr["ProductID"] = 0;
-                dr["ProductName"] = "«--- Seleccione ---»";
-                dtCboProductos.Rows.Add(dr);
-                cboProducto.DataSource = dtCboProductos;
-                cboProducto.DisplayMember = "ProductName";
-                cboProducto.ValueMember = "ProductID";
-                cboProducto.Enabled = false;
+                InicializarCboProducto();
                 MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
             }
         }
@@ -629,7 +681,7 @@ namespace NorthwindTradersV5EnCapas
                             DeshabilitarControlesProducto();
                             U.NotificacionWarning("No hay este producto en existencia");
                             cboProducto.SelectedIndex = 0;
-                            nudPrecio.Value = nudUInventario.Value = nudCantidad.Value = nudDescuento.Value = 0;
+                            InicializarValoresAgregarProducto();
                         }
                         else
                             HabilitarControlesProducto();
@@ -637,7 +689,7 @@ namespace NorthwindTradersV5EnCapas
                     else
                     {
                         DeshabilitarControlesProducto();
-                        nudPrecio.Value = nudUInventario.Value = nudCantidad.Value = nudDescuento.Value = 0;
+                        InicializarValoresAgregarProducto();
                     }
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
                 }
@@ -649,7 +701,7 @@ namespace NorthwindTradersV5EnCapas
             else
             {
                 DeshabilitarControlesProducto();
-                nudPrecio.Value = nudUInventario.Value = nudCantidad.Value = nudDescuento.Value = 0;
+                InicializarValoresAgregarProducto();
             }
         }
 
@@ -659,7 +711,7 @@ namespace NorthwindTradersV5EnCapas
             numDetalle = 0;
             foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
             {
-                decimal importe = decimal.Parse(dgvr.Cells["Importe"].Value.ToString());
+                decimal importe = decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString());
                 total += importe;
                 dgvr.Cells["Id"].Value = ++numDetalle;
             }
@@ -727,39 +779,74 @@ namespace NorthwindTradersV5EnCapas
                 errorProvider1.SetError(nudCantidad, "Ingrese la cantidad");
                 hayError = true;
             }
-            int numProd = int.Parse(cboProducto.SelectedValue.ToString());
-            bool productoDuplicado = false;
-            foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
+            int numProd = 0;
+            int.TryParse(cboProducto.SelectedValue.ToString(), out numProd);
+            if (numProd > 0)
             {
-                if (int.Parse(dgvr.Cells["ProductoId"].Value.ToString()) == numProd)
+                bool productoDuplicado = false;
+                foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
                 {
-                    productoDuplicado = true;
-                    break;
+                    if (int.Parse(dgvr.Cells["ProductoId"].Value.ToString()) == numProd)
+                    {
+                        productoDuplicado = true;
+                        break;
+                    }
                 }
-            }
-            if (productoDuplicado)
-            {
-                errorProvider1.SetError(cboProducto, "No se puede tener un producto duplicado en el detalle de la venta");
-                hayError = true;
+                if (productoDuplicado)
+                {
+                    errorProvider1.SetError(cboProducto, "No se puede tener un producto duplicado en el detalle de la venta");
+                    hayError = true;
+                }
             }
             if (hayError)
                 return;
             DeshabilitarControlesProducto();
-            txtPrecio.Text = txtPrecio.Text.Replace("$", "");
-            dgvDetalle.Rows.Add(new object[] { numDetalle, cboProducto.Text, nudPrecio.Value, nudCantidad.Value, nudDescuento.Value, nudPrecio.Value * nudCantidad.Value * (1 - nudDescuento.Value), "Eliminar", cboProducto.SelectedValue });
+            var ventaDetalle = new VentaDetalle
+            {
+                Venta = new Venta(),
+                Producto = new Producto
+                {
+                    ProductID = (int)cboProducto.SelectedValue,
+                    ProductName = cboProducto.Text
+                },
+                UnitPrice = nudPrecio.Value,
+                Quantity = (short)nudCantidad.Value,
+                Discount = nudDescuento.Value / 100m
+            };
+            dgvDetalle.Rows.Add(new object[] 
+            { 
+                numDetalle, 
+                ventaDetalle.Producto.ProductName,
+                ventaDetalle.UnitPrice, 
+                ventaDetalle.Quantity, 
+                ventaDetalle.Importe, 
+                ventaDetalle.Discount,
+                ventaDetalle.ImporteDelDescuento,
+                ventaDetalle.ImporteConDescuento,
+                ventaDetalle.TasaIVA,
+                ventaDetalle.ImporteDelIVA,
+                ventaDetalle.Subtotal,
+                "Eliminar", 
+                ventaDetalle.Producto.ProductID
+            });
             CalcularTotal();
             ++numDetalle;
             cboCategoria.SelectedIndex = cboProducto.SelectedIndex = 0;
-            nudPrecio.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = 0;
+            InicializarValoresAgregarProducto();
             cboCategoria.Focus();
         }
 
         private void dgvDetalle_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.ColumnIndex == 2 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c");
-            if (e.ColumnIndex == 3 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("n0");
-            if (e.ColumnIndex == 4 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("n2");
-            if (e.ColumnIndex == 5 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c");
+            if (e.ColumnIndex == 2 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c"); // Precio
+            if (e.ColumnIndex == 3 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("n0"); // Cantidad
+            if (e.ColumnIndex == 4 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c2"); // Importe
+            if (e.ColumnIndex == 5 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("p2"); // Descuento
+            if (e.ColumnIndex == 6 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c"); // Importe del descuento
+            if (e.ColumnIndex == 7 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c2"); // Importe con descuento
+            if (e.ColumnIndex == 8 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("p2"); // Tasa IVA
+            if (e.ColumnIndex == 9 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c2"); // Importe IVA
+            if (e.ColumnIndex == 10 && e.Value != null) e.Value = decimal.Parse(e.Value.ToString()).ToString("c2"); // Subtotal
         }
 
         private void dgvDetalle_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -964,15 +1051,20 @@ namespace NorthwindTradersV5EnCapas
                 {
                     foreach (var ventaDetalle in ventaDetalles)
                     {
-                        var totalLinea = (ventaDetalle.UnitPrice * ventaDetalle.Quantity) * (1 - ventaDetalle.Discount);
+                        //var totalLinea = (ventaDetalle.UnitPrice * ventaDetalle.Quantity) * (1 - ventaDetalle.Discount);
                         dgvDetalle.Rows.Add(new object[]
                         {
                             numDetalle,
                             ventaDetalle.Producto.ProductName,
                             ventaDetalle.UnitPrice,
                             ventaDetalle.Quantity,
+                            ventaDetalle.Importe,
                             ventaDetalle.Discount,
-                            totalLinea,
+                            ventaDetalle.ImporteDelDescuento,
+                            ventaDetalle.ImporteConDescuento,
+                            ventaDetalle.TasaIVA,
+                            ventaDetalle.ImporteDelIVA,
+                            ventaDetalle.Subtotal,
                             "Eliminar",
                             ventaDetalle.Producto.ProductID,
                             ventaDetalle.RowVersion

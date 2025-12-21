@@ -69,6 +69,11 @@
     <Compile Include="Proveedor.cs" />
     <Compile Include="Transportista.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{FA850F4F-0723-4E47-9A32-936437CF3BC9}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

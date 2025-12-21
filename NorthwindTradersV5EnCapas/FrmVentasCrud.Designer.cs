@@ -32,8 +32,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.grbDetalle = new System.Windows.Forms.GroupBox();
             this.dgvDetalle = new System.Windows.Forms.DataGridView();
-            this.txtFlete = new System.Windows.Forms.TextBox();
-            this.txtUInventario = new System.Windows.Forms.TextBox();
             this.grbVenta = new System.Windows.Forms.GroupBox();
             this.nudTotal = new System.Windows.Forms.NumericUpDown();
             this.btnNuevo = new System.Windows.Forms.Button();
@@ -89,7 +87,6 @@
             this.label21 = new System.Windows.Forms.Label();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.txtTotal = new System.Windows.Forms.TextBox();
             this.grbBuscar = new System.Windows.Forms.GroupBox();
             this.nudBIdFin = new System.Windows.Forms.NumericUpDown();
             this.nudBIdIni = new System.Windows.Forms.NumericUpDown();
@@ -123,8 +120,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtDescuento = new System.Windows.Forms.TextBox();
-            this.txtCantidad = new System.Windows.Forms.TextBox();
             this.grbVentas = new System.Windows.Forms.GroupBox();
             this.dgvVentas = new System.Windows.Forms.DataGridView();
             this.tabcOperacion = new System.Windows.Forms.TabControl();
@@ -136,14 +131,18 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tabpEliminar = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtPrecio = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Descuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Descuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImporteDelDescuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImporteConDescuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TasaIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImporteDelIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ProductoId = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RowVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -176,16 +175,10 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.grbDetalle);
-            this.panel1.Controls.Add(this.txtFlete);
-            this.panel1.Controls.Add(this.txtUInventario);
             this.panel1.Controls.Add(this.grbVenta);
-            this.panel1.Controls.Add(this.txtTotal);
             this.panel1.Controls.Add(this.grbBuscar);
-            this.panel1.Controls.Add(this.txtDescuento);
-            this.panel1.Controls.Add(this.txtCantidad);
             this.panel1.Controls.Add(this.grbVentas);
             this.panel1.Controls.Add(this.tabcOperacion);
-            this.panel1.Controls.Add(this.txtPrecio);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
@@ -217,8 +210,13 @@
             this.Producto,
             this.Precio,
             this.Cantidad,
-            this.Descuento,
             this.Importe,
+            this.Descuento,
+            this.ImporteDelDescuento,
+            this.ImporteConDescuento,
+            this.TasaIVA,
+            this.ImporteDelIVA,
+            this.Subtotal,
             this.Eliminar,
             this.ProductoId,
             this.RowVersion});
@@ -231,27 +229,6 @@
             this.dgvDetalle.TabIndex = 0;
             this.dgvDetalle.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetalle_CellClick);
             this.dgvDetalle.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvDetalle_CellFormatting);
-            // 
-            // txtFlete
-            // 
-            this.txtFlete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFlete.Location = new System.Drawing.Point(1294, 412);
-            this.txtFlete.Margin = new System.Windows.Forms.Padding(4);
-            this.txtFlete.MaxLength = 15;
-            this.txtFlete.Name = "txtFlete";
-            this.txtFlete.Size = new System.Drawing.Size(169, 23);
-            this.txtFlete.TabIndex = 7;
-            this.txtFlete.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtUInventario
-            // 
-            this.txtUInventario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUInventario.Location = new System.Drawing.Point(700, 412);
-            this.txtUInventario.Margin = new System.Windows.Forms.Padding(4);
-            this.txtUInventario.Name = "txtUInventario";
-            this.txtUInventario.Size = new System.Drawing.Size(65, 23);
-            this.txtUInventario.TabIndex = 7;
-            this.txtUInventario.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // grbVenta
             // 
@@ -296,7 +273,6 @@
             // nudTotal
             // 
             this.nudTotal.DecimalPlaces = 2;
-            this.nudTotal.Enabled = false;
             this.nudTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudTotal.Location = new System.Drawing.Point(142, 383);
             this.nudTotal.Maximum = new decimal(new int[] {
@@ -305,7 +281,6 @@
             0,
             0});
             this.nudTotal.Name = "nudTotal";
-            this.nudTotal.ReadOnly = true;
             this.nudTotal.Size = new System.Drawing.Size(250, 26);
             this.nudTotal.TabIndex = 21;
             this.nudTotal.ThousandsSeparator = true;
@@ -392,22 +367,20 @@
             // nudDescuento
             // 
             this.nudDescuento.DecimalPlaces = 2;
-            this.nudDescuento.Enabled = false;
             this.nudDescuento.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudDescuento.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.nudDescuento.Location = new System.Drawing.Point(858, 61);
-            this.nudDescuento.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nudDescuento.Name = "nudDescuento";
-            this.nudDescuento.Size = new System.Drawing.Size(70, 23);
+            this.nudDescuento.Size = new System.Drawing.Size(85, 23);
             this.nudDescuento.TabIndex = 3;
             this.nudDescuento.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // nudCantidad
             // 
-            this.nudCantidad.Enabled = false;
             this.nudCantidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudCantidad.Location = new System.Drawing.Point(631, 61);
             this.nudCantidad.Maximum = new decimal(new int[] {
@@ -449,7 +422,7 @@
             0});
             this.nudPrecio.Name = "nudPrecio";
             this.nudPrecio.Size = new System.Drawing.Size(120, 23);
-            this.nudPrecio.TabIndex = 4;
+            this.nudPrecio.TabIndex = 8;
             this.nudPrecio.ThousandsSeparator = true;
             // 
             // label43
@@ -501,12 +474,12 @@
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(757, 64);
+            this.label41.Location = new System.Drawing.Point(738, 64);
             this.label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(90, 17);
+            this.label41.Size = new System.Drawing.Size(120, 17);
             this.label41.TabIndex = 4;
-            this.label41.Text = "Descuento:";
+            this.label41.Text = "Descuento (%):";
             // 
             // label40
             // 
@@ -581,7 +554,6 @@
             // nudFlete
             // 
             this.nudFlete.DecimalPlaces = 2;
-            this.nudFlete.Enabled = false;
             this.nudFlete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudFlete.Location = new System.Drawing.Point(619, 110);
             this.nudFlete.Maximum = new decimal(new int[] {
@@ -944,17 +916,6 @@
             this.label20.Size = new System.Drawing.Size(26, 17);
             this.label20.TabIndex = 0;
             this.label20.Text = "Id:";
-            // 
-            // txtTotal
-            // 
-            this.txtTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotal.Location = new System.Drawing.Point(1006, 412);
-            this.txtTotal.Margin = new System.Windows.Forms.Padding(4);
-            this.txtTotal.MaxLength = 30;
-            this.txtTotal.Name = "txtTotal";
-            this.txtTotal.Size = new System.Drawing.Size(257, 23);
-            this.txtTotal.TabIndex = 10;
-            this.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // grbBuscar
             // 
@@ -1381,28 +1342,6 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Id inicial:";
             // 
-            // txtDescuento
-            // 
-            this.txtDescuento.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDescuento.Location = new System.Drawing.Point(931, 412);
-            this.txtDescuento.Margin = new System.Windows.Forms.Padding(4);
-            this.txtDescuento.MaxLength = 4;
-            this.txtDescuento.Name = "txtDescuento";
-            this.txtDescuento.Size = new System.Drawing.Size(65, 23);
-            this.txtDescuento.TabIndex = 4;
-            this.txtDescuento.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtCantidad
-            // 
-            this.txtCantidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCantidad.Location = new System.Drawing.Point(791, 412);
-            this.txtCantidad.Margin = new System.Windows.Forms.Padding(4);
-            this.txtCantidad.MaxLength = 15;
-            this.txtCantidad.Name = "txtCantidad";
-            this.txtCantidad.Size = new System.Drawing.Size(105, 23);
-            this.txtCantidad.TabIndex = 3;
-            this.txtCantidad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // grbVentas
             // 
             this.grbVentas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1538,17 +1477,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Busque la venta a eliminar y seleccionela en la lista que se muestra";
             // 
-            // txtPrecio
-            // 
-            this.txtPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPrecio.Location = new System.Drawing.Point(576, 412);
-            this.txtPrecio.Margin = new System.Windows.Forms.Padding(4);
-            this.txtPrecio.MaxLength = 15;
-            this.txtPrecio.Name = "txtPrecio";
-            this.txtPrecio.Size = new System.Drawing.Size(105, 23);
-            this.txtPrecio.TabIndex = 2;
-            this.txtPrecio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -1584,6 +1512,13 @@
             this.Cantidad.Name = "Cantidad";
             this.Cantidad.Width = 101;
             // 
+            // Importe
+            // 
+            this.Importe.HeaderText = "Importe";
+            this.Importe.MinimumWidth = 6;
+            this.Importe.Name = "Importe";
+            this.Importe.Width = 125;
+            // 
             // Descuento
             // 
             this.Descuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -1592,13 +1527,41 @@
             this.Descuento.Name = "Descuento";
             this.Descuento.Width = 114;
             // 
-            // Importe
+            // ImporteDelDescuento
             // 
-            this.Importe.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Importe.HeaderText = "Importe";
-            this.Importe.MinimumWidth = 6;
-            this.Importe.Name = "Importe";
-            this.Importe.Width = 91;
+            this.ImporteDelDescuento.HeaderText = "Importe del descuento";
+            this.ImporteDelDescuento.MinimumWidth = 6;
+            this.ImporteDelDescuento.Name = "ImporteDelDescuento";
+            this.ImporteDelDescuento.Width = 125;
+            // 
+            // ImporteConDescuento
+            // 
+            this.ImporteConDescuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ImporteConDescuento.HeaderText = "Importe con descuento";
+            this.ImporteConDescuento.MinimumWidth = 6;
+            this.ImporteConDescuento.Name = "ImporteConDescuento";
+            this.ImporteConDescuento.Width = 184;
+            // 
+            // TasaIVA
+            // 
+            this.TasaIVA.HeaderText = "Tasa IVA";
+            this.TasaIVA.MinimumWidth = 6;
+            this.TasaIVA.Name = "TasaIVA";
+            this.TasaIVA.Width = 125;
+            // 
+            // ImporteDelIVA
+            // 
+            this.ImporteDelIVA.HeaderText = "Importe del IVA";
+            this.ImporteDelIVA.MinimumWidth = 6;
+            this.ImporteDelIVA.Name = "ImporteDelIVA";
+            this.ImporteDelIVA.Width = 125;
+            // 
+            // Subtotal
+            // 
+            this.Subtotal.HeaderText = "Subtotal";
+            this.Subtotal.MinimumWidth = 6;
+            this.Subtotal.Name = "Subtotal";
+            this.Subtotal.Width = 125;
             // 
             // Eliminar
             // 
@@ -1642,7 +1605,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmVentasCrud_FormClosed);
             this.Load += new System.EventHandler(this.FrmVentasCrud_Load);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.grbDetalle.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).EndInit();
             this.grbVenta.ResumeLayout(false);
@@ -1756,7 +1718,6 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.TextBox txtFlete;
         private System.Windows.Forms.TextBox txtCP;
         private System.Windows.Forms.TextBox txtCiudad;
         private System.Windows.Forms.TextBox txtDirigidoa;
@@ -1769,15 +1730,10 @@
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.ComboBox cboProducto;
         private System.Windows.Forms.ComboBox cboCategoria;
-        private System.Windows.Forms.TextBox txtDescuento;
-        private System.Windows.Forms.TextBox txtCantidad;
-        private System.Windows.Forms.TextBox txtPrecio;
-        private System.Windows.Forms.TextBox txtTotal;
         private System.Windows.Forms.Label LblTotal;
         private System.Windows.Forms.Button btnGenerar;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.TextBox txtUInventario;
         private System.Windows.Forms.Button btnNota;
         private System.Windows.Forms.Button btnNuevo;
         private System.Windows.Forms.NumericUpDown nudBIdFin;
@@ -1792,8 +1748,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Producto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Descuento;
         private System.Windows.Forms.DataGridViewTextBoxColumn Importe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Descuento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImporteDelDescuento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImporteConDescuento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TasaIVA;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImporteDelIVA;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Subtotal;
         private System.Windows.Forms.DataGridViewButtonColumn Eliminar;
         private System.Windows.Forms.DataGridViewButtonColumn ProductoId;
         private System.Windows.Forms.DataGridViewTextBoxColumn RowVersion;
