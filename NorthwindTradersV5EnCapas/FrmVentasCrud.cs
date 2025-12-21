@@ -70,6 +70,10 @@ namespace NorthwindTradersV5EnCapas
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
             LblPrecio.Text = "Precio " + simboloMoneda + ":";
+            LblSubtotalDelImporte.Text = "Subtotal del importe " + simboloMoneda + ":";
+            LblSubtotalDelImporteDelDescuento.Text = "Subtotal del importe del descuento " + simboloMoneda + ":";
+            LblSubtotalDelImporteConDescuento.Text = "Subtotal del importe con descuento " + simboloMoneda + ":";
+            LblSubtotalDelImporteDelIVA.Text = "Subtotal del importe del IVA " + simboloMoneda + ":";
             LblTotal.Text = "Total " + simboloMoneda + ":";
             dtpHoraRequerido.Value = DateTime.Today; 
             dtpHoraEnvio.Value = DateTime.Today; 
@@ -84,31 +88,54 @@ namespace NorthwindTradersV5EnCapas
             ConfDgvVentas();
             ConfDgvDetalle();
             dgvDetalle.Columns["Eliminar"].Visible = false;
-            DeshabilitarPrecioUInventario();
+            DeshabilitarNudsNoSeleccionables();
             InicializarCboProducto();
         }
 
-        private void DeshabilitarPrecioUInventario()
+        private void DeshabilitarNudsNoSeleccionables()
         {
             nudPrecio.ReadOnly = true;
             nudPrecio.InterceptArrowKeys = false;
             nudPrecio.Controls[0].Enabled = false;
+
             nudUInventario.ReadOnly = true;
             nudUInventario.InterceptArrowKeys = false;
             nudUInventario.Controls[0].Enabled = false;
+
+            nudTotal.ReadOnly = true;
+            nudTotal.InterceptArrowKeys = false;
+            nudTotal.Controls[0].Enabled = false;
+
+            nudTotalDeUnidades.ReadOnly = true;
+            nudTotalDeUnidades.InterceptArrowKeys = false;
+            nudTotalDeUnidades.Controls[0].Enabled = false;
+
+            nudSubtotalDelImporte.ReadOnly = true;
+            nudSubtotalDelImporte.InterceptArrowKeys = false;
+            nudSubtotalDelImporte.Controls[0].Enabled = false;
+
+            nudSubtotalDelImporteDelDescuento.ReadOnly = true;
+            nudSubtotalDelImporteDelDescuento.InterceptArrowKeys = false;
+            nudSubtotalDelImporteDelDescuento.Controls[0].Enabled = false;
+
+            nudSubtotalDelImporteConDescuento.ReadOnly = true;
+            nudSubtotalDelImporteConDescuento.InterceptArrowKeys = false;
+            nudSubtotalDelImporteConDescuento.Controls[0].Enabled = false;
+
+            nudSubtotalDelImporteDelIVA.ReadOnly = true;
+            nudSubtotalDelImporteDelIVA.InterceptArrowKeys = false;
+            nudSubtotalDelImporteDelIVA.Controls[0].Enabled = false;
         }
 
-        private void DeshabilitarCantidadDescuentoTotal()
+        private void DeshabilitarCantidadDescuento()
         {
             nudCantidad.ReadOnly = true;
             nudCantidad.InterceptArrowKeys = false;
             nudCantidad.Controls[0].Enabled = false;
+
             nudDescuento.ReadOnly = true;
             nudDescuento.InterceptArrowKeys = false;
             nudDescuento.Controls[0].Enabled = false;
-            nudTotal.ReadOnly = true;
-            nudTotal.InterceptArrowKeys = false;
-            nudTotal.Controls[0].Enabled = false;
         }
 
         private void DeshabilitarFlete()
@@ -130,6 +157,7 @@ namespace NorthwindTradersV5EnCapas
             nudCantidad.ReadOnly = false;
             nudCantidad.InterceptArrowKeys = true;
             nudCantidad.Controls[0].Enabled = true;
+
             nudDescuento.ReadOnly = false;
             nudDescuento.InterceptArrowKeys = true;
             nudDescuento.Controls[0].Enabled = true;
@@ -156,7 +184,7 @@ namespace NorthwindTradersV5EnCapas
             dtpVenta.Enabled = dtpHoraVenta.Enabled = dtpRequerido.Enabled = dtpHoraRequerido.Enabled = dtpEnvio.Enabled = dtpHoraEnvio.Enabled = false;
             txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = true;
             btnAgregar.Enabled = btnGenerar.Enabled = false;
-            DeshabilitarCantidadDescuentoTotal();
+            DeshabilitarCantidadDescuento();
             DeshabilitarFlete();
         }
 
@@ -172,7 +200,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void HabilitarControlesProducto() => HabilitarCantidadDescuento();
 
-        private void DeshabilitarControlesProducto() => DeshabilitarCantidadDescuentoTotal();
+        private void DeshabilitarControlesProducto() => DeshabilitarCantidadDescuento();
 
         private void LlenarCboCliente()
         {
@@ -417,7 +445,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void InicializarValoresAgregarProducto() => nudPrecio.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = 0;
 
-        private void InicializarValoresVenta() => nudFlete.Value = nudTotal.Value = 0;
+        private void InicializarValoresVenta() => nudFlete.Value = nudTotal.Value = nudTotalDeUnidades.Value = nudSubtotalDelImporte.Value = nudSubtotalDelImporteDelDescuento.Value = nudSubtotalDelImporteConDescuento.Value = nudSubtotalDelImporteDelIVA.Value = 0;
 
         private void BorrarMensajesError() => errorProvider1.Clear();
 
@@ -428,15 +456,6 @@ namespace NorthwindTradersV5EnCapas
             dtpBFVentaIni.Value = dtpBFVentaFin.Value = dtpBFRequeridoIni.Value = dtpBFRequeridoFin.Value = dtpBFEnvioIni.Value = dtpBFEnvioFin.Value = DateTime.Today;
             dtpBFVentaIni.Checked = dtpBFVentaFin.Checked = dtpBFRequeridoIni.Checked = dtpBFRequeridoFin.Checked = dtpBFEnvioIni.Checked = dtpBFEnvioFin.Checked = false;
             chkbBFVentaNull.Checked = chkbBFRequeridoNull.Checked = chkbBFEnvioNull.Checked = false;
-        }
-
-        private void Nud_ValueChanged(object sender, EventArgs e)
-        {
-            // El sender es el control que disparó el evento
-            var nud = sender as NumericUpDown;
-            if (nud == null) return;
-            // Formatear con separador de miles y 2 decimales
-            nud.Text = nud.Value.ToString("N0");
         }
 
         private void Nud_KeyPress(object sender, KeyPressEventArgs e)
@@ -705,16 +724,26 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        private void CalcularTotal()
+        private void CalcularTotales()
         {
-            decimal total = 0;
+            decimal importe, total, totalDeUnidades, subtotalDelImporte, subtotalDelImporteDelDescuento, subtotalDelImporteConDescuento, subtotalDelImporteDelIVA;
+            importe = total = totalDeUnidades = subtotalDelImporte = subtotalDelImporteDelDescuento = subtotalDelImporteConDescuento = subtotalDelImporteDelIVA = 0;
             numDetalle = 0;
             foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
             {
-                decimal importe = decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString());
-                total += importe;
+                totalDeUnidades += decimal.Parse(dgvr.Cells["Cantidad"].Value.ToString());
+                subtotalDelImporte += decimal.Parse(dgvr.Cells["Importe"].Value.ToString());
+                subtotalDelImporteDelDescuento += decimal.Parse(dgvr.Cells["ImporteDelDescuento"].Value.ToString());
+                subtotalDelImporteConDescuento += decimal.Parse(dgvr.Cells["ImporteConDescuento"].Value.ToString());
+                subtotalDelImporteDelIVA += decimal.Parse(dgvr.Cells["ImporteDelIVA"].Value.ToString());
+                total += decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString());
                 dgvr.Cells["Id"].Value = ++numDetalle;
             }
+            nudTotalDeUnidades.Value = totalDeUnidades;
+            nudSubtotalDelImporte.Value = subtotalDelImporte;
+            nudSubtotalDelImporteDelDescuento.Value = subtotalDelImporteDelDescuento;
+            nudSubtotalDelImporteConDescuento.Value = subtotalDelImporteConDescuento;
+            nudSubtotalDelImporteDelIVA.Value = subtotalDelImporteDelIVA;
             nudTotal.Value = total;
         }
 
@@ -829,7 +858,7 @@ namespace NorthwindTradersV5EnCapas
                 "Eliminar", 
                 ventaDetalle.Producto.ProductID
             });
-            CalcularTotal();
+            CalcularTotales();
             ++numDetalle;
             cboCategoria.SelectedIndex = cboProducto.SelectedIndex = 0;
             InicializarValoresAgregarProducto();
@@ -854,7 +883,7 @@ namespace NorthwindTradersV5EnCapas
             if (e.RowIndex < 0 || e.ColumnIndex != dgvDetalle.Columns["Eliminar"].Index)
                 return;
             dgvDetalle.Rows.RemoveAt(e.RowIndex);
-            CalcularTotal();
+            CalcularTotales();
         }
 
         private void tabcOperacion_Selected(object sender, TabControlEventArgs e)
@@ -1072,7 +1101,7 @@ namespace NorthwindTradersV5EnCapas
                         ++numDetalle;
                     }
                 }
-                CalcularTotal();
+                CalcularTotales();
                 MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
             }
             catch (Exception ex)
