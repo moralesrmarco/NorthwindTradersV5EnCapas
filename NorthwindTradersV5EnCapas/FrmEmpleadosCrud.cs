@@ -38,6 +38,8 @@ namespace NorthwindTradersV5EnCapas
             LlenarCboReportaA();
             Utils.ConfDgv(dgv);
             LlenarDgv(false);
+            // esta linea funciona para detectar cambios en los controles del formulario
+            CargarValoresOriginales();
         }
 
         private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
@@ -49,10 +51,9 @@ namespace NorthwindTradersV5EnCapas
         private void FrmEmpleadosCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             // pone un error con errorprovider en cada control que ha cambiado
-            if (tabcOperacion.SelectedTab != tbpListar & tabcOperacion.SelectedTab != tbpEliminar)
-                if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                    if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                        e.Cancel = true;
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
+                    e.Cancel = true;
         }
 
         private void DeshabilitarControles()
@@ -363,8 +364,6 @@ namespace NorthwindTradersV5EnCapas
                         txtTelefono.Text = empleado.HomePhone;
                         txtExtension.Text = empleado.Extension;
                         txtNotas.Text = empleado.Notes;
-                        // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
-                        CargarValoresOriginales();
                     }
                     else
                     {
@@ -397,6 +396,8 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Visible = false;
                 }
             }
+            // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
+            CargarValoresOriginales();
         }
 
         private void dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -426,9 +427,6 @@ namespace NorthwindTradersV5EnCapas
                 btnCargar.Enabled = true;
                 btnCargar.Visible = true;
                 cboReportaA.SelectedValue = -1;
-
-                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                CargarValoresOriginales();
             }
             else
             {
@@ -444,7 +442,7 @@ namespace NorthwindTradersV5EnCapas
                 {
                     btnOperacion.Text = "Imprimir empleado";
                     btnOperacion.Visible = true;
-                    btnOperacion.Enabled = true;
+                    btnOperacion.Enabled = false;
                     btnCargar.Visible = false;
                     btnCargar.Enabled = false;
                 }
@@ -465,6 +463,15 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Enabled = false;
                 }
             }
+            // esta linea funciona para detectar cambios en los controles del formulario debe ir justo aqui
+            CargarValoresOriginales();
+        }
+
+        private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrarPestaña) == DialogResult.No)
+                    e.Cancel = true;
         }
 
         private void btnCargar_Click(object sender, EventArgs e)
@@ -555,8 +562,6 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Enabled = true;
                     LlenarCombos();
                     ActualizaDgv();
-                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                    CargarValoresOriginales();
                 }
             }
             else if (tabcOperacion.SelectedTab == tbpModificar)
@@ -644,6 +649,8 @@ namespace NorthwindTradersV5EnCapas
                     ActualizaDgv();
                 }
             }
+            // esta linea funciona para detectar cambios en los controles del formulario
+            CargarValoresOriginales();
         }
 
         private void CargarValoresOriginales()
@@ -651,5 +658,6 @@ namespace NorthwindTradersV5EnCapas
             // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
         }
+
     }
 }

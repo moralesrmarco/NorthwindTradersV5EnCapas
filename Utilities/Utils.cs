@@ -21,8 +21,9 @@ namespace Utilities
             public const string clbdd = "Consultando la base de datos... ";
             public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
             public const string oue = "Ocurrio un error:\n";
-            public const string preguntaCerrar = "Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
-            public const string insertandoRegistro = "Insertando registro(s) en la base de datos...";
+            public const string preguntaCerrar = "[orange]Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
+            public const string preguntaCerrarPestaña = "[orange]Se detectaron cambios en los datos, que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?\n[blue]Si responde SI, se perderan los datos no guardados.";
+        public const string insertandoRegistro = "Insertando registro(s) en la base de datos...";
             public const string modificandoRegistro = "Modificando registro(s) en la base de datos...";
             public const string eliminandoRegistro = "Eliminando registro(s) en la base de datos...";
             public const string errorCriterioSelec = "[orange]     Error: Proporcione los criterios de selección.";
@@ -160,7 +161,7 @@ namespace Utilities
                 if (ctrl is TextBox txt)
                 {
                     if (!name.StartsWith("txtB", StringComparison.OrdinalIgnoreCase))
-                        valores[name] = txt.Text ?? string.Empty;
+                        valores[name] = txt.Text.Trim() ?? string.Empty;
                 }
                 else if (ctrl is ComboBox cbo)
                 {
@@ -190,11 +191,11 @@ namespace Utilities
         // Ahora recibe también el ErrorProvider
         public static bool HayCambios(Control parent, Dictionary<string, object> valoresOriginales, ErrorProvider errorProvider)
         {
-            if (valoresOriginales == null)
-            {
-                // sin baseline, lanza excepción
-                throw new Exception("Error al ejecutar el metodo HayCambios, el diccionario de valores originales no puede ser nulo.");
-            }
+            //if (valoresOriginales == null)
+            //{
+            //    // sin baseline, lanza excepción
+            //    throw new Exception("Error al ejecutar el metodo HayCambios, el diccionario de valores originales no puede ser nulo.");
+            //}
             bool hayCambios = false;
 
             // Limpiar errores previos
@@ -212,7 +213,7 @@ namespace Utilities
 
                     if (valoresOriginales.TryGetValue(name, out var original))
                     {
-                        var actual = txt.Text ?? string.Empty;
+                        var actual = txt.Text.Trim() ?? string.Empty;
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;

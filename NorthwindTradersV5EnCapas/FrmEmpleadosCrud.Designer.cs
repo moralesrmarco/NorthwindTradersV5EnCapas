@@ -901,6 +901,7 @@
             this.tabcOperacion.Size = new System.Drawing.Size(1305, 69);
             this.tabcOperacion.TabIndex = 0;
             this.tabcOperacion.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabcOperacion_DrawItem);
+            this.tabcOperacion.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabcOperacion_Selecting);
             this.tabcOperacion.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabcOperacion_Selected);
             // 
             // tbpListar
@@ -986,7 +987,7 @@
             this.label4.Location = new System.Drawing.Point(28, 12);
             this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(883, 16);
+            this.label4.Size = new System.Drawing.Size(873, 16);
             this.label4.TabIndex = 0;
             this.label4.Text = "Busque el empleado a eliminar y seleccionelo en la lista que se muestra, no se pu" +
     "eden eliminar empleados que ya estan relacionados a un venta";
