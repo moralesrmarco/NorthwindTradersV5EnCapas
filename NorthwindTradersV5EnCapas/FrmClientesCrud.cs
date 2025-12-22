@@ -1,6 +1,5 @@
 ﻿using BLL;
 using Entities;
-using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,10 +30,9 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmClientesCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tabcOperacion.SelectedTab != tbpListar & tabcOperacion.SelectedTab != tbpEliminar)
-                if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                    if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                        e.Cancel = true;
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
+                    e.Cancel = true;
         }
 
         private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
@@ -47,6 +45,7 @@ namespace NorthwindTradersV5EnCapas
             LlenarCboPais();
             Utils.ConfDgv(dgv);
             LlenarDgv(false);
+            CargarValoresOriginales();
         }
 
         private void DeshabilitarControles()
@@ -284,8 +283,6 @@ namespace NorthwindTradersV5EnCapas
                 txtId.ReadOnly = false;
                 btnOperacion.Text = "Registrar cliente";
                 btnOperacion.Enabled = true;
-                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                CargarValoresOriginales();
             }
             else
             {
@@ -309,6 +306,7 @@ namespace NorthwindTradersV5EnCapas
                     btnOperacion.Visible = true;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -338,8 +336,6 @@ namespace NorthwindTradersV5EnCapas
                         txtPais.Text = cliente.Country;
                         txtTelefono.Text = cliente.Phone;
                         txtFax.Text = cliente.Fax;
-                        // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
-                        CargarValoresOriginales();
                     }
                     else
                     {
@@ -365,6 +361,7 @@ namespace NorthwindTradersV5EnCapas
                     btnOperacion.Enabled = true;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -410,12 +407,10 @@ namespace NorthwindTradersV5EnCapas
                     {
                         U.MsgCatchOue(ex);
                     }
-                    LlenarCboPais();
                     HabilitarControles();
                     btnOperacion.Enabled = true;
+                    LlenarCboPais();
                     ActualizaDgv();
-                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                    CargarValoresOriginales();
                 }
             }
             else if (tabcOperacion.SelectedTab == tbpModificar)
@@ -490,6 +485,7 @@ namespace NorthwindTradersV5EnCapas
                     ActualizaDgv();
                 }
             }
+            CargarValoresOriginales();
         }
 
         void ActualizaDgv() => btnLimpiar.PerformClick();
@@ -498,6 +494,13 @@ namespace NorthwindTradersV5EnCapas
         {
             // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
+        }
+
+        private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrarPestaña) == DialogResult.No)
+                    e.Cancel = true;
         }
     }
 }

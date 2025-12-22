@@ -25,7 +25,6 @@ namespace NorthwindTradersV5EnCapas
         private readonly VentaService _ventaService;
         private Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
-        private TabPage lastSelectedTab;
         int numDetalle = 1;
         bool VentaGenerada = false;
 
@@ -50,11 +49,11 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmVentasCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tabcOperacion.SelectedTab != tabpConsultar)
-                if (tabcOperacion.SelectedTab != tabpConsultar & tabcOperacion.SelectedTab != tabpEliminar)
-                    if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                        if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                            e.Cancel = true;
+            //if (tabcOperacion.SelectedTab != tabpConsultar)
+            //    if (tabcOperacion.SelectedTab != tabpConsultar & tabcOperacion.SelectedTab != tabpEliminar)
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
+                    e.Cancel = true;
         }
 
         private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
@@ -88,6 +87,12 @@ namespace NorthwindTradersV5EnCapas
             dgvDetalle.Columns["Eliminar"].Visible = false;
             DeshabilitarNudsNoSeleccionables();
             InicializarCboProducto();
+            CargarValoresOriginales();
+        }
+
+        private void CargarValoresOriginales()
+        {
+            valoresOriginales = Utils.CapturarValoresOriginales(this);
         }
 
         private void DeshabilitarNudsNoSeleccionables()
@@ -886,7 +891,6 @@ namespace NorthwindTradersV5EnCapas
 
         private void tabcOperacion_Selected(object sender, TabControlEventArgs e)
         {
-            lastSelectedTab = e.TabPage;  // actualizar la pestaña actual
             numDetalle = 1;
             BorrarDatosVenta();
             BorrarMensajesError();
@@ -945,10 +949,13 @@ namespace NorthwindTradersV5EnCapas
                     btnNuevo.Enabled = false;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void dgvVentas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
             if (tabcOperacion.SelectedTab != tabpRegistrar)
             {
                 BorrarDatosVenta();
@@ -977,6 +984,7 @@ namespace NorthwindTradersV5EnCapas
                     btnNuevo.Enabled = false;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void LlenarDatosVenta()
@@ -1265,7 +1273,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (!VentaGenerada && lastSelectedTab == tabpRegistrar && e.TabPage != tabpRegistrar && (Utils.HayCambios(this, valoresOriginales, errorProvider1)) || dgvDetalle.RowCount > 0)
+            if (!VentaGenerada && (Utils.HayCambios(this, valoresOriginales, errorProvider1) || dgvDetalle.RowCount > 0))
                 if (U.NotificacionQuestion("[orange]Se detectaron cambios en los datos de la venta que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?") == DialogResult.No)
                     e.Cancel = true;
         }

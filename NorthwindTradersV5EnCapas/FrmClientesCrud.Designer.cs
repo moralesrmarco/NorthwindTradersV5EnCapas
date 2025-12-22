@@ -502,6 +502,7 @@
             this.tabcOperacion.SelectedIndex = 0;
             this.tabcOperacion.Size = new System.Drawing.Size(1264, 69);
             this.tabcOperacion.TabIndex = 5;
+            this.tabcOperacion.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabcOperacion_Selecting);
             this.tabcOperacion.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabcOperacion_Selected);
             // 
             // tbpListar
@@ -587,7 +588,7 @@
             this.label4.Location = new System.Drawing.Point(21, 10);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(837, 16);
+            this.label4.Size = new System.Drawing.Size(827, 16);
             this.label4.TabIndex = 0;
             this.label4.Text = "Busque el cliente a eliminar y seleccionelo en la lista que se muestra, no se pue" +
     "den eliminar clientes que ya estan relacionados a un venta";

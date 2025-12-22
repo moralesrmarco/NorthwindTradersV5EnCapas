@@ -38,7 +38,6 @@ namespace NorthwindTradersV5EnCapas
             LlenarCboReportaA();
             Utils.ConfDgv(dgv);
             LlenarDgv(false);
-            // esta linea funciona para detectar cambios en los controles del formulario
             CargarValoresOriginales();
         }
 
@@ -221,7 +220,7 @@ namespace NorthwindTradersV5EnCapas
             txtTitCortesia.Text = txtDomicilio.Text = txtCiudad.Text = string.Empty;
             txtRegion.Text = txtCodigoP.Text = txtTelefono.Text = txtPais.Text = string.Empty;
             txtExtension.Text = txtNotas.Text = string.Empty;
-            cboReportaA.SelectedIndex = -1;
+            cboReportaA.SelectedIndex = 0;
             picFoto.Image = Properties.Resources.FotoPerfil;
             dtpFNacimiento.Value = dtpFNacimiento.MinDate;
             dtpFContratacion.Value = dtpFContratacion.MinDate;
@@ -300,7 +299,7 @@ namespace NorthwindTradersV5EnCapas
                 valida = false;
                 errorProvider1.SetError(dtpFContratacion, "Ingrese la fecha de contratación");
             }
-            if (cboReportaA.SelectedValue == null || cboReportaA.SelectedValue.ToString() == "-1")
+            if (cboReportaA.SelectedValue == null || cboReportaA.SelectedIndex == 0)
             {
                 valida = false;
                 errorProvider1.SetError(cboReportaA, "Seleccione a quien reporta el empleado");
@@ -350,7 +349,7 @@ namespace NorthwindTradersV5EnCapas
                         if (empleado.ReportsTo != null)
                             cboReportaA.SelectedValue = empleado.ReportsTo.Value;
                         else
-                            cboReportaA.SelectedValue = 0;
+                            cboReportaA.SelectedValue = 0; // corresponde a N/A
                         txtId.Tag = empleado.RowVersion;
                         txtNombres.Text = empleado.FirstName;
                         txtApellidos.Text = empleado.LastName;
@@ -396,7 +395,6 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Visible = false;
                 }
             }
-            // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
             CargarValoresOriginales();
         }
 
@@ -426,7 +424,7 @@ namespace NorthwindTradersV5EnCapas
                 btnOperacion.Enabled = true;
                 btnCargar.Enabled = true;
                 btnCargar.Visible = true;
-                cboReportaA.SelectedValue = -1;
+                cboReportaA.SelectedIndex = 0;
             }
             else
             {
@@ -463,7 +461,6 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Enabled = false;
                 }
             }
-            // esta linea funciona para detectar cambios en los controles del formulario debe ir justo aqui
             CargarValoresOriginales();
         }
 
@@ -510,6 +507,7 @@ namespace NorthwindTradersV5EnCapas
                 FrmRptEmpleado frmRptEmpleado = new FrmRptEmpleado();
                 frmRptEmpleado.Id = int.Parse(txtId.Text);
                 frmRptEmpleado.ShowDialog();
+                return;
             }
             else if (tabcOperacion.SelectedTab == tbpRegistrar)
             {
@@ -649,15 +647,12 @@ namespace NorthwindTradersV5EnCapas
                     ActualizaDgv();
                 }
             }
-            // esta linea funciona para detectar cambios en los controles del formulario
             CargarValoresOriginales();
         }
 
         private void CargarValoresOriginales()
         {
-            // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
         }
-
     }
 }

@@ -39,10 +39,9 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmProductosCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tabcOperacion.SelectedTab != tbpConsultar & tabcOperacion.SelectedTab != tbpEliminar)
-                if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                    if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                        e.Cancel = true;
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
+                    e.Cancel = true;
         }
 
         private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
@@ -60,6 +59,7 @@ namespace NorthwindTradersV5EnCapas
             LlenarCboProveedor();
             Utils.ConfDgv(Dgv);
             LlenarDgv(false);
+            CargarValoresOriginales();
         }
 
         private void DeshabilitarControles()
@@ -290,8 +290,6 @@ namespace NorthwindTradersV5EnCapas
                         nudUPedido.Value = producto.UnitsOnOrder ?? 0;
                         nudPPedido.Value = producto.ReorderLevel ?? 0;
                         chkbDescontinuado.Checked = producto.Discontinued;
-                        // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
-                        CargarValoresOriginales();
                     }
                     else
                     {
@@ -312,6 +310,7 @@ namespace NorthwindTradersV5EnCapas
                 else if (tabcOperacion.SelectedTab == tbpEliminar)
                     btnOperacion.Enabled = true;
             }
+            CargarValoresOriginales();
         }
 
         private void Dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -336,8 +335,6 @@ namespace NorthwindTradersV5EnCapas
                 btnOperacion.Text = "Registrar producto";
                 btnOperacion.Visible = true;
                 btnOperacion.Enabled = true;
-                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                CargarValoresOriginales();
             }
             else
             {
@@ -366,6 +363,7 @@ namespace NorthwindTradersV5EnCapas
                     btnOperacion.Enabled = false;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void Nud_ValueChanged(object sender, EventArgs e)
@@ -456,8 +454,6 @@ namespace NorthwindTradersV5EnCapas
                     btnOperacion.Enabled = true;
                     LlenarCombos();
                     ActualizaDgv();
-                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                    CargarValoresOriginales();
                 }
             }
             else if (tabcOperacion.SelectedTab == tbpModificar)
@@ -539,6 +535,7 @@ namespace NorthwindTradersV5EnCapas
                     ActualizaDgv();
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void ActualizaDgv() => btnLimpiar.PerformClick();
@@ -553,6 +550,13 @@ namespace NorthwindTradersV5EnCapas
         {
             // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
+        }
+
+        private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrarPestaña) == DialogResult.No)
+                    e.Cancel = true;
         }
     }
 }

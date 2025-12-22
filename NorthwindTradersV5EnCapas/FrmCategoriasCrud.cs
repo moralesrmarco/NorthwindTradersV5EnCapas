@@ -35,10 +35,9 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmCategoriasCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tabcOperacion.SelectedTab != tbpConsultar & tabcOperacion.SelectedTab != tbpEliminar)
-                if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                    if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
-                        e.Cancel = true;
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
+                    e.Cancel = true;
         }
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -60,6 +59,7 @@ namespace NorthwindTradersV5EnCapas
             DeshabilitarControles();
             Utils.ConfDgv(Dgv);
             LlenarDgv(false);
+            CargarValoresOriginales();
         }
 
         private void DeshabilitarControles()
@@ -242,8 +242,6 @@ namespace NorthwindTradersV5EnCapas
                     picFoto.BackgroundImage = Properties.Resources.Categorias;
                 }
                 txtId.Tag = dgvr.Cells["RowVersionStr"].Value;
-                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción modificar
-                CargarValoresOriginales();
                 if (tabcOperacion.SelectedTab == tbpConsultar)
                 {
                     btnCargar.Visible = false;
@@ -263,6 +261,7 @@ namespace NorthwindTradersV5EnCapas
                     btnOperacion.Enabled = true;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void Dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -292,8 +291,6 @@ namespace NorthwindTradersV5EnCapas
                 btnOperacion.Enabled = true;
                 btnCargar.Visible = true;
                 btnCargar.Enabled = true;
-                // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                CargarValoresOriginales();
             }
             else
             {
@@ -325,6 +322,7 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Visible = false;
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void btnOperacion_Click(object sender, EventArgs e)
@@ -371,8 +369,6 @@ namespace NorthwindTradersV5EnCapas
                     btnCargar.Enabled = true;
                     picFoto.BackgroundImage = Properties.Resources.Categorias;
                     ActualizaDgv();
-                    // esta linea funciona para detectar cambios en los controles del formulario cuando se selecciona la opción Registrar
-                    CargarValoresOriginales();
                 }
             }
             else if (tabcOperacion.SelectedTab == tbpModificar)
@@ -450,6 +446,7 @@ namespace NorthwindTradersV5EnCapas
                     ActualizaDgv();
                 }
             }
+            CargarValoresOriginales();
         }
 
         private void btnCargar_Click(object sender, EventArgs e)
@@ -479,6 +476,13 @@ namespace NorthwindTradersV5EnCapas
         {
             // Captura inicial usando la utilidad
             valoresOriginales = Utils.CapturarValoresOriginales(this);
+        }
+
+        private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
+                if (U.NotificacionQuestion(Utils.preguntaCerrarPestaña) == DialogResult.No)
+                    e.Cancel = true;
         }
     }
 }
