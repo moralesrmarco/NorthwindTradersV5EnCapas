@@ -1075,7 +1075,6 @@ namespace NorthwindTradersV5EnCapas
                 {
                     foreach (var ventaDetalle in ventaDetalles)
                     {
-                        //var totalLinea = (ventaDetalle.UnitPrice * ventaDetalle.Quantity) * (1 - ventaDetalle.Discount);
                         dgvDetalle.Rows.Add(new object[]
                         {
                             numDetalle,
@@ -1109,70 +1108,78 @@ namespace NorthwindTradersV5EnCapas
         {
             int numRegs = 0;
             BorrarMensajesError();
-            //if (tabcOperacion.SelectedTab == tabpRegistrar)
-            //{
-            //    try
-            //    {
-            //        if (ValidarControles())
-            //        {
-            //            MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
-            //            DeshabilitarControles();
-            //            btnGenerar.Enabled = false;
-            //            List<VentaDetalle> lstDetalle = new List<VentaDetalle>();
-            //            // llenado de elementos hijos
-            //            foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
-            //            {
-            //                VentaDetalle detalle = new VentaDetalle();
-            //                detalle.ProductID = int.Parse(dgvr.Cells["ProductoId"].Value.ToString());
-            //                detalle.ProductName = dgvr.Cells["Producto"].Value.ToString();
-            //                detalle.UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString());
-            //                detalle.Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString());
-            //                detalle.Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString());
-            //                lstDetalle.Add(detalle);
-            //            }
-            //            Venta venta = new Venta();
-            //            venta.CustomerID = cboCliente.SelectedValue.ToString();
-            //            venta.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
-            //            if (dtpVenta != null && dtpHoraVenta != null)
-            //                venta.OrderDate = Utils.ObtenerFechaHora(dtpVenta, dtpHoraVenta);
-            //            if (dtpRequerido != null && dtpHoraRequerido != null)
-            //                venta.RequiredDate = Utils.ObtenerFechaHora(dtpRequerido, dtpHoraRequerido);
-            //            if (dtpEnvio != null && dtpHoraEnvio != null)
-            //                venta.ShippedDate = Utils.ObtenerFechaHora(dtpEnvio, dtpHoraEnvio);
-            //            venta.ShipVia = int.Parse(cboTransportista.SelectedValue.ToString());
-            //            venta.ShipName = txtDirigidoa.Text;
-            //            venta.ShipAddress = txtDomicilio.Text;
-            //            venta.ShipCity = txtCiudad.Text;
-            //            venta.ShipRegion = txtRegion.Text;
-            //            venta.ShipPostalCode = txtCP.Text;
-            //            venta.ShipCountry = txtPais.Text;
-            //            if (txtFlete.Text.Contains("$")) txtFlete.Text = txtFlete.Text.Replace("$", "");
-            //            venta.Freight = decimal.Parse(txtFlete.Text);
-            //            int orderId = 0;
-            //            numRegs = new VentaRepository(cnStr).Insertar(venta, lstDetalle, out orderId);
-            //            txtId.Text = orderId.ToString();
-            //            txtId.Tag = 1;
-            //            if (numRegs > 0) Utils.MensajeInformation($"El venta con Id: {txtId.Text} del Cliente: {cboCliente.Text}, se registró satisfactoriamente");
-            //            else Utils.MensajeExclamation("No se pudo realizar el registro, es posible que la venta ya exista");
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Utils.MsgCatchOue(ex);
-            //    }
-            //    if (numRegs > 0)
-            //    {
-            //        VentaGenerada = true;
-            //        numDetalle = 1;
-            //        btnNota.Enabled = true;
-            //        btnNuevo.Enabled = true;
-            //        BorrarDatosBusqueda();
-            //        LlenarDgvVentas(false);
-            //        dgvDetalle.Rows.Clear();
-            //        dgvDetalle.Columns["Eliminar"].Visible = false;
-            //        LlenarDatosDetalleVenta();
-            //    }
-            //}
+            if (tabcOperacion.SelectedTab == tabpRegistrar)
+            {
+                try
+                {
+                    if (ValidarControles())
+                    {
+                        MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
+                        DeshabilitarControles();
+                        btnGenerar.Enabled = false;
+                        Venta venta = new Venta();
+                        venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString();
+                        venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
+                        if (dtpVenta != null && dtpHoraVenta != null)
+                            venta.OrderDate = Utils.ObtenerFechaHora(dtpVenta, dtpHoraVenta);
+                        if (dtpRequerido != null && dtpHoraRequerido != null)
+                            venta.RequiredDate = Utils.ObtenerFechaHora(dtpRequerido, dtpHoraRequerido);
+                        if (dtpEnvio != null && dtpHoraEnvio != null)
+                            venta.ShippedDate = Utils.ObtenerFechaHora(dtpEnvio, dtpHoraEnvio);
+                        venta.Transportista.ShipperID = int.Parse(cboTransportista.SelectedValue.ToString());
+                        venta.ShipName = txtDirigidoa.Text;
+                        venta.ShipAddress = txtDomicilio.Text;
+                        venta.ShipCity = txtCiudad.Text;
+                        venta.ShipRegion = txtRegion.Text;
+                        venta.ShipPostalCode = txtCP.Text;
+                        venta.ShipCountry = txtPais.Text;
+                        venta.Freight = nudFlete.Value;
+                        // llenado de elementos hijos
+                        foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
+                        {
+                            // defensiva: ignorar filas nuevas o vacías
+                            if (dgvr.IsNewRow) continue;
+                            VentaDetalle ventaDetalles = new VentaDetalle
+                            {
+                                Producto = new Producto
+                                {
+                                    ProductID = int.Parse(dgvr.Cells["ProductoId"].Value.ToString()),
+                                    ProductName = dgvr.Cells["Producto"].Value.ToString()
+                                },
+                                UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
+                                Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
+                                Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString())
+                            };
+                            venta.VentaDetalles.Add(ventaDetalles);
+                        }
+                        int orderId = 0;
+                        numRegs = _ventaBLL.InsertarVentaCompleta(venta, out orderId);
+                        txtId.Text = orderId.ToString();
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs - (numRegs - 1)} registro(s) en ventas y {numRegs - 1} registro(s) en el detalle de ventas");
+                        string paraNotificacion = $"La venta con Id: {txtId.Text} del Cliente: {cboCliente.Text}:";
+                        if (numRegs > 0) 
+                            U.NotificacionInformation(paraNotificacion + Utils.srs);
+                        else 
+                            U.NotificacionError(paraNotificacion + Utils.nfrs);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    U.MsgCatchOue(ex);
+                }
+                if (numRegs > 0)
+                {
+                    VentaGenerada = true;
+                    numDetalle = 1;
+                    btnNota.Enabled = true;
+                    btnNuevo.Enabled = true;
+                    BorrarDatosBusqueda();
+                    LlenarDgvVentas(false);
+                    dgvDetalle.Rows.Clear();
+                    dgvDetalle.Columns["Eliminar"].Visible = false;
+                    LlenarDatosDetalleVenta();
+                }
+            }
             //else if (tabcOperacion.SelectedTab == tabpModificar)
             //{
             //    try
@@ -1181,7 +1188,7 @@ namespace NorthwindTradersV5EnCapas
             //        {
             //            if (!ChkRowVersion())
             //            {
-            //                Utils.MensajeExclamation("El registro ha sido modificado por otro usuario de la red, no se realizará la actualización del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
+            //                //Utils.MensajeExclamation("El registro ha sido modificado por otro usuario de la red, no se realizará la actualización del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
             //                return;
             //            }
             //            MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
@@ -1189,35 +1196,35 @@ namespace NorthwindTradersV5EnCapas
             //            btnGenerar.Enabled = false;
             //            Venta venta = new Venta();
             //            venta.OrderID = int.Parse(txtId.Text);
-            //            venta.CustomerID = cboCliente.SelectedValue.ToString();
-            //            venta.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
+            //            venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString();
+            //            venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
             //            if (!dtpVenta.Checked) venta.OrderDate = null;
             //            else venta.OrderDate = Convert.ToDateTime(dtpVenta.Value.ToShortDateString() + " " + dtpHoraVenta.Value.ToLongTimeString());
             //            if (!dtpRequerido.Checked) venta.RequiredDate = null;
             //            else venta.RequiredDate = Convert.ToDateTime(dtpRequerido.Value.ToShortDateString() + " " + dtpHoraRequerido.Value.ToLongTimeString());
             //            if (!dtpEnvio.Checked) venta.ShippedDate = null;
             //            else venta.ShippedDate = Convert.ToDateTime(dtpEnvio.Value.ToShortDateString() + " " + dtpHoraEnvio.Value.ToLongTimeString());
-            //            venta.ShipVia = Convert.ToInt32(cboTransportista.SelectedValue);
+            //            venta.Transportista.ShipperID = Convert.ToInt32(cboTransportista.SelectedValue);
             //            venta.ShipName = txtDirigidoa.Text;
             //            venta.ShipAddress = txtDomicilio.Text;
             //            venta.ShipCity = txtCiudad.Text;
             //            venta.ShipRegion = txtRegion.Text;
             //            venta.ShipPostalCode = txtCP.Text;
             //            venta.ShipCountry = txtPais.Text;
-            //            if (txtFlete.Text.Contains("$")) txtFlete.Text = txtFlete.Text.Replace("$", "");
-            //            venta.Freight = decimal.Parse(txtFlete.Text);
-            //            numRegs = new VentaRepository(cnStr).Actualizar(venta, out int rowVersion);
-            //            if (rowVersion > 0)
-            //                txtId.Tag = rowVersion;
-            //            if (numRegs > 0)
-            //                Utils.MensajeInformation($"El venta con Id: {venta.OrderID} del Cliente: {cboCliente.Text}, se actualizó satisfactoriamente");
-            //            else
-            //                Utils.MensajeError("No se pudo realizar la modificación, es posible que el registro se haya eliminado previamente por otro usuario de la red");
+            //            //if (txtFlete.Text.Contains("$")) txtFlete.Text = txtFlete.Text.Replace("$", "");
+            //            //venta.Freight = decimal.Parse(txtFlete.Text);
+            //            //numRegs = new VentaRepository(cnStr).Actualizar(venta, out int rowVersion);
+            //            //if (rowVersion > 0)
+            //            //    txtId.Tag = rowVersion;
+            //            //if (numRegs > 0)
+            //            //    Utils.MensajeInformation($"El venta con Id: {venta.OrderID} del Cliente: {cboCliente.Text}, se actualizó satisfactoriamente");
+            //            //else
+            //            //    Utils.MensajeError("No se pudo realizar la modificación, es posible que el registro se haya eliminado previamente por otro usuario de la red");
             //        }
             //    }
             //    catch (Exception ex)
             //    {
-            //        Utils.MsgCatchOue(ex);
+            //        U.MsgCatchOue(ex);
             //    }
             //    if (numRegs > 0)
             //    {

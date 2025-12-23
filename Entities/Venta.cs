@@ -28,6 +28,5 @@ namespace Entities
         // del diagrama entidad-relación podemos ver que
         // una venta tiene muchos detalles de venta asociados
         public List<VentaDetalle> VentaDetalles { get; set; } = new List<VentaDetalle>();
-
     }
 }

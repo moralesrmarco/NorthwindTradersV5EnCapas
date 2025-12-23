@@ -14,6 +14,10 @@ namespace BLL
         {
             _ventaDAL = new VentaDAL(_connectionString);
         }
+        public int InsertarVentaCompleta(Venta venta, out int orderId)
+        {
+            return _ventaDAL.InsertarVentaCompleta(venta, out orderId);
+        }
 
         public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)
         {
@@ -42,6 +46,5 @@ namespace BLL
         {
             return _ventaDAL.ObtenerVentaDetallePorVentaId(orderId);
         }
-
     }
 }

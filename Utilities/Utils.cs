@@ -42,6 +42,13 @@ namespace Utilities
             public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
         #endregion
 
+        public static DateTime? ObtenerFechaHora(DateTimePicker dtpFecha, DateTimePicker dtpHora)
+        {
+            if (!dtpFecha.Checked)
+                return null;
+            return dtpFecha.Value.Date.Add(dtpHora.Value.TimeOfDay);
+        }
+        
         /// <summary>
         /// Ordena un DataGridView enlazado a una lista genérica y muestra el glyph de ordenamiento.
         /// </summary>
