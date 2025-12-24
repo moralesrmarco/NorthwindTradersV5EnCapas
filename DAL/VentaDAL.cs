@@ -31,6 +31,8 @@ namespace DAL
                         using (var cmd = new SqlCommand("SpVentaInsertar", cn, tx))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@OrderID", 0);
+                            cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
                             cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
                             cmd.Parameters.AddWithValue("@EmployeeID", venta.Empleado.EmployeeID);
                             cmd.Parameters.AddWithValue("@OrderDate", venta.OrderDate.HasValue ? (object)venta.OrderDate.Value : DBNull.Value);

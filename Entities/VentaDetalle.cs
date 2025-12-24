@@ -46,11 +46,19 @@ namespace Entities
             }
         }
 
+        public decimal BaseSinIva
+        {
+            get
+            {
+                return ImporteConDescuento / (1 + TasaIVA);
+            }
+        }
+
         public decimal ImporteDelIVA
         {
             get
             {
-                return ImporteConDescuento * TasaIVA;
+                return ImporteConDescuento - BaseSinIva;
             }
         }
 
@@ -61,5 +69,24 @@ namespace Entities
                 return ImporteConDescuento + ImporteDelIVA;
             }
         }
+
+        public VentaDetalle()
+        {
+            Venta = new Venta();
+            Producto = new Producto();
+        }
     }
 }
+
+/*
+El IVA se calcula sobre el valor real de la transacción, es decir, el precio neto después de aplicar descuentos.
+- Si el producto tiene un descuento comercial (por promoción, volumen, etc.), ese descuento reduce la base.
+- Por lo tanto, el importe del IVA se determina sobre el precio con descuento, no sobre el precio original.
+En resumen: el IVA se calcula sobre el precio con descuento, porque ese es el valor real de la operación.
+
+
+Fórmula general cuando el precio ya incluye IVA
+Si el precio final PrecioConIVA ya incluye el IVA, y la tasa de IVA es TasaIVA (por ejemplo, 16% = 0.16), entonces:
+BaseSinIVA= PrecioConIVA / (1+TasaIVA)
+IVA = PrecioConIVA - BaseSinIVA
+*/
