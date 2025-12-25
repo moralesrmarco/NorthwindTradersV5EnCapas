@@ -286,18 +286,24 @@ namespace DAL
                                 OrderID = rdr.GetInt32(rdr.GetOrdinal("OrderID")),
                                 Cliente = new Cliente
                                 {
-                                    CustomerID = rdr.IsDBNull(rdr.GetOrdinal("CustomerID")) ? null : rdr.GetString(rdr.GetOrdinal("CustomerID"))
+                                    CustomerID = rdr.IsDBNull(rdr.GetOrdinal("CustomerID")) ? null : rdr.GetString(rdr.GetOrdinal("CustomerID")),
+                                    CompanyName = rdr.IsDBNull(rdr.GetOrdinal("CustomerCompanyName")) ? null : rdr.GetString(rdr.GetOrdinal("CustomerCompanyName"))
                                 },
                                 Empleado = new Empleado
                                 {
-                                    EmployeeID = rdr.GetInt32(rdr.GetOrdinal("EmployeeID"))
+                                    EmployeeID = rdr.GetInt32(rdr.GetOrdinal("EmployeeID")),
+                                    LastName = rdr["LastName"].ToString(),
+                                    FirstName = rdr["FirstName"].ToString()
                                 },
                                 OrderDate = rdr.IsDBNull(rdr.GetOrdinal("OrderDate")) ? (DateTime?)null : rdr.GetDateTime(rdr.GetOrdinal("OrderDate")),
                                 RequiredDate = rdr.IsDBNull(rdr.GetOrdinal("RequiredDate")) ? (DateTime?)null : rdr.GetDateTime(rdr.GetOrdinal("RequiredDate")),
                                 ShippedDate = rdr.IsDBNull(rdr.GetOrdinal("ShippedDate")) ? (DateTime?)null : rdr.GetDateTime(rdr.GetOrdinal("ShippedDate")),
                                 Transportista = new Transportista
                                 {
-                                    ShipperID = rdr.GetInt32(rdr.GetOrdinal("ShipVia"))
+                                    ShipperID = rdr.GetInt32(rdr.GetOrdinal("ShipVia")),
+                                    CompanyName = rdr["ShipperCompanyName"] == DBNull.Value
+                                      ? string.Empty
+                                      : rdr["ShipperCompanyName"].ToString()
                                 },
                                 Freight = rdr.IsDBNull(rdr.GetOrdinal("Freight")) ? (decimal?)null : rdr.GetDecimal(rdr.GetOrdinal("Freight")),
                                 ShipName = rdr.IsDBNull(rdr.GetOrdinal("ShipName")) ? null : rdr.GetString(rdr.GetOrdinal("ShipName")),

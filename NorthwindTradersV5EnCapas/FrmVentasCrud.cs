@@ -1291,9 +1291,9 @@ namespace NorthwindTradersV5EnCapas
             //{
             //    Utils.MensajeInformation("El registro ha sido modificado por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
             //}
-            //FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
-            //frmRptNotaRemision8.Id = int.Parse(txtId.Text);
-            //frmRptNotaRemision8.ShowDialog();
+            FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
+            frmRptNotaRemision8.Id = int.Parse(txtId.Text);
+            frmRptNotaRemision8.ShowDialog();
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
