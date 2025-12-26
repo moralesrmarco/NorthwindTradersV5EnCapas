@@ -388,6 +388,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Report1.rdlc" />
     <EmbeddedResource Include="RptCategorias.rdlc" />
     <EmbeddedResource Include="RptClientes.rdlc" />
     <EmbeddedResource Include="RptClientesyProveedoresDirectorio.rdlc" />
@@ -410,9 +411,11 @@
     <None Include="Properties\DataSources\Entities.DTOs.DtoProducto.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedor.datasource" />
     <None Include="Properties\DataSources\Entities.DTOs.DtoProductosPorProveedorConDetProv.datasource" />
+    <None Include="Properties\DataSources\Entities.DTOs.Dummy.datasource" />
     <None Include="Properties\DataSources\Entities.Empleado.datasource" />
     <None Include="Properties\DataSources\Entities.Producto.datasource" />
     <None Include="Properties\DataSources\Entities.Proveedor.datasource" />
+    <None Include="Properties\DataSources\Entities.VentaDetalle.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

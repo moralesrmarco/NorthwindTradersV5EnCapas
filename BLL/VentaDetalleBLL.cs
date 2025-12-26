@@ -1,6 +1,8 @@
 ﻿using DAL;
 using Entities;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace BLL
 {
@@ -16,6 +18,38 @@ namespace BLL
         public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
         {
             return _ventaDetalleDAL.ObtenerVentaDetallePorVentaId(orderId);
+        }
+
+        public DataTable ObtenerVentaDetallePorVentaIdDt(int orderId)
+        {
+            var ventaDetalles = _ventaDetalleDAL.ObtenerVentaDetallePorVentaId(orderId);
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ProductName", typeof(string));
+            dt.Columns.Add("UnitPrice", typeof(decimal));
+            dt.Columns.Add("Quantity", typeof(short));
+            dt.Columns.Add("Importe", typeof(decimal));
+            dt.Columns.Add("Discount", typeof(decimal));
+            dt.Columns.Add("ImporteDelDescuento", typeof(decimal));
+            dt.Columns.Add("ImporteConDescuento", typeof(decimal));
+            dt.Columns.Add("TasaIVA", typeof(decimal)); 
+            dt.Columns.Add("ImporteDelIVA", typeof(decimal));
+            dt.Columns.Add("Subtotal", typeof(decimal));
+            foreach (var ventaDetalle in ventaDetalles)
+            {
+                DataRow dr = dt.NewRow();
+                dr["ProductName"] = ventaDetalle.Producto.ProductName;
+                dr["UnitPrice"] = ventaDetalle.UnitPrice;
+                dr["Quantity"] = ventaDetalle.Quantity;
+                dr["Importe"] = ventaDetalle.Importe;
+                dr["Discount"] = ventaDetalle.Discount;
+                dr["ImporteDelDescuento"] = ventaDetalle.ImporteDelDescuento;
+                dr["ImporteConDescuento"] = ventaDetalle.ImporteConDescuento;
+                dr["TasaIVA"] = ventaDetalle.TasaIVA;
+                dr["ImporteDelIVA"] = ventaDetalle.ImporteDelIVA;
+                dr["Subtotal"] = ventaDetalle.Subtotal;
+                dt.Rows.Add(dr);
+            }
+            return dt;
         }
     }
 }

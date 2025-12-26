@@ -1,5 +1,6 @@
 ﻿using BLL;
 using Entities;
+using Entities.DTOs;
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
@@ -33,9 +34,8 @@ namespace NorthwindTradersV5EnCapas
         {
             try
             {
-                ReportParameter[] parameters = new ReportParameter[2];
+                ReportParameter[] parameters = new ReportParameter[1];
                 parameters[0] = new ReportParameter("PedidoId", Id.ToString());
-                parameters[1] = new ReportParameter("Para", "2"); // este parametro ya no se utiliza, pero si lo quito deja de funcionar el informe
                 this.reportViewer1.LocalReport.SetParameters(parameters);
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 DataTable dt = _ventaBLL.ObtenerVentaPorIdDt(Id);
@@ -46,8 +46,8 @@ namespace NorthwindTradersV5EnCapas
                 // Obtenemos los datos detallados para la nota de remisión específica  
                 List<VentaDetalle> ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(Id);
                 MDIPrincipal.ActualizarBarraDeEstado();
-                ReportDataSource rds3 = new ReportDataSource("DataSet3", ventaDetalles);
-                reportViewer1.LocalReport.DataSources.Add(rds3);
+                ReportDataSource rds1 = new ReportDataSource("DataSet1", ventaDetalles);
+                reportViewer1.LocalReport.DataSources.Add(rds1);
                 reportViewer1.LocalReport.Refresh();
                 this.reportViewer1.RefreshReport();
             }

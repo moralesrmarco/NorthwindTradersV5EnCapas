@@ -13,6 +13,14 @@ namespace Entities
         public short Quantity { get; set; }
         public decimal Discount { get; set; }
         public byte[] RowVersion { get; set; }
+        
+        public string ProductName // expongo una propiedad para que sea accesible por el reporte
+        { 
+            get
+            {
+                return Producto.ProductName;
+            }
+        }
 
         public decimal Importe
         {
