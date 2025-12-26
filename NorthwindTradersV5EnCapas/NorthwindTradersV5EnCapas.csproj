@@ -388,7 +388,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Report1.rdlc" />
     <EmbeddedResource Include="RptCategorias.rdlc" />
     <EmbeddedResource Include="RptClientes.rdlc" />
     <EmbeddedResource Include="RptClientesyProveedoresDirectorio.rdlc" />
