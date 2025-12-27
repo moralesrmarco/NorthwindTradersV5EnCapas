@@ -22,6 +22,11 @@ namespace BLL
             return _ventaDAL.InsertarVentaCompleta(venta, out orderId);
         }
 
+        public int Actualizar(Venta venta)
+        {
+            return _ventaDAL.Actualizar(venta);
+        }
+
         public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)
         {
             var ventasTemp = _ventaDAL.ObtenerVentas(selectorRealizaBusqueda, criterios, top100);

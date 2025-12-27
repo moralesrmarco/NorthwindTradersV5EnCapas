@@ -20,110 +20,157 @@ namespace DAL
         {
             orderId = 0;
             int filasAfectadas = 0;
-            using (var cn = new SqlConnection(_connectionString))
+            try
             {
-                cn.Open();
-                using (var tx = cn.BeginTransaction())
+                using (var cn = new SqlConnection(_connectionString))
                 {
-                    try
+                    cn.Open();
+                    using (var tx = cn.BeginTransaction())
                     {
-                        // 1) Insertar registro padre (SP)
-                        using (var cmd = new SqlCommand("SpVentaInsertar", cn, tx))
+                        try
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@OrderID", 0);
-                            cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
-                            cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
-                            cmd.Parameters.AddWithValue("@EmployeeID", venta.Empleado.EmployeeID);
-                            cmd.Parameters.AddWithValue("@OrderDate", venta.OrderDate.HasValue ? (object)venta.OrderDate.Value : DBNull.Value);
-                            cmd.Parameters.AddWithValue("@RequiredDate", venta.RequiredDate.HasValue ? (object)venta.RequiredDate.Value : DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShippedDate", venta.ShippedDate.HasValue ? (object)venta.ShippedDate.Value : DBNull.Value);
-                            cmd.Parameters.AddWithValue("@ShipVia", venta.Transportista.ShipperID);
-                            cmd.Parameters.AddWithValue("@ShipName", string.IsNullOrWhiteSpace(venta.ShipName) ? (object)DBNull.Value : venta.ShipName);
-                            cmd.Parameters.AddWithValue("@ShipAddress", string.IsNullOrWhiteSpace(venta.ShipAddress) ? (object)DBNull.Value : venta.ShipAddress);
-                            cmd.Parameters.AddWithValue("@ShipCity", string.IsNullOrWhiteSpace(venta.ShipCity) ? (object)DBNull.Value : venta.ShipCity);
-                            cmd.Parameters.AddWithValue("@ShipRegion", string.IsNullOrWhiteSpace(venta.ShipRegion) ? (object)DBNull.Value : venta.ShipRegion);
-                            cmd.Parameters.AddWithValue("@ShipPostalCode", string.IsNullOrWhiteSpace(venta.ShipPostalCode) ? (object)DBNull.Value : venta.ShipPostalCode);
-                            cmd.Parameters.AddWithValue("@ShipCountry", string.IsNullOrWhiteSpace(venta.ShipCountry) ? (object)DBNull.Value : venta.ShipCountry);
-                            cmd.Parameters.AddWithValue("@Freight", venta.Freight);
-                            filasAfectadas += cmd.ExecuteNonQuery();
-                            orderId = Convert.ToInt32(cmd.Parameters["@OrderID"].Value);
-                        }
-                        // 2) Preparar comandos reutilizables para cada detalle:
-                        // 2.1) Preparar SELECT UnitsInStock FOR UPDATE
-                        using (var cmdCheckStock = new SqlCommand("SpProductoObtenerInventarioPorIdConBloqueo", cn, tx)) // el bloqueo persiste para las demas operaciones dentro de la transacción
-                        {
-                            cmdCheckStock.CommandType = CommandType.StoredProcedure;
-                            cmdCheckStock.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
-
-                            // 2.2) Preparar UPDATE products
-                            using (var cmdUpdateStock = new SqlCommand("SpProductoActualizarInventarioPorId", cn, tx))
+                            // 1) Insertar registro padre (SP)
+                            using (var cmd = new SqlCommand("SpVentaInsertar", cn, tx))
                             {
-                                cmdUpdateStock.CommandType = CommandType.StoredProcedure;
-                                cmdUpdateStock.Parameters.Add(new SqlParameter("@Quantity", SqlDbType.Int));
-                                cmdUpdateStock.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@OrderID", 0);
+                                cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
+                                cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
+                                cmd.Parameters.AddWithValue("@EmployeeID", venta.Empleado.EmployeeID);
+                                cmd.Parameters.AddWithValue("@OrderDate", venta.OrderDate.HasValue ? (object)venta.OrderDate.Value : DBNull.Value);
+                                cmd.Parameters.AddWithValue("@RequiredDate", venta.RequiredDate.HasValue ? (object)venta.RequiredDate.Value : DBNull.Value);
+                                cmd.Parameters.AddWithValue("@ShippedDate", venta.ShippedDate.HasValue ? (object)venta.ShippedDate.Value : DBNull.Value);
+                                cmd.Parameters.AddWithValue("@ShipVia", venta.Transportista.ShipperID);
+                                cmd.Parameters.AddWithValue("@ShipName", string.IsNullOrWhiteSpace(venta.ShipName) ? (object)DBNull.Value : venta.ShipName);
+                                cmd.Parameters.AddWithValue("@ShipAddress", string.IsNullOrWhiteSpace(venta.ShipAddress) ? (object)DBNull.Value : venta.ShipAddress);
+                                cmd.Parameters.AddWithValue("@ShipCity", string.IsNullOrWhiteSpace(venta.ShipCity) ? (object)DBNull.Value : venta.ShipCity);
+                                cmd.Parameters.AddWithValue("@ShipRegion", string.IsNullOrWhiteSpace(venta.ShipRegion) ? (object)DBNull.Value : venta.ShipRegion);
+                                cmd.Parameters.AddWithValue("@ShipPostalCode", string.IsNullOrWhiteSpace(venta.ShipPostalCode) ? (object)DBNull.Value : venta.ShipPostalCode);
+                                cmd.Parameters.AddWithValue("@ShipCountry", string.IsNullOrWhiteSpace(venta.ShipCountry) ? (object)DBNull.Value : venta.ShipCountry);
+                                cmd.Parameters.AddWithValue("@Freight", venta.Freight);
+                                filasAfectadas += cmd.ExecuteNonQuery();
+                                orderId = Convert.ToInt32(cmd.Parameters["@OrderID"].Value);
+                            }
+                            // 2) Preparar comandos reutilizables para cada detalle:
+                            // 2.1) Preparar SELECT UnitsInStock FOR UPDATE
+                            using (var cmdCheckStock = new SqlCommand("SpProductoObtenerInventarioPorIdConBloqueo", cn, tx)) // el bloqueo persiste para las demas operaciones dentro de la transacción
+                            {
+                                cmdCheckStock.CommandType = CommandType.StoredProcedure;
+                                cmdCheckStock.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
 
-                                // 2.3) Preparar inserción de detalle (SP)
-                                using (var cmdInsertDetail = new SqlCommand("spVentaDetalleInsertar", cn, tx))
+                                // 2.2) Preparar UPDATE products
+                                using (var cmdUpdateStock = new SqlCommand("SpProductoActualizarInventarioPorId", cn, tx))
                                 {
-                                    cmdInsertDetail.CommandType = CommandType.StoredProcedure;
-                                    cmdInsertDetail.Parameters.Add(new SqlParameter("@OrderID", SqlDbType.Int));
-                                    cmdInsertDetail.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
-                                    cmdInsertDetail.Parameters.Add(new SqlParameter("@UnitPrice", SqlDbType.Decimal));
-                                    cmdInsertDetail.Parameters.Add(new SqlParameter("@Quantity", SqlDbType.SmallInt));
-                                    cmdInsertDetail.Parameters.Add(new SqlParameter("@Discount", SqlDbType.Float));
-                                    cmdInsertDetail.Parameters.Add(new SqlParameter("@TasaIVA", SqlDbType.Float));
+                                    cmdUpdateStock.CommandType = CommandType.StoredProcedure;
+                                    cmdUpdateStock.Parameters.Add(new SqlParameter("@Quantity", SqlDbType.Int));
+                                    cmdUpdateStock.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
 
-                                    // 3) Procesar cada detalle
-                                    foreach (var d in venta.VentaDetalles)
+                                    // 2.3) Preparar inserción de detalle (SP)
+                                    using (var cmdInsertDetail = new SqlCommand("spVentaDetalleInsertar", cn, tx))
                                     {
-                                        // 3.1) Validar existencia y bloquear fila del producto
-                                        cmdCheckStock.Parameters["@ProductID"].Value = d.Producto.ProductID;
-                                        var stockObj = cmdCheckStock.ExecuteScalar();
-                                        if (stockObj == null || stockObj == DBNull.Value)
+                                        cmdInsertDetail.CommandType = CommandType.StoredProcedure;
+                                        cmdInsertDetail.Parameters.Add(new SqlParameter("@OrderID", SqlDbType.Int));
+                                        cmdInsertDetail.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
+                                        cmdInsertDetail.Parameters.Add(new SqlParameter("@UnitPrice", SqlDbType.Decimal));
+                                        cmdInsertDetail.Parameters.Add(new SqlParameter("@Quantity", SqlDbType.SmallInt));
+                                        cmdInsertDetail.Parameters.Add(new SqlParameter("@Discount", SqlDbType.Float));
+                                        cmdInsertDetail.Parameters.Add(new SqlParameter("@TasaIVA", SqlDbType.Float));
+
+                                        // 3) Procesar cada detalle
+                                        foreach (var d in venta.VentaDetalles)
                                         {
-                                            throw new InvalidOperationException($"Producto {d.Producto.ProductID} no existe.");
-                                        }
+                                            // 3.1) Validar existencia y bloquear fila del producto
+                                            cmdCheckStock.Parameters["@ProductID"].Value = d.Producto.ProductID;
+                                            var stockObj = cmdCheckStock.ExecuteScalar();
+                                            if (stockObj == null || stockObj == DBNull.Value)
+                                            {
+                                                throw new InvalidOperationException($"Producto {d.Producto.ProductID} no existe.");
+                                            }
 
-                                        int currentStock = Convert.ToInt32(stockObj);
+                                            int currentStock = Convert.ToInt32(stockObj);
 
-                                        // 3.2) Validar stock suficiente
-                                        if (currentStock < d.Quantity)
-                                        {
-                                            throw new InvalidOperationException($"Inventario insuficiente para el producto {d.Producto.ProductID} {d.Producto.ProductName}. Disponible: {currentStock}, solicitado: {d.Quantity}.");
-                                        }
+                                            // 3.2) Validar stock suficiente
+                                            if (currentStock < d.Quantity)
+                                            {
+                                                throw new InvalidOperationException($"Inventario insuficiente para el producto {d.Producto.ProductID} {d.Producto.ProductName}. Disponible: {currentStock}, solicitado: {d.Quantity}.");
+                                            }
 
-                                        // 3.3) Actualizar stock
-                                        cmdUpdateStock.Parameters["@Quantity"].Value = d.Quantity;
-                                        cmdUpdateStock.Parameters["@ProductID"].Value = d.Producto.ProductID;
-                                        var rowsUpdated = cmdUpdateStock.ExecuteNonQuery();
-                                        if (rowsUpdated == 0)
-                                        {
-                                            throw new InvalidOperationException($"No se pudo actualizar el inventario para el producto {d.Producto.ProductID}.");
-                                        }
+                                            // 3.3) Actualizar stock
+                                            cmdUpdateStock.Parameters["@Quantity"].Value = d.Quantity;
+                                            cmdUpdateStock.Parameters["@ProductID"].Value = d.Producto.ProductID;
+                                            var rowsUpdated = cmdUpdateStock.ExecuteNonQuery();
+                                            if (rowsUpdated == 0)
+                                            {
+                                                throw new InvalidOperationException($"No se pudo actualizar el inventario para el producto {d.Producto.ProductID}.");
+                                            }
 
-                                        // 3.4) Insertar detalle (SP)
-                                        cmdInsertDetail.Parameters["@OrderID"].Value = orderId;
-                                        cmdInsertDetail.Parameters["@ProductId"].Value = d.Producto.ProductID;
-                                        cmdInsertDetail.Parameters["@UnitPrice"].Value = d.UnitPrice;
-                                        cmdInsertDetail.Parameters["@Quantity"].Value = d.Quantity;
-                                        cmdInsertDetail.Parameters["@Discount"].Value = d.Discount;
-                                        cmdInsertDetail.Parameters["@TasaIVA"].Value = d.TasaIVA;
+                                            // 3.4) Insertar detalle (SP)
+                                            cmdInsertDetail.Parameters["@OrderID"].Value = orderId;
+                                            cmdInsertDetail.Parameters["@ProductID"].Value = d.Producto.ProductID;
+                                            cmdInsertDetail.Parameters["@UnitPrice"].Value = d.UnitPrice;
+                                            cmdInsertDetail.Parameters["@Quantity"].Value = d.Quantity;
+                                            cmdInsertDetail.Parameters["@Discount"].Value = d.Discount;
+                                            cmdInsertDetail.Parameters["@TasaIVA"].Value = d.TasaIVA;
 
-                                        filasAfectadas += cmdInsertDetail.ExecuteNonQuery();
-                                    } // foreach detalles
-                                } // cmdInsertDetail
-                            } // cmdUpdateStock
-                        } // cmdCheckStock
-                        tx.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        try { tx.Rollback(); } catch (Exception) { }
-                        //orderId = 0;
-                        throw;
+                                            filasAfectadas += cmdInsertDetail.ExecuteNonQuery();
+                                        } // foreach detalles
+                                    } // cmdInsertDetail
+                                } // cmdUpdateStock
+                            } // cmdCheckStock
+                            tx.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            try { tx.Rollback(); } catch (Exception) { }
+                            throw;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al insertar la venta: " + ex.Message);
+            }
+            return filasAfectadas;
+        }
+
+        public int Actualizar(Venta venta)
+        {
+            int filasAfectadas = 0;
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaActualizar", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", venta.OrderID);
+                    cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
+                    cmd.Parameters.AddWithValue("@EmployeeID", ((object)venta.Empleado.EmployeeID == null || venta.Empleado.EmployeeID.Equals(0)) ? DBNull.Value : (object)venta.Empleado.EmployeeID);
+                    cmd.Parameters.AddWithValue("@OrderDate", venta.OrderDate.HasValue ? (object)venta.OrderDate.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@RequiredDate", venta.RequiredDate.HasValue ? (object)venta.RequiredDate.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ShippedDate", venta.ShippedDate.HasValue ? (object)venta.ShippedDate.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ShipVia", ((object)venta.Transportista.ShipperID == null || venta.Transportista.ShipperID.Equals(0)) ? DBNull.Value : (object)venta.Transportista.ShipperID);
+                    cmd.Parameters.AddWithValue("@Freight", (object)venta.Freight ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ShipName", string.IsNullOrWhiteSpace(venta.ShipName) ? (object)DBNull.Value : venta.ShipName);
+                    cmd.Parameters.AddWithValue("@ShipAddress", string.IsNullOrWhiteSpace(venta.ShipAddress) ? (object)DBNull.Value : venta.ShipAddress);
+                    cmd.Parameters.AddWithValue("@ShipCity", string.IsNullOrWhiteSpace(venta.ShipCity) ? (object)DBNull.Value : venta.ShipCity);
+                    cmd.Parameters.AddWithValue("@ShipRegion", string.IsNullOrWhiteSpace(venta.ShipRegion) ? (object)DBNull.Value : venta.ShipRegion);
+                    cmd.Parameters.AddWithValue("@ShipPostalCode", string.IsNullOrWhiteSpace(venta.ShipPostalCode) ? (object)DBNull.Value : venta.ShipPostalCode);
+                    cmd.Parameters.AddWithValue("@ShipCountry", string.IsNullOrWhiteSpace(venta.ShipCountry) ? (object)DBNull.Value : venta.ShipCountry);
+                    //cmd.Parameters.AddWithValue("@RowVersion", venta.RowVersion);
+                    //cmd.Parameters.Add("@RowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
+                    var pRowVersion = new SqlParameter("@RowVersion", SqlDbType.Binary, 8);
+                    pRowVersion.Direction = ParameterDirection.InputOutput;
+                    pRowVersion.Value = venta.RowVersion;
+                    cmd.Parameters.Add(pRowVersion);
+                    cn.Open();
+                    filasAfectadas = cmd.ExecuteNonQuery();
+                    venta.RowVersion = (byte[])cmd.Parameters["@RowVersion"].Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar la venta: " + ex.Message);
             }
             return filasAfectadas;
         }

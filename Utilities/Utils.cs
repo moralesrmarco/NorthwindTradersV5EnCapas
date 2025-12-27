@@ -24,20 +24,20 @@ namespace Utilities
             public const string preguntaCerrar = "[orange]Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
             public const string preguntaCerrarPestaña = "[orange]Se detectaron cambios en los datos, que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?\n[blue]Si responde SI, se perderan los datos no guardados.";
         public const string insertandoRegistro = "Insertando registro(s) en la base de datos...";
-            public const string modificandoRegistro = "Modificando registro(s) en la base de datos...";
+            public const string modificandoRegistro = "Actualizando registro(s) en la base de datos...";
             public const string eliminandoRegistro = "Eliminando registro(s) en la base de datos...";
             public const string errorCriterioSelec = "[orange]     Error: Proporcione los criterios de selección.";
             public const string noDatos = "No se encontraron registros para mostrar en el reporte.";
             public const string srs = "\n[green]Se registró satisfactoriamente.";
             public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
-            public const string sms = "\n[green]Se modificó satisfactoriamente.";
-            public const string nfmfe = "\n[red]NO fue modificado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmfm = "\n[red]NO fue modificado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmmd = "\n[red]NO fue modificado en la base de datos por un motivo desconocido.";
+            public const string sms = "\n[green]Se actualizó satisfactoriamente.";
+            public const string nfmfe = "\n[red]NO fue actualizado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfmfm = "\n[red]NO fue actualizado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfmmd = "\n[red]NO fue actualizado en la base de datos por un motivo desconocido.";
             public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string ses = "\n[green]Se eliminó satisfactoriamente.";
-            public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue borrado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue actualizado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
             public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
         #endregion

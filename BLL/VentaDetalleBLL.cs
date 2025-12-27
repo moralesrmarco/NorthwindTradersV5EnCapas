@@ -3,6 +3,7 @@ using Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.InteropServices;
 
 namespace BLL
 {
@@ -50,6 +51,11 @@ namespace BLL
                 dt.Rows.Add(dr);
             }
             return dt;
+        }
+
+        public byte[] ObtenerVentaDetalleRowVersion(int orderId, int productId)
+        {
+            return _ventaDetalleDAL.ObtenerVentaDetalleRowVersion(orderId, productId);
         }
     }
 }

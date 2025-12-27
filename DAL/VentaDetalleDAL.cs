@@ -59,5 +59,25 @@ namespace DAL
             return ventaDetalles;
         }
 
+        public byte[] ObtenerVentaDetalleRowVersion(int orderId, int productId)
+        {
+            if (orderId <= 0 || productId <= 0) return null;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaDetalleObtenerRowVersion", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", orderId);
+                    cmd.Parameters.AddWithValue("@ProductID", productId);
+                    con.Open();
+                    return (byte[])cmd.ExecuteScalar();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el RowVersion del detalle de la venta: " + ex.Message, ex);
+            }
+        }
     }
 }
