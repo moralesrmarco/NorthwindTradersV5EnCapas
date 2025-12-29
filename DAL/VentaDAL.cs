@@ -157,20 +157,47 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@ShipRegion", string.IsNullOrWhiteSpace(venta.ShipRegion) ? (object)DBNull.Value : venta.ShipRegion);
                     cmd.Parameters.AddWithValue("@ShipPostalCode", string.IsNullOrWhiteSpace(venta.ShipPostalCode) ? (object)DBNull.Value : venta.ShipPostalCode);
                     cmd.Parameters.AddWithValue("@ShipCountry", string.IsNullOrWhiteSpace(venta.ShipCountry) ? (object)DBNull.Value : venta.ShipCountry);
-                    //cmd.Parameters.AddWithValue("@RowVersion", venta.RowVersion);
-                    //cmd.Parameters.Add("@RowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var pRowVersion = new SqlParameter("@RowVersion", SqlDbType.Binary, 8);
                     pRowVersion.Direction = ParameterDirection.InputOutput;
                     pRowVersion.Value = venta.RowVersion;
                     cmd.Parameters.Add(pRowVersion);
+                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
                     cn.Open();
-                    filasAfectadas = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
                     venta.RowVersion = (byte[])cmd.Parameters["@RowVersion"].Value;
+                    filasAfectadas = (int)returnParameter.Value;
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al actualizar la venta: " + ex.Message);
+            }
+            return filasAfectadas;
+        }
+
+        public int Eliminar(Venta venta)
+        {
+            int filasAfectadas = 0;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaEliminar", con)) 
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", venta.OrderID);
+                    cmd.Parameters.AddWithValue("@RowVersion", venta.RowVersion);
+                    // Parámetro de retorno
+                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    filasAfectadas = (int)returnParameter.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar la venta: " + ex.Message);
             }
             return filasAfectadas;
         }

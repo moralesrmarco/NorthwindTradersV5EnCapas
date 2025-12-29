@@ -27,6 +27,11 @@ namespace BLL
             return _ventaDAL.Actualizar(venta);
         }
 
+        public int Eliminar(Venta venta)
+        {
+            return _ventaDAL.Eliminar(venta);
+        }
+
         public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)
         {
             var ventasTemp = _ventaDAL.ObtenerVentas(selectorRealizaBusqueda, criterios, top100);

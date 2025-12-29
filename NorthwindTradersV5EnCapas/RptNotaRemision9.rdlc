@@ -1173,10 +1173,10 @@ Format(Fields!FechaDeEnvio.Value,
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>0.33813cm</Width>
+                      <Width>0.56316cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.67507cm</Width>
+                      <Width>2.45004cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1.99015cm</Width>
@@ -1621,14 +1621,14 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=RowNumber(Nothing)</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Left</TextAlign>
+                                    <TextAlign>Right</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -1636,12 +1636,13 @@ Format(Fields!FechaDeEnvio.Value,
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>1pt</PaddingLeft>
+                                <PaddingRight>1pt</PaddingRight>
+                                <PaddingTop>1pt</PaddingTop>
+                                <PaddingBottom>1pt</PaddingBottom>
                               </Style>
                             </Textbox>
                           </CellContents>
@@ -2007,34 +2008,38 @@ Format(Fields!FechaDeEnvio.Value,
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
-                            <Textbox Name="Textbox27">
+                            <Textbox Name="Textbox31">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>999</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Left</TextAlign>
+                                    <TextAlign>Right</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <rd:DefaultName>Textbox27</rd:DefaultName>
+                              <rd:DefaultName>Textbox31</rd:DefaultName>
+                              <Visibility>
+                                <Hidden>true</Hidden>
+                              </Visibility>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>1pt</PaddingLeft>
+                                <PaddingRight>1pt</PaddingRight>
+                                <PaddingTop>1pt</PaddingTop>
+                                <PaddingBottom>1pt</PaddingBottom>
                               </Style>
                             </Textbox>
                           </CellContents>
@@ -2048,7 +2053,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>="Número de productos: " &amp; Format(Count(Fields!ProductName.Value), "N0")</Value>
+                                      <Value>="N° de productos: " &amp; Format(Count(Fields!ProductName.Value), "N0")</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                       </Style>
@@ -2063,7 +2068,7 @@ Format(Fields!FechaDeEnvio.Value,
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
@@ -4007,10 +4012,10 @@ Format(Fields!FechaDeEnvio.Value,
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>0.33813cm</Width>
+                      <Width>0.61709cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.67507cm</Width>
+                      <Width>2.39611cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1.99015cm</Width>
@@ -4455,14 +4460,14 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=RowNumber(Nothing)</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Left</TextAlign>
+                                    <TextAlign>Right</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -4470,12 +4475,13 @@ Format(Fields!FechaDeEnvio.Value,
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>1pt</PaddingLeft>
+                                <PaddingRight>1pt</PaddingRight>
+                                <PaddingTop>1pt</PaddingTop>
+                                <PaddingBottom>1pt</PaddingBottom>
                               </Style>
                             </Textbox>
                           </CellContents>
@@ -4848,27 +4854,31 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>999</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Left</TextAlign>
+                                    <TextAlign>Right</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox27</rd:DefaultName>
+                              <Visibility>
+                                <Hidden>true</Hidden>
+                              </Visibility>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>1pt</PaddingLeft>
+                                <PaddingRight>1pt</PaddingRight>
+                                <PaddingTop>1pt</PaddingTop>
+                                <PaddingBottom>1pt</PaddingBottom>
                               </Style>
                             </Textbox>
                           </CellContents>
@@ -4882,7 +4892,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>="Número de productos: " &amp; Format(Count(Fields!ProductName.Value), "N0")</Value>
+                                      <Value>="N° de productos: " &amp; Format(Count(Fields!ProductName.Value), "N0")</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                       </Style>
@@ -4897,7 +4907,7 @@ Format(Fields!FechaDeEnvio.Value,
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
@@ -4906,6 +4916,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
