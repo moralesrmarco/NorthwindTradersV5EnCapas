@@ -35,26 +35,42 @@
             this.btnNota = new System.Windows.Forms.Button();
             this.btnGenerar = new System.Windows.Forms.Button();
             this.GrbTotales = new System.Windows.Forms.GroupBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.LblSubtotalDelImporteDelIVA = new System.Windows.Forms.Label();
             this.LblSubtotalDelImporteConDescuento = new System.Windows.Forms.Label();
             this.LblSubtotalDelImporteDelDescuento = new System.Windows.Forms.Label();
-            this.nudSubtotalDelImporteDelIVA = new System.Windows.Forms.NumericUpDown();
-            this.nudSubtotalDelImporteConDescuento = new System.Windows.Forms.NumericUpDown();
-            this.nudSubtotalDelImporteDelDescuento = new System.Windows.Forms.NumericUpDown();
-            this.nudSubtotalDelImporte = new System.Windows.Forms.NumericUpDown();
+            this.nudSubtotalDelImporteDelIVA = new Utilities.NudNoWheel();
+            this.nudSubtotalDelImporteConDescuento = new Utilities.NudNoWheel();
+            this.nudSubtotalDelImporteDelDescuento = new Utilities.NudNoWheel();
+            this.nudSubtotalDelImporte = new Utilities.NudNoWheel();
             this.LblSubtotalDelImporte = new System.Windows.Forms.Label();
-            this.nudTotalDeUnidades = new System.Windows.Forms.NumericUpDown();
+            this.nudNumProd = new Utilities.NudNoWheel();
+            this.nudTotalDeUnidades = new Utilities.NudNoWheel();
             this.label36 = new System.Windows.Forms.Label();
-            this.nudTotal = new System.Windows.Forms.NumericUpDown();
+            this.nudTotal = new Utilities.NudNoWheel();
             this.LblTotal = new System.Windows.Forms.Label();
             this.grbDetalle = new System.Windows.Forms.GroupBox();
             this.dgvDetalle = new System.Windows.Forms.DataGridView();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Descuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImporteDelDescuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImporteConDescuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TasaIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImporteDelIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ProductoId = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.RowVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grbVenta = new System.Windows.Forms.GroupBox();
             this.grbProducto = new System.Windows.Forms.GroupBox();
-            this.nudDescuento = new System.Windows.Forms.NumericUpDown();
-            this.nudCantidad = new System.Windows.Forms.NumericUpDown();
-            this.nudUInventario = new System.Windows.Forms.NumericUpDown();
-            this.nudPrecio = new System.Windows.Forms.NumericUpDown();
+            this.nudDescuento = new Utilities.NudNoWheel();
+            this.nudCantidad = new Utilities.NudNoWheel();
+            this.nudUInventario = new Utilities.NudNoWheel();
+            this.nudPrecio = new Utilities.NudNoWheel();
             this.label43 = new System.Windows.Forms.Label();
             this.cboProducto = new System.Windows.Forms.ComboBox();
             this.cboCategoria = new System.Windows.Forms.ComboBox();
@@ -65,7 +81,7 @@
             this.label38 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.grbTransportista = new System.Windows.Forms.GroupBox();
-            this.nudFlete = new System.Windows.Forms.NumericUpDown();
+            this.nudFlete = new Utilities.NudNoWheel();
             this.txtCP = new System.Windows.Forms.TextBox();
             this.txtCiudad = new System.Windows.Forms.TextBox();
             this.txtDirigidoa = new System.Windows.Forms.TextBox();
@@ -144,22 +160,6 @@
             this.tabpEliminar = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label39 = new System.Windows.Forms.Label();
-            this.nudNumProd = new System.Windows.Forms.NumericUpDown();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Importe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Descuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ImporteDelDescuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ImporteConDescuento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TasaIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ImporteDelIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.ProductoId = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.RowVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.GrbOperaciones.SuspendLayout();
             this.GrbTotales.SuspendLayout();
@@ -167,6 +167,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteConDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporte)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNumProd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalDeUnidades)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotal)).BeginInit();
             this.grbDetalle.SuspendLayout();
@@ -190,7 +191,6 @@
             this.tabpModificar.SuspendLayout();
             this.tabpEliminar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNumProd)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -292,6 +292,15 @@
             this.GrbTotales.Text = "»   Totales de la venta:   «";
             this.GrbTotales.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(20, 28);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(174, 17);
+            this.label39.TabIndex = 28;
+            this.label39.Text = "Número de productos: ";
+            // 
             // LblSubtotalDelImporteDelIVA
             // 
             this.LblSubtotalDelImporteDelIVA.AutoSize = true;
@@ -334,6 +343,7 @@
             this.nudSubtotalDelImporteDelIVA.TabIndex = 24;
             this.nudSubtotalDelImporteDelIVA.TabStop = false;
             this.nudSubtotalDelImporteDelIVA.ThousandsSeparator = true;
+            this.nudSubtotalDelImporteDelIVA.WheelEnabled = true;
             // 
             // nudSubtotalDelImporteConDescuento
             // 
@@ -350,6 +360,7 @@
             this.nudSubtotalDelImporteConDescuento.TabIndex = 24;
             this.nudSubtotalDelImporteConDescuento.TabStop = false;
             this.nudSubtotalDelImporteConDescuento.ThousandsSeparator = true;
+            this.nudSubtotalDelImporteConDescuento.WheelEnabled = true;
             // 
             // nudSubtotalDelImporteDelDescuento
             // 
@@ -366,6 +377,7 @@
             this.nudSubtotalDelImporteDelDescuento.TabIndex = 24;
             this.nudSubtotalDelImporteDelDescuento.TabStop = false;
             this.nudSubtotalDelImporteDelDescuento.ThousandsSeparator = true;
+            this.nudSubtotalDelImporteDelDescuento.WheelEnabled = true;
             // 
             // nudSubtotalDelImporte
             // 
@@ -382,6 +394,7 @@
             this.nudSubtotalDelImporte.TabIndex = 24;
             this.nudSubtotalDelImporte.TabStop = false;
             this.nudSubtotalDelImporte.ThousandsSeparator = true;
+            this.nudSubtotalDelImporte.WheelEnabled = true;
             // 
             // LblSubtotalDelImporte
             // 
@@ -391,6 +404,22 @@
             this.LblSubtotalDelImporte.Size = new System.Drawing.Size(173, 17);
             this.LblSubtotalDelImporte.TabIndex = 23;
             this.LblSubtotalDelImporte.Text = "Subtotal del importe $:";
+            // 
+            // nudNumProd
+            // 
+            this.nudNumProd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudNumProd.Location = new System.Drawing.Point(203, 26);
+            this.nudNumProd.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudNumProd.Name = "nudNumProd";
+            this.nudNumProd.Size = new System.Drawing.Size(120, 23);
+            this.nudNumProd.TabIndex = 22;
+            this.nudNumProd.TabStop = false;
+            this.nudNumProd.ThousandsSeparator = true;
+            this.nudNumProd.WheelEnabled = true;
             // 
             // nudTotalDeUnidades
             // 
@@ -406,6 +435,7 @@
             this.nudTotalDeUnidades.TabIndex = 22;
             this.nudTotalDeUnidades.TabStop = false;
             this.nudTotalDeUnidades.ThousandsSeparator = true;
+            this.nudTotalDeUnidades.WheelEnabled = true;
             // 
             // label36
             // 
@@ -431,6 +461,7 @@
             this.nudTotal.TabIndex = 21;
             this.nudTotal.TabStop = false;
             this.nudTotal.ThousandsSeparator = true;
+            this.nudTotal.WheelEnabled = true;
             // 
             // LblTotal
             // 
@@ -487,6 +518,115 @@
             this.dgvDetalle.TabStop = false;
             this.dgvDetalle.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetalle_CellClick);
             this.dgvDetalle.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvDetalle_CellFormatting);
+            // 
+            // Id
+            // 
+            this.Id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Id.HeaderText = "N°";
+            this.Id.MinimumWidth = 6;
+            this.Id.Name = "Id";
+            this.Id.Width = 55;
+            // 
+            // Producto
+            // 
+            this.Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Producto.HeaderText = "Producto";
+            this.Producto.MinimumWidth = 6;
+            this.Producto.Name = "Producto";
+            // 
+            // Precio
+            // 
+            this.Precio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Precio.HeaderText = "Precio";
+            this.Precio.MinimumWidth = 6;
+            this.Precio.Name = "Precio";
+            this.Precio.Width = 83;
+            // 
+            // Cantidad
+            // 
+            this.Cantidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Cantidad.HeaderText = "Cantidad";
+            this.Cantidad.MinimumWidth = 6;
+            this.Cantidad.Name = "Cantidad";
+            this.Cantidad.Width = 101;
+            // 
+            // Importe
+            // 
+            this.Importe.HeaderText = "Importe";
+            this.Importe.MinimumWidth = 6;
+            this.Importe.Name = "Importe";
+            this.Importe.Width = 125;
+            // 
+            // Descuento
+            // 
+            this.Descuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Descuento.HeaderText = "Descuento";
+            this.Descuento.MinimumWidth = 6;
+            this.Descuento.Name = "Descuento";
+            this.Descuento.Width = 114;
+            // 
+            // ImporteDelDescuento
+            // 
+            this.ImporteDelDescuento.HeaderText = "Importe del descuento";
+            this.ImporteDelDescuento.MinimumWidth = 6;
+            this.ImporteDelDescuento.Name = "ImporteDelDescuento";
+            this.ImporteDelDescuento.Width = 125;
+            // 
+            // ImporteConDescuento
+            // 
+            this.ImporteConDescuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ImporteConDescuento.HeaderText = "Importe con descuento";
+            this.ImporteConDescuento.MinimumWidth = 6;
+            this.ImporteConDescuento.Name = "ImporteConDescuento";
+            this.ImporteConDescuento.Width = 184;
+            // 
+            // TasaIVA
+            // 
+            this.TasaIVA.HeaderText = "Tasa IVA";
+            this.TasaIVA.MinimumWidth = 6;
+            this.TasaIVA.Name = "TasaIVA";
+            this.TasaIVA.Width = 125;
+            // 
+            // ImporteDelIVA
+            // 
+            this.ImporteDelIVA.HeaderText = "Importe del IVA";
+            this.ImporteDelIVA.MinimumWidth = 6;
+            this.ImporteDelIVA.Name = "ImporteDelIVA";
+            this.ImporteDelIVA.Width = 125;
+            // 
+            // Subtotal
+            // 
+            this.Subtotal.HeaderText = "Subtotal";
+            this.Subtotal.MinimumWidth = 6;
+            this.Subtotal.Name = "Subtotal";
+            this.Subtotal.Width = 125;
+            // 
+            // Eliminar
+            // 
+            this.Eliminar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Eliminar.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.Eliminar.HeaderText = "Eliminar";
+            this.Eliminar.MinimumWidth = 6;
+            this.Eliminar.Name = "Eliminar";
+            this.Eliminar.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Eliminar.Width = 72;
+            // 
+            // ProductoId
+            // 
+            this.ProductoId.HeaderText = "ProductoId";
+            this.ProductoId.MinimumWidth = 6;
+            this.ProductoId.Name = "ProductoId";
+            this.ProductoId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ProductoId.Visible = false;
+            this.ProductoId.Width = 125;
+            // 
+            // RowVersion
+            // 
+            this.RowVersion.HeaderText = "RowVersion";
+            this.RowVersion.MinimumWidth = 6;
+            this.RowVersion.Name = "RowVersion";
+            this.RowVersion.Visible = false;
+            this.RowVersion.Width = 125;
             // 
             // grbVenta
             // 
@@ -563,6 +703,7 @@
             this.nudDescuento.Name = "nudDescuento";
             this.nudDescuento.Size = new System.Drawing.Size(85, 23);
             this.nudDescuento.TabIndex = 3;
+            this.nudDescuento.WheelEnabled = true;
             this.nudDescuento.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // nudCantidad
@@ -578,8 +719,8 @@
             this.nudCantidad.Size = new System.Drawing.Size(90, 23);
             this.nudCantidad.TabIndex = 2;
             this.nudCantidad.ThousandsSeparator = true;
+            this.nudCantidad.WheelEnabled = true;
             this.nudCantidad.Enter += new System.EventHandler(this.Nud_Enter);
-            this.nudCantidad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Nud_KeyPress);
             // 
             // nudUInventario
             // 
@@ -595,6 +736,7 @@
             this.nudUInventario.TabIndex = 9;
             this.nudUInventario.TabStop = false;
             this.nudUInventario.ThousandsSeparator = true;
+            this.nudUInventario.WheelEnabled = true;
             // 
             // nudPrecio
             // 
@@ -611,6 +753,7 @@
             this.nudPrecio.TabIndex = 8;
             this.nudPrecio.TabStop = false;
             this.nudPrecio.ThousandsSeparator = true;
+            this.nudPrecio.WheelEnabled = true;
             // 
             // label43
             // 
@@ -752,6 +895,7 @@
             this.nudFlete.Size = new System.Drawing.Size(120, 23);
             this.nudFlete.TabIndex = 7;
             this.nudFlete.ThousandsSeparator = true;
+            this.nudFlete.WheelEnabled = true;
             this.nudFlete.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // txtCP
@@ -1164,6 +1308,7 @@
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(140, 23);
             this.nudBIdFin.TabIndex = 1;
+            this.nudBIdFin.ValueChanged += new System.EventHandler(this.nudBIdFin_ValueChanged);
             this.nudBIdFin.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdFin.Leave += new System.EventHandler(this.nudBIdFin_Leave);
             // 
@@ -1179,6 +1324,7 @@
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(140, 23);
             this.nudBIdIni.TabIndex = 0;
+            this.nudBIdIni.ValueChanged += new System.EventHandler(this.nudBIdIni_ValueChanged);
             this.nudBIdIni.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdIni.Leave += new System.EventHandler(this.nudBIdIni_Leave);
             // 
@@ -1668,139 +1814,6 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(20, 28);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(174, 17);
-            this.label39.TabIndex = 28;
-            this.label39.Text = "Número de productos: ";
-            // 
-            // nudNumProd
-            // 
-            this.nudNumProd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudNumProd.Location = new System.Drawing.Point(203, 26);
-            this.nudNumProd.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.nudNumProd.Name = "nudNumProd";
-            this.nudNumProd.Size = new System.Drawing.Size(120, 23);
-            this.nudNumProd.TabIndex = 22;
-            this.nudNumProd.TabStop = false;
-            this.nudNumProd.ThousandsSeparator = true;
-            // 
-            // Id
-            // 
-            this.Id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Id.HeaderText = "N°";
-            this.Id.MinimumWidth = 6;
-            this.Id.Name = "Id";
-            this.Id.Width = 55;
-            // 
-            // Producto
-            // 
-            this.Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Producto.HeaderText = "Producto";
-            this.Producto.MinimumWidth = 6;
-            this.Producto.Name = "Producto";
-            // 
-            // Precio
-            // 
-            this.Precio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Precio.HeaderText = "Precio";
-            this.Precio.MinimumWidth = 6;
-            this.Precio.Name = "Precio";
-            this.Precio.Width = 83;
-            // 
-            // Cantidad
-            // 
-            this.Cantidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Cantidad.HeaderText = "Cantidad";
-            this.Cantidad.MinimumWidth = 6;
-            this.Cantidad.Name = "Cantidad";
-            this.Cantidad.Width = 101;
-            // 
-            // Importe
-            // 
-            this.Importe.HeaderText = "Importe";
-            this.Importe.MinimumWidth = 6;
-            this.Importe.Name = "Importe";
-            this.Importe.Width = 125;
-            // 
-            // Descuento
-            // 
-            this.Descuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Descuento.HeaderText = "Descuento";
-            this.Descuento.MinimumWidth = 6;
-            this.Descuento.Name = "Descuento";
-            this.Descuento.Width = 114;
-            // 
-            // ImporteDelDescuento
-            // 
-            this.ImporteDelDescuento.HeaderText = "Importe del descuento";
-            this.ImporteDelDescuento.MinimumWidth = 6;
-            this.ImporteDelDescuento.Name = "ImporteDelDescuento";
-            this.ImporteDelDescuento.Width = 125;
-            // 
-            // ImporteConDescuento
-            // 
-            this.ImporteConDescuento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ImporteConDescuento.HeaderText = "Importe con descuento";
-            this.ImporteConDescuento.MinimumWidth = 6;
-            this.ImporteConDescuento.Name = "ImporteConDescuento";
-            this.ImporteConDescuento.Width = 184;
-            // 
-            // TasaIVA
-            // 
-            this.TasaIVA.HeaderText = "Tasa IVA";
-            this.TasaIVA.MinimumWidth = 6;
-            this.TasaIVA.Name = "TasaIVA";
-            this.TasaIVA.Width = 125;
-            // 
-            // ImporteDelIVA
-            // 
-            this.ImporteDelIVA.HeaderText = "Importe del IVA";
-            this.ImporteDelIVA.MinimumWidth = 6;
-            this.ImporteDelIVA.Name = "ImporteDelIVA";
-            this.ImporteDelIVA.Width = 125;
-            // 
-            // Subtotal
-            // 
-            this.Subtotal.HeaderText = "Subtotal";
-            this.Subtotal.MinimumWidth = 6;
-            this.Subtotal.Name = "Subtotal";
-            this.Subtotal.Width = 125;
-            // 
-            // Eliminar
-            // 
-            this.Eliminar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Eliminar.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.Eliminar.HeaderText = "Eliminar";
-            this.Eliminar.MinimumWidth = 6;
-            this.Eliminar.Name = "Eliminar";
-            this.Eliminar.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Eliminar.Width = 72;
-            // 
-            // ProductoId
-            // 
-            this.ProductoId.HeaderText = "ProductoId";
-            this.ProductoId.MinimumWidth = 6;
-            this.ProductoId.Name = "ProductoId";
-            this.ProductoId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ProductoId.Visible = false;
-            this.ProductoId.Width = 125;
-            // 
-            // RowVersion
-            // 
-            this.RowVersion.HeaderText = "RowVersion";
-            this.RowVersion.MinimumWidth = 6;
-            this.RowVersion.Name = "RowVersion";
-            this.RowVersion.Visible = false;
-            this.RowVersion.Width = 125;
-            // 
             // FrmVentasCrud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
@@ -1824,6 +1837,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteConDescuento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelDescuento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporte)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNumProd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalDeUnidades)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotal)).EndInit();
             this.grbDetalle.ResumeLayout(false);
@@ -1855,7 +1869,6 @@
             this.tabpEliminar.ResumeLayout(false);
             this.tabpEliminar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNumProd)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1959,26 +1972,26 @@
         private System.Windows.Forms.Button btnNuevo;
         private System.Windows.Forms.NumericUpDown nudBIdFin;
         private System.Windows.Forms.NumericUpDown nudBIdIni;
-        private System.Windows.Forms.NumericUpDown nudFlete;
-        private System.Windows.Forms.NumericUpDown nudPrecio;
-        private System.Windows.Forms.NumericUpDown nudUInventario;
-        private System.Windows.Forms.NumericUpDown nudCantidad;
-        private System.Windows.Forms.NumericUpDown nudDescuento;
-        private System.Windows.Forms.NumericUpDown nudTotal;
+        private Utilities.NudNoWheel nudFlete;
+        private Utilities.NudNoWheel nudPrecio;
+        private Utilities.NudNoWheel nudUInventario;
+        private Utilities.NudNoWheel nudCantidad;
+        private Utilities.NudNoWheel nudDescuento;
+        private Utilities.NudNoWheel nudTotal;
         private System.Windows.Forms.GroupBox GrbTotales;
         private System.Windows.Forms.GroupBox GrbOperaciones;
         private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.NumericUpDown nudTotalDeUnidades;
-        private System.Windows.Forms.NumericUpDown nudSubtotalDelImporte;
+        private Utilities.NudNoWheel nudTotalDeUnidades;
+        private Utilities.NudNoWheel nudSubtotalDelImporte;
         private System.Windows.Forms.Label LblSubtotalDelImporte;
         private System.Windows.Forms.Label LblSubtotalDelImporteDelDescuento;
-        private System.Windows.Forms.NumericUpDown nudSubtotalDelImporteDelDescuento;
+        private Utilities.NudNoWheel nudSubtotalDelImporteDelDescuento;
         private System.Windows.Forms.Label LblSubtotalDelImporteConDescuento;
         private System.Windows.Forms.Label LblSubtotalDelImporteDelIVA;
-        private System.Windows.Forms.NumericUpDown nudSubtotalDelImporteConDescuento;
-        private System.Windows.Forms.NumericUpDown nudSubtotalDelImporteDelIVA;
+        private Utilities.NudNoWheel nudSubtotalDelImporteConDescuento;
+        private Utilities.NudNoWheel nudSubtotalDelImporteDelIVA;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.NumericUpDown nudNumProd;
+        private Utilities.NudNoWheel nudNumProd;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn Producto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;

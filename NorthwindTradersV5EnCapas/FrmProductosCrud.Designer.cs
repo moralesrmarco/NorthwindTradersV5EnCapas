@@ -54,10 +54,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.grbProducto = new System.Windows.Forms.GroupBox();
-            this.nudPrecio = new System.Windows.Forms.NumericUpDown();
-            this.nudPPedido = new System.Windows.Forms.NumericUpDown();
-            this.nudUPedido = new System.Windows.Forms.NumericUpDown();
-            this.nudUInventario = new System.Windows.Forms.NumericUpDown();
+            this.nudPrecio = new Utilities.NudNoWheel();
+            this.nudPPedido = new Utilities.NudNoWheel();
+            this.nudUPedido = new Utilities.NudNoWheel();
+            this.nudUInventario = new Utilities.NudNoWheel();
             this.btnOperacion = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -271,7 +271,7 @@
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(140, 23);
             this.nudBIdFin.TabIndex = 1;
-            this.nudBIdFin.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudBIdFin.ValueChanged += new System.EventHandler(this.nudBIdFin_ValueChanged);
             this.nudBIdFin.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdFin.Leave += new System.EventHandler(this.nudBIdFin_Leave);
             // 
@@ -287,7 +287,7 @@
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(140, 23);
             this.nudBIdIni.TabIndex = 0;
-            this.nudBIdIni.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudBIdIni.ValueChanged += new System.EventHandler(this.nudBIdIni_ValueChanged);
             this.nudBIdIni.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdIni.Leave += new System.EventHandler(this.nudBIdIni_Leave);
             // 
@@ -449,7 +449,7 @@
             this.nudPrecio.Size = new System.Drawing.Size(150, 23);
             this.nudPrecio.TabIndex = 4;
             this.nudPrecio.ThousandsSeparator = true;
-            this.nudPrecio.ValueChanged += new System.EventHandler(this.nudPrecio_ValueChanged);
+            this.nudPrecio.WheelEnabled = true;
             this.nudPrecio.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // nudPPedido
@@ -465,7 +465,7 @@
             this.nudPPedido.Size = new System.Drawing.Size(82, 23);
             this.nudPPedido.TabIndex = 7;
             this.nudPPedido.ThousandsSeparator = true;
-            this.nudPPedido.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudPPedido.WheelEnabled = true;
             this.nudPPedido.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudPPedido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Nud_KeyPress);
             // 
@@ -482,7 +482,7 @@
             this.nudUPedido.Size = new System.Drawing.Size(82, 23);
             this.nudUPedido.TabIndex = 6;
             this.nudUPedido.ThousandsSeparator = true;
-            this.nudUPedido.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudUPedido.WheelEnabled = true;
             this.nudUPedido.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudUPedido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Nud_KeyPress);
             // 
@@ -499,7 +499,7 @@
             this.nudUInventario.Size = new System.Drawing.Size(82, 23);
             this.nudUInventario.TabIndex = 5;
             this.nudUInventario.ThousandsSeparator = true;
-            this.nudUInventario.ValueChanged += new System.EventHandler(this.Nud_ValueChanged);
+            this.nudUInventario.WheelEnabled = true;
             this.nudUInventario.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudUInventario.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Nud_KeyPress);
             // 
@@ -795,10 +795,10 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button btnOperacion;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.NumericUpDown nudUInventario;
-        private System.Windows.Forms.NumericUpDown nudPPedido;
-        private System.Windows.Forms.NumericUpDown nudUPedido;
-        private System.Windows.Forms.NumericUpDown nudPrecio;
+        private Utilities.NudNoWheel nudUInventario;
+        private Utilities.NudNoWheel nudPPedido;
+        private Utilities.NudNoWheel nudUPedido;
+        private Utilities.NudNoWheel nudPrecio;
         private System.Windows.Forms.NumericUpDown nudBIdFin;
         private System.Windows.Forms.NumericUpDown nudBIdIni;
     }

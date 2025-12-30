@@ -98,97 +98,37 @@ namespace NorthwindTradersV5EnCapas
 
         private void DeshabilitarNudsNoSeleccionables()
         {
-            nudNumProd.MouseWheel += Nud_MouseWheel;
-            nudPrecio.MouseWheel += Nud_MouseWheel;
-            nudUInventario.MouseWheel += Nud_MouseWheel;
-            nudTotal.MouseWheel += Nud_MouseWheel;
-            nudTotalDeUnidades.MouseWheel += Nud_MouseWheel;
-            nudSubtotalDelImporte.MouseWheel += Nud_MouseWheel;
-            nudSubtotalDelImporteDelDescuento.MouseWheel += Nud_MouseWheel;
-            nudSubtotalDelImporteConDescuento.MouseWheel += Nud_MouseWheel;
-            nudSubtotalDelImporteDelIVA.MouseWheel += Nud_MouseWheel;
-
-            nudNumProd.ReadOnly = true;
-            nudNumProd.InterceptArrowKeys = false;
-            nudNumProd.Controls[0].Enabled = false;
-
-            nudPrecio.ReadOnly = true;
-            nudPrecio.InterceptArrowKeys = false;
-            nudPrecio.Controls[0].Enabled = false;
-
-            nudUInventario.ReadOnly = true;
-            nudUInventario.InterceptArrowKeys = false;
-            nudUInventario.Controls[0].Enabled = false;
-
-            nudTotal.ReadOnly = true;
-            nudTotal.InterceptArrowKeys = false;
-            nudTotal.Controls[0].Enabled = false;
-
-            nudTotalDeUnidades.ReadOnly = true;
-            nudTotalDeUnidades.InterceptArrowKeys = false;
-            nudTotalDeUnidades.Controls[0].Enabled = false;
-
-            nudSubtotalDelImporte.ReadOnly = true;
-            nudSubtotalDelImporte.InterceptArrowKeys = false;
-            nudSubtotalDelImporte.Controls[0].Enabled = false;
-
-            nudSubtotalDelImporteDelDescuento.ReadOnly = true;
-            nudSubtotalDelImporteDelDescuento.InterceptArrowKeys = false;
-            nudSubtotalDelImporteDelDescuento.Controls[0].Enabled = false;
-
-            nudSubtotalDelImporteConDescuento.ReadOnly = true;
-            nudSubtotalDelImporteConDescuento.InterceptArrowKeys = false;
-            nudSubtotalDelImporteConDescuento.Controls[0].Enabled = false;
-
-            nudSubtotalDelImporteDelIVA.ReadOnly = true;
-            nudSubtotalDelImporteDelIVA.InterceptArrowKeys = false;
-            nudSubtotalDelImporteDelIVA.Controls[0].Enabled = false;
+            Utilities.NudHelper.SetEnabled(nudPrecio, false);
+            Utilities.NudHelper.SetEnabled(nudUInventario, false);
+            Utilities.NudHelper.SetEnabled(nudNumProd, false);
+            Utilities.NudHelper.SetEnabled(nudTotalDeUnidades, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporte, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVA, false);
+            Utilities.NudHelper.SetEnabled(nudTotal, false);
         }
 
         private void DeshabilitarCantidadDescuento()
         {
-            nudCantidad.MouseWheel += Nud_MouseWheel;
-            nudDescuento.MouseWheel += Nud_MouseWheel;
-
-            nudCantidad.ReadOnly = true;
-            nudCantidad.InterceptArrowKeys = false;
-            nudCantidad.Controls[0].Enabled = false;
-
-            nudDescuento.ReadOnly = true;
-            nudDescuento.InterceptArrowKeys = false;
-            nudDescuento.Controls[0].Enabled = false;
+            Utilities.NudHelper.SetEnabled(nudCantidad, false);
+            Utilities.NudHelper.SetEnabled(nudDescuento, false);
         }
 
         private void DeshabilitarFlete()
         {
-            nudFlete.MouseWheel += Nud_MouseWheel;
-
-            nudFlete.ReadOnly = true;
-            nudFlete.InterceptArrowKeys = false;
-            nudFlete.Controls[0].Enabled = false;
+            Utilities.NudHelper.SetEnabled(nudFlete, false);
         }
 
         private void HabilitarFlete()
         {
-            nudFlete.MouseWheel -= Nud_MouseWheel;
-
-            nudFlete.ReadOnly = false;
-            nudFlete.InterceptArrowKeys = true;
-            nudFlete.Controls[0].Enabled = true;
+            Utilities.NudHelper.SetEnabled(nudFlete, true);
         }
 
         private void HabilitarCantidadDescuento()
         {
-            nudCantidad.MouseWheel -= Nud_MouseWheel;
-            nudDescuento.MouseWheel -= Nud_MouseWheel;
-
-            nudCantidad.ReadOnly = false;
-            nudCantidad.InterceptArrowKeys = true;
-            nudCantidad.Controls[0].Enabled = true;
-
-            nudDescuento.ReadOnly = false;
-            nudDescuento.InterceptArrowKeys = true;
-            nudDescuento.Controls[0].Enabled = true;
+            Utilities.NudHelper.SetEnabled(nudCantidad, true);
+            Utilities.NudHelper.SetEnabled(nudDescuento, true);
         }
 
         private void InicializarCboProducto()
@@ -488,15 +428,6 @@ namespace NorthwindTradersV5EnCapas
             chkbBFVentaNull.Checked = chkbBFRequeridoNull.Checked = chkbBFEnvioNull.Checked = false;
         }
 
-        private void Nud_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Bloquear punto y coma
-            if (e.KeyChar == '.' || e.KeyChar == ',')
-            {
-                e.Handled = true; // Ignora la tecla
-            }
-        }
-
         private void Nud_Enter(object sender, EventArgs e)
         {
             if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
@@ -506,15 +437,13 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        private void Nud_MouseWheel(object sender, MouseEventArgs e)
-        {
-            // Evita que el control procese el scroll
-            ((HandledMouseEventArgs)e).Handled = true;
-        }
-
         private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdIni_ValueChanged(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdFin_ValueChanged(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void nudCantidad_ValueChanged(object sender, EventArgs e)
         {

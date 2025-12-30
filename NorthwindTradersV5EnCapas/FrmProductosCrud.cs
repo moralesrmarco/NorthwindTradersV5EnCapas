@@ -62,20 +62,36 @@ namespace NorthwindTradersV5EnCapas
             CargarValoresOriginales();
         }
 
+        private void DeshabilitarNuds()
+        {
+            Utilities.NudHelper.SetEnabled(nudPrecio, false);
+            Utilities.NudHelper.SetEnabled(nudUInventario, false);
+            Utilities.NudHelper.SetEnabled(nudUPedido, false);
+            Utilities.NudHelper.SetEnabled(nudPPedido, false);
+        }
+
+        private void HabilitarNuds()
+        {
+            Utilities.NudHelper.SetEnabled(nudPrecio, true);
+            Utilities.NudHelper.SetEnabled(nudUInventario, true);
+            Utilities.NudHelper.SetEnabled(nudUPedido, true);
+            Utilities.NudHelper.SetEnabled(nudPPedido, true);
+        }
+
         private void DeshabilitarControles()
         {
             txtProducto.ReadOnly = txtCantidadxU.ReadOnly = true;
-            nudPPedido.ReadOnly = nudUPedido.ReadOnly = nudUInventario.ReadOnly = nudPrecio.ReadOnly = true;
             chkbDescontinuado.Enabled = false;
             cboCategoria.Enabled = cboProveedor.Enabled = false;
+            DeshabilitarNuds();
         }
 
         private void HabilitarControles()
         {
             txtProducto.ReadOnly = txtCantidadxU.ReadOnly = false;
-            nudPPedido.ReadOnly = nudUPedido.ReadOnly = nudUInventario.ReadOnly = nudPrecio.ReadOnly = false;
             chkbDescontinuado.Enabled = true;
             cboCategoria.Enabled = cboProveedor.Enabled = true;
+            HabilitarNuds();
         }
 
         private void LlenarCboCategoria()
@@ -366,15 +382,6 @@ namespace NorthwindTradersV5EnCapas
             CargarValoresOriginales();
         }
 
-        private void Nud_ValueChanged(object sender, EventArgs e)
-        {
-            // El sender es el control que disparó el evento
-            var nud = sender as NumericUpDown;
-            if (nud == null) return;
-            // Formatear con separador de miles y 2 decimales
-            nud.Text = nud.Value.ToString("N0");
-        }
-
         private void Nud_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Bloquear punto y coma
@@ -393,14 +400,13 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        private void nudPrecio_ValueChanged(object sender, EventArgs e)
-        {
-            nudPrecio.Text = nudPrecio.Value.ToString("C2", CultureInfo.CurrentCulture);
-        }
-
         private void nudBIdIni_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void nudBIdFin_Leave(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdIni_ValueChanged(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
+
+        private void nudBIdFin_ValueChanged(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
         private void btnOperacion_Click(object sender, EventArgs e)
         {
