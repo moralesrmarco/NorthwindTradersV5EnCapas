@@ -2161,7 +2161,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!Importe.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!Importe.Value,2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2234,7 +2234,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!ImporteDelDescuento.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!ImporteDelDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2272,7 +2272,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!ImporteConDescuento.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!ImporteConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2345,7 +2345,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!ImporteDelIVA.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!ImporteDelIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2383,7 +2383,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!Subtotal.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!Subtotal.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -4916,7 +4916,6 @@ Format(Fields!FechaDeEnvio.Value,
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
-                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -5001,7 +5000,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!Importe.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!Importe.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -5074,7 +5073,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!ImporteDelDescuento.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!ImporteDelDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -5112,7 +5111,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!ImporteConDescuento.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!ImporteConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -5185,7 +5184,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!ImporteDelIVA.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!ImporteDelIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -5223,7 +5222,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Fields!Subtotal.Value)</Value>
+                                      <Value>=Sum(Math.Round(Fields!Subtotal.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>7pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -5310,7 +5309,7 @@ Format(Fields!FechaDeEnvio.Value,
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>=ReportItems!Textbox39.Value</Value>
+                            <Value>=ReportItems("Textbox64").Value</Value>
                             <Style>
                               <FontWeight>Bold</FontWeight>
                               <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -5377,7 +5376,7 @@ Format(Fields!FechaDeEnvio.Value,
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>=ReportItems!Textbox48.Value</Value>
+                            <Value>=ReportItems("Textbox66").Value</Value>
                             <Style>
                               <FontWeight>Bold</FontWeight>
                               <Format>'$'#,0.00;('$'#,0.00)</Format>

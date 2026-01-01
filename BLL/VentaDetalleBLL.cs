@@ -1,9 +1,7 @@
 ﻿using DAL;
 using Entities;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Runtime.InteropServices;
 
 namespace BLL
 {
@@ -14,6 +12,11 @@ namespace BLL
         public VentaDetalleBLL(string _connectionString) 
         { 
             _ventaDetalleDAL = new VentaDetalleDAL(_connectionString);
+        }
+
+        public int Insertar(VentaDetalle ventaDetalle)
+        {
+            return _ventaDetalleDAL.Insertar(ventaDetalle);
         }
 
         public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)

@@ -91,12 +91,5 @@ namespace BLL
             dt.Rows.Add(dr);
             return dt;
         }
-
-        public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
-        {
-            return _ventaDAL.ObtenerVentaDetallePorVentaId(orderId);
-        }
-
-
     }
 }

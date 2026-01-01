@@ -308,7 +308,7 @@ namespace NorthwindTradersV5EnCapas
                 if (!selectorRealizaBusqueda)
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran las últimas {dgvVentas.RowCount} venta(s) registrada(s)");
                 else
-                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgvVentas.RowCount} registros");
+                    MDIPrincipal.ActualizarBarraDeEstado($"Se encontraron {dgvVentas.RowCount} registro(s)");
             }
             catch (Exception ex)
             {
@@ -336,7 +336,7 @@ namespace NorthwindTradersV5EnCapas
             dgvVentas.Columns["RequiredDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
             dgvVentas.Columns["ShippedDate"].DefaultCellStyle.Format = "ddd dd\" de \"MMM\" de \"yyyy\n hh:mm:ss tt";
 
-            dgvVentas.Columns["OrderId"].HeaderText = "Id";
+            dgvVentas.Columns["OrderID"].HeaderText = "Id";
             dgvVentas.Columns["CustomerCompanyName"].HeaderText = "Cliente";
             dgvVentas.Columns["CustomerContactName"].HeaderText = "Nombre de contacto";
             dgvVentas.Columns["OrderDate"].HeaderText = "Fecha de venta";
@@ -371,6 +371,9 @@ namespace NorthwindTradersV5EnCapas
             dgvDetalle.Columns["ImporteDelIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvDetalle.Columns["Subtotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            dgvDetalle.Columns["ImporteDelDescuento"].HeaderText = "Importe\ndel\ndescuento";
+            dgvDetalle.Columns["ImporteConDescuento"].HeaderText = "Importe\ncon\ndescuento";
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -697,11 +700,11 @@ namespace NorthwindTradersV5EnCapas
             foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
             {
                 totalDeUnidades += decimal.Parse(dgvr.Cells["Cantidad"].Value.ToString());
-                subtotalDelImporte += decimal.Parse(dgvr.Cells["Importe"].Value.ToString());
-                subtotalDelImporteDelDescuento += decimal.Parse(dgvr.Cells["ImporteDelDescuento"].Value.ToString());
-                subtotalDelImporteConDescuento += decimal.Parse(dgvr.Cells["ImporteConDescuento"].Value.ToString());
-                subtotalDelImporteDelIVA += decimal.Parse(dgvr.Cells["ImporteDelIVA"].Value.ToString());
-                total += decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString());
+                subtotalDelImporte += Math.Round(decimal.Parse(dgvr.Cells["Importe"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
+                subtotalDelImporteDelDescuento += Math.Round(decimal.Parse(dgvr.Cells["ImporteDelDescuento"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
+                subtotalDelImporteConDescuento += Math.Round(decimal.Parse(dgvr.Cells["ImporteConDescuento"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
+                subtotalDelImporteDelIVA += Math.Round(decimal.Parse(dgvr.Cells["ImporteDelIVA"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
+                total += Math.Round(decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
                 dgvr.Cells["Id"].Value = ++numDetalle;
             }
             nudNumProd.Value = numDetalle;
@@ -1036,7 +1039,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 numDetalle = 1;
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var ventaDetalles = _ventaBLL.ObtenerVentaDetallePorVentaId(orderId);
+                var ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(orderId);
                 if (ventaDetalles.Count == 0)
                     U.NotificacionWarning("No se encontraron detalles para la venta especificada");
                 else

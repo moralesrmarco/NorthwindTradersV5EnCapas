@@ -15,6 +15,30 @@ namespace DAL
         {
             _connectionString = connectionString;
         }
+        
+        public int Insertar(VentaDetalle ventaDetalle)
+        {
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaDetalleInsertar", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", ventaDetalle.Venta.OrderID);
+                    cmd.Parameters.AddWithValue("@ProductID", ventaDetalle.Producto.ProductID);
+                    cmd.Parameters.AddWithValue("@UnitPrice", ventaDetalle.UnitPrice);
+                    cmd.Parameters.AddWithValue("@Quantity", ventaDetalle.Quantity);
+                    cmd.Parameters.AddWithValue("@Discount", ventaDetalle.Discount);
+                    cmd.Parameters.AddWithValue("@TasaIVA", ventaDetalle.TasaIVA);
+                    con.Open();
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al insertar el detalle de la venta: " + ex.Message, ex);
+            }
+        }
 
         public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
         {

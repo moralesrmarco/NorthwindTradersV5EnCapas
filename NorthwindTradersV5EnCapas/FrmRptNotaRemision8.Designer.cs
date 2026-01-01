@@ -42,7 +42,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(30);
-            this.groupBox1.Size = new System.Drawing.Size(1007, 494);
+            this.groupBox1.Size = new System.Drawing.Size(1122, 693);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "» Nota de remisión en dos tantos «";
@@ -56,14 +56,14 @@
             this.reportViewer1.Margin = new System.Windows.Forms.Padding(4);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ServerReport.BearerToken = null;
-            this.reportViewer1.Size = new System.Drawing.Size(947, 415);
+            this.reportViewer1.Size = new System.Drawing.Size(1062, 614);
             this.reportViewer1.TabIndex = 0;
             // 
             // FrmRptNotaRemision8
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(1182, 753);
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
