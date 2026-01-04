@@ -13,5 +13,6 @@ namespace Entities.DTOs
         public string EmployeeName { get; set; }
         public string ShipperCompanyName { get; set; }
         public string ShipName { get; set; }
+        public string RowVersionStr { get; set; }
     }
 }

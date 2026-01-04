@@ -34,7 +34,7 @@ namespace Entities
         {
             get
             {
-                return UnitPrice * Quantity * Discount;
+                return Importe * Discount;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Entities
         {
             get
             {
-                return UnitPrice * Quantity * (1 - Discount);
+                return Importe * (1 - Discount);
             }
         }
 

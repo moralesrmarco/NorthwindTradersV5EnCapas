@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtUInventario = new System.Windows.Forms.TextBox();
             this.GrbTotales = new System.Windows.Forms.GroupBox();
             this.label21 = new System.Windows.Forms.Label();
             this.LblSubtotalDelImporteDelIVA = new System.Windows.Forms.Label();
@@ -77,14 +76,12 @@
             this.cboCategoria = new System.Windows.Forms.ComboBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
-            this.txtDescuento = new System.Windows.Forms.TextBox();
             this.GrbPedido = new System.Windows.Forms.GroupBox();
             this.BtnNota = new System.Windows.Forms.Button();
             this.txtCliente = new System.Windows.Forms.TextBox();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCantidad = new System.Windows.Forms.TextBox();
             this.GrbBuscar = new System.Windows.Forms.GroupBox();
             this.nudBIdFin = new System.Windows.Forms.NumericUpDown();
             this.nudBIdIni = new System.Windows.Forms.NumericUpDown();
@@ -118,7 +115,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtPrecio = new System.Windows.Forms.TextBox();
             this.GrbPedidos = new System.Windows.Forms.GroupBox();
             this.DgvVentas = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -152,15 +148,11 @@
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.txtUInventario);
             this.panel1.Controls.Add(this.GrbTotales);
             this.panel1.Controls.Add(this.GrbDetalle);
             this.panel1.Controls.Add(this.GrbAgregarProducto);
-            this.panel1.Controls.Add(this.txtDescuento);
             this.panel1.Controls.Add(this.GrbPedido);
-            this.panel1.Controls.Add(this.txtCantidad);
             this.panel1.Controls.Add(this.GrbBuscar);
-            this.panel1.Controls.Add(this.txtPrecio);
             this.panel1.Controls.Add(this.GrbPedidos);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -169,17 +161,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1579, 1055);
             this.panel1.TabIndex = 0;
-            // 
-            // txtUInventario
-            // 
-            this.txtUInventario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUInventario.Location = new System.Drawing.Point(900, 362);
-            this.txtUInventario.Margin = new System.Windows.Forms.Padding(4);
-            this.txtUInventario.Name = "txtUInventario";
-            this.txtUInventario.ReadOnly = true;
-            this.txtUInventario.Size = new System.Drawing.Size(65, 23);
-            this.txtUInventario.TabIndex = 6;
-            this.txtUInventario.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GrbTotales
             // 
@@ -202,7 +183,7 @@
             this.GrbTotales.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GrbTotales.Location = new System.Drawing.Point(459, 624);
             this.GrbTotales.Name = "GrbTotales";
-            this.GrbTotales.Size = new System.Drawing.Size(1062, 132);
+            this.GrbTotales.Size = new System.Drawing.Size(1041, 132);
             this.GrbTotales.TabIndex = 7;
             this.GrbTotales.TabStop = false;
             this.GrbTotales.Text = "»   Totales de la venta:   «";
@@ -400,7 +381,7 @@
             this.GrbDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.GrbDetalle.Name = "GrbDetalle";
             this.GrbDetalle.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbDetalle.Size = new System.Drawing.Size(1062, 305);
+            this.GrbDetalle.Size = new System.Drawing.Size(1041, 305);
             this.GrbDetalle.TabIndex = 6;
             this.GrbDetalle.TabStop = false;
             this.GrbDetalle.Text = "»   Detalle de la venta:   «";
@@ -430,7 +411,7 @@
             this.DgvDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.DgvDetalle.Name = "DgvDetalle";
             this.DgvDetalle.RowHeadersWidth = 51;
-            this.DgvDetalle.Size = new System.Drawing.Size(1054, 281);
+            this.DgvDetalle.Size = new System.Drawing.Size(1033, 281);
             this.DgvDetalle.TabIndex = 0;
             this.DgvDetalle.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDetalle_CellClick);
             // 
@@ -574,7 +555,7 @@
             this.GrbAgregarProducto.Margin = new System.Windows.Forms.Padding(4);
             this.GrbAgregarProducto.Name = "GrbAgregarProducto";
             this.GrbAgregarProducto.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbAgregarProducto.Size = new System.Drawing.Size(1062, 98);
+            this.GrbAgregarProducto.Size = new System.Drawing.Size(1041, 98);
             this.GrbAgregarProducto.TabIndex = 5;
             this.GrbAgregarProducto.TabStop = false;
             this.GrbAgregarProducto.Text = "»   Agregar producto:   «";
@@ -592,8 +573,9 @@
             this.nudDescuento.Location = new System.Drawing.Point(891, 62);
             this.nudDescuento.Name = "nudDescuento";
             this.nudDescuento.Size = new System.Drawing.Size(85, 23);
-            this.nudDescuento.TabIndex = 12;
+            this.nudDescuento.TabIndex = 3;
             this.nudDescuento.WheelEnabled = true;
+            this.nudDescuento.Enter += new System.EventHandler(this.Nud_Enter);
             // 
             // nudCantidad
             // 
@@ -606,7 +588,7 @@
             0});
             this.nudCantidad.Name = "nudCantidad";
             this.nudCantidad.Size = new System.Drawing.Size(90, 23);
-            this.nudCantidad.TabIndex = 11;
+            this.nudCantidad.TabIndex = 2;
             this.nudCantidad.ThousandsSeparator = true;
             this.nudCantidad.WheelEnabled = true;
             this.nudCantidad.ValueChanged += new System.EventHandler(this.nudCantidad_ValueChanged);
@@ -742,17 +724,6 @@
             this.label36.TabIndex = 0;
             this.label36.Text = "Categoría:";
             // 
-            // txtDescuento
-            // 
-            this.txtDescuento.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDescuento.Location = new System.Drawing.Point(1316, 362);
-            this.txtDescuento.Margin = new System.Windows.Forms.Padding(4);
-            this.txtDescuento.MaxLength = 4;
-            this.txtDescuento.Name = "txtDescuento";
-            this.txtDescuento.Size = new System.Drawing.Size(65, 23);
-            this.txtDescuento.TabIndex = 3;
-            this.txtDescuento.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // GrbPedido
             // 
             this.GrbPedido.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -767,7 +738,7 @@
             this.GrbPedido.Margin = new System.Windows.Forms.Padding(4);
             this.GrbPedido.Name = "GrbPedido";
             this.GrbPedido.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbPedido.Size = new System.Drawing.Size(1062, 118);
+            this.GrbPedido.Size = new System.Drawing.Size(1041, 118);
             this.GrbPedido.TabIndex = 4;
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
@@ -789,6 +760,7 @@
             // txtCliente
             // 
             this.txtCliente.BackColor = System.Drawing.Color.White;
+            this.txtCliente.Enabled = false;
             this.txtCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCliente.Location = new System.Drawing.Point(120, 52);
             this.txtCliente.Margin = new System.Windows.Forms.Padding(4);
@@ -829,17 +801,6 @@
             this.label2.Size = new System.Drawing.Size(26, 17);
             this.label2.TabIndex = 19;
             this.label2.Text = "Id:";
-            // 
-            // txtCantidad
-            // 
-            this.txtCantidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCantidad.Location = new System.Drawing.Point(1092, 362);
-            this.txtCantidad.Margin = new System.Windows.Forms.Padding(4);
-            this.txtCantidad.MaxLength = 15;
-            this.txtCantidad.Name = "txtCantidad";
-            this.txtCantidad.Size = new System.Drawing.Size(105, 23);
-            this.txtCantidad.TabIndex = 2;
-            this.txtCantidad.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GrbBuscar
             // 
@@ -897,7 +858,7 @@
             0});
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(140, 23);
-            this.nudBIdFin.TabIndex = 64;
+            this.nudBIdFin.TabIndex = 1;
             this.nudBIdFin.ValueChanged += new System.EventHandler(this.nudBIdFin_ValueChanged);
             this.nudBIdFin.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdFin.Leave += new System.EventHandler(this.nudBIdFin_Leave);
@@ -913,7 +874,7 @@
             0});
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(140, 23);
-            this.nudBIdIni.TabIndex = 63;
+            this.nudBIdIni.TabIndex = 0;
             this.nudBIdIni.ValueChanged += new System.EventHandler(this.nudBIdIni_ValueChanged);
             this.nudBIdIni.Enter += new System.EventHandler(this.Nud_Enter);
             this.nudBIdIni.Leave += new System.EventHandler(this.nudBIdIni_Leave);
@@ -1264,18 +1225,6 @@
             this.label5.TabIndex = 31;
             this.label5.Text = "Id inicial:";
             // 
-            // txtPrecio
-            // 
-            this.txtPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPrecio.Location = new System.Drawing.Point(569, 362);
-            this.txtPrecio.Margin = new System.Windows.Forms.Padding(4);
-            this.txtPrecio.MaxLength = 15;
-            this.txtPrecio.Name = "txtPrecio";
-            this.txtPrecio.ReadOnly = true;
-            this.txtPrecio.Size = new System.Drawing.Size(105, 23);
-            this.txtPrecio.TabIndex = 5;
-            this.txtPrecio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // GrbPedidos
             // 
             this.GrbPedidos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1286,7 +1235,7 @@
             this.GrbPedidos.Margin = new System.Windows.Forms.Padding(4);
             this.GrbPedidos.Name = "GrbPedidos";
             this.GrbPedidos.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbPedidos.Size = new System.Drawing.Size(1504, 295);
+            this.GrbPedidos.Size = new System.Drawing.Size(1483, 295);
             this.GrbPedidos.TabIndex = 2;
             this.GrbPedidos.TabStop = false;
             this.GrbPedidos.Text = "»   Ventas:   «";
@@ -1300,7 +1249,7 @@
             this.DgvVentas.Margin = new System.Windows.Forms.Padding(4);
             this.DgvVentas.Name = "DgvVentas";
             this.DgvVentas.RowHeadersWidth = 51;
-            this.DgvVentas.Size = new System.Drawing.Size(1496, 271);
+            this.DgvVentas.Size = new System.Drawing.Size(1475, 271);
             this.DgvVentas.TabIndex = 0;
             this.DgvVentas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVentas_CellClick);
             // 
@@ -1313,7 +1262,7 @@
             this.label1.Location = new System.Drawing.Point(21, 10);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1500, 39);
+            this.label1.Size = new System.Drawing.Size(1479, 39);
             this.label1.TabIndex = 1;
             this.label1.Text = "     Busque la venta y seleccionela en la lista que se muestra";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1337,7 +1286,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmVentasDetalleCrud_FormClosed);
             this.Load += new System.EventHandler(this.FrmVentasDetalleCrud_Load);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.GrbTotales.ResumeLayout(false);
             this.GrbTotales.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelIVA)).EndInit();
@@ -1412,9 +1360,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox GrbAgregarProducto;
         private System.Windows.Forms.Button btnAgregar;
-        private System.Windows.Forms.TextBox txtDescuento;
-        private System.Windows.Forms.TextBox txtCantidad;
-        private System.Windows.Forms.TextBox txtPrecio;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label LblPrecio;
@@ -1423,7 +1368,6 @@
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtUInventario;
         private System.Windows.Forms.GroupBox GrbDetalle;
         private System.Windows.Forms.DataGridView DgvDetalle;
         private System.Windows.Forms.ErrorProvider errorProvider1;

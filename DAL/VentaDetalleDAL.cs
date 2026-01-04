@@ -40,6 +40,32 @@ namespace DAL
             }
         }
 
+        public int Eliminar(VentaDetalle ventaDetalle)
+        {
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentaDetalleEliminar", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderID", ventaDetalle.Venta.OrderID);
+                    cmd.Parameters.AddWithValue("@ProductID", ventaDetalle.Producto.ProductID);
+                    cmd.Parameters.AddWithValue("@VentaDetalleRowVersion", ventaDetalle.RowVersion);
+                    cmd.Parameters.AddWithValue("@VentaRowVersion", ventaDetalle.Venta.RowVersion);
+                    // Parámetro de retorno
+                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    return (int)returnParameter.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar el detalle de la venta: " + ex.Message, ex);
+            }
+        }
+
         public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
         {
             List<VentaDetalle> ventaDetalles = new List<VentaDetalle>();

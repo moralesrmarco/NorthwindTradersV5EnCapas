@@ -35,6 +35,7 @@ namespace BLL
         public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)
         {
             var ventasTemp = _ventaDAL.ObtenerVentas(selectorRealizaBusqueda, criterios, top100);
+            // RowVersion convertido a string es para evitar problemas en el DataGridView
             var ventas = ventasTemp.Select(v => new DtoVentaDgv
             {
                 OrderID = v.OrderID,
@@ -45,7 +46,8 @@ namespace BLL
                 ShippedDate = v.ShippedDate,
                 EmployeeName = v.Empleado.NameByLastName,
                 ShipperCompanyName = v.Transportista.CompanyName,
-                ShipName = v.ShipName
+                ShipName = v.ShipName,
+                RowVersionStr = v.RowVersionString
             }).ToList();
             return ventas;
         }

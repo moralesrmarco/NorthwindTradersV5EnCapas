@@ -66,7 +66,7 @@ namespace DAL
                                     cmdUpdateStock.Parameters.Add(new SqlParameter("@ProductID", SqlDbType.Int));
 
                                     // 2.3) Preparar inserción de detalle (SP)
-                                    using (var cmdInsertDetail = new SqlCommand("spVentaDetalleInsertar", cn, tx))
+                                    using (var cmdInsertDetail = new SqlCommand("SpVentaDetalleInsertarSinActualizarInventario", cn, tx))
                                     {
                                         cmdInsertDetail.CommandType = CommandType.StoredProcedure;
                                         cmdInsertDetail.Parameters.Add(new SqlParameter("@OrderID", SqlDbType.Int));
@@ -293,6 +293,7 @@ namespace DAL
                                 ShipRegion = rdr["ShipRegion"] as string ?? string.Empty,
                                 ShipPostalCode = rdr["ShipPostalCode"] as string ?? string.Empty,
                                 ShipCountry = rdr["ShipCountry"] as string ?? String.Empty,
+                                RowVersion = rdr["RowVersion"] as byte[]
                             };
                             ventas.Add(venta);
                         }

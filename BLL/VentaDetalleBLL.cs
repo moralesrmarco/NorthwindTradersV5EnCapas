@@ -19,6 +19,11 @@ namespace BLL
             return _ventaDetalleDAL.Insertar(ventaDetalle);
         }
 
+        public int Eliminar(VentaDetalle ventaDetalle)
+        {
+            return _ventaDetalleDAL.Eliminar(ventaDetalle);
+        }
+
         public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
         {
             return _ventaDetalleDAL.ObtenerVentaDetallePorVentaId(orderId);

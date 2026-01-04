@@ -40,6 +40,8 @@ namespace Utilities
             public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue actualizado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
             public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
+            public const string fepou = "\n[red]Fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
+            public const string fmpou = "\n[red]Fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
         #endregion
 
         public static DateTime? ObtenerFechaHora(DateTimePicker dtpFecha, DateTimePicker dtpHora)
