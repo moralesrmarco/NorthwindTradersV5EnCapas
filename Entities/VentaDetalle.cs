@@ -78,6 +78,22 @@ namespace Entities
             }
         }
 
+        public decimal TasaDescuentoPorcentaje
+        {
+            get
+            {
+                return Discount * 100;
+            }
+        }
+
+        public decimal TasaIVAPorcentaje
+        {
+            get
+            {
+                return TasaIVA * 100;
+            }
+        }
+
         public VentaDetalle()
         {
             Venta = new Venta();

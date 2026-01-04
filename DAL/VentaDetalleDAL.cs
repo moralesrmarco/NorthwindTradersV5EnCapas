@@ -129,5 +129,29 @@ namespace DAL
                 throw new Exception("Error al obtener el RowVersion del detalle de la venta: " + ex.Message, ex);
             }
         }
+
+        public short ObtenerUInventario(int productId)
+        {
+            if (productId <= 0) return 0;
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpProductoObtenerUInventario", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ProductID", productId);
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result == null || result == DBNull.Value)
+                        return 0;
+                    else
+                        return Convert.ToInt16(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las unidades en inventario del producto: " + ex.Message, ex);
+            }
+        }
     }
 }

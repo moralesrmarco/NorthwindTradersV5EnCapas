@@ -65,5 +65,10 @@ namespace BLL
         {
             return _ventaDetalleDAL.ObtenerVentaDetalleRowVersion(orderId, productId);
         }
+
+        public short ObtenerUInventario(int productId)
+        {
+            return _ventaDetalleDAL.ObtenerUInventario(productId);
+        }
     }
 }

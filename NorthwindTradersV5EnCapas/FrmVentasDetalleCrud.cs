@@ -715,7 +715,7 @@ namespace NorthwindTradersV5EnCapas
         {
             if (!chkRowVersion())
             {
-                U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
+                U.NotificacionWarning("La venta ha sido modificada por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
                 return;
             }
             int numRegs = 0;
@@ -778,7 +778,7 @@ namespace NorthwindTradersV5EnCapas
             if (e.RowIndex < 0) return;
             if (!chkRowVersion())
             {
-                U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
+                U.NotificacionInformation("La venta ha sido modificada por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
                 return;
             }
             if (e.ColumnIndex == DgvDetalle.Columns["Eliminar"].Index)
@@ -794,29 +794,39 @@ namespace NorthwindTradersV5EnCapas
                 EliminarProducto(ventaDetalle);
                 BtnNota.Enabled = true;
             }
-            //if (e.ColumnIndex == DgvDetalle.Columns["Modificar"].Index)
-            //{
-            //    DataGridViewRow dgvr = DgvDetalle.CurrentRow;
-            //    using (FrmPedidosDetalleModificar frmPedidosDetalleModificar = new FrmPedidosDetalleModificar())
-            //    {
-            //        frmPedidosDetalleModificar.Owner = this;
-            //        frmPedidosDetalleModificar.PedidoId = int.Parse(txtId.Text);
-            //        frmPedidosDetalleModificar.ProductoId = int.Parse(dgvr.Cells["ProductoId"].Value.ToString());
-            //        frmPedidosDetalleModificar.Producto = dgvr.Cells["Producto"].Value.ToString();
-            //        frmPedidosDetalleModificar.Precio = decimal.Parse(dgvr.Cells["Precio"].Value.ToString());
-            //        frmPedidosDetalleModificar.Cantidad = short.Parse(dgvr.Cells["Cantidad"].Value.ToString());
-            //        frmPedidosDetalleModificar.Descuento = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString());
-            //        frmPedidosDetalleModificar.Importe = decimal.Parse(dgvr.Cells["Importe"].Value.ToString());
-            //        frmPedidosDetalleModificar.RowVersion = int.Parse(dgvr.Cells["RowVersion"].Value.ToString());
-            //        DialogResult dialogResult = frmPedidosDetalleModificar.ShowDialog();
-            //        if (dialogResult == DialogResult.OK)
-            //        {
-            //            BtnNota.Enabled = true;
-            //            BorrarDatosDetallePedido();
-            //            LlenarDatosDetallePedido();
-            //        }
-            //    }
-            //}
+            if (e.ColumnIndex == DgvDetalle.Columns["Modificar"].Index)
+            {
+                DataGridViewRow dgvr = DgvDetalle.CurrentRow;
+                using (FrmVentasDetalleModificar frmVentasDetalleModificar = new FrmVentasDetalleModificar())
+                {
+                    VentaDetalle ventaDetalle = new VentaDetalle()
+                    {
+                        Venta = new Venta()
+                        {
+                            OrderID = int.Parse(txtId.Text),
+                            RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()))
+                        },
+                        Producto = new Producto()
+                        {
+                            ProductID = (int)dgvr.Cells["ProductoId"].Value,
+                            ProductName = dgvr.Cells["Producto"].Value.ToString()
+                        },
+                        UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
+                        Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
+                        Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString()),
+                        RowVersion = (byte[])dgvr.Cells["RowVersion"].Value
+                    };
+                    frmVentasDetalleModificar.ventaDetalle = ventaDetalle;
+                    DialogResult dialogResult = frmVentasDetalleModificar.ShowDialog();
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        BtnNota.Enabled = true;
+                        BorrarDatosDetalleVenta();
+                        LlenarDatosVenta(int.Parse(txtId.Text)); // necesario para actualizar el RowVersion de la venta
+                        LlenarDatosDetalleVenta(int.Parse(txtId.Text));
+                    }
+                }
+            }
             DgvDetalle.Focus();
         }
 
@@ -864,13 +874,13 @@ namespace NorthwindTradersV5EnCapas
 
         private void BtnNota_Click(object sender, EventArgs e)
         {
-            //if (!chkRowVersion())
-            //{
-            //    Utils.MensajeExclamation("El registro ha sido modificado por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
-            //}
-            //FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
-            //frmRptNotaRemision8.Id = int.Parse(txtId.Text);
-            //frmRptNotaRemision8.ShowDialog();
+            if (!chkRowVersion())
+            {
+                U.NotificacionInformation("La venta ha sido modificada por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
+            }
+            FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
+            frmRptNotaRemision8.Id = int.Parse(txtId.Text);
+            frmRptNotaRemision8.ShowDialog();
         }
 
         private bool chkRowVersion()
