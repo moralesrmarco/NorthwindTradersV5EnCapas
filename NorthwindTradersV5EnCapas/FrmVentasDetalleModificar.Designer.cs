@@ -56,6 +56,10 @@
             this.nudTasaIVA = new Utilities.NudNoWheel();
             this.LblImporte = new System.Windows.Forms.Label();
             this.nudImporte = new Utilities.NudNoWheel();
+            this.pbInfo = new System.Windows.Forms.PictureBox();
+            this.pbError = new System.Windows.Forms.PictureBox();
+            this.pbWarning = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
@@ -67,6 +71,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTasaIVA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudImporte)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -211,6 +218,8 @@
             this.nudDescuento.Size = new System.Drawing.Size(85, 23);
             this.nudDescuento.TabIndex = 1;
             this.nudDescuento.WheelEnabled = true;
+            this.nudDescuento.ValueChanged += new System.EventHandler(this.nudDescuento_ValueChanged);
+            this.nudDescuento.Leave += new System.EventHandler(this.nudDescuento_Leave);
             // 
             // nudCantidad
             // 
@@ -226,6 +235,8 @@
             this.nudCantidad.TabIndex = 0;
             this.nudCantidad.ThousandsSeparator = true;
             this.nudCantidad.WheelEnabled = true;
+            this.nudCantidad.ValueChanged += new System.EventHandler(this.nudCantidad_ValueChanged);
+            this.nudCantidad.Leave += new System.EventHandler(this.nudCantidad_Leave);
             // 
             // nudUInventario
             // 
@@ -416,12 +427,42 @@
             this.nudImporte.ThousandsSeparator = true;
             this.nudImporte.WheelEnabled = true;
             // 
+            // pbInfo
+            // 
+            this.pbInfo.Location = new System.Drawing.Point(260, 186);
+            this.pbInfo.Name = "pbInfo";
+            this.pbInfo.Size = new System.Drawing.Size(20, 20);
+            this.pbInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbInfo.TabIndex = 30;
+            this.pbInfo.TabStop = false;
+            // 
+            // pbError
+            // 
+            this.pbError.Location = new System.Drawing.Point(286, 186);
+            this.pbError.Name = "pbError";
+            this.pbError.Size = new System.Drawing.Size(20, 20);
+            this.pbError.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbError.TabIndex = 30;
+            this.pbError.TabStop = false;
+            // 
+            // pbWarning
+            // 
+            this.pbWarning.Location = new System.Drawing.Point(312, 186);
+            this.pbWarning.Name = "pbWarning";
+            this.pbWarning.Size = new System.Drawing.Size(20, 20);
+            this.pbWarning.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbWarning.TabIndex = 30;
+            this.pbWarning.TabStop = false;
+            // 
             // FrmVentasDetalleModificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(698, 571);
             this.ControlBox = false;
+            this.Controls.Add(this.pbWarning);
+            this.Controls.Add(this.pbError);
+            this.Controls.Add(this.pbInfo);
             this.Controls.Add(this.nudImporteDelIVA);
             this.Controls.Add(this.nudImporteConDescuento);
             this.Controls.Add(this.nudImporteDelDescuento);
@@ -467,6 +508,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTasaIVA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudImporte)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -501,5 +545,9 @@
         private Utilities.NudNoWheel nudTasaIVA;
         private Utilities.NudNoWheel nudImporte;
         private System.Windows.Forms.Label LblImporte;
+        private System.Windows.Forms.PictureBox pbInfo;
+        private System.Windows.Forms.PictureBox pbWarning;
+        private System.Windows.Forms.PictureBox pbError;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

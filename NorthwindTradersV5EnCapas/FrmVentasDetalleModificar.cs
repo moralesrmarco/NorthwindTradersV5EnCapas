@@ -3,6 +3,7 @@ using Entities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Utilities;
@@ -17,17 +18,10 @@ namespace NorthwindTradersV5EnCapas
         private VentaDetalleBLL _ventaDetalleBLL;
 
         public VentaDetalle ventaDetalle { get; set; }
-        //public int PedidoId { get; set; }
-        //public int ProductoId { get; set; }
-        //public string Producto { get; set; }
-        //public decimal Precio { get; set; }
-        //public short Cantidad { get; set; }
-        //public decimal Descuento { get; set; }
-        //public decimal Importe { get; set; }
-        //public short? UInventario { get; set; }
-        //public int RowVersion { get; set; }
-        //public short CantidadOld { get; set; }
-        //public decimal DescuentoOld { get; set; }
+        private short CantidadOld { get; set; }
+        private decimal DescuentoOld { get; set; }
+        private short UInventarioOld { get; set; }
+
 
         public FrmVentasDetalleModificar()
         {
@@ -46,6 +40,14 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmVentasDetalleModificar_Load(object sender, EventArgs e)
         {
+            //informationProvider1.Icon = SystemIcons.Information;
+            //informationProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            //// Extraer el bitmap en 16x16 y volver a crear un Icon
+            //using (Bitmap bmp = new Bitmap(SystemIcons.Information.ToBitmap(), new Size(16, 16)))
+            //{
+            //    informationProvider1.Icon = Icon.FromHandle(bmp.GetHicon());
+            //}
+
             // Obtener el símbolo de moneda según la configuración regional del equipo
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
@@ -60,14 +62,25 @@ namespace NorthwindTradersV5EnCapas
             txtProducto.Text = ventaDetalle.Producto.ProductName;
             nudPrecio.Value = ventaDetalle.UnitPrice;
             nudUInventario.Value = ObtenerUInventario();
+            nudCantidad.ValueChanged -= nudCantidad_ValueChanged;
+            nudCantidad.Leave -= nudCantidad_Leave;
             nudCantidad.Value = ventaDetalle.Quantity;
+            nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+            nudCantidad.Leave += nudCantidad_Leave;
+            nudDescuento.ValueChanged -= nudDescuento_ValueChanged;
+            nudDescuento.Leave -= nudDescuento_Leave;
             nudDescuento.Value = ventaDetalle.TasaDescuentoPorcentaje;
+            nudDescuento.ValueChanged += nudDescuento_ValueChanged;
+            nudDescuento.Leave += nudDescuento_Leave;
             nudImporte.Value = ventaDetalle.Importe;
             nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
             nudImporteConDescuento.Value = ventaDetalle.ImporteConDescuento;
             nudTasaIVA.Value = ventaDetalle.TasaIVAPorcentaje;
             nudImporteDelIVA.Value = ventaDetalle.ImporteDelIVA;
             nudSubtotal.Value = ventaDetalle.Subtotal;
+            CantidadOld = ventaDetalle.Quantity;
+            DescuentoOld = ventaDetalle.TasaDescuentoPorcentaje;
+            UInventarioOld = Convert.ToInt16(nudUInventario.Value);
             DeshabilitarNudsNoSeleccionables();
             CargarValoresOriginales();
         }
@@ -110,106 +123,104 @@ namespace NorthwindTradersV5EnCapas
             this.Close();
         }
 
-        //private void FrmPedidosDetalleModificar_Load(object sender, EventArgs e)
-        //{
-        //    ObtenerUInventario();
-        //    txtPedido.Text = PedidoId.ToString();
-        //    txtProducto.Text = Producto;
-        //    txtPrecio.Text = Precio.ToString("c");
-        //    txtUinventario.Text = string.Format("{0:n0}", UInventario);
-        //    txtCantidad.Text = Cantidad.ToString("n0");
-        //    txtDescuento.Text = Descuento.ToString("n2");
-        //    txtImporte.Text = Importe.ToString("c");
-        //    CantidadOld = Cantidad;
-        //    DescuentoOld = Descuento;
-        //}
-
         private bool ValidarControles()
         {
-            //txtCantidad.Text = txtCantidad.Text.Replace(",", "");
-            bool valida = true;
-            //btnModificar.Enabled = false;
-            //errorProvider1.Clear();
+            try
+            {
+                btnModificar.Enabled = false;
+                errorProvider1.Clear();
+                CalcularImportes();
 
-            //int cantidadInt = 0, unidadesInventario = 0;
-            //short cantidad = 0, diferencia = 0;
-            //decimal descuento = 0;
+                short cantidad = 0, diferencia = 0;
+                // Calcula la diferencia de cantidad
+                diferencia = (short)(nudCantidad.Value - CantidadOld);
+                // Validar cantidad y unidades en inventario sean números válidos
+                //if (!short.TryParse(nudCantidad.Value.ToString(), out cantidad))
+                //{
+                //    errorProvider1.SetError(nudCantidad, "Ingrese una cantidad válida");
+                //    return false;
+                //}
+                // Verificar disponibilidad en el inventario
+                // Aquí manejamos el caso de devolver productos al inventario
+                if (diferencia <= 0)
+                {
+                    nudUInventario.Value = Math.Abs(nudCantidad.Value - CantidadOld - UInventarioOld);
+                    ValidarCantidad();
 
-            ////Validar txtCantidad 
-            //if (!short.TryParse(txtCantidad.Text.Replace(",", ""), out cantidad))
-            //{
-            //    valida = false;
-            //    errorProvider1.SetError(txtCantidad, "Ingrese una cantidad valida, la cantidad debe ser mayor que 1 y menor que 32,767");
-            //}
-            //if (valida && cantidad == 0)
-            //{
-            //    valida = false;
-            //    errorProvider1.SetError(txtCantidad, "Ingrese la cantidad");
-            //}
-            //// Validar descuento
-            //if (string.IsNullOrWhiteSpace(txtDescuento.Text) || !decimal.TryParse(txtDescuento.Text, out descuento))
-            //{
-            //    valida = false;
-            //    errorProvider1.SetError(txtDescuento, "Ingrese el descuento");
-            //}
-            //else if (descuento > 1 || descuento < 0)
-            //{
-            //    valida = false;
-            //    errorProvider1.SetError(txtDescuento, "El descuento no puede ser mayor que 1 o menor que 0");
-            //}
-            //if (valida)
-            //{
-            //    // Calcula la diferencia de cantidad
-            //    diferencia = (short)(cantidad - CantidadOld);
-
-            //    // Validar cantidad y unidades en inventario sean números válidos
-            //    if (!int.TryParse(txtCantidad.Text.Replace(",", ""), out cantidadInt) || !int.TryParse(txtUinventario.Text.Replace(",", ""), out unidadesInventario))
-            //    {
-            //        valida = false;
-            //        errorProvider1.SetError(txtCantidad, "Ingrese una cantidad válida");
-            //    }
-            //    // Verificar disponibilidad en el inventario
-            //    if (valida && UInventario != null)
-            //    {
-            //        // Aquí manejamos el caso de devolver productos al inventario
-            //        if (diferencia < 0)
-            //        {
-            //            // La validación es correcta al devolver productos
-            //            if (unidadesInventario + Math.Abs(diferencia) > 32767)
-            //            {
-            //                valida = false;
-            //                errorProvider1.SetError(txtCantidad, "La cantidad de producto devuelto mas las unidades en inventario exceden los 32,767 unidades");
-            //            }
-            //        }
-            //        // Aquí manejamos el caso de retirar productos del inventario
-            //        else if (diferencia > 0)
-            //        {
-            //            if (diferencia > unidadesInventario)
-            //            {
-            //                valida = false;
-            //                errorProvider1.SetError(txtCantidad, "La cantidad de productos en el pedido excede el inventario disponible");
-            //            }
-            //        }
-            //    }
-            //    else if (UInventario == null)
-            //    {
-            //        valida = false;
-            //        errorProvider1.SetError(txtCantidad, "Es posible que el producto haya sido eliminado por otro usuario en la red");
-            //    }
-        //}
-
-        //    // Habilitar el botón Modificar si las cantidades y descuentos son válidos y han cambiado
-        //    if (valida && (cantidad != CantidadOld || descuento != DescuentoOld))
-        //        btnModificar.Enabled = true;
-            return valida;
+                    //informationProvider1.SetError(nudCantidad, "La cantidad de producto devuelto se añadirá al inventario");
+                    // La validación es correcta al devolver productos
+                    //if (nudUInventario.Value > 32767)
+                    //{
+                    //    errorProvider1.SetError(nudCantidad, "La cantidad de producto devuelto mas las unidades en inventario exceden las 32,767 unidades");
+                    //    return false;
+                    //}
+                    //if (cantidad == 0)
+                    //{
+                    //    errorProvider1.SetError(nudCantidad, "Ingrese la cantidad");
+                    //    return false;
+                    //}
+                }
+                // Aquí manejamos el caso de retirar productos del inventario
+                else if (diferencia > 0)
+                {
+                    nudUInventario.Value = nudUInventario.Value + diferencia - CantidadOld - UInventarioOld;
+                    if (diferencia > nudUInventario.Value)
+                    {
+                        errorProvider1.SetError(nudCantidad, "La cantidad de productos en el pedido excede el inventario disponible");
+                        return false;
+                    }
+                }
+                // Habilitar el botón Modificar si las cantidades y descuentos son válidos y han cambiado
+                if (nudCantidad.Value != CantidadOld || nudDescuento.Value != DescuentoOld)
+                {
+                    btnModificar.Enabled = true;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+                return false;
+            }
         }
 
-        private void CalcularImporte()
+        private void ValidarCantidad()
         {
-            //Cantidad = short.Parse(txtCantidad.Text.Replace(",", ""));
-            //Descuento = decimal.Parse(txtDescuento.Text);
-            //Importe = (Precio * Cantidad) * (1 - Descuento);
-            //txtImporte.Text = Importe.ToString("c");
+            StatusIconHelper.ShowIcons(
+                nudCantidad,
+                toolTip1,
+                // Error
+                (pbError, errorProvider1.Icon.ToBitmap(), "La cantidad debe ser mayor que cero.", nudCantidad.Value <= 0),
+                // Information
+                (pbInfo, SystemIcons.Information.ToBitmap(), "La cantidad de producto devuelto se añadirá al inventario.", nudCantidad.Value > 0 && nudCantidad.Value >= 0),
+                // Warning
+                (pbWarning, SystemIcons.Warning.ToBitmap(), "La existencia en inventario es baja.", nudUInventario.Value > 0 && nudUInventario.Value < 10)
+            );
+        }
+
+
+        private void CalcularImportes()
+        {
+            try
+            {
+                VentaDetalle ventaDetalle = new VentaDetalle()
+                {
+                    UnitPrice = nudPrecio.Value,
+                    Quantity = Convert.ToInt16(nudCantidad.Value),
+                    Discount = nudDescuento.Value / 100
+                };
+                nudImporte.Value = ventaDetalle.Importe;
+                nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
+                nudImporteConDescuento.Value = ventaDetalle.ImporteConDescuento;
+                nudImporteDelIVA.Value = ventaDetalle.ImporteDelIVA;
+                nudSubtotal.Value = ventaDetalle.Subtotal;
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+            }
         }
 
         private void btnModificar_Click(object sender, EventArgs e)
@@ -248,5 +259,28 @@ namespace NorthwindTradersV5EnCapas
             //}
         }
 
+        private void nudCantidad_Leave(object sender, EventArgs e)
+        {
+            if (!ValidarControles())
+                return;
+        }
+
+        private void nudDescuento_Leave(object sender, EventArgs e)
+        {
+            if (!ValidarControles())
+                return;
+        }
+
+        private void nudCantidad_ValueChanged(object sender, EventArgs e)
+        {
+            if (!ValidarControles())
+                return;
+        }
+
+        private void nudDescuento_ValueChanged(object sender, EventArgs e)
+        {
+            if (!ValidarControles())
+                return;
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Utilities
+﻿using System;
+using System.Windows.Forms;
+
+namespace Utilities
 {
     /// <summary>
     /// Helper para configurar el estado de controles NudNoWheel.
