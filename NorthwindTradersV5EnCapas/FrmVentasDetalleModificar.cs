@@ -76,6 +76,7 @@ namespace NorthwindTradersV5EnCapas
             DeshabilitarNudsNoSeleccionables();
             CargarValoresOriginales();
             ValidarCantidad();
+            ValidarInventario();
         }
 
         private Decimal ObtenerUInventario()
@@ -121,7 +122,7 @@ namespace NorthwindTradersV5EnCapas
             try
             {
                 btnModificar.Enabled = false;
-
+                errorProvider1.Clear();
                 // Recalcula importes (si depende de cantidad/descuento)
                 CalcularImportes();
 
@@ -141,7 +142,11 @@ namespace NorthwindTradersV5EnCapas
                 inventarioNuevoUi = Math.Max(inventarioNuevoUi, nudUInventario.Minimum);
                 nudUInventario.Value = inventarioNuevoUi;
 
+                // Validación informativa (inventario)
+                ValidarInventario(); // no afecta el retorno, solo muestra íconos
+
                 // Valida reglas de negocio con StatusIconHelper
+                // Validación restrictiva (cantidad)
                 bool ok = ValidarCantidad();
                 if (!ok) return false;
 
@@ -162,182 +167,6 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        //private bool ValidarControles()
-        //{
-        //    try
-        //    {
-        //        btnModificar.Enabled = false;
-        //        errorProvider1.Clear();
-        //        CalcularImportes();
-
-        //        // Usa decimal de extremo a extremo
-        //        decimal cantidadNueva = nudCantidad.Value;
-        //        decimal cantidadVieja = CantidadOld;      // asegúrate de que sea decimal
-        //        decimal inventarioViejo = UInventarioOld;   // asegúrate de que sea decimal
-
-        //        // Stock total disponible para este pedido (reservado + inventario)
-        //        decimal disponible = inventarioViejo + cantidadVieja;
-
-        //        // Inventario remanente después de reservar la nueva cantidad
-        //        decimal inventarioNuevo = disponible - cantidadNueva;
-
-        //        // Aplica límites del NumericUpDown
-        //        inventarioNuevo = Math.Min(inventarioNuevo, nudUInventario.Maximum);
-        //        inventarioNuevo = Math.Max(inventarioNuevo, nudUInventario.Minimum);
-
-        //        // Refleja en UI
-        //        nudUInventario.Value = inventarioNuevo;
-
-        //        // Valida reglas de negocio con iconos y devuelve estado
-        //        bool ok = ValidarCantidad(); // debe usar la misma regla de “excede inventario”
-        //        if (!ok) return false;
-
-        //        // Habilita Modificar si hubo cambios
-        //        bool hayCambios = (nudCantidad.Value != CantidadOld) || (nudDescuento.Value != DescuentoOld);
-        //        if (hayCambios)
-        //        {
-        //            btnModificar.Enabled = true;
-        //            return true;
-        //        }
-
-        //        return false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        U.MsgCatchOue(ex);
-        //        return false;
-        //    }
-        //}
-        //private bool ValidarControles()
-        //{
-        //    try
-        //    {
-        //        btnModificar.Enabled = false;
-        //        errorProvider1.Clear();
-
-        //        // Recalcula importes (si depende de cantidad/descuento)
-        //        CalcularImportes();
-
-        //        // Usa decimal, no short (NumericUpDown.Value es decimal)
-        //        decimal cantidadNueva = nudCantidad.Value;
-        //        decimal cantidadVieja = CantidadOld;         // Asegúrate de que este sea decimal
-        //        decimal inventarioViejo = UInventarioOld;    // También en decimal
-
-        //        decimal diferencia = cantidadNueva - cantidadVieja;
-
-        //        // Caso: devolver productos al inventario (diferencia < 0)
-        //        if (diferencia < 0)
-        //        {
-        //            decimal devueltos = -diferencia; // cantidad devuelta
-        //            decimal inventarioNuevo = inventarioViejo + devueltos;
-
-        //            // Aplica límites del NumericUpDown para evitar fuera de rango
-        //            inventarioNuevo = Math.Min(inventarioNuevo, nudUInventario.Maximum);
-        //            inventarioNuevo = Math.Max(inventarioNuevo, nudUInventario.Minimum);
-
-        //            nudUInventario.Value = inventarioNuevo;
-
-        //            if (!ValidarCantidad())
-        //                return false;
-        //        }
-        //        // Caso: retirar productos del inventario (diferencia > 0)
-        //        else if (diferencia > 0)
-        //        {
-        //            decimal retirados = diferencia;
-        //            // Validación clave: no puedes retirar más de lo disponible
-        //            if (retirados > inventarioViejo)
-        //            {
-        //                // Actualiza UI para reflejar error y no permitir inventario negativo
-        //                nudUInventario.Value = inventarioViejo; // permanece igual
-        //                                                        // Puedes setear el error provider aquí si quieres un mensaje inmediato:
-        //                                                        // errorProvider1.SetError(nudCantidad, "La cantidad excede el inventario disponible.");
-
-        //                if (!ValidarCantidad())
-        //                    return false;
-        //            }
-        //            else
-        //            {
-        //                decimal inventarioNuevo = inventarioViejo - retirados;
-
-        //                // Aplica límites del NumericUpDown
-        //                inventarioNuevo = Math.Min(inventarioNuevo, nudUInventario.Maximum);
-        //                inventarioNuevo = Math.Max(inventarioNuevo, nudUInventario.Minimum);
-
-        //                nudUInventario.Value = inventarioNuevo;
-
-        //                if (!ValidarCantidad())
-        //                    return false;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            // Sin cambios de cantidad: el inventario se queda igual que el viejo
-        //            nudUInventario.Value = inventarioViejo;
-        //            if (!ValidarCantidad())
-        //                return false;
-        //        }
-
-        //        // Habilitar el botón Modificar sólo si hay cambios y las validaciones pasaron
-        //        bool hayCambios = (nudCantidad.Value != CantidadOld) || (nudDescuento.Value != DescuentoOld);
-        //        if (hayCambios)
-        //        {
-        //            btnModificar.Enabled = true;
-        //            return true;
-        //        }
-
-        //        return false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        U.MsgCatchOue(ex);
-        //        return false;
-        //    }
-        //}
-
-        //private bool ValidarControles()
-        //{
-        //    try
-        //    {
-        //        btnModificar.Enabled = false;
-        //        errorProvider1.Clear();
-        //        CalcularImportes();
-
-        //        short diferencia = 0;
-        //        // Calcula la diferencia de cantidad
-        //        diferencia = (short)(nudCantidad.Value - CantidadOld);
-
-        //        // Verificar disponibilidad en el inventario
-        //        // Aquí manejamos el caso de devolver productos al inventario
-        //        if (diferencia <= 0)
-        //        {
-        //            nudUInventario.Value = Math.Abs(nudCantidad.Value - CantidadOld - UInventarioOld);
-        //            if (!ValidarCantidad())
-        //                return false;
-
-        //        }
-        //        // Aquí manejamos el caso de retirar productos del inventario
-        //        else if (diferencia > 0)
-        //        {
-        //            nudUInventario.Value = UInventarioOld - diferencia;
-        //            if (!ValidarCantidad())
-        //                return false;
-        //        }
-        //        // Habilitar el botón Modificar si las cantidades y descuentos son válidos y han cambiado
-        //        if (nudCantidad.Value != CantidadOld || nudDescuento.Value != DescuentoOld)
-        //        {
-        //            btnModificar.Enabled = true;
-        //            return true;
-        //        }
-        //        else
-        //            return false;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        U.MsgCatchOue(ex);
-        //        return false;
-        //    }
-        //}
-
         private bool ValidarCantidad()
         {
             decimal cantidadNueva = nudCantidad.Value;
@@ -346,27 +175,31 @@ namespace NorthwindTradersV5EnCapas
 
             // Stock disponible total para este pedido
             decimal disponible = inventarioViejo + cantidadVieja;
-
+            // Inventario inicial real (solo lo que había en almacén)
+            decimal inventarioInicial = disponible - cantidadVieja;
             // Inventario remanente REAL en DB después de reservar la nueva cantidad
             decimal inventarioNuevoDb = disponible - cantidadNueva;
-
+            decimal inventarioActual = nudUInventario.Value;
             const decimal SmallintMax = 32767M;
 
             // Condiciones de error
             bool condErrorCantidadCero = cantidadNueva <= 0;
             bool condErrorExcedeInvent = cantidadNueva > disponible;
+            bool condErrorInventarioCero = (inventarioActual == 0 && cantidadNueva > disponible);
             bool condErrorOverflowSmall = inventarioNuevoDb > SmallintMax;
 
-            bool showError = condErrorCantidadCero || condErrorExcedeInvent || condErrorOverflowSmall;
+            bool showError = condErrorCantidadCero || condErrorExcedeInvent || condErrorInventarioCero || condErrorOverflowSmall;
 
             // Construir mensaje acumulado
             string errorMsg = "";
             if (condErrorCantidadCero)
                 errorMsg += "La cantidad debe ser mayor que cero.\n";
             if (condErrorExcedeInvent)
-                errorMsg += $"La cantidad excede el inventario disponible ({disponible}).\n";
+                errorMsg += $"La cantidad excede el inventario inicial disponible ({inventarioInicial}).\n";
+            if (condErrorInventarioCero)
+                errorMsg += "El inventario es 0.\n";
             if (condErrorOverflowSmall)
-                errorMsg += "La cantidad de producto devuelto más las unidades en inventario exceden las 32,767 unidades.\n";
+                errorMsg += "La cantidad de producto devuelto más las unidades en inventario\nexcede el límite maximo que se puede almacenar en la base de datos (32,767 unidades).\n No se puede realizar la operación.";
 
             // Información y advertencia
             bool showInfo = cantidadNueva >= 0;
@@ -378,7 +211,7 @@ namespace NorthwindTradersV5EnCapas
                 toolTip1,
                 (pbError, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
                 (pbInfo, (Image)SystemIcons.Information.ToBitmap(),
-                    "La cantidad de producto devuelto se añadirá al inventario.\nLa cantidad de producto añadido se descontará del inventario.",
+                    "La cantidad de producto devuelto se añade al inventario.\nLa cantidad de producto añadido se descuenta del inventario.",
                     showInfo),
                 (pbWarning, (Image)SystemIcons.Warning.ToBitmap(),
                     "La existencia en inventario es baja.",
@@ -388,73 +221,63 @@ namespace NorthwindTradersV5EnCapas
             return !showError;
         }
 
-        //private bool ValidarCantidad()
-        //{
-        //    decimal cantidadNueva = nudCantidad.Value;
-        //    decimal cantidadVieja = CantidadOld;
-        //    decimal inventarioViejo = UInventarioOld;
+        private void ValidarInventario()
+        {
+            decimal cantidadNueva = nudCantidad.Value;
+            decimal cantidadVieja = CantidadOld;
+            decimal inventarioViejo = UInventarioOld;
 
-        //    // Stock disponible total para este pedido
-        //    decimal disponible = inventarioViejo + cantidadVieja;
+            // Stock total disponible para este pedido
+            decimal disponible = inventarioViejo + cantidadVieja;
+            // Inventario remanente REAL en DB después de reservar la nueva cantidad
+            decimal inventarioNuevoDb = disponible - cantidadNueva;
+            decimal inventarioActual = nudUInventario.Value;
 
-        //    bool condErrorCantidadCero = cantidadNueva <= 0;
-        //    bool condErrorExcedeInvent = cantidadNueva > disponible;
+            const decimal SmallintMax = 32767M;
+            
+            // Condiciones de error (solo visuales)
+            bool condErrorExcedeInvent = cantidadNueva > disponible;
+            bool condErrorInventarioCero = (inventarioActual == 0 && cantidadNueva > disponible);
+            bool condErrorOverflowSmall = inventarioNuevoDb > SmallintMax;
 
-        //    bool showError = condErrorCantidadCero || condErrorExcedeInvent;
+            bool showError = condErrorExcedeInvent || condErrorInventarioCero || condErrorOverflowSmall;
 
-        //    string errorMsg = "";
-        //    if (condErrorCantidadCero) errorMsg += "La cantidad debe ser mayor que cero.\n";
-        //    if (condErrorExcedeInvent) errorMsg += $"La cantidad excede el inventario disponible ({disponible}).\n";
+            string errorMsg = "";
+            if (condErrorExcedeInvent)
+                errorMsg += $"La cantidad excede el inventario inicial disponible ({disponible - cantidadVieja}).\n";
+            if (condErrorInventarioCero)
+                errorMsg += "El inventario es 0.\n";
+            if (condErrorOverflowSmall)
+                errorMsg += "La cantidad de producto devuelto más las unidades en inventario\n" +
+                            "excede el límite máximo que se puede almacenar en la base de datos (32,767 unidades).\n" +
+                            "No se puede realizar la operación.\n";
+            // Información (siempre mostrar)
+            bool showInfo = true;
 
-        //    bool showInfo = cantidadNueva >= 0; // ajusta tu regla de info
-        //    bool showWarning = nudUInventario.Value >= 0 && nudUInventario.Value <= 50; // ejemplo
+            // Warnings
+            bool condWarningInventarioCero = inventarioActual == 0;
+            bool condWarningInventarioBajo = inventarioActual >= 0 && inventarioActual <= 50;
 
-        //    StatusIconHelper.ShowIcons(
-        //        nudCantidad,
-        //        toolTip1,
-        //        (pbError, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
-        //        (pbInfo, (Image)SystemIcons.Information.ToBitmap(),
-        //            "La cantidad de producto devuelto se añadirá al inventario.\nLa cantidad de producto añadido se descontará del inventario.",
-        //            showInfo),
-        //        (pbWarning, (Image)SystemIcons.Warning.ToBitmap(),
-        //            "La existencia en inventario es baja.",
-        //            showWarning)
-        //    );
+            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo;
 
-        //    return !showError;
-        //}
+            string warningMsg = "";
+            if (condWarningInventarioCero)
+                warningMsg += "El inventario es 0.\n";
+            if (condWarningInventarioBajo)
+                warningMsg += "La existencia en inventario es baja.\n";
 
-        //private bool ValidarCantidad()
-        //{
-        //    bool condError1 = nudCantidad.Value <= 0;
-        //    bool condError2 = (nudCantidad.Value - CantidadOld) > nudUInventario.Value;
-        //    bool condError3 = nudUInventario.Value > 32767;
-        //    bool showError = condError1 || condError2 || condError3;
-
-        //    bool showInfo = nudCantidad.Value >= 0; // tu regla
-        //    bool showWarning = nudUInventario.Value >= 0 && nudUInventario.Value <= 50;
-
-        //    string errorMsg = "";
-        //    if (condError1) errorMsg += "La cantidad debe ser mayor que cero.\n";
-        //    if (condError2) errorMsg += "La cantidad excede el inventario disponible.\n";
-        //    if (condError3) errorMsg += "La cantidad de producto devuelto más las unidades en inventario exceden las 32,767 unidades.\n";
-
-        //    StatusIconHelper.ShowIcons(
-        //        nudCantidad,
-        //        toolTip1,
-        //        // Error: usa el ícono del ErrorProvider para que coincida visualmente
-        //        (pbError, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
-        //        // Information
-        //        (pbInfo, (Image)SystemIcons.Information.ToBitmap(),
-        //            "La cantidad de producto devuelto se añadirá al inventario.\nLa cantidad de producto añadido se descontará del inventario.",
-        //            showInfo),
-        //        // Warning
-        //        (pbWarning, (Image)SystemIcons.Warning.ToBitmap(),
-        //            "La existencia en inventario es baja.",
-        //            showWarning)
-        //    );
-        //    return !showError;
-        //}
+            // Mostrar íconos con StatusIconHelper en nudUInventario
+            StatusIconHelper.ShowIcons(
+                nudUInventario,
+                toolTip1,
+                (pbError1, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
+                (pbInfo1, (Image)SystemIcons.Information.ToBitmap(),
+                    "La cantidad de producto devuelto se añade al inventario.\n" +
+                    "La cantidad de producto añadido se descuenta del inventario.",
+                    showInfo),
+                (pbWarning1, (Image)SystemIcons.Warning.ToBitmap(), warningMsg, showWarning)
+            );
+        }
 
         private void CalcularImportes()
         {
@@ -537,5 +360,15 @@ namespace NorthwindTradersV5EnCapas
             if (!ValidarControles())
                 return;
         }
+
+        private void Nud_Enter(object sender, EventArgs e)
+        {
+            if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
+            {
+                // Diferir la selección para que ocurra después de que el TextBox reciba el foco
+                tb.BeginInvoke((Action)(() => tb.SelectAll()));
+            }
+        }
+
     }
 }

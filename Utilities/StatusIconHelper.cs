@@ -26,7 +26,7 @@ namespace Utilities
         };
 
             // Posiciona sólo los visibles, acumulando offset
-            int offset = 0;
+            int offset = 12;
             foreach (var iconData in icons)
             {
                 if (!iconData.visible) continue;
@@ -37,7 +37,7 @@ namespace Utilities
                 iconData.pb.Visible = true;
                 toolTip.SetToolTip(iconData.pb, iconData.message);
 
-                offset += 20; // separación horizontal entre íconos
+                offset += 18; // separación horizontal entre íconos
             }
         }
 
