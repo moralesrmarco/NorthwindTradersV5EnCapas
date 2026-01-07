@@ -24,6 +24,11 @@ namespace BLL
             return _ventaDetalleDAL.Eliminar(ventaDetalle);
         }
 
+        public int Actualizar(VentaDetalle ventaDetalle)
+        {
+            return _ventaDetalleDAL.Actualizar(ventaDetalle);
+        }
+
         public List<VentaDetalle> ObtenerVentaDetallePorVentaId(int orderId)
         {
             return _ventaDetalleDAL.ObtenerVentaDetallePorVentaId(orderId);

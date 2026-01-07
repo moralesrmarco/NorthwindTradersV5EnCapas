@@ -203,7 +203,17 @@ namespace NorthwindTradersV5EnCapas
 
             // Información y advertencia
             bool showInfo = cantidadNueva >= 0;
-            bool showWarning = nudUInventario.Value >= 0 && nudUInventario.Value <= 50;
+            // Warnings
+            bool condWarningInventarioCero = inventarioActual == 0;
+            bool condWarningInventarioBajo = inventarioActual > 0 && inventarioActual <= 50;
+
+            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo;
+
+            string warningMsg = "";
+            if (condWarningInventarioCero)
+                warningMsg += "El inventario es 0.\n";
+            if (condWarningInventarioBajo)
+                warningMsg += "La existencia en inventario es baja.\n";
 
             // Mostrar íconos con StatusIconHelper
             StatusIconHelper.ShowIcons(
@@ -214,7 +224,7 @@ namespace NorthwindTradersV5EnCapas
                     "La cantidad de producto devuelto se añade al inventario.\nLa cantidad de producto añadido se descuenta del inventario.",
                     showInfo),
                 (pbWarning, (Image)SystemIcons.Warning.ToBitmap(),
-                    "La existencia en inventario es baja.",
+                    warningMsg,
                     showWarning)
             );
 
@@ -256,7 +266,7 @@ namespace NorthwindTradersV5EnCapas
 
             // Warnings
             bool condWarningInventarioCero = inventarioActual == 0;
-            bool condWarningInventarioBajo = inventarioActual >= 0 && inventarioActual <= 50;
+            bool condWarningInventarioBajo = inventarioActual > 0 && inventarioActual <= 50;
 
             bool showWarning = condWarningInventarioCero || condWarningInventarioBajo;
 
@@ -303,62 +313,80 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            //int numRegs = 0;
-            //// No se realiza la validación porque ya se han realizado previamente en el evento leave de 
-            //// txtdescuento y txtcantidad
-            //try
-            //{
-            //    btnModificar.Enabled = false;
-            //    MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
-            //    PedidoDetalle pedidoDetalle = new PedidoDetalle
-            //    {
-            //        OrderID = PedidoId,
-            //        ProductID = ProductoId,
-            //        Quantity = short.Parse(txtCantidad.Text.Replace(",", "")),
-            //        Discount = decimal.Parse(txtDescuento.Text),
-            //        RowVersion = RowVersion
-            //    };
-            //    numRegs = new PedidoRepository(cnStr).Actualizar(pedidoDetalle, CantidadOld, DescuentoOld);
-            //    if (numRegs == 0)
-            //        Utils.MensajeExclamation("No se pudo realizar la modificación, es posible que el registro se haya eliminado previamente por otro usuario de la red");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Utils.MsgCatchOue(ex);
-            //}
-            //if (numRegs > 0)
-            //{
-            //    // Las siguientes dos lineas son necesarias para que se permita cerrar la ventana. 
-            //    // ya que se validan las variables en FrmPedidosDetalleModificar_FormClosing
-            //    CantidadOld = short.Parse(txtCantidad.Text);
-            //    DescuentoOld = decimal.Parse(txtDescuento.Text);
-            //    DialogResult = DialogResult.OK;
-            //    this.Close();
-            //}
+            int numRegs = 0;
+            // No se realiza la validación porque ya se han realizado previamente en el evento leave y valuechanged de 
+            // txtdescuento y txtcantidad
+            try
+            {
+                btnModificar.Enabled = false;
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                VentaDetalle ventaDetalleModificacion = new VentaDetalle
+                {
+                    Venta = new Venta() 
+                    { 
+                        OrderID = ventaDetalle.Venta.OrderID,
+                        RowVersion = ventaDetalle.Venta.RowVersion
+                    },
+                    Producto = new Producto() { ProductID = ventaDetalle.Producto.ProductID },
+                    Quantity = short.Parse(nudCantidad.Value.ToString()),
+                    Discount = decimal.Parse((nudDescuento.Value / 100).ToString()),
+                    RowVersion = ventaDetalle.RowVersion
+                };
+                numRegs = _ventaDetalleBLL.Actualizar(ventaDetalleModificacion);
+                string strProductoVenta = $"El producto: {ventaDetalle.ProductName} - Venta: {ventaDetalle.Venta.OrderID}:";
+                string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
+                if (numRegs > 0)
+                {
+                    // deja que continue el proceso para cerrar el formulario
+                }
+                else if (numRegs == -1)
+                    U.NotificacionError(strProductoVenta + Utils.nfmfe);
+                else if (numRegs == -2)
+                    U.NotificacionError(strProductoVenta + Utils.nfmfm);
+                else if (numRegs == -3)
+                    U.NotificacionError(strVenta + Utils.fepou);
+                else if (numRegs == -4)
+                    U.NotificacionError(strVenta + Utils.fmpou);
+                else if (numRegs == -5)
+                    U.NotificacionError(strProductoVenta + Utils.nfmcqn); // El campo Quantity del detalle de la venta es nulo
+                else if (numRegs == -6)
+                    U.NotificacionError(strProductoVenta + Utils.nfmii); // Stock insuficiente
+                else
+                    U.NotificacionError(strProductoVenta + Utils.nfemd);
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+                DialogResult = DialogResult.Cancel;
+            }
+            // La siguientes linea es necesaria para que se permita cerrar la ventana. 
+            // ya que se validan las variables en FrmPedidosDetalleModificar_FormClosing
+            CargarValoresOriginales();
+            if (numRegs <= 0)
+                DialogResult = DialogResult.Cancel;
+            else
+                DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void nudCantidad_Leave(object sender, EventArgs e)
         {
-            if (!ValidarControles())
-                return;
+            ValidarControles();
         }
 
         private void nudDescuento_Leave(object sender, EventArgs e)
         {
-            if (!ValidarControles())
-                return;
+            ValidarControles();
         }
 
         private void nudCantidad_ValueChanged(object sender, EventArgs e)
         {
-            if (!ValidarControles())
-                return;
+            ValidarControles();
         }
 
         private void nudDescuento_ValueChanged(object sender, EventArgs e)
         {
-            if (!ValidarControles())
-                return;
+            ValidarControles();
         }
 
         private void Nud_Enter(object sender, EventArgs e)

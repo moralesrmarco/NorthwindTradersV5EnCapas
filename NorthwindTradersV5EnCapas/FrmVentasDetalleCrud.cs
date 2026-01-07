@@ -112,6 +112,11 @@ namespace NorthwindTradersV5EnCapas
             cboProducto.Enabled = false;
         }
 
+        private void InicializarNuds() 
+        { 
+            nudNumProd.Value = nudTotalDeUnidades.Value = nudSubtotalDelImporte.Value = nudSubtotalDelImporteDelDescuento.Value = nudSubtotalDelImporteConDescuento.Value = nudSubtotalDelImporteDelIVA.Value = nudTotal.Value = 0;
+        }
+
         private void DeshabilitarControles()
         {
             cboCategoria.Enabled = cboProducto.Enabled = false;
@@ -263,6 +268,7 @@ namespace NorthwindTradersV5EnCapas
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             BorrarDatosVenta();
+            BorrarDatosDetalleVenta();
             BorrarMensajesError();
             BorrarDatosBusqueda();
             DeshabilitarControles();
@@ -274,6 +280,7 @@ namespace NorthwindTradersV5EnCapas
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             BorrarDatosVenta();
+            BorrarDatosDetalleVenta();
             BorrarMensajesError();
             DeshabilitarControles();
             BtnNota.Enabled = false;
@@ -607,6 +614,7 @@ namespace NorthwindTradersV5EnCapas
                 return;
             BtnNota.Enabled = false;
             BorrarDatosVenta();
+            BorrarDatosDetalleVenta();
             BorrarMensajesError();
             DataGridViewRow dgvr = DgvVentas.CurrentRow;
             txtId.Text = dgvr.Cells["OrderId"].Value.ToString();
@@ -650,7 +658,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 numDetalle = 1;
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var detalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(int.Parse(txtId.Text));
+                var detalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(orderId);
                 if (detalles.Count == 0)
                     U.NotificacionWarning("No se encontraron detalles para la venta especificada");
                 else
@@ -737,6 +745,7 @@ namespace NorthwindTradersV5EnCapas
                     numRegs = _ventaDetalleBLL.Insertar(ventaDetalle);
                     if (numRegs > 0)
                     {
+                        BorrarDatosVenta();
                         BorrarDatosDetalleVenta();
                         LlenarDatosVenta(int.Parse(txtId.Text)); // necesario para actualizar el RowVersion de la venta
                         LlenarDatosDetalleVenta(string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text));
@@ -770,6 +779,7 @@ namespace NorthwindTradersV5EnCapas
             cboProducto.DataSource = null;
             InicializarValoresAgregarProducto();
             InicializarCboProducto();
+            InicializarNuds();
             DgvDetalle.Rows.Clear();
         }
 
@@ -789,8 +799,7 @@ namespace NorthwindTradersV5EnCapas
                 ventaDetalle.Producto.ProductID = (int)dgvr.Cells["ProductoId"].Value;
                 ventaDetalle.Producto.ProductName = dgvr.Cells["Producto"].Value.ToString();
                 ventaDetalle.RowVersion = (byte[])dgvr.Cells["RowVersion"].Value;
-                long valor = long.Parse(txtId.Tag.ToString());
-                ventaDetalle.Venta.RowVersion = BitConverter.GetBytes(valor);
+                ventaDetalle.Venta.RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()));
                 EliminarProducto(ventaDetalle);
                 BtnNota.Enabled = true;
             }
@@ -818,15 +827,23 @@ namespace NorthwindTradersV5EnCapas
                     };
                     frmVentasDetalleModificar.ventaDetalle = ventaDetalle;
                     DialogResult dialogResult = frmVentasDetalleModificar.ShowDialog();
+                    BorrarDatosVenta();
+                    BorrarDatosDetalleVenta();
                     if (dialogResult == DialogResult.OK)
                     {
                         BtnNota.Enabled = true;
-                        BorrarDatosDetalleVenta();
-                        LlenarDatosVenta(int.Parse(txtId.Text)); // necesario para actualizar el RowVersion de la venta
-                        LlenarDatosDetalleVenta(int.Parse(txtId.Text));
+                        LlenarDatosVenta(ventaDetalle.Venta.OrderID); // necesario para actualizar el RowVersion de la venta
+                        LlenarDatosDetalleVenta(ventaDetalle.Venta.OrderID);
+                        CargarValoresOriginales();
+                    }
+                    else
+                    {
+                        BtnNota.Enabled = false;
+                        DeshabilitarControles();
                     }
                 }
             }
+            MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
             DgvDetalle.Focus();
         }
 
@@ -847,6 +864,7 @@ namespace NorthwindTradersV5EnCapas
                     string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
                     if (numRegs > 0)
                     {
+                        BorrarDatosVenta();
                         BorrarDatosDetalleVenta();
                         LlenarDatosVenta(ventaDetalle.Venta.OrderID);
                         LlenarDatosDetalleVenta(ventaDetalle.Venta.OrderID);
@@ -870,17 +888,19 @@ namespace NorthwindTradersV5EnCapas
             {
                 U.MsgCatchOue(ex);
             }
+            // ?CargarValoresOriginales();
         }
 
         private void BtnNota_Click(object sender, EventArgs e)
         {
             if (!chkRowVersion())
+                U.NotificacionInformation("La venta ha sido modificada previamente por otro usuario de la red.\n[black]Intente refrescar los datos.");
+            else
             {
-                U.NotificacionInformation("La venta ha sido modificada por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
+                FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
+                frmRptNotaRemision8.Id = int.Parse(txtId.Text);
+                frmRptNotaRemision8.ShowDialog();
             }
-            FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
-            frmRptNotaRemision8.Id = int.Parse(txtId.Text);
-            frmRptNotaRemision8.ShowDialog();
         }
 
         private bool chkRowVersion()
