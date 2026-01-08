@@ -620,13 +620,20 @@ namespace NorthwindTradersV5EnCapas
             txtId.Text = dgvr.Cells["OrderId"].Value.ToString();
             txtCliente.Text = dgvr.Cells["CustomerCompanyName"].Value.ToString();
             txtId.Tag = dgvr.Cells["RowVersionStr"].Value;
-            LlenarDatosVenta(Convert.ToInt32(txtId.Text));
-            LlenarDatosDetalleVenta(string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text));
-            HabilitarControles();
+            int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
+            LlenarDatosVenta(ref orderId);
+            LlenarDatosDetalleVenta(orderId);
+            if (orderId != 0)
+                HabilitarControles();
+            else
+            {
+                DeshabilitarControles();
+                BorrarDatosVenta();
+            }
             CargarValoresOriginales();
         }
 
-        private void LlenarDatosVenta(int orderId)
+        private void LlenarDatosVenta(ref int orderId)
         {
             if (orderId == 0) return;
             try
@@ -635,6 +642,8 @@ namespace NorthwindTradersV5EnCapas
                 var venta = _ventaBLL.ObtenerVentaPorId(orderId);
                 if (venta != null)
                 {
+                    txtId.Text = venta.OrderID.ToString();
+                    txtCliente.Text = venta.Cliente.CompanyName;
                     txtId.Tag = venta.RowVersionStr;
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                 }
@@ -642,6 +651,7 @@ namespace NorthwindTradersV5EnCapas
                 {
                     txtId.Text = string.Empty;
                     txtId.Tag = null;
+                    orderId = 0;
                     U.NotificacionWarning("[orange]No se encontró la venta especificada." + Utils.erfep);
                 }
             }
@@ -745,10 +755,11 @@ namespace NorthwindTradersV5EnCapas
                     numRegs = _ventaDetalleBLL.Insertar(ventaDetalle);
                     if (numRegs > 0)
                     {
+                        int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
                         BorrarDatosVenta();
                         BorrarDatosDetalleVenta();
-                        LlenarDatosVenta(int.Parse(txtId.Text)); // necesario para actualizar el RowVersion de la venta
-                        LlenarDatosDetalleVenta(string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text));
+                        LlenarDatosVenta(ref orderId); // necesario para actualizar el RowVersion de la venta
+                        LlenarDatosDetalleVenta(orderId);
                         HabilitarControles();
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                         BtnNota.Enabled = true;
@@ -786,62 +797,71 @@ namespace NorthwindTradersV5EnCapas
         private void DgvDetalle_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-            if (!chkRowVersion())
+            try
             {
-                U.NotificacionInformation("La venta ha sido modificada por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
-                return;
-            }
-            if (e.ColumnIndex == DgvDetalle.Columns["Eliminar"].Index)
-            {
-                DataGridViewRow dgvr = DgvDetalle.CurrentRow;
-                VentaDetalle ventaDetalle = new VentaDetalle();
-                ventaDetalle.Venta.OrderID = int.Parse(txtId.Text);
-                ventaDetalle.Producto.ProductID = (int)dgvr.Cells["ProductoId"].Value;
-                ventaDetalle.Producto.ProductName = dgvr.Cells["Producto"].Value.ToString();
-                ventaDetalle.RowVersion = (byte[])dgvr.Cells["RowVersion"].Value;
-                ventaDetalle.Venta.RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()));
-                EliminarProducto(ventaDetalle);
-                BtnNota.Enabled = true;
-            }
-            if (e.ColumnIndex == DgvDetalle.Columns["Modificar"].Index)
-            {
-                DataGridViewRow dgvr = DgvDetalle.CurrentRow;
-                using (FrmVentasDetalleModificar frmVentasDetalleModificar = new FrmVentasDetalleModificar())
+                if (!chkRowVersion())
                 {
-                    VentaDetalle ventaDetalle = new VentaDetalle()
+                    U.NotificacionInformation("La venta ha sido modificada por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
+                    return;
+                }
+                if (e.ColumnIndex == DgvDetalle.Columns["Eliminar"].Index)
+                {
+                    DataGridViewRow dgvr = DgvDetalle.CurrentRow;
+                    VentaDetalle ventaDetalle = new VentaDetalle();
+                    ventaDetalle.Venta.OrderID = int.Parse(txtId.Text);
+                    ventaDetalle.Producto.ProductID = (int)dgvr.Cells["ProductoId"].Value;
+                    ventaDetalle.Producto.ProductName = dgvr.Cells["Producto"].Value.ToString();
+                    ventaDetalle.RowVersion = (byte[])dgvr.Cells["RowVersion"].Value;
+                    ventaDetalle.Venta.RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()));
+                    EliminarProducto(ventaDetalle);
+                    BtnNota.Enabled = true;
+                }
+                if (e.ColumnIndex == DgvDetalle.Columns["Modificar"].Index)
+                {
+                    DataGridViewRow dgvr = DgvDetalle.CurrentRow;
+                    using (FrmVentasDetalleModificar frmVentasDetalleModificar = new FrmVentasDetalleModificar())
                     {
-                        Venta = new Venta()
+                        VentaDetalle ventaDetalle = new VentaDetalle()
                         {
-                            OrderID = int.Parse(txtId.Text),
-                            RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()))
-                        },
-                        Producto = new Producto()
+                            Venta = new Venta()
+                            {
+                                OrderID = int.Parse(txtId.Text),
+                                RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()))
+                            },
+                            Producto = new Producto()
+                            {
+                                ProductID = (int)dgvr.Cells["ProductoId"].Value,
+                                ProductName = dgvr.Cells["Producto"].Value.ToString()
+                            },
+                            UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
+                            Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
+                            Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString()),
+                            RowVersion = (byte[])dgvr.Cells["RowVersion"].Value
+                        };
+                        frmVentasDetalleModificar.ventaDetalle = ventaDetalle;
+                        DialogResult dialogResult = frmVentasDetalleModificar.ShowDialog();
+                        int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
+                        BorrarDatosVenta();
+                        BorrarDatosDetalleVenta();
+                        if (dialogResult == DialogResult.OK)
                         {
-                            ProductID = (int)dgvr.Cells["ProductoId"].Value,
-                            ProductName = dgvr.Cells["Producto"].Value.ToString()
-                        },
-                        UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
-                        Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
-                        Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString()),
-                        RowVersion = (byte[])dgvr.Cells["RowVersion"].Value
-                    };
-                    frmVentasDetalleModificar.ventaDetalle = ventaDetalle;
-                    DialogResult dialogResult = frmVentasDetalleModificar.ShowDialog();
-                    BorrarDatosVenta();
-                    BorrarDatosDetalleVenta();
-                    if (dialogResult == DialogResult.OK)
-                    {
-                        BtnNota.Enabled = true;
-                        LlenarDatosVenta(ventaDetalle.Venta.OrderID); // necesario para actualizar el RowVersion de la venta
-                        LlenarDatosDetalleVenta(ventaDetalle.Venta.OrderID);
-                        CargarValoresOriginales();
-                    }
-                    else
-                    {
-                        BtnNota.Enabled = false;
-                        DeshabilitarControles();
+                            BtnNota.Enabled = true;
+                            LlenarDatosVenta(ref orderId); // necesario para actualizar el RowVersion de la venta
+                            LlenarDatosDetalleVenta(orderId);
+                            CargarValoresOriginales();
+                        }
+                        else
+                        {
+                            BtnNota.Enabled = false;
+                            DeshabilitarControles();
+                            LlenarDgvVentas(false);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
             }
             MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
             DgvDetalle.Focus();
@@ -864,10 +884,11 @@ namespace NorthwindTradersV5EnCapas
                     string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
                     if (numRegs > 0)
                     {
+                        int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
                         BorrarDatosVenta();
                         BorrarDatosDetalleVenta();
-                        LlenarDatosVenta(ventaDetalle.Venta.OrderID);
-                        LlenarDatosDetalleVenta(ventaDetalle.Venta.OrderID);
+                        LlenarDatosVenta(ref orderId);
+                        LlenarDatosDetalleVenta(orderId);
                         HabilitarControles();
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                         //U.NotificacionInformation(strProductoVenta + Utils.ses);

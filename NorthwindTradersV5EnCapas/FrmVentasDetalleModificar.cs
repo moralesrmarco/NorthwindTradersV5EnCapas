@@ -114,6 +114,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
@@ -346,23 +347,26 @@ namespace NorthwindTradersV5EnCapas
                 else if (numRegs == -3)
                     U.NotificacionError(strVenta + Utils.fepou);
                 else if (numRegs == -4)
-                    U.NotificacionError(strVenta + Utils.fmpou);
+                    U.NotificacionError(strProductoVenta + "\n[red]No fue actualizado en la base de datos.\n" + strVenta + Utils.fmpou);
                 else if (numRegs == -5)
                     U.NotificacionError(strProductoVenta + Utils.nfmcqn); // El campo Quantity del detalle de la venta es nulo
                 else if (numRegs == -6)
                     U.NotificacionError(strProductoVenta + Utils.nfmii); // Stock insuficiente
                 else
-                    U.NotificacionError(strProductoVenta + Utils.nfemd);
+                    U.NotificacionError(strProductoVenta + Utils.nfmmd);
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
                 DialogResult = DialogResult.Cancel;
+                CargarValoresOriginales();
+                this.Close();
+                return;
             }
             // La siguientes linea es necesaria para que se permita cerrar la ventana. 
             // ya que se validan las variables en FrmPedidosDetalleModificar_FormClosing
             CargarValoresOriginales();
-            if (numRegs <= 0)
+            if (numRegs == -3)
                 DialogResult = DialogResult.Cancel;
             else
                 DialogResult = DialogResult.OK;

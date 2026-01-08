@@ -35,7 +35,7 @@ namespace Utilities
             public const string nfmfm = "\n[red]NO fue actualizado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string nfmmd = "\n[red]NO fue actualizado en la base de datos por un motivo desconocido.";
             public const string nfmcqn = "\n[red]NO fue actualizado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\nEl registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmii = "\n[red]NO fue actualizado en la base de datos, el inventario del producto fue insuficiente. \nEl registro de productos fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+            public const string nfmii = "\n[red]NO fue actualizado en la base de datos, el inventario del producto fue insuficiente. \n[red]El registro de productos fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
             public const string ses = "\n[green]Se eliminó satisfactoriamente.";
             public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue borrado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
