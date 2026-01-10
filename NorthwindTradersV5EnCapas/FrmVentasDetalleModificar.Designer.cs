@@ -39,7 +39,7 @@
             this.btnModificar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.txtPedido = new System.Windows.Forms.TextBox();
+            this.txtId = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.nudDescuento = new Utilities.NudNoWheel();
             this.nudCantidad = new Utilities.NudNoWheel();
@@ -186,25 +186,25 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(86, 25);
+            this.label7.Location = new System.Drawing.Point(75, 25);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(63, 17);
+            this.label7.Size = new System.Drawing.Size(71, 17);
             this.label7.TabIndex = 9;
-            this.label7.Text = "Pedido:";
+            this.label7.Text = "Id venta:";
             // 
-            // txtPedido
+            // txtId
             // 
-            this.txtPedido.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.txtPedido.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPedido.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPedido.Location = new System.Drawing.Point(160, 20);
-            this.txtPedido.Margin = new System.Windows.Forms.Padding(4);
-            this.txtPedido.Name = "txtPedido";
-            this.txtPedido.ReadOnly = true;
-            this.txtPedido.Size = new System.Drawing.Size(132, 26);
-            this.txtPedido.TabIndex = 4;
-            this.txtPedido.TabStop = false;
+            this.txtId.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtId.Location = new System.Drawing.Point(160, 20);
+            this.txtId.Margin = new System.Windows.Forms.Padding(4);
+            this.txtId.Name = "txtId";
+            this.txtId.ReadOnly = true;
+            this.txtId.Size = new System.Drawing.Size(132, 26);
+            this.txtId.TabIndex = 4;
+            this.txtId.TabStop = false;
             // 
             // errorProvider1
             // 
@@ -511,7 +511,7 @@
             this.Controls.Add(this.nudCantidad);
             this.Controls.Add(this.nudUInventario);
             this.Controls.Add(this.nudPrecio);
-            this.Controls.Add(this.txtPedido);
+            this.Controls.Add(this.txtId);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnModificar);
@@ -569,7 +569,7 @@
         private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtPedido;
+        private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private Utilities.NudNoWheel nudDescuento;
         private Utilities.NudNoWheel nudCantidad;

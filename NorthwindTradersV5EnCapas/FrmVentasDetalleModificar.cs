@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -16,6 +17,7 @@ namespace NorthwindTradersV5EnCapas
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private Dictionary<string, object> valoresOriginales;
         private VentaDetalleBLL _ventaDetalleBLL;
+        private VentaBLL _ventaBLL;
 
         public VentaDetalle ventaDetalle { get; set; }
         private short CantidadOld { get; set; }
@@ -27,6 +29,7 @@ namespace NorthwindTradersV5EnCapas
         {
             InitializeComponent();
             _ventaDetalleBLL = new VentaDetalleBLL(_connectionString);
+            _ventaBLL = new VentaBLL(_connectionString);
         }
 
         private void FrmVentasDetalleModificar_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
@@ -50,7 +53,7 @@ namespace NorthwindTradersV5EnCapas
             LblImporteDelIVA.Text = "Importe del IVA " + simboloMoneda + ":";
             LblSubtotal.Text = "Subtotal " + simboloMoneda + ":";
             
-            txtPedido.Text = ventaDetalle.Venta.OrderID.ToString();
+            txtId.Text = ventaDetalle.Venta.OrderID.ToString();
             txtProducto.Text = ventaDetalle.Producto.ProductName;
             nudPrecio.Value = ventaDetalle.UnitPrice;
             nudUInventario.Value = ObtenerUInventario();
@@ -373,25 +376,13 @@ namespace NorthwindTradersV5EnCapas
             this.Close();
         }
 
-        private void nudCantidad_Leave(object sender, EventArgs e)
-        {
-            ValidarControles();
-        }
+        private void nudCantidad_Leave(object sender, EventArgs e) => ValidarControles();
 
-        private void nudDescuento_Leave(object sender, EventArgs e)
-        {
-            ValidarControles();
-        }
+        private void nudDescuento_Leave(object sender, EventArgs e) => ValidarControles();
 
-        private void nudCantidad_ValueChanged(object sender, EventArgs e)
-        {
-            ValidarControles();
-        }
+        private void nudCantidad_ValueChanged(object sender, EventArgs e) => ValidarControles();
 
-        private void nudDescuento_ValueChanged(object sender, EventArgs e)
-        {
-            ValidarControles();
-        }
+        private void nudDescuento_ValueChanged(object sender, EventArgs e) => ValidarControles();
 
         private void Nud_Enter(object sender, EventArgs e)
         {
@@ -401,6 +392,5 @@ namespace NorthwindTradersV5EnCapas
                 tb.BeginInvoke((Action)(() => tb.SelectAll()));
             }
         }
-
     }
 }

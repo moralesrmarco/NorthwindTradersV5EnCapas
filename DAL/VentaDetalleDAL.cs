@@ -149,7 +149,12 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@OrderID", orderId);
                     cmd.Parameters.AddWithValue("@ProductID", productId);
                     con.Open();
-                    return (byte[])cmd.ExecuteScalar();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result == null || result == DBNull.Value)
+                        return null; 
+
+                    return (byte[])result;
                 }
             }
             catch (Exception ex)
