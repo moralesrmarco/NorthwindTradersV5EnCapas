@@ -170,7 +170,7 @@ namespace NorthwindTradersV5EnCapas
                 return false;
             }
         }
-
+        // en si ValidarCantidad y ValidarInventario no son precisas en el caso en que otro usuario haya modificado el inventario (por la concurrencia optimista) entre el momento en que se cargó el formulario. Solo funcionarian bien en un entorno monousuario. Por lo que es más seguro que las validaciones se hagan en los stored procedures, como ya estan programados con esas validaciones.
         private bool ValidarCantidad()
         {
             decimal cantidadNueva = nudCantidad.Value;
@@ -355,6 +355,10 @@ namespace NorthwindTradersV5EnCapas
                     U.NotificacionError(strProductoVenta + Utils.nfmcqn); // El campo Quantity del detalle de la venta es nulo
                 else if (numRegs == -6)
                     U.NotificacionError(strProductoVenta + Utils.nfmii); // Stock insuficiente
+                else if (numRegs == -7)
+                    U.NotificacionError(strProductoVenta + Utils.nfmie); // Stock excedió el máximo permitido
+                else if (numRegs == -8)
+                    U.NotificacionError(strProductoVenta + Utils.nfmin); // stock negativo
                 else
                     U.NotificacionError(strProductoVenta + Utils.nfmmd);
             }

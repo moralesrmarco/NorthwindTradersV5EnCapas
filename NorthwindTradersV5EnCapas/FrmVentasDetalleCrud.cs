@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -65,6 +66,8 @@ namespace NorthwindTradersV5EnCapas
             DeshabilitarNudsNoSeleccionables();
             InicializarCboProducto();
             CargarValoresOriginales();
+            DgvDetalle.Columns["Modificar"].Visible = false;
+            DgvDetalle.Columns["Eliminar"].Visible = false;
         }
 
         private void CargarValoresOriginales()
@@ -670,9 +673,15 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var detalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(orderId);
                 if (detalles.Count == 0)
+                {
+                    DgvDetalle.Columns["Modificar"].Visible = false;
+                    DgvDetalle.Columns["Eliminar"].Visible = false;
                     U.NotificacionWarning("No se encontraron detalles para la venta especificada");
+                }
                 else
                 {
+                    DgvDetalle.Columns["Modificar"].Visible = true;
+                    DgvDetalle.Columns["Eliminar"].Visible = true;
                     foreach (var ventaDetalle in detalles)
                     {
                         DgvDetalle.Rows.Add(new object[]
@@ -731,11 +740,6 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (!chkRowVersion())
-            {
-                U.NotificacionWarning("La venta ha sido modificada por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
-                return;
-            }
             int numRegs = 0;
             BorrarMensajesError();
             if (ValidarControles())
@@ -753,6 +757,8 @@ namespace NorthwindTradersV5EnCapas
                     ventaDetalle.Discount = nudDescuento.Value / 100m;
                     ventaDetalle.Producto.ProductName = cboProducto.Text;
                     numRegs = _ventaDetalleBLL.Insertar(ventaDetalle);
+                    string strProductoVenta = $"El producto: {ventaDetalle.ProductName} - Venta: {ventaDetalle.Venta.OrderID}:";
+                    string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
                     if (numRegs > 0)
                     {
                         int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
@@ -760,14 +766,25 @@ namespace NorthwindTradersV5EnCapas
                         BorrarDatosDetalleVenta();
                         LlenarDatosVenta(ref orderId); // necesario para actualizar el RowVersion de la venta
                         LlenarDatosDetalleVenta(orderId);
-                        HabilitarControles();
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                         BtnNota.Enabled = true;
                         DgvDetalle.Focus();
-                        //U.NotificacionInformation($"El producto: {ventaDetalle.Producto.ProductName} de la venta: {ventaDetalle.Venta.OrderID}:" + Utils.srs);
                     }
+                    else if (numRegs == -1)
+                        U.NotificacionError(strProductoVenta + Utils.nfrfa);
+                    else if (numRegs == -3)
+                        U.NotificacionError(strVenta + Utils.fepou);
+                    else if (numRegs == -4)
+                        U.NotificacionError(strProductoVenta + "\n[red]No fue registrado en la base de datos.\n" + strVenta + Utils.fmpou);
+                    else if (numRegs == -6)
+                        U.NotificacionError(strProductoVenta + Utils.nfrii); // Stock insuficiente
+                    else if (numRegs == -7)
+                        U.NotificacionError(strProductoVenta + Utils.nfrie); // Stock excedió el máximo permitido
+                    else if (numRegs == -8)
+                        U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo
                     else
-                        U.NotificacionError($"El producto: {ventaDetalle.Producto.ProductName} de la venta: {ventaDetalle.Venta.OrderID}:" + Utils.nfrs);
+                        U.NotificacionError(strProductoVenta + Utils.nfrs); // motivo desconocido
+                    HabilitarControles();
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                 }
                 catch (Exception ex)
@@ -799,11 +816,6 @@ namespace NorthwindTradersV5EnCapas
             if (e.RowIndex < 0) return;
             try
             {
-                if (!chkRowVersion())
-                {
-                    U.NotificacionInformation("La venta ha sido modificada por otro usuario de la red, vuelva a cargar el registro para que se actualice con los datos proporcionados por el otro usuario");
-                    return;
-                }
                 if (e.ColumnIndex == DgvDetalle.Columns["Eliminar"].Index)
                 {
                     DataGridViewRow dgvr = DgvDetalle.CurrentRow;
@@ -811,8 +823,19 @@ namespace NorthwindTradersV5EnCapas
                     ventaDetalle.Venta.OrderID = int.Parse(txtId.Text);
                     ventaDetalle.Producto.ProductID = (int)dgvr.Cells["ProductoId"].Value;
                     ventaDetalle.Producto.ProductName = dgvr.Cells["Producto"].Value.ToString();
-                    ventaDetalle.RowVersion = (byte[])dgvr.Cells["RowVersion"].Value;
-                    ventaDetalle.Venta.RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()));
+                    object cellValue = dgvr.Cells["RowVersion"].Value;
+                    if (cellValue == null || cellValue == DBNull.Value) // para evitar excepcion devuelve null si el valor es dbnull
+                        ventaDetalle.RowVersion = null;
+                    else
+                        ventaDetalle.RowVersion = (byte[])cellValue;
+                    if (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long valor)) // para evitar excepcion devuelve null si el valor no es convertible a long
+                    {
+                        ventaDetalle.Venta.RowVersion = BitConverter.GetBytes(valor);
+                    }
+                    else
+                    {
+                        ventaDetalle.Venta.RowVersion = null; // o manejar el error según tu lógica
+                    }
                     EliminarProducto(ventaDetalle);
                     BtnNota.Enabled = true;
                 }
@@ -826,7 +849,9 @@ namespace NorthwindTradersV5EnCapas
                             Venta = new Venta()
                             {
                                 OrderID = int.Parse(txtId.Text),
-                                RowVersion = BitConverter.GetBytes(long.Parse(txtId.Tag.ToString()))
+                                RowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
+                                                ? BitConverter.GetBytes(tagVal)
+                                                : null // para evitar excepcion devuelve null si el valor no es convertible a long
                             },
                             Producto = new Producto()
                             {
@@ -836,7 +861,7 @@ namespace NorthwindTradersV5EnCapas
                             UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
                             Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
                             Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString()),
-                            RowVersion = (byte[])dgvr.Cells["RowVersion"].Value
+                            RowVersion = dgvr.Cells["RowVersion"].Value as byte[] // devuelve null si es DBNull o no es byte[]
                         };
                         frmVentasDetalleModificar.ventaDetalle = ventaDetalle;
                         DialogResult dialogResult = frmVentasDetalleModificar.ShowDialog();
@@ -864,6 +889,7 @@ namespace NorthwindTradersV5EnCapas
                 U.MsgCatchOue(ex);
             }
             MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
+            //?CargarValoresOriginales();
             DgvDetalle.Focus();
         }
 
@@ -889,9 +915,7 @@ namespace NorthwindTradersV5EnCapas
                         BorrarDatosDetalleVenta();
                         LlenarDatosVenta(ref orderId);
                         LlenarDatosDetalleVenta(orderId);
-                        HabilitarControles();
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
-                        //U.NotificacionInformation(strProductoVenta + Utils.ses);
                     }
                     else if (numRegs == -1)
                         U.NotificacionError(strProductoVenta + Utils.nfefe);
@@ -900,93 +924,67 @@ namespace NorthwindTradersV5EnCapas
                     else if (numRegs == -3)
                         U.NotificacionError(strVenta + Utils.fepou);
                     else if (numRegs == -4)
-                        U.NotificacionError(strVenta + Utils.fmpou);
+                        U.NotificacionError(strProductoVenta + "\n[red]No fue eliminado en la base de datos.\n" + strVenta + Utils.fmpou);
+                    else if (numRegs == -5)
+                        U.NotificacionError(strProductoVenta + Utils.nfecqn); // El campo Quantity del detalle de la venta es nulo
+                    // el caso -6 no existe en el stored procedure 
+                    else if (numRegs == -7)
+                        U.NotificacionError(strProductoVenta + Utils.nfeie); // Stock excedió el máximo permitido
+                    else if (numRegs == -8)
+                        U.NotificacionError(strProductoVenta + Utils.nfein); // stock negativo
                     else
                         U.NotificacionError(strProductoVenta + Utils.nfemd);
-                 }
+                }
+                HabilitarControles();
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
             }
-            // ?CargarValoresOriginales();
         }
 
         private void BtnNota_Click(object sender, EventArgs e)
         {
-            if (!chkRowVersion())
-                U.NotificacionInformation("La venta ha sido modificada previamente por otro usuario de la red.\n[black]Intente refrescar los datos.");
-            else
+            int result = chkRowVersion();
+            string strVenta = $"La venta con Id: {txtId.Text}:";
+            if (result == -1)
+                U.NotificacionError(strVenta + Utils.oevvd);
+            else if (result == -2)
+                U.NotificacionError(strVenta + Utils.fepou);
+            else if (result == -3)
+                U.NotificacionError(strVenta + Utils.fmpousmn);
+            else if (result == -4)
+                U.NotificacionError(strVenta + Utils.oed);
+            if (result == 1 || result == -3)
             {
                 FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
                 frmRptNotaRemision8.Id = int.Parse(txtId.Text);
                 frmRptNotaRemision8.ShowDialog();
             }
+            return;
         }
 
-        private bool chkRowVersion()
+        private int chkRowVersion()
         {
-            bool rowVersionOk = true;
-            //    if (txtId.Tag == null)
-            //        return true;
-            //    if (!int.TryParse(txtId.Text, out int pedidoId))
-            //        return false;
-            //    int rowVersion = (int)txtId.Tag;
-            //    try
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-            //        var repo = new PedidoRepository(cnStr);
-            //        Pedido pedido = repo.ObtenerPedidoPorId(pedidoId);
-            //        if (pedido == null || pedido.RowVersion != rowVersion)
-            //            return false;
-            //        // Validar filas del grid contra DB 
-            //        // 1) Validar que cada fila del grid exista en DB y coincida RowVersion
-            //        foreach (DataGridViewRow dgvr in DgvDetalle.Rows)
-            //        {
-            //            if (!int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int productoId))
-            //                return false;
-            //            if (!int.TryParse(dgvr.Cells["RowVersion"].Value?.ToString(), out int rowVersionGrid))
-            //                return false;
-            //            int? rowVersionDetalleEnDB = repo.DetallePedidosChkRowVersion(pedidoId, productoId);
-            //            if (!rowVersionDetalleEnDB.HasValue || rowVersionGrid != rowVersionDetalleEnDB.Value)
-            //                return false;
-            //        }
-            //        // Validar que DB no tenga detalles adicionales
-            //        // 2) Validar que cada detalle en DB exista en el grid y coincida RowVersion
-            //        List<PedidoDetalle> pedidoDetalles = repo.ObtenerDetallePedidoPorPedidoId(pedidoId);
-
-            //        if (pedidoDetalles != null)
-            //        {
-            //            // Construir diccionario del grid para búsquedas O(1)
-            //            var gridMap = new Dictionary<int, int>(); // productoId -> rowVersionGrid
-            //            foreach (DataGridViewRow dgvr in DgvDetalle.Rows)
-            //            {
-            //                if (int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int pid) &&
-            //                    int.TryParse(dgvr.Cells["RowVersion"].Value?.ToString(), out int rv))
-            //                {
-            //                    gridMap[pid] = rv;
-            //                }
-            //            }
-            //            foreach (var pd in pedidoDetalles)
-            //            {
-            //                if (!gridMap.TryGetValue(pd.ProductID, out int rowVersionGrid) || rowVersionGrid != pd.RowVersion)
-            //                    return false;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // Política: si DB no tiene detalles y el grid sí, considerarlo inconsistente
-            //            if (DgvDetalle.Rows.Count > 0)
-            //                return false;
-            //        }
-            //        MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvPedidos.RowCount} registros en pedidos");
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Utils.MsgCatchOue(ex);
-            //        return false;
-            //    }
-            return rowVersionOk;
+            if (txtId.Tag == null)
+                return -1;
+            byte[] rowVersion = txtId.Tag as byte[];
+            try
+            {
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                Venta venta = _ventaBLL.ObtenerVentaPorId(int.Parse(txtId.Text));
+                if (venta == null)
+                    return -2;
+                if (!venta.RowVersion.SequenceEqual(rowVersion))
+                    return -3;
+                MDIPrincipal.ActualizarBarraDeEstado();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+                return -4;
+            }
         }
     }
 }

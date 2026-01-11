@@ -30,6 +30,7 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@Quantity", ventaDetalle.Quantity);
                     cmd.Parameters.AddWithValue("@Discount", ventaDetalle.Discount);
                     cmd.Parameters.AddWithValue("@TasaIVA", ventaDetalle.TasaIVA);
+
                     con.Open();
                     return cmd.ExecuteNonQuery();
                 }
