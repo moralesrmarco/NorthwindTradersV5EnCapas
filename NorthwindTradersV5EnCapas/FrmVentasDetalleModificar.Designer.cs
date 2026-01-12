@@ -63,6 +63,8 @@
             this.pbInfo1 = new System.Windows.Forms.PictureBox();
             this.pbError1 = new System.Windows.Forms.PictureBox();
             this.pbWarning1 = new System.Windows.Forms.PictureBox();
+            this.LblImporteSinIVA = new System.Windows.Forms.Label();
+            this.nudImporteSinIVA = new Utilities.NudNoWheel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
@@ -80,6 +82,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbError1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudImporteSinIVA)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -162,7 +165,7 @@
             // 
             this.btnModificar.Enabled = false;
             this.btnModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnModificar.Location = new System.Drawing.Point(398, 471);
+            this.btnModificar.Location = new System.Drawing.Point(398, 517);
             this.btnModificar.Margin = new System.Windows.Forms.Padding(4);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(139, 28);
@@ -173,7 +176,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(551, 471);
+            this.btnCancelar.Location = new System.Drawing.Point(551, 517);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(100, 28);
@@ -304,19 +307,19 @@
             // LblImporteDelIVA
             // 
             this.LblImporteDelIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblImporteDelIVA.Location = new System.Drawing.Point(46, 424);
+            this.LblImporteDelIVA.Location = new System.Drawing.Point(13, 470);
             this.LblImporteDelIVA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblImporteDelIVA.Name = "LblImporteDelIVA";
-            this.LblImporteDelIVA.Size = new System.Drawing.Size(103, 39);
+            this.LblImporteDelIVA.Size = new System.Drawing.Size(136, 39);
             this.LblImporteDelIVA.TabIndex = 0;
-            this.LblImporteDelIVA.Text = "Importe del IVA $:";
+            this.LblImporteDelIVA.Text = "Importe del IVA (Incluido) $:";
             this.LblImporteDelIVA.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // LblSubtotal
             // 
             this.LblSubtotal.AutoSize = true;
             this.LblSubtotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblSubtotal.Location = new System.Drawing.Point(62, 478);
+            this.LblSubtotal.Location = new System.Drawing.Point(62, 524);
             this.LblSubtotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblSubtotal.Name = "LblSubtotal";
             this.LblSubtotal.Size = new System.Drawing.Size(87, 17);
@@ -327,7 +330,7 @@
             // 
             this.nudImporteDelIVA.DecimalPlaces = 2;
             this.nudImporteDelIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudImporteDelIVA.Location = new System.Drawing.Point(160, 432);
+            this.nudImporteDelIVA.Location = new System.Drawing.Point(160, 478);
             this.nudImporteDelIVA.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -378,7 +381,7 @@
             // 
             this.nudSubtotal.DecimalPlaces = 2;
             this.nudSubtotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotal.Location = new System.Drawing.Point(160, 473);
+            this.nudSubtotal.Location = new System.Drawing.Point(160, 519);
             this.nudSubtotal.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -489,12 +492,42 @@
             this.pbWarning1.TabIndex = 30;
             this.pbWarning1.TabStop = false;
             // 
+            // LblImporteSinIVA
+            // 
+            this.LblImporteSinIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblImporteSinIVA.Location = new System.Drawing.Point(60, 425);
+            this.LblImporteSinIVA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LblImporteSinIVA.Name = "LblImporteSinIVA";
+            this.LblImporteSinIVA.Size = new System.Drawing.Size(86, 39);
+            this.LblImporteSinIVA.TabIndex = 31;
+            this.LblImporteSinIVA.Text = "Importe sin IVA $:";
+            this.LblImporteSinIVA.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // nudImporteSinIVA
+            // 
+            this.nudImporteSinIVA.DecimalPlaces = 2;
+            this.nudImporteSinIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudImporteSinIVA.Location = new System.Drawing.Point(162, 432);
+            this.nudImporteSinIVA.Maximum = new decimal(new int[] {
+            -727379968,
+            232,
+            0,
+            0});
+            this.nudImporteSinIVA.Name = "nudImporteSinIVA";
+            this.nudImporteSinIVA.Size = new System.Drawing.Size(167, 23);
+            this.nudImporteSinIVA.TabIndex = 32;
+            this.nudImporteSinIVA.TabStop = false;
+            this.nudImporteSinIVA.ThousandsSeparator = true;
+            this.nudImporteSinIVA.WheelEnabled = true;
+            // 
             // FrmVentasDetalleModificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 571);
+            this.ClientSize = new System.Drawing.Size(698, 617);
             this.ControlBox = false;
+            this.Controls.Add(this.nudImporteSinIVA);
+            this.Controls.Add(this.LblImporteSinIVA);
             this.Controls.Add(this.pbWarning1);
             this.Controls.Add(this.pbWarning);
             this.Controls.Add(this.pbError1);
@@ -552,6 +585,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbError1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudImporteSinIVA)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -593,5 +627,7 @@
         private System.Windows.Forms.PictureBox pbWarning1;
         private System.Windows.Forms.PictureBox pbError1;
         private System.Windows.Forms.PictureBox pbInfo1;
+        private Utilities.NudNoWheel nudImporteSinIVA;
+        private System.Windows.Forms.Label LblImporteSinIVA;
     }
 }

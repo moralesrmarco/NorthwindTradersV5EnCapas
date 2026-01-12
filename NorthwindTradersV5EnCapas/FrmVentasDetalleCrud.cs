@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -23,6 +24,8 @@ namespace NorthwindTradersV5EnCapas
         private VentaDetalleBLL _ventaDetalleBLL;
         private readonly CategoriaService _categoriaService;
         private ProductoService _productoService;
+        private short CantidadOld = 0;
+        private short UInventarioOld = 0;
 
         public FrmVentasDetalleCrud()
         {
@@ -52,11 +55,13 @@ namespace NorthwindTradersV5EnCapas
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
             LblPrecio.Text = "Precio " + simboloMoneda + ":";
-            LblSubtotalDelImporte.Text = "Subtotal del importe " + simboloMoneda + ":";
-            LblSubtotalDelImporteDelDescuento.Text = "Subtotal del importe del descuento " + simboloMoneda + ":";
-            LblSubtotalDelImporteConDescuento.Text = "Subtotal del importe con descuento " + simboloMoneda + ":";
-            LblSubtotalDelImporteDelIVA.Text = "Subtotal del importe del IVA " + simboloMoneda + ":";
+            LblSubtotalDelImporte.Text = LblSubtotalDelImporte2.Text = "Subtotal del importe " + simboloMoneda + ":";
+            LblSubtotalDelImporteDelDescuento.Text = LblSubtotalDelImporteDelDescuento2.Text = "Subtotal del importe del descuento " + simboloMoneda + ":";
+            LblSubtotalDelImporteConDescuento.Text = LblSubtotalDelImporteConDescuento2.Text = "Subtotal del importe con descuento " + simboloMoneda + ":";
+            LblSubtotalDelImporteSinIVA.Text = LblSubtotalDelImporteSinIVA2.Text = "Subtotal del importe sin IVA " + simboloMoneda + ":";
+            LblSubtotalDelImporteDelIVA.Text = LblSubtotalDelImporteDelIVA2.Text = "Subtotal del importe del IVA (Incluido) " + simboloMoneda + ":";
             LblTotal.Text = "Total " + simboloMoneda + ":";
+            LblTotal2.Text = "Total del producto " + simboloMoneda + ":";
             LlenarCboCategoria();
             LlenarDgvVentas(false);
             Utils.ConfDgv(DgvVentas);
@@ -84,8 +89,15 @@ namespace NorthwindTradersV5EnCapas
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporte, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelDescuento, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVA, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVA, false);
             Utilities.NudHelper.SetEnabled(nudTotal, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporte2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVA2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVA2, false);
+            Utilities.NudHelper.SetEnabled(nudTotal2, false);
         }
 
         private void DeshabilitarCantidadDescuento()
@@ -117,22 +129,41 @@ namespace NorthwindTradersV5EnCapas
 
         private void InicializarNuds() 
         { 
-            nudNumProd.Value = nudTotalDeUnidades.Value = nudSubtotalDelImporte.Value = nudSubtotalDelImporteDelDescuento.Value = nudSubtotalDelImporteConDescuento.Value = nudSubtotalDelImporteDelIVA.Value = nudTotal.Value = 0;
+            nudNumProd.Value = nudTotalDeUnidades.Value = nudSubtotalDelImporte.Value = nudSubtotalDelImporteDelDescuento.Value = nudSubtotalDelImporteConDescuento.Value = nudSubtotalDelImporteSinIVA.Value = nudSubtotalDelImporteDelIVA.Value = nudTotal.Value = 0;
+            InicializarNudsProducto();
+        }
+
+        private void InicializarVenta()
+        {
+            txtId.Text = txtCliente.Text = "";
+            txtId.Tag = null;
+            InicializarNuds();
+            DgvDetalle.Rows.Clear();
+        }
+
+        private void InicializarNudsProducto()
+        {
+            nudSubtotalDelImporte2.Value = nudSubtotalDelImporteDelDescuento2.Value = nudSubtotalDelImporteConDescuento2.Value = nudSubtotalDelImporteSinIVA2.Value = nudSubtotalDelImporteDelIVA2.Value = nudTotal2.Value = 0;
         }
 
         private void DeshabilitarControles()
         {
-            cboCategoria.Enabled = cboProducto.Enabled = false;
+            cboProducto.Enabled = false;
             btnAgregar.Enabled = false;
         }
 
         private void HabilitarControles()
         {
-            cboCategoria.Enabled = cboProducto.Enabled = true;
-            btnAgregar.Enabled = true;
+            cboCategoria.Enabled = true;
         }
 
-        private void DeshabilitarControlesProducto() => DeshabilitarCantidadDescuento();
+        private void DeshabilitarControlesProducto()
+        {
+            DeshabilitarCantidadDescuento();
+            OcultarIconosValidacion();
+            btnAgregar.Enabled = false;
+            cboProducto.Enabled = false;
+        }
 
         private void HabilitarControlesProducto() => HabilitarCantidadDescuento();
 
@@ -236,6 +267,7 @@ namespace NorthwindTradersV5EnCapas
             DgvDetalle.Columns["ImporteDelDescuento"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             DgvDetalle.Columns["ImporteConDescuento"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             DgvDetalle.Columns["TasaIVA"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            DgvDetalle.Columns["ImporteSinIVA"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             DgvDetalle.Columns["ImporteDelIVA"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             DgvDetalle.Columns["Subtotal"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
@@ -247,6 +279,7 @@ namespace NorthwindTradersV5EnCapas
             DgvDetalle.Columns["ImporteDelDescuento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["ImporteConDescuento"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["TasaIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvDetalle.Columns["ImporteSinIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["ImporteDelIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["Subtotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -264,6 +297,7 @@ namespace NorthwindTradersV5EnCapas
             DgvDetalle.Columns["ImporteDelDescuento"].DefaultCellStyle.Format = "c2";
             DgvDetalle.Columns["ImporteConDescuento"].DefaultCellStyle.Format = "c2";
             DgvDetalle.Columns["TasaIVA"].DefaultCellStyle.Format = "p2";
+            DgvDetalle.Columns["ImporteSinIVA"].DefaultCellStyle.Format = "c2";
             DgvDetalle.Columns["ImporteDelIVA"].DefaultCellStyle.Format = "c2";
             DgvDetalle.Columns["Subtotal"].DefaultCellStyle.Format = "c2";
         }
@@ -306,6 +340,7 @@ namespace NorthwindTradersV5EnCapas
 
         private bool ValidarControles()
         {
+            errorProvider1.Clear();
             bool valida = true;
             if (cboCategoria.SelectedIndex <= 0)
             {
@@ -316,16 +351,6 @@ namespace NorthwindTradersV5EnCapas
             {
                 valida = false;
                 errorProvider1.SetError(cboProducto, "Seleccione el producto");
-            }
-            if (nudCantidad.Value <= 0)
-            {
-                valida = false;
-                errorProvider1.SetError(nudCantidad, "La cantidad debe ser mayor que cero");
-            }
-            if (nudCantidad.Value > nudUInventario.Value)
-            {
-                valida = false;
-                errorProvider1.SetError(nudCantidad, "La cantidad de productos en la venta excede el inventario disponible");
             }
             if (cboProducto.SelectedIndex > 0)
             {
@@ -350,8 +375,9 @@ namespace NorthwindTradersV5EnCapas
             ventaDetalle.UnitPrice = nudPrecio.Value;
             ventaDetalle.Quantity = (short)nudCantidad.Value;
             ventaDetalle.Discount = nudDescuento.Value / 100m;
+            CalcularTotalProducto(ventaDetalle);
             if (ventaDetalle.Subtotal == 0 && nudTotal.Value == 0)
-            { 
+            {
                 valida = false;
                 if (nudCantidad.Value == 0)
                     errorProvider1.SetError(btnAgregar, "Ingrese el detalle del pedido");
@@ -359,8 +385,96 @@ namespace NorthwindTradersV5EnCapas
                     errorProvider1.SetError(btnAgregar, "El valor del subtotal del detalle no puede ser cero");
                 errorProvider1.SetError(nudTotal, "El total de la venta no puede ser cero");
             }
-            return valida;
+            decimal cantidadNueva = nudCantidad.Value;
+            decimal cantidadVieja = CantidadOld;
+            decimal inventarioViejo = UInventarioOld;
+
+            // Stock total disponible para este pedido (reservado + inventario)
+            decimal disponible = inventarioViejo + cantidadVieja;
+
+            // Inventario remanente REAL en DB después de reservar la nueva cantidad
+            decimal inventarioNuevoDb = disponible - cantidadNueva;
+
+            // Aplica límites del NumericUpDown solo para mostrar en UI
+            decimal inventarioNuevoUi = inventarioNuevoDb;
+            inventarioNuevoUi = Math.Min(inventarioNuevoUi, nudUInventario.Maximum);
+            inventarioNuevoUi = Math.Max(inventarioNuevoUi, nudUInventario.Minimum);
+            nudUInventario.Value = inventarioNuevoUi;
+
+            // Validación informativa (inventario)
+            ValidarInventario(); // no afecta el retorno, solo muestra íconos
+
+            // Valida reglas de negocio con StatusIconHelper
+            // Validación restrictiva (cantidad)
+            if (!ValidarCantidad())
+            {
+                valida = false;
+                btnAgregar.Enabled = false;
+            }
+            else
+                btnAgregar.Enabled = true;
+
+                return valida;
         }
+
+        //private bool ValidarControles()
+        //{
+        //    errorProvider1.Clear();
+        //    bool valida = true;
+        //    if (cboCategoria.SelectedIndex <= 0)
+        //    {
+        //        valida = false;
+        //        errorProvider1.SetError(cboCategoria, "Seleccione la categoría");
+        //    }
+        //    if (cboProducto.SelectedIndex <= 0)
+        //    {
+        //        valida = false;
+        //        errorProvider1.SetError(cboProducto, "Seleccione el producto");
+        //    }
+        //    if (nudCantidad.Value <= 0)
+        //    {
+        //        valida = false;
+        //        errorProvider1.SetError(nudCantidad, "La cantidad debe ser mayor que cero");
+        //    }
+        //    if (nudCantidad.Value > nudUInventario.Value)
+        //    {
+        //        valida = false;
+        //        errorProvider1.SetError(nudCantidad, "La cantidad de productos en la venta excede el inventario disponible");
+        //    }
+        //    if (cboProducto.SelectedIndex > 0)
+        //    {
+        //        int numProd = int.Parse(cboProducto.SelectedValue.ToString());
+        //        bool productoDuplicado = false;
+        //        foreach (DataGridViewRow dgvr in DgvDetalle.Rows)
+        //        {
+        //            if (int.Parse(dgvr.Cells["ProductoId"].Value.ToString()) == numProd)
+        //            {
+        //                productoDuplicado = true;
+        //                break;
+        //            }
+        //        }
+        //        if (productoDuplicado)
+        //        {
+        //            valida = false;
+        //            errorProvider1.SetError(cboProducto, "No se puede tener un producto duplicado en el detalle del pedido");
+        //        }
+        //    }
+        //    // necesario crear un objeto temporal para calcular el subtotal con la formulas ya definidas en la clase VentaDetalle
+        //    VentaDetalle ventaDetalle = new VentaDetalle();
+        //    ventaDetalle.UnitPrice = nudPrecio.Value;
+        //    ventaDetalle.Quantity = (short)nudCantidad.Value;
+        //    ventaDetalle.Discount = nudDescuento.Value / 100m;
+        //    if (ventaDetalle.Subtotal == 0 && nudTotal.Value == 0)
+        //    { 
+        //        valida = false;
+        //        if (nudCantidad.Value == 0)
+        //            errorProvider1.SetError(btnAgregar, "Ingrese el detalle del pedido");
+        //        else if (ventaDetalle.Subtotal == 0)
+        //            errorProvider1.SetError(btnAgregar, "El valor del subtotal del detalle no puede ser cero");
+        //        errorProvider1.SetError(nudTotal, "El total de la venta no puede ser cero");
+        //    }
+        //    return valida;
+        //}
 
         private void BorrarDatosBusqueda()
         {
@@ -389,15 +503,14 @@ namespace NorthwindTradersV5EnCapas
 
         private void nudBIdFin_ValueChanged(object sender, EventArgs e) => Utils.ValidarRango(sender, nudBIdIni, nudBIdFin);
 
-        private void nudCantidad_ValueChanged(object sender, EventArgs e)
-        {
-            if (nudCantidad.Value > nudUInventario.Value)
-            {
-                U.NotificacionWarning("La cantidad de unidades vendidas no puede ser mayor a la existencia en inventario");
-                nudCantidad.Value = nudUInventario.Value;
-            }
-        }
-        
+        private void nudCantidad_Leave(object sender, EventArgs e) => ValidarControles();
+
+        private void nudDescuento_Leave(object sender, EventArgs e) => ValidarControles();
+
+        private void nudCantidad_ValueChanged(object sender, EventArgs e) => ValidarControles();
+
+        private void nudDescuento_ValueChanged(object sender, EventArgs e) => ValidarControles();
+
         private void dtpBFPedidoIni_ValueChanged(object sender, EventArgs e)
         {
             if (dtpBFVentaIni.Checked)
@@ -581,10 +694,13 @@ namespace NorthwindTradersV5EnCapas
                     {
                         nudPrecio.Value = dtoProductoCostoInventario.UnitPrice;
                         nudUInventario.Value = dtoProductoCostoInventario.UnitsInStock;
+                        UInventarioOld = short.Parse(dtoProductoCostoInventario.UnitsInStock.ToString());
+                        ValidarCantidad();
+                        ValidarInventario();
                         if (dtoProductoCostoInventario.UnitsInStock == 0)
                         {
                             DeshabilitarControlesProducto();
-                            U.NotificacionWarning("No hay este producto en existencia");
+                            U.NotificacionWarning("No hay este producto en existencia.");
                             cboProducto.SelectedIndex = 0;
                             InicializarValoresAgregarProducto();
                         }
@@ -634,6 +750,7 @@ namespace NorthwindTradersV5EnCapas
                 BorrarDatosVenta();
             }
             CargarValoresOriginales();
+            DgvDetalle.Focus();
         }
 
         private void LlenarDatosVenta(ref int orderId)
@@ -695,6 +812,7 @@ namespace NorthwindTradersV5EnCapas
                             ventaDetalle.ImporteDelDescuento,
                             ventaDetalle.ImporteConDescuento,
                             ventaDetalle.TasaIVA,
+                            ventaDetalle.ImporteSinIVA,
                             ventaDetalle.ImporteDelIVA,
                             ventaDetalle.Subtotal,
                             "  Modificar  ",
@@ -714,19 +832,30 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
+        private void CalcularTotalProducto(VentaDetalle ventaDetalle)
+        {
+            nudSubtotalDelImporte2.Value = ventaDetalle.Importe;
+            nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
+            nudSubtotalDelImporteConDescuento2.Value = ventaDetalle.ImporteConDescuento;
+            nudSubtotalDelImporteSinIVA2.Value = ventaDetalle.ImporteSinIVA;
+            nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.ImporteDelIVA;
+            nudTotal2.Value = ventaDetalle.Subtotal;
+        }
+
         private void CalcularTotales()
         {
-            decimal importe, total, totalDeUnidades, subtotalDelImporte, subtotalDelImporteDelDescuento, subtotalDelImporteConDescuento, subtotalDelImporteDelIVA;
-            importe = total = totalDeUnidades = subtotalDelImporte = subtotalDelImporteDelDescuento = subtotalDelImporteConDescuento = subtotalDelImporteDelIVA = 0;
+            decimal importe, total, totalDeUnidades, subtotalDelImporte, subtotalDelImporteDelDescuento, subtotalDelImporteConDescuento, subtotalDelImporteSinIVA, subtotalDelImporteDelIVA;
+            importe = total = totalDeUnidades = subtotalDelImporte = subtotalDelImporteDelDescuento = subtotalDelImporteConDescuento = subtotalDelImporteSinIVA = subtotalDelImporteDelIVA = 0;
             numDetalle = 0;
             foreach (DataGridViewRow dgvr in DgvDetalle.Rows)
             {
                 totalDeUnidades += decimal.Parse(dgvr.Cells["Cantidad"].Value.ToString());
-                subtotalDelImporte += Math.Round(decimal.Parse(dgvr.Cells["Importe"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
-                subtotalDelImporteDelDescuento += Math.Round(decimal.Parse(dgvr.Cells["ImporteDelDescuento"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
-                subtotalDelImporteConDescuento += Math.Round(decimal.Parse(dgvr.Cells["ImporteConDescuento"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
-                subtotalDelImporteDelIVA += Math.Round(decimal.Parse(dgvr.Cells["ImporteDelIVA"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
-                total += Math.Round(decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString()), 2, MidpointRounding.AwayFromZero);
+                subtotalDelImporte += decimal.Parse(dgvr.Cells["Importe"].Value.ToString());
+                subtotalDelImporteDelDescuento += decimal.Parse(dgvr.Cells["ImporteDelDescuento"].Value.ToString());
+                subtotalDelImporteConDescuento += decimal.Parse(dgvr.Cells["ImporteConDescuento"].Value.ToString());
+                subtotalDelImporteSinIVA += decimal.Parse(dgvr.Cells["ImporteSinIVA"].Value.ToString());
+                subtotalDelImporteDelIVA += decimal.Parse(dgvr.Cells["ImporteDelIVA"].Value.ToString());
+                total += decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString());
                 dgvr.Cells["Id"].Value = ++numDetalle;
             }
             nudNumProd.Value = numDetalle;
@@ -734,6 +863,7 @@ namespace NorthwindTradersV5EnCapas
             nudSubtotalDelImporte.Value = subtotalDelImporte;
             nudSubtotalDelImporteDelDescuento.Value = subtotalDelImporteDelDescuento;
             nudSubtotalDelImporteConDescuento.Value = subtotalDelImporteConDescuento;
+            nudSubtotalDelImporteSinIVA.Value = subtotalDelImporteSinIVA;
             nudSubtotalDelImporteDelIVA.Value = subtotalDelImporteDelIVA;
             nudTotal.Value = total;
         }
@@ -742,6 +872,7 @@ namespace NorthwindTradersV5EnCapas
         {
             int numRegs = 0;
             BorrarMensajesError();
+            btnAgregar.Enabled = false;
             if (ValidarControles())
             {
                 try
@@ -751,6 +882,9 @@ namespace NorthwindTradersV5EnCapas
                     DeshabilitarControlesProducto();
                     VentaDetalle ventaDetalle = new VentaDetalle();
                     ventaDetalle.Venta.OrderID = int.Parse(txtId.Text);
+                    ventaDetalle.Venta.RowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
+                                                ? BitConverter.GetBytes(tagVal)
+                                                : null; // para evitar excepcion devuelve null si el valor no es convertible a long
                     ventaDetalle.Producto.ProductID = int.Parse(cboProducto.SelectedValue.ToString());
                     ventaDetalle.UnitPrice = nudPrecio.Value;
                     ventaDetalle.Quantity = Convert.ToInt16(nudCantidad.Value);
@@ -766,8 +900,8 @@ namespace NorthwindTradersV5EnCapas
                         BorrarDatosDetalleVenta();
                         LlenarDatosVenta(ref orderId); // necesario para actualizar el RowVersion de la venta
                         LlenarDatosDetalleVenta(orderId);
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                         BtnNota.Enabled = true;
+                        CargarValoresOriginales();
                         DgvDetalle.Focus();
                     }
                     else if (numRegs == -1)
@@ -784,7 +918,19 @@ namespace NorthwindTradersV5EnCapas
                         U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo
                     else
                         U.NotificacionError(strProductoVenta + Utils.nfrs); // motivo desconocido
-                    HabilitarControles();
+                    if (numRegs <= 0)
+                    {
+                        DeshabilitarControles();
+                        BorrarDatosDetalleVenta();
+                        if (numRegs == -3)
+                        {
+                            BorrarDatosVenta();
+                            LlenarDgvVentas(false);
+                            CargarValoresOriginales();
+                        }
+                    }
+                    else
+                        HabilitarControles();
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                 }
                 catch (Exception ex)
@@ -889,7 +1035,6 @@ namespace NorthwindTradersV5EnCapas
                 U.MsgCatchOue(ex);
             }
             MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
-            //?CargarValoresOriginales();
             DgvDetalle.Focus();
         }
 
@@ -915,6 +1060,7 @@ namespace NorthwindTradersV5EnCapas
                         BorrarDatosDetalleVenta();
                         LlenarDatosVenta(ref orderId);
                         LlenarDatosDetalleVenta(orderId);
+                        CargarValoresOriginales();
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                     }
                     else if (numRegs == -1)
@@ -962,6 +1108,130 @@ namespace NorthwindTradersV5EnCapas
                 frmRptNotaRemision8.ShowDialog();
             }
             return;
+        }
+
+        // en si ValidarCantidad y ValidarInventario no son precisas en el caso en que otro usuario haya modificado el inventario en otra sesion (por la concurrencia optimista) entre el momento en que se cargó el formulario y se realiza la modificación. Solo funcionarían bien si no hubiera concurrencia de otro usuario al mismo tiempo. Por lo que es más seguro que las validaciones se hagan en los stored procedures, como ya estan programados con esas validaciones. Los mensajes se dejaran como warnings
+
+        private bool ValidarCantidad()
+        {
+            decimal cantidadNueva = nudCantidad.Value;
+            decimal cantidadVieja = CantidadOld;
+            decimal inventarioViejo = UInventarioOld;
+
+            // Stock disponible total para este pedido
+            decimal disponible = inventarioViejo + cantidadVieja;
+            // Inventario inicial real (solo lo que había en almacén)
+            decimal inventarioInicial = disponible - cantidadVieja;
+            // Inventario remanente REAL en DB después de reservar la nueva cantidad
+            decimal inventarioNuevoDb = disponible - cantidadNueva;
+            decimal inventarioActual = nudUInventario.Value;
+            const decimal SmallintMax = 32767M;
+
+            // Condiciones de error
+            bool condErrorCantidadCero = cantidadNueva <= 0;
+
+            bool showError = condErrorCantidadCero;
+
+            // Construir mensaje acumulado
+            string errorMsg = "";
+            if (condErrorCantidadCero)
+                errorMsg += "- La cantidad debe ser mayor que cero.\n\n";
+            errorMsg += "No se puede realizar la operación;";
+            // Información
+            bool showInfo = cantidadNueva >= 0;
+            // Warnings
+            bool condWarningInventarioCero = inventarioActual == 0;
+            bool condWarningInventarioBajo = inventarioActual > 0 && inventarioActual <= 50;
+            bool condWarningExcedeInvent = cantidadNueva > disponible;
+            bool condWarningOverflowSmall = inventarioNuevoDb > SmallintMax;
+
+            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo || condWarningExcedeInvent || condWarningOverflowSmall;
+
+            string warningMsg = "";
+            string msgPreventivo = "Los siguientes mensajes son solo preventivos, las validaciones reales\nse realizarán del lado del servidor SQL, debido a la concurrencia de usuarios (concurrencia optimista).";
+            if (condWarningInventarioCero)
+                warningMsg += "- No hay este producto en existencia.\n\n";
+            if (condWarningInventarioBajo)
+                warningMsg += "- La existencia en inventario es baja.\n\n";
+            if (condWarningExcedeInvent)
+                warningMsg += $"- La cantidad excede el inventario inicial disponible ({inventarioInicial}).\n\n";
+            if (condWarningOverflowSmall)
+                warningMsg += "- La cantidad de producto devuelto más las unidades en inventario\n  excede el límite maximo que se puede almacenar en la base de datos (32,767 unidades).";
+            if (warningMsg != "")
+                warningMsg = msgPreventivo + "\n\n" + warningMsg;
+            // Mostrar íconos con StatusIconHelper
+            StatusIconHelper.ShowIcons(
+                nudCantidad,
+                toolTip1,
+                (pbError, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
+                (pbInfo, (Image)SystemIcons.Information.ToBitmap(),
+                    "- La cantidad de producto devuelto se añade al inventario.\n\n- La cantidad de producto añadido se descuenta del inventario.",
+                    showInfo),
+                (pbWarning, (Image)SystemIcons.Warning.ToBitmap(),
+                    warningMsg,
+                    showWarning)
+            );
+
+            return !showError;
+        }
+
+        private void ValidarInventario()
+        {
+            decimal cantidadNueva = nudCantidad.Value;
+            decimal cantidadVieja = CantidadOld;
+            decimal inventarioViejo = UInventarioOld;
+
+            // Stock total disponible para este pedido
+            decimal disponible = inventarioViejo + cantidadVieja;
+            // Inventario remanente REAL en DB después de reservar la nueva cantidad
+            decimal inventarioNuevoDb = disponible - cantidadNueva;
+            decimal inventarioActual = nudUInventario.Value;
+
+            const decimal SmallintMax = 32767M;
+            // Errores (ninguno por ahora)
+            bool showError = false;
+            string errorMsg = "";
+
+            // Información (siempre mostrar)
+            bool showInfo = true;
+
+            // Warnings
+            bool condWarningInventarioCero = inventarioActual == 0;
+            bool condWarningInventarioBajo = inventarioActual > 0 && inventarioActual <= 50;
+            bool condWarningExcedeInvent = cantidadNueva > disponible;
+            bool condWarningOverflowSmall = inventarioNuevoDb > SmallintMax;
+
+            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo || condWarningExcedeInvent || condWarningOverflowSmall;
+
+            string warningMsg = "";
+            string msgPreventivo = "Los siguientes mensajes son solo preventivos, las validaciones reales\nse realizarán del lado del servidor SQL, debido a la concurrencia de usuarios (concurrencia optimista).";
+            if (condWarningInventarioCero)
+                warningMsg += "- No hay este producto en existencia.\n\n";
+            if (condWarningInventarioBajo)
+                warningMsg += "- La existencia en inventario es baja.\n\n";
+            if (condWarningExcedeInvent)
+                warningMsg += $"- La cantidad excede el inventario inicial disponible ({disponible - cantidadVieja}).\n\n";
+            if (condWarningOverflowSmall)
+                warningMsg += "- La cantidad de producto devuelto más las unidades en inventario\n  excede el límite maximo que se puede almacenar en la base de datos (32,767 unidades).";
+            if (warningMsg != "")
+                warningMsg = msgPreventivo + "\n\n" + warningMsg;
+            // Mostrar íconos con StatusIconHelper en nudUInventario
+            StatusIconHelper.ShowIcons(
+                nudUInventario,
+                toolTip1,
+                (pbError1, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
+                (pbInfo1, (Image)SystemIcons.Information.ToBitmap(),
+                    "- La cantidad de producto devuelto se añade al inventario.\n\n" +
+                    "- La cantidad de producto añadido se descuenta del inventario.",
+                    showInfo),
+                (pbWarning1, (Image)SystemIcons.Warning.ToBitmap(), warningMsg, showWarning)
+            );
+        }
+
+        private void OcultarIconosValidacion()
+        {
+            StatusIconHelper.HideIcons(pbError, pbInfo, pbWarning);
+            StatusIconHelper.HideIcons(pbError1, pbInfo1, pbWarning1);
         }
 
         private int chkRowVersion()

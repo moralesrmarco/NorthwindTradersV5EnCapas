@@ -16,49 +16,51 @@ namespace Utilities
     public static class Utils
     {
         #region VariablesGlobales
-            public static readonly decimal TasaIVA = Convert.ToDecimal(ConfigurationManager.AppSettings["TasaIVA"]);
-            public static string nwtr => ConfigurationManager.AppSettings["nwtr"];
-            public const string clbdd = "Consultando la base de datos... ";
-            public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
-            public const string oue = "Ocurrio un error:\n";
-            public const string preguntaCerrar = "[orange]Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
-            public const string preguntaCerrarPestaña = "[orange]Se detectaron cambios en los datos, que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?\n[blue]Si responde SI, se perderan los datos no guardados.";
+        public static readonly decimal TasaIVA = Convert.ToDecimal(ConfigurationManager.AppSettings["TasaIVA"]);
+        public static string nwtr => ConfigurationManager.AppSettings["nwtr"];
+        public const string clbdd = "Consultando la base de datos... ";
+        public const string oueclbdd = "Ocurrio un error con la base de datos:\n";
+        public const string oue = "Ocurrio un error:\n";
+        public const string preguntaCerrar = "[orange]Se detectaron cambios en los datos del formulario.\n[blue]¿Esta seguro de querer cerrar el formulario?\n[red]Si responde SI, se perderan los datos no guardados.";
+        public const string preguntaCerrarPestaña = "[orange]Se detectaron cambios en los datos, que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?\n[blue]Si responde SI, se perderan los datos no guardados.";
         public const string insertandoRegistro = "Insertando registro(s) en la base de datos...";
-            public const string modificandoRegistro = "Actualizando registro(s) en la base de datos...";
-            public const string eliminandoRegistro = "Eliminando registro(s) en la base de datos...";
-            public const string errorCriterioSelec = "[orange]     Error: Proporcione los criterios de selección.";
-            public const string noDatos = "No se encontraron registros para mostrar en el reporte.";
-            public const string srs = "\n[green]Se registró satisfactoriamente.";
-            public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
-            public const string sms = "\n[green]Se actualizó satisfactoriamente.";
-            public const string nfrfa = "\n[red]NO fue registrado el la base de datos, el registro ya fue agregado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfrii = "\n[red]NO fue registrado en la base de datos, el inventario del producto fue insuficiente.\n[red]El registro de productos fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfrie = "\n[red]NO fue registrado en la base de datos, el inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
-            public const string nfrin = "\n[red]NO fue registrado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
+        public const string modificandoRegistro = "Actualizando registro(s) en la base de datos...";
+        public const string eliminandoRegistro = "Eliminando registro(s) en la base de datos...";
+        public const string errorCriterioSelec = "[orange]     Error: Proporcione los criterios de selección.";
+        public const string noDatos = "No se encontraron registros para mostrar en el reporte.";
+        public const string srs = "\n[green]Se registró satisfactoriamente.";
+        public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
+        public const string sms = "\n[green]Se actualizó satisfactoriamente.";
+        public const string nfrfa = "\n[red]NO fue registrado el la base de datos, el registro ya fue agregado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfrii = "\n[red]NO fue registrado en la base de datos, el inventario del producto fue insuficiente.\n[orange]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfrie = "\n[red]NO fue registrado en la base de datos, el inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
+        public const string nfrin = "\n[red]NO fue registrado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 
-            public const string nfmfe = "\n[red]NO fue actualizado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmfm = "\n[red]NO fue actualizado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmmd = "\n[red]NO fue actualizado en la base de datos por un motivo desconocido.";
-            public const string nfmcqn = "\n[red]NO fue actualizado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\nEl registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmii = "\n[red]NO fue actualizado en la base de datos, el inventario del producto fue insuficiente. \n[red]El registro de productos fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfmie = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
-            public const string nfmin = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
+        public const string nfmfe = "\n[red]NO fue actualizado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfmfm = "\n[red]NO fue actualizado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfmmd = "\n[red]NO fue actualizado en la base de datos por un motivo desconocido.";
+        public const string nfmcqn = "\n[red]NO fue actualizado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\n[orange]El registro pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfmii = "\n[red]NO fue actualizado en la base de datos, el inventario del producto fue insuficiente. \n[orange]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfmie = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
+        public const string nfmin = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 
-            public const string oevvd = "\n[red]Ocurrió un error al verificar la versión de los datos de la venta.\n[black]Intente refrescar los datos.";
-            public const string fmpousmn = "\n[red]Fue modificado previamente por otro usuario de la red.\n[green]Se mostrará la nota de remisión con los datos proporcionados por el otro usuario.";
-            public const string oed = "\n[red]Ocurrió un error desconocido.\n[black]Intente refrescar los datos.";
+        public const string oevvd = "\n[red]Ocurrió un error al verificar la versión de los datos de la venta.\n[black]Intente refrescar los datos.";
+        public const string fmpousmn = "\n[red]Fue modificado previamente por otro usuario de la red.\n[green]Se mostrará la nota de remisión con los datos proporcionados por el otro usuario.";
+        public const string oed = "\n[red]Ocurrió un error desconocido.\n[black]Intente refrescar los datos.";
 
-            public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string ses = "\n[green]Se eliminó satisfactoriamente.";
-            public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue borrado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
-            public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
-            public const string fepou = "\n[red]Fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
-            public const string fmpou = "\n[red]Fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
-            public const string nfecqn = "\n[red]NO fue eliminado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\nEl registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-            public const string nfeie = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
-            public const string nfein = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
+        public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string ses = "\n[green]Se eliminó satisfactoriamente.";
+        public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue borrado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
+        public const string fepou = "\n[red]Fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
+        public const string fmpou = "\n[red]Fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
+        public const string nfecqn = "\n[red]NO fue eliminado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\n[orange]El registro pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfeie = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
+        public const string nfein = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
+
+        public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
+
         #endregion
 
         public static DateTime? ObtenerFechaHora(DateTimePicker dtpFecha, DateTimePicker dtpHora)

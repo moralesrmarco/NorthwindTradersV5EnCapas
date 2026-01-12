@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -19,10 +18,10 @@ namespace NorthwindTradersV5EnCapas
         private VentaDetalleBLL _ventaDetalleBLL;
         private VentaBLL _ventaBLL;
 
-        public VentaDetalle ventaDetalle { get; set; }
-        private short CantidadOld { get; set; }
-        private decimal DescuentoOld { get; set; }
-        private short UInventarioOld { get; set; }
+        public VentaDetalle ventaDetalle;
+        private short CantidadOld;
+        private decimal DescuentoOld;
+        private short UInventarioOld;
 
 
         public FrmVentasDetalleModificar()
@@ -50,7 +49,8 @@ namespace NorthwindTradersV5EnCapas
             LblImporte.Text = "Importe " + simboloMoneda + ":";
             LblImporteDelDecuento.Text = "Importe del descuento " + simboloMoneda + ":";
             LblImporteConDescunto.Text = "Importe con descuento " + simboloMoneda + ":";
-            LblImporteDelIVA.Text = "Importe del IVA " + simboloMoneda + ":";
+            LblImporteSinIVA.Text = "Importe sin IVA " + simboloMoneda + ":";
+            LblImporteDelIVA.Text = "Importe del IVA (Incluido) " + simboloMoneda + ":";
             LblSubtotal.Text = "Subtotal " + simboloMoneda + ":";
             
             txtId.Text = ventaDetalle.Venta.OrderID.ToString();
@@ -71,6 +71,7 @@ namespace NorthwindTradersV5EnCapas
             nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
             nudImporteConDescuento.Value = ventaDetalle.ImporteConDescuento;
             nudTasaIVA.Value = ventaDetalle.TasaIVAPorcentaje;
+            nudImporteSinIVA.Value = ventaDetalle.ImporteSinIVA;
             nudImporteDelIVA.Value = ventaDetalle.ImporteDelIVA;
             nudSubtotal.Value = ventaDetalle.Subtotal;
             CantidadOld = ventaDetalle.Quantity;
@@ -106,6 +107,7 @@ namespace NorthwindTradersV5EnCapas
             Utilities.NudHelper.SetEnabled(nudImporteDelDescuento, false);
             Utilities.NudHelper.SetEnabled(nudImporteConDescuento, false);
             Utilities.NudHelper.SetEnabled(nudTasaIVA, false);
+            Utilities.NudHelper.SetEnabled(nudImporteSinIVA, false);
             Utilities.NudHelper.SetEnabled(nudImporteDelIVA, false);
             Utilities.NudHelper.SetEnabled(nudSubtotal, false);
         }
@@ -127,7 +129,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 btnModificar.Enabled = false;
                 errorProvider1.Clear();
-                // Recalcula importes (si depende de cantidad/descuento)
+                // Recalcula importes
                 CalcularImportes();
 
                 decimal cantidadNueva = nudCantidad.Value;
@@ -151,8 +153,7 @@ namespace NorthwindTradersV5EnCapas
 
                 // Valida reglas de negocio con StatusIconHelper
                 // Validación restrictiva (cantidad)
-                bool ok = ValidarCantidad();
-                if (!ok) return false;
+                if (!ValidarCantidad()) return false;
 
                 // Habilitar el botón Modificar si hubo cambios y las validaciones pasaron
                 bool hayCambios = (nudCantidad.Value != CantidadOld) || (nudDescuento.Value != DescuentoOld);
@@ -170,7 +171,9 @@ namespace NorthwindTradersV5EnCapas
                 return false;
             }
         }
-        // en si ValidarCantidad y ValidarInventario no son precisas en el caso en que otro usuario haya modificado el inventario (por la concurrencia optimista) entre el momento en que se cargó el formulario. Solo funcionarian bien en un entorno monousuario. Por lo que es más seguro que las validaciones se hagan en los stored procedures, como ya estan programados con esas validaciones.
+
+        // en si ValidarCantidad y ValidarInventario no son precisas en el caso en que otro usuario haya modificado el inventario en otra sesion (por la concurrencia optimista) entre el momento en que se cargó el formulario y se realiza la modificación. Solo funcionarían bien si no hubiera concurrencia de otro usuario al mismo tiempo. Por lo que es más seguro que las validaciones se hagan en los stored procedures, como ya estan programados con esas validaciones. Los mensajes se dejaran como warnings
+
         private bool ValidarCantidad()
         {
             decimal cantidadNueva = nudCantidad.Value;
@@ -188,44 +191,43 @@ namespace NorthwindTradersV5EnCapas
 
             // Condiciones de error
             bool condErrorCantidadCero = cantidadNueva <= 0;
-            bool condErrorExcedeInvent = cantidadNueva > disponible;
-            bool condErrorInventarioCero = (inventarioActual == 0 && cantidadNueva > disponible);
-            bool condErrorOverflowSmall = inventarioNuevoDb > SmallintMax;
 
-            bool showError = condErrorCantidadCero || condErrorExcedeInvent || condErrorInventarioCero || condErrorOverflowSmall;
+            bool showError = condErrorCantidadCero;
 
             // Construir mensaje acumulado
             string errorMsg = "";
             if (condErrorCantidadCero)
-                errorMsg += "La cantidad debe ser mayor que cero.\n";
-            if (condErrorExcedeInvent)
-                errorMsg += $"La cantidad excede el inventario inicial disponible ({inventarioInicial}).\n";
-            if (condErrorInventarioCero)
-                errorMsg += "El inventario es 0.\n";
-            if (condErrorOverflowSmall)
-                errorMsg += "La cantidad de producto devuelto más las unidades en inventario\nexcede el límite maximo que se puede almacenar en la base de datos (32,767 unidades).\n No se puede realizar la operación.";
-
-            // Información y advertencia
+                errorMsg += "- La cantidad debe ser mayor que cero.\n\n";
+            errorMsg += "No se puede realizar la operación;";
+            // Información
             bool showInfo = cantidadNueva >= 0;
             // Warnings
             bool condWarningInventarioCero = inventarioActual == 0;
             bool condWarningInventarioBajo = inventarioActual > 0 && inventarioActual <= 50;
+            bool condWarningExcedeInvent = cantidadNueva > disponible;
+            bool condWarningOverflowSmall = inventarioNuevoDb > SmallintMax;
 
-            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo;
+            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo || condWarningExcedeInvent || condWarningOverflowSmall;
 
             string warningMsg = "";
+            string msgPreventivo = "Los siguientes mensajes son solo preventivos, las validaciones reales\nse realizarán del lado del servidor SQL, debido a la concurrencia de usuarios (concurrencia optimista).";
             if (condWarningInventarioCero)
-                warningMsg += "El inventario es 0.\n";
+                warningMsg += "- No hay este producto en existencia.\n\n";
             if (condWarningInventarioBajo)
-                warningMsg += "La existencia en inventario es baja.\n";
-
+                warningMsg += "- La existencia en inventario es baja.\n\n";
+            if (condWarningExcedeInvent)
+                warningMsg += $"- La cantidad excede el inventario inicial disponible ({inventarioInicial}).\n\n";
+            if (condWarningOverflowSmall)
+                warningMsg += "- La cantidad de producto devuelto más las unidades en inventario\n  excede el límite maximo que se puede almacenar en la base de datos (32,767 unidades).";
+            if (warningMsg != "")
+                warningMsg = msgPreventivo + "\n\n" + warningMsg;
             // Mostrar íconos con StatusIconHelper
             StatusIconHelper.ShowIcons(
                 nudCantidad,
                 toolTip1,
                 (pbError, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
                 (pbInfo, (Image)SystemIcons.Information.ToBitmap(),
-                    "La cantidad de producto devuelto se añade al inventario.\nLa cantidad de producto añadido se descuenta del inventario.",
+                    "- La cantidad de producto devuelto se añade al inventario.\n\n- La cantidad de producto añadido se descuenta del inventario.",
                     showInfo),
                 (pbWarning, (Image)SystemIcons.Warning.ToBitmap(),
                     warningMsg,
@@ -248,46 +250,41 @@ namespace NorthwindTradersV5EnCapas
             decimal inventarioActual = nudUInventario.Value;
 
             const decimal SmallintMax = 32767M;
-            
-            // Condiciones de error (solo visuales)
-            bool condErrorExcedeInvent = cantidadNueva > disponible;
-            bool condErrorInventarioCero = (inventarioActual == 0 && cantidadNueva > disponible);
-            bool condErrorOverflowSmall = inventarioNuevoDb > SmallintMax;
-
-            bool showError = condErrorExcedeInvent || condErrorInventarioCero || condErrorOverflowSmall;
-
+            // Errores (ninguno por ahora)
+            bool showError = false;
             string errorMsg = "";
-            if (condErrorExcedeInvent)
-                errorMsg += $"La cantidad excede el inventario inicial disponible ({disponible - cantidadVieja}).\n";
-            if (condErrorInventarioCero)
-                errorMsg += "El inventario es 0.\n";
-            if (condErrorOverflowSmall)
-                errorMsg += "La cantidad de producto devuelto más las unidades en inventario\n" +
-                            "excede el límite máximo que se puede almacenar en la base de datos (32,767 unidades).\n" +
-                            "No se puede realizar la operación.\n";
+
             // Información (siempre mostrar)
             bool showInfo = true;
 
             // Warnings
             bool condWarningInventarioCero = inventarioActual == 0;
             bool condWarningInventarioBajo = inventarioActual > 0 && inventarioActual <= 50;
+            bool condWarningExcedeInvent = cantidadNueva > disponible;
+            bool condWarningOverflowSmall = inventarioNuevoDb > SmallintMax;
 
-            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo;
+            bool showWarning = condWarningInventarioCero || condWarningInventarioBajo || condWarningExcedeInvent || condWarningOverflowSmall;
 
             string warningMsg = "";
+            string msgPreventivo = "Los siguientes mensajes son solo preventivos, las validaciones reales\nse realizarán del lado del servidor SQL, debido a la concurrencia de usuarios (concurrencia optimista).";
             if (condWarningInventarioCero)
-                warningMsg += "El inventario es 0.\n";
+                warningMsg += "- No hay este producto en existencia.\n\n";
             if (condWarningInventarioBajo)
-                warningMsg += "La existencia en inventario es baja.\n";
-
+                warningMsg += "- La existencia en inventario es baja.\n\n";
+            if (condWarningExcedeInvent)
+                warningMsg += $"- La cantidad excede el inventario inicial disponible ({disponible - cantidadVieja}).\n\n";
+            if (condWarningOverflowSmall)
+                warningMsg += "- La cantidad de producto devuelto más las unidades en inventario\n  excede el límite maximo que se puede almacenar en la base de datos (32,767 unidades).";
+            if (warningMsg != "")
+                warningMsg = msgPreventivo + "\n\n" + warningMsg;
             // Mostrar íconos con StatusIconHelper en nudUInventario
             StatusIconHelper.ShowIcons(
                 nudUInventario,
                 toolTip1,
                 (pbError1, (Image)errorProvider1.Icon.ToBitmap(), errorMsg, showError),
                 (pbInfo1, (Image)SystemIcons.Information.ToBitmap(),
-                    "La cantidad de producto devuelto se añade al inventario.\n" +
-                    "La cantidad de producto añadido se descuenta del inventario.",
+                    "- La cantidad de producto devuelto se añade al inventario.\n\n" +
+                    "- La cantidad de producto añadido se descuenta del inventario.",
                     showInfo),
                 (pbWarning1, (Image)SystemIcons.Warning.ToBitmap(), warningMsg, showWarning)
             );
@@ -306,6 +303,7 @@ namespace NorthwindTradersV5EnCapas
                 nudImporte.Value = ventaDetalle.Importe;
                 nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
                 nudImporteConDescuento.Value = ventaDetalle.ImporteConDescuento;
+                nudImporteSinIVA.Value = ventaDetalle.ImporteSinIVA;
                 nudImporteDelIVA.Value = ventaDetalle.ImporteDelIVA;
                 nudSubtotal.Value = ventaDetalle.Subtotal;
             }

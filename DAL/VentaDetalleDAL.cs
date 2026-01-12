@@ -30,9 +30,13 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@Quantity", ventaDetalle.Quantity);
                     cmd.Parameters.AddWithValue("@Discount", ventaDetalle.Discount);
                     cmd.Parameters.AddWithValue("@TasaIVA", ventaDetalle.TasaIVA);
-
+                    cmd.Parameters.AddWithValue("@VentaRowVersion", ventaDetalle.Venta.RowVersion);
                     con.Open();
-                    return cmd.ExecuteNonQuery();
+                    // Parámetro de retorno
+                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    cmd.ExecuteNonQuery();
+                    return (int)returnParameter.Value;
                 }
             }
             catch (Exception ex)

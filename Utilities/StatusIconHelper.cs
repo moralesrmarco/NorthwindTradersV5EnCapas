@@ -49,5 +49,15 @@ namespace Utilities
             );
             pb.BringToFront();
         }
+
+        // 👉 Método para ocultar los PictureBox
+        public static void HideIcons(params PictureBox[] pictureBoxes)
+        {
+            foreach (var pb in pictureBoxes)
+            {
+                if (pb != null)
+                    pb.Visible = false;
+            }
+        }
     }
 }
