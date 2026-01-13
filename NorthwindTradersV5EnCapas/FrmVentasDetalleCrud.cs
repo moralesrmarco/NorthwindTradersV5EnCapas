@@ -380,6 +380,13 @@ namespace NorthwindTradersV5EnCapas
                     errorProvider1.SetError(nudTotal2, "El valor del subtotal del producto no puede ser cero");
                 }
             }
+            InventarioHelper.ActualizarInventarioUi
+            (
+                nudCantidad.Value,
+                CantidadOld,
+                UInventarioOld,
+                nudUInventario
+            );
             // Validación informativa (inventario)
             // no afecta el retorno, solo muestra íconos
             ValidarCantidadEInventarioHelper.ValidarInventario
@@ -883,10 +890,10 @@ namespace NorthwindTradersV5EnCapas
                     if (numRegs == -6)
                         U.NotificacionError(strProductoVenta + Utils.nfrii); // Stock insuficiente
                     if (numRegs == -7)
-                        U.NotificacionError(strProductoVenta + Utils.nfrie); // Stock excedió el máximo permitido
+                        U.NotificacionError(strProductoVenta + Utils.nfrie); // Stock excedió el máximo permitido. Este caso nunca debería ocurrir porque un alta solo descuenta del inventario, nunca lo aumenta. 
                     if (numRegs == -8)
-                        U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo
-                    if (numRegs < -8)
+                        U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo. Este caso nunca debería ocurrir porque para que suceda se necesitaria tener un valor negativo en el inventario y eso nunca sucede porque el sistema ya tiene validaciones que no lo permiten.
+                    if (numRegs < -8) // Este caso aun no está definido, por lo tanto es un error desconocido
                         U.NotificacionError(strProductoVenta + Utils.nfrs); // motivo desconocido
                     if (numRegs <= 0 && numRegs != -4)
                     {

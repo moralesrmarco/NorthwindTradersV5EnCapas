@@ -155,6 +155,13 @@ namespace NorthwindTradersV5EnCapas
                 errorProvider1.Clear();
                 // Recalcula importes
                 CalcularImportes();
+                InventarioHelper.ActualizarInventarioUi
+                (
+                    nudCantidad.Value,
+                    CantidadOld,
+                    UInventarioOld,
+                    nudUInventario
+                );
                 // Validación informativa (inventario)
                 // no afecta el retorno, solo muestra íconos
                 ValidarCantidadEInventarioHelper.ValidarInventario
@@ -271,13 +278,13 @@ namespace NorthwindTradersV5EnCapas
                 else if (numRegs == -4)
                     U.NotificacionError(strProductoVenta + "\n[red]No fue actualizado en la base de datos.\n" + strVenta + Utils.fmpou);
                 else if (numRegs == -5)
-                    U.NotificacionError(strProductoVenta + Utils.nfmcqn); // El campo Quantity del detalle de la venta es nulo
+                    U.NotificacionError(strProductoVenta + Utils.nfmcqn); // El campo Quantity del detalle de la venta es nulo, este caso no ocurre nunca
                 else if (numRegs == -6)
                     U.NotificacionError(strProductoVenta + Utils.nfmii); // Stock insuficiente
                 else if (numRegs == -7)
                     U.NotificacionError(strProductoVenta + Utils.nfmie); // Stock excedió el máximo permitido
                 else if (numRegs == -8)
-                    U.NotificacionError(strProductoVenta + Utils.nfmin); // stock negativo
+                    U.NotificacionError(strProductoVenta + Utils.nfmin); // stock negativo, este caso nunca ocurre porque la base de datos no lo permite con un check constraint
                 else
                     U.NotificacionError(strProductoVenta + Utils.nfmmd);
             }

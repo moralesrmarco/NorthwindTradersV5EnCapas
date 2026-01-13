@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Security.Principal;
 using System.Windows.Forms;
 using WinFormsSortOrder = System.Windows.Forms.SortOrder;
 
@@ -32,15 +31,15 @@ namespace Utilities
         public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
         public const string sms = "\n[green]Se actualizó satisfactoriamente.";
         public const string nfrfa = "\n[red]NO fue registrado el la base de datos, el registro ya fue agregado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-        public const string nfrii = "\n[red]NO fue registrado en la base de datos, el inventario del producto fue insuficiente.\n[orange]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfrii = "\n[red]NO fue registrado en la base de datos, el inventario del producto fue insuficiente.\n[gold]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfrie = "\n[red]NO fue registrado en la base de datos, el inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
         public const string nfrin = "\n[red]NO fue registrado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 
         public const string nfmfe = "\n[red]NO fue actualizado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfmfm = "\n[red]NO fue actualizado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfmmd = "\n[red]NO fue actualizado en la base de datos por un motivo desconocido.";
-        public const string nfmcqn = "\n[red]NO fue actualizado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\n[orange]El registro pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
-        public const string nfmii = "\n[red]NO fue actualizado en la base de datos, el inventario del producto fue insuficiente. \n[orange]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfmcqn = "\n[red]NO fue actualizado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\n[gold]El registro pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfmii = "\n[red]NO fue actualizado en la base de datos, el inventario del producto fue insuficiente. \n[gold]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfmie = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
         public const string nfmin = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 
@@ -55,7 +54,7 @@ namespace Utilities
         public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
         public const string fepou = "\n[red]Fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
         public const string fmpou = "\n[red]Fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
-        public const string nfecqn = "\n[red]NO fue eliminado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\n[orange]El registro pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfecqn = "\n[red]NO fue eliminado en la base de datos, su Campo Quantity del detalle de la venta es NULO.\n[gold]El registro pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfeie = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
         public const string nfein = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 

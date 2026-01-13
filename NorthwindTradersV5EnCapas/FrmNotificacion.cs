@@ -62,7 +62,8 @@ namespace NorthwindTradersV5EnCapas
                    mensaje.Contains("[green]") ||
                    mensaje.Contains("[red]") ||
                    mensaje.Contains("[blue]") ||
-                   mensaje.Contains("[orange]");
+                   mensaje.Contains("[orange]") ||
+                   mensaje.Contains("[gold]");
         }
 
         private Image IconToImage(Icon icon)
@@ -130,6 +131,11 @@ namespace NorthwindTradersV5EnCapas
                 {
                     color = Color.OrangeRed;
                     texto = texto.Replace("[orange]", "");
+                }
+                else if (texto.StartsWith("[gold]"))
+                {
+                    color = Color.Goldenrod;
+                    texto = texto.Replace("[gold]", "");
                 }
                 // Aplica formato
                 richTextBox1.SelectionStart = richTextBox1.TextLength;
