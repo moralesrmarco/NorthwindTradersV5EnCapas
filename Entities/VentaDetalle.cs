@@ -64,7 +64,7 @@ namespace Entities
         public decimal ImporteSinIVA => BaseSinIva;
 
         // Subtotal = Importe con descuento (ya incluye IVA)
-        public decimal Subtotal => Math.Round(ImporteConDescuento, 2, MidpointRounding.AwayFromZero);
+        public decimal Subtotal => ImporteConDescuento;
 
         // Tasas expresadas en porcentaje
         public decimal TasaDescuentoPorcentaje => Math.Round(Discount * 100, 2, MidpointRounding.AwayFromZero);
