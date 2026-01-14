@@ -938,7 +938,6 @@ namespace NorthwindTradersV5EnCapas
             InicializarValoresAgregarProducto();
         }
 
-
         private void DgvDetalle_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -1098,6 +1097,16 @@ namespace NorthwindTradersV5EnCapas
                 frmRptNotaRemision8.Id = int.Parse(txtId.Text);
                 frmRptNotaRemision8.ShowDialog();
             }
+            if (result == -2)
+            {
+                DeshabilitarControles();
+                BtnNota.Enabled = false;
+                BorrarDatosVenta();
+                BorrarDatosDetalleVenta();
+                LlenarDgvVentas(false);
+                CargarValoresOriginales();
+                DgvVentas.Focus();
+            }
             return;
         }
 
@@ -1111,7 +1120,9 @@ namespace NorthwindTradersV5EnCapas
         {
             if (txtId.Tag == null)
                 return -1;
-            byte[] rowVersion = txtId.Tag as byte[];
+            byte[] rowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
+                                ? BitConverter.GetBytes(tagVal)
+                                : null; // para evitar excepcion devuelve null si el valor no es convertible a long
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
