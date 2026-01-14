@@ -329,6 +329,15 @@ namespace NorthwindTradersV5EnCapas
             DgvDetalle.Rows.Clear();
         }
 
+        private void BorrarDatosDetalleVenta()
+        {
+            cboCategoria.SelectedIndex = 0;
+            InicializarValoresAgregarProducto();
+            InicializarCboProducto();
+            InicializarNuds();
+            DgvDetalle.Rows.Clear();
+        }
+
         private void BorrarMensajesError() => errorProvider1.Clear();
 
         private bool ValidarControles()
@@ -929,15 +938,6 @@ namespace NorthwindTradersV5EnCapas
             InicializarValoresAgregarProducto();
         }
 
-        private void BorrarDatosDetalleVenta()
-        {
-            cboCategoria.SelectedIndex = 0;
-            //cboProducto.DataSource = null;
-            InicializarValoresAgregarProducto();
-            InicializarCboProducto();
-            InicializarNuds();
-            DgvDetalle.Rows.Clear();
-        }
 
         private void DgvDetalle_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -1035,7 +1035,7 @@ namespace NorthwindTradersV5EnCapas
                     numRegs = _ventaDetalleBLL.Eliminar(ventaDetalle);
                     string strProductoVenta = $"El producto: {ventaDetalle.ProductName} - Venta: {ventaDetalle.Venta.OrderID}:";
                     string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
-                    if (numRegs > 0)
+                    if (numRegs > 0 || numRegs == -1 || numRegs == -2 || numRegs == -4)
                     {
                         int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
                         BorrarDatosVenta();
@@ -1045,25 +1045,34 @@ namespace NorthwindTradersV5EnCapas
                         CargarValoresOriginales();
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                     }
-                    else if (numRegs == -1)
+                    if (numRegs == -1)
                         U.NotificacionError(strProductoVenta + Utils.nfefe);
-                    else if (numRegs == -2)
+                    if (numRegs == -2)
                         U.NotificacionError(strProductoVenta + Utils.nfefm);
-                    else if (numRegs == -3)
+                    if (numRegs == -3)
                         U.NotificacionError(strVenta + Utils.fepou);
                     else if (numRegs == -4)
                         U.NotificacionError(strProductoVenta + "\n[red]No fue eliminado en la base de datos.\n" + strVenta + Utils.fmpou);
-                    else if (numRegs == -5)
-                        U.NotificacionError(strProductoVenta + Utils.nfecqn); // El campo Quantity del detalle de la venta es nulo
+                    if (numRegs == -5)
+                        U.NotificacionError(strProductoVenta + Utils.nfecqn); // El campo Quantity del detalle de la venta es nulo, no se da este caso porque la base de datos no lo permite
                     // el caso -6 no existe en el stored procedure 
-                    else if (numRegs == -7)
+                    if (numRegs == -7)
                         U.NotificacionError(strProductoVenta + Utils.nfeie); // Stock excedió el máximo permitido
-                    else if (numRegs == -8)
-                        U.NotificacionError(strProductoVenta + Utils.nfein); // stock negativo
-                    else
+                    if (numRegs == -8)
+                        U.NotificacionError(strProductoVenta + Utils.nfein); // stock negativo, este caso nunca ocurre porque la base de datos no lo permite con un check constraint
+                    if (numRegs < -9)
                         U.NotificacionError(strProductoVenta + Utils.nfemd);
+                    if (numRegs == -3)
+                    {
+                        BorrarDatosVenta();
+                        BorrarDatosDetalleVenta();
+                        DeshabilitarControles();
+                        LlenarDgvVentas(false);
+                        CargarValoresOriginales();
+                    }
+                    if (numRegs != -3)
+                        HabilitarControles();
                 }
-                HabilitarControles();
             }
             catch (Exception ex)
             {
