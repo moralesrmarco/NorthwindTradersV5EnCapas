@@ -1099,13 +1099,21 @@ namespace NorthwindTradersV5EnCapas
             }
             if (result == -2)
             {
+                nudCantidad.Leave -= nudCantidad_Leave;
+                nudDescuento.Leave -= nudDescuento_Leave;
+                nudCantidad.ValueChanged -= nudCantidad_ValueChanged;
+                nudDescuento.ValueChanged -= nudDescuento_ValueChanged;
                 DeshabilitarControles();
                 BtnNota.Enabled = false;
                 BorrarDatosVenta();
                 BorrarDatosDetalleVenta();
                 LlenarDgvVentas(false);
                 CargarValoresOriginales();
-                DgvVentas.Focus();
+                label1.Focus();
+                nudCantidad.Leave += nudCantidad_Leave;
+                nudDescuento.Leave += nudDescuento_Leave;
+                nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+                nudDescuento.ValueChanged += nudDescuento_ValueChanged;
             }
             return;
         }
@@ -1129,6 +1137,7 @@ namespace NorthwindTradersV5EnCapas
                 Venta venta = _ventaBLL.ObtenerVentaPorId(int.Parse(txtId.Text));
                 if (venta == null)
                     return -2;
+                // no se necesita checar los rowversions de los detalles de la venta porque si un detalle cambia o es eliminado o es insertado uno nuevo, el rowversion de la venta también cambia, es suficiente con checar el rowversion de la venta
                 if (!venta.RowVersion.SequenceEqual(rowVersion))
                     return -3;
                 MDIPrincipal.ActualizarBarraDeEstado();

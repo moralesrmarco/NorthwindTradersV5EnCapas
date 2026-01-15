@@ -44,7 +44,7 @@ namespace Utilities
         public const string nfmin = "\n[red]NO fue actualizado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 
         public const string oevvd = "\n[red]Ocurrió un error al verificar la versión de los datos de la venta.\n[black]Intente refrescar los datos.";
-        public const string fmpousmn = "\n[red]Fue modificado previamente por otro usuario de la red.\n[green]Se mostrará la nota de remisión con los datos proporcionados por el otro usuario.";
+        public const string fmpousmn = "\n[gold]Fue modificado previamente por otro usuario de la red.\n[green]Se mostrará la nota de remisión con los datos proporcionados por el otro usuario.";
         public const string oed = "\n[red]Ocurrió un error desconocido.\n[black]Intente refrescar los datos.";
 
         public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
