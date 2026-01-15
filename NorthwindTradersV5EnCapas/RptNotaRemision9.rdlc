@@ -120,6 +120,10 @@
           <DataField>ImporteDelIVA</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
+        <Field Name="ImporteSinIVA">
+          <DataField>ImporteSinIVA</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
         <Field Name="ProductName">
           <DataField>ProductName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -140,8 +144,16 @@
           <DataField>Subtotal</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
+        <Field Name="TasaDescuentoPorcentaje">
+          <DataField>TasaDescuentoPorcentaje</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
         <Field Name="TasaIVA">
           <DataField>TasaIVA</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="TasaIVAPorcentaje">
+          <DataField>TasaIVAPorcentaje</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="UnitPrice">
@@ -583,7 +595,7 @@ Format(Fields!FechaRequerido.Value
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Fecha de envío;</Value>
+                                      <Value>Fecha de envío:</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
@@ -1176,37 +1188,94 @@ Format(Fields!FechaDeEnvio.Value,
                       <Width>0.56316cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.45004cm</Width>
+                      <Width>2.62817cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.99015cm</Width>
+                      <Width>1.65865cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.7013cm</Width>
+                      <Width>1.47648cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.52396cm</Width>
+                      <Width>1.89857cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1.42693cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.98927cm</Width>
+                      <Width>1.63128cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.44185cm</Width>
+                      <Width>1.66392cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.07825cm</Width>
+                      <Width>0.86852cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.50443cm</Width>
+                      <Width>1.8015cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.33066cm</Width>
+                      <Width>1.96303cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>2.41979cm</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
+                    <TablixRow>
+                      <Height>0.6cm</Height>
+                      <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox85">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>="   Detalle de la venta [Id: " &amp; Parameters!PedidoId.Value &amp; "]"</Value>
+                                      <Style>
+                                        <FontSize>8pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox85</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <BackgroundColor>LightGrey</BackgroundColor>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                            <ColSpan>12</ColSpan>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                      </TablixCells>
+                    </TablixRow>
                     <TablixRow>
                       <Height>0.70583cm</Height>
                       <TablixCells>
@@ -1239,6 +1308,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>None</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1258,7 +1328,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Producto</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1274,6 +1344,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1294,7 +1365,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Precio</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1310,6 +1381,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1330,7 +1402,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Cantidad</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1346,6 +1418,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1366,7 +1439,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Importe</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1382,6 +1455,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1418,6 +1492,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1438,7 +1513,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Importe del descuento</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1454,6 +1529,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1474,7 +1550,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Importe con descuento</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1490,6 +1566,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1510,7 +1587,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Tasa IVA</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1526,6 +1603,58 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox145">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Importe</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Center</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>sin IVA</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Center</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox145</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1544,9 +1673,9 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Importe del IVA</Value>
+                                      <Value>Importe del IVA (Incluido)</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1562,6 +1691,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1582,7 +1712,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Subtotal</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -1598,6 +1728,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1657,7 +1788,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ProductName.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1691,7 +1822,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!UnitPrice.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -1727,7 +1858,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Quantity.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>#,0;(#,0)</Format>
                                       </Style>
                                     </TextRun>
@@ -1762,7 +1893,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Importe.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -1798,7 +1929,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Discount.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>0.00%</Format>
                                       </Style>
                                     </TextRun>
@@ -1833,7 +1964,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ImporteDelDescuento.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -1869,7 +2000,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ImporteConDescuento.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -1905,7 +2036,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!TasaIVA.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>0.00%</Format>
                                       </Style>
                                     </TextRun>
@@ -1931,6 +2062,42 @@ Format(Fields!FechaDeEnvio.Value,
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="ImporteSinIVA1">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!ImporteSinIVA.Value</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>ImporteSinIVA1</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                                <rd:FormatSymbolCulture>es-MX</rd:FormatSymbolCulture>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="ImporteDelIVA">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -1940,7 +2107,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ImporteDelIVA.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -1976,7 +2143,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Subtotal.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -2055,7 +2222,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>="N° de productos: " &amp; Format(Count(Fields!ProductName.Value), "N0")</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2090,7 +2257,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Subtotales: </Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -2126,7 +2293,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Fields!Quantity.Value)</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>#,0;(#,0)</Format>
                                       </Style>
@@ -2163,7 +2330,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!Importe.Value,2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -2201,7 +2368,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value />
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -2236,7 +2403,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!ImporteDelDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -2274,7 +2441,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!ImporteConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -2312,7 +2479,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value />
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -2325,13 +2492,49 @@ Format(Fields!FechaDeEnvio.Value,
                               <rd:DefaultName>Textbox52</rd:DefaultName>
                               <Style>
                                 <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
                                 <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox147">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Sum(Math.Round(Fields!ImporteSinIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                        <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox147</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>LightGrey</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                                <rd:FormatSymbolCulture>es-MX</rd:FormatSymbolCulture>
                               </Style>
                             </Textbox>
                           </CellContents>
@@ -2347,7 +2550,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!ImporteDelIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -2385,7 +2588,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!Subtotal.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -2429,10 +2632,17 @@ Format(Fields!FechaDeEnvio.Value,
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
+                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
                   <TablixMembers>
+                    <TablixMember>
+                      <FixedData>true</FixedData>
+                      <KeepWithGroup>After</KeepWithGroup>
+                      <RepeatOnNewPage>true</RepeatOnNewPage>
+                      <KeepTogether>true</KeepTogether>
+                    </TablixMember>
                     <TablixMember>
                       <FixedData>true</FixedData>
                       <KeepWithGroup>After</KeepWithGroup>
@@ -2450,10 +2660,11 @@ Format(Fields!FechaDeEnvio.Value,
                     </TablixMember>
                   </TablixMembers>
                 </TablixRowHierarchy>
+                <RepeatRowHeaders>true</RepeatRowHeaders>
                 <DataSetName>DataSet1</DataSetName>
-                <Top>9.3088cm</Top>
+                <Top>8.64205cm</Top>
                 <Left>0.05393cm</Left>
-                <Height>1.58833cm</Height>
+                <Height>2.18833cm</Height>
                 <Width>20cm</Width>
                 <ZIndex>2</ZIndex>
                 <Style>
@@ -2462,40 +2673,6 @@ Format(Fields!FechaDeEnvio.Value,
                   </Border>
                 </Style>
               </Tablix>
-              <Textbox Name="Textbox11">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>="   Detalle de la venta [Id: " &amp; Parameters!PedidoId.Value &amp; "]"</Value>
-                        <Style>
-                          <FontSize>9pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox9</rd:DefaultName>
-                <Top>8.70174cm</Top>
-                <Left>0.05393cm</Left>
-                <Height>0.6cm</Height>
-                <Width>20cm</Width>
-                <ZIndex>3</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <BackgroundColor>LightGrey</BackgroundColor>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
               <Textbox Name="Textbox20">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
@@ -2519,7 +2696,7 @@ Format(Fields!FechaDeEnvio.Value,
                 <Left>0.51857cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6cm</Width>
-                <ZIndex>4</ZIndex>
+                <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -2557,7 +2734,7 @@ Format(Fields!FechaDeEnvio.Value,
                 <Left>13.69357cm</Left>
                 <Height>0.6cm</Height>
                 <Width>5cm</Width>
-                <ZIndex>5</ZIndex>
+                <ZIndex>4</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -2594,7 +2771,7 @@ Format(Fields!FechaDeEnvio.Value,
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox55</rd:DefaultName>
-                    <Left>4.43112cm</Left>
+                    <Left>6.16938cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <Style>
@@ -2629,7 +2806,7 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox54</rd:DefaultName>
                     <Height>0.6cm</Height>
-                    <Width>4.43112cm</Width>
+                    <Width>6.18795cm</Width>
                     <ZIndex>1</ZIndex>
                     <Style>
                       <Border>
@@ -2662,7 +2839,7 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox56</rd:DefaultName>
                     <Top>0.84666cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Left>6.15259cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>2</ZIndex>
@@ -2685,7 +2862,7 @@ Format(Fields!FechaDeEnvio.Value,
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>Importe IVA: </Value>
+                            <Value>Importe del IVA (Incluido): </Value>
                             <Style>
                               <FontWeight>Bold</FontWeight>
                             </Style>
@@ -2699,7 +2876,7 @@ Format(Fields!FechaDeEnvio.Value,
                     <rd:DefaultName>Textbox57</rd:DefaultName>
                     <Top>0.84666cm</Top>
                     <Height>0.6cm</Height>
-                    <Width>4.39576cm</Width>
+                    <Width>6.15259cm</Width>
                     <ZIndex>3</ZIndex>
                     <Style>
                       <Border>
@@ -2732,7 +2909,7 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox58</rd:DefaultName>
                     <Top>1.73566cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Left>6.16938cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>4</ZIndex>
@@ -2769,7 +2946,7 @@ Format(Fields!FechaDeEnvio.Value,
                     <rd:DefaultName>Textbox59</rd:DefaultName>
                     <Top>1.73566cm</Top>
                     <Height>0.6cm</Height>
-                    <Width>4.39576cm</Width>
+                    <Width>6.15259cm</Width>
                     <ZIndex>5</ZIndex>
                     <Style>
                       <Border>
@@ -2788,7 +2965,7 @@ Format(Fields!FechaDeEnvio.Value,
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>=ReportItems!Textbox55.Value + ReportItems!Textbox56.Value + ReportItems!Textbox58.Value</Value>
+                            <Value>=ReportItems!Textbox55.Value + ReportItems!Textbox58.Value</Value>
                             <Style>
                               <FontWeight>Bold</FontWeight>
                               <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -2801,8 +2978,8 @@ Format(Fields!FechaDeEnvio.Value,
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox60</rd:DefaultName>
-                    <Top>2.63905cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Top>2.62936cm</Top>
+                    <Left>6.18795cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>6</ZIndex>
@@ -2839,7 +3016,7 @@ Format(Fields!FechaDeEnvio.Value,
                     <rd:DefaultName>Textbox61</rd:DefaultName>
                     <Top>2.63905cm</Top>
                     <Height>0.6cm</Height>
-                    <Width>4.43112cm</Width>
+                    <Width>6.18795cm</Width>
                     <ZIndex>7</ZIndex>
                     <Style>
                       <Border>
@@ -2853,7 +3030,7 @@ Format(Fields!FechaDeEnvio.Value,
                   </Textbox>
                   <Line Name="Line5">
                     <Top>2.48825cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Left>6.18795cm</Left>
                     <Height>0cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>8</ZIndex>
@@ -2866,11 +3043,11 @@ Format(Fields!FechaDeEnvio.Value,
                   </Line>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
-                <Top>11.44799cm</Top>
-                <Left>10.70947cm</Left>
+                <Top>11.13049cm</Top>
+                <Left>8.95264cm</Left>
                 <Height>3.23905cm</Height>
-                <Width>9.34446cm</Width>
-                <ZIndex>6</ZIndex>
+                <Width>11.10129cm</Width>
+                <ZIndex>5</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -3277,7 +3454,7 @@ Format(Fields!FechaRequerido.Value
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Fecha de envío;</Value>
+                                      <Value>Fecha de envío:</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
@@ -3861,39 +4038,6 @@ Format(Fields!FechaDeEnvio.Value,
                   </Border>
                 </Style>
               </Tablix>
-              <Textbox Name="Textbox21">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>="   Detalle de la venta [Id: " &amp; Parameters!PedidoId.Value &amp; " ]"</Value>
-                        <Style>
-                          <FontSize>9pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox9</rd:DefaultName>
-                <Top>8.69606cm</Top>
-                <Height>0.6cm</Height>
-                <Width>20cm</Width>
-                <ZIndex>1</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <BackgroundColor>LightGrey</BackgroundColor>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
               <Textbox Name="Textbox33">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
@@ -3917,7 +4061,7 @@ Format(Fields!FechaDeEnvio.Value,
                 <Left>0.75063cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6cm</Width>
-                <ZIndex>2</ZIndex>
+                <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -3955,7 +4099,7 @@ Format(Fields!FechaDeEnvio.Value,
                 <Left>13.92563cm</Left>
                 <Height>0.6cm</Height>
                 <Width>5cm</Width>
-                <ZIndex>3</ZIndex>
+                <ZIndex>2</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -3993,7 +4137,7 @@ Format(Fields!FechaDeEnvio.Value,
                 <Left>7.42441cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6cm</Width>
-                <ZIndex>4</ZIndex>
+                <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -4015,37 +4159,94 @@ Format(Fields!FechaDeEnvio.Value,
                       <Width>0.61709cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.39611cm</Width>
+                      <Width>2.62817cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.99015cm</Width>
+                      <Width>1.65865cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.7013cm</Width>
+                      <Width>1.47648cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.52396cm</Width>
+                      <Width>1.77056cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.42693cm</Width>
+                      <Width>1.55494cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.98927cm</Width>
+                      <Width>1.63128cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2.44185cm</Width>
+                      <Width>1.62511cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.07825cm</Width>
+                      <Width>0.90733cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.50443cm</Width>
+                      <Width>1.8015cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>2.03359cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.33066cm</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
+                    <TablixRow>
+                      <Height>0.6cm</Height>
+                      <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox130">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>="   Detalle de la venta [Id: " &amp; Parameters!PedidoId.Value &amp; "]"</Value>
+                                      <Style>
+                                        <FontSize>8pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox130</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <BackgroundColor>LightGrey</BackgroundColor>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                            <ColSpan>12</ColSpan>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                        <TablixCell />
+                      </TablixCells>
+                    </TablixRow>
                     <TablixRow>
                       <Height>0.70583cm</Height>
                       <TablixCells>
@@ -4078,6 +4279,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>None</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -4097,7 +4299,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Producto</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4113,6 +4315,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4133,7 +4336,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Precio</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4149,6 +4352,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4169,7 +4373,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Cantidad</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4185,6 +4389,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4205,7 +4410,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Importe</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4221,6 +4426,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4257,6 +4463,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4277,7 +4484,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Importe del descuento</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4293,6 +4500,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4313,7 +4521,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Importe con descuento</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4329,6 +4537,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4349,7 +4558,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Tasa IVA</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4365,6 +4574,58 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox141">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Importe</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Center</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>sin IVA</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Center</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox141</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4383,9 +4644,9 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Importe del IVA</Value>
+                                      <Value>Importe del IVA (Incluido)</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4401,6 +4662,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4421,7 +4683,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Subtotal</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4437,6 +4699,7 @@ Format(Fields!FechaDeEnvio.Value,
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>WhiteSmoke</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4496,7 +4759,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ProductName.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4530,7 +4793,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!UnitPrice.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -4566,7 +4829,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Quantity.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>#,0;(#,0)</Format>
                                       </Style>
                                     </TextRun>
@@ -4601,7 +4864,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Importe.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -4637,7 +4900,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Discount.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>0.00%</Format>
                                       </Style>
                                     </TextRun>
@@ -4672,7 +4935,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ImporteDelDescuento.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -4708,7 +4971,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ImporteConDescuento.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -4744,7 +5007,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!TasaIVA.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>0.00%</Format>
                                       </Style>
                                     </TextRun>
@@ -4770,6 +5033,42 @@ Format(Fields!FechaDeEnvio.Value,
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="ImporteSinIVA">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!ImporteSinIVA.Value</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>ImporteSinIVA</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                                <rd:FormatSymbolCulture>es-MX</rd:FormatSymbolCulture>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="ImporteDelIVA2">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -4779,7 +5078,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!ImporteDelIVA.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -4815,7 +5114,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Fields!Subtotal.Value</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
                                     </TextRun>
@@ -4894,7 +5193,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>="N° de productos: " &amp; Format(Count(Fields!ProductName.Value), "N0")</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4929,7 +5228,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>Subtotales: </Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -4965,7 +5264,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Fields!Quantity.Value)</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>#,0;(#,0)</Format>
                                       </Style>
@@ -5002,7 +5301,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!Importe.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -5040,7 +5339,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value />
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -5075,7 +5374,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!ImporteDelDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -5113,7 +5412,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!ImporteConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -5151,7 +5450,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value />
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -5164,13 +5463,49 @@ Format(Fields!FechaDeEnvio.Value,
                               <rd:DefaultName>Textbox52</rd:DefaultName>
                               <Style>
                                 <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>None</Style>
+                                  <Style>Solid</Style>
                                 </Border>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
                                 <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox143">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Sum(Math.Round(Fields!ImporteSinIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                        <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox143</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>LightGrey</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                                <rd:FormatSymbolCulture>es-MX</rd:FormatSymbolCulture>
                               </Style>
                             </Textbox>
                           </CellContents>
@@ -5186,7 +5521,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!ImporteDelIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -5224,7 +5559,7 @@ Format(Fields!FechaDeEnvio.Value,
                                     <TextRun>
                                       <Value>=Sum(Math.Round(Fields!Subtotal.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
-                                        <FontSize>7pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
                                       </Style>
@@ -5268,10 +5603,17 @@ Format(Fields!FechaDeEnvio.Value,
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
+                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
                   <TablixMembers>
+                    <TablixMember>
+                      <FixedData>true</FixedData>
+                      <KeepWithGroup>After</KeepWithGroup>
+                      <RepeatOnNewPage>true</RepeatOnNewPage>
+                      <KeepTogether>true</KeepTogether>
+                    </TablixMember>
                     <TablixMember>
                       <FixedData>true</FixedData>
                       <KeepWithGroup>After</KeepWithGroup>
@@ -5290,10 +5632,10 @@ Format(Fields!FechaDeEnvio.Value,
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet1</DataSetName>
-                <Top>9.3052cm</Top>
-                <Height>1.58833cm</Height>
-                <Width>20cm</Width>
-                <ZIndex>5</ZIndex>
+                <Top>8.6702cm</Top>
+                <Height>2.18833cm</Height>
+                <Width>20.03536cm</Width>
+                <ZIndex>4</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -5322,7 +5664,7 @@ Format(Fields!FechaDeEnvio.Value,
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox55</rd:DefaultName>
-                    <Left>4.43112cm</Left>
+                    <Left>6.15259cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <Style>
@@ -5357,7 +5699,7 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox54</rd:DefaultName>
                     <Height>0.6cm</Height>
-                    <Width>4.43112cm</Width>
+                    <Width>6.15259cm</Width>
                     <ZIndex>1</ZIndex>
                     <Style>
                       <Border>
@@ -5390,7 +5732,7 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox56</rd:DefaultName>
                     <Top>0.84666cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Left>6.13402cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>2</ZIndex>
@@ -5413,7 +5755,7 @@ Format(Fields!FechaDeEnvio.Value,
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>Importe IVA: </Value>
+                            <Value>Importe del  IVA (Incluido): </Value>
                             <Style>
                               <FontWeight>Bold</FontWeight>
                             </Style>
@@ -5427,7 +5769,7 @@ Format(Fields!FechaDeEnvio.Value,
                     <rd:DefaultName>Textbox57</rd:DefaultName>
                     <Top>0.84666cm</Top>
                     <Height>0.6cm</Height>
-                    <Width>4.39576cm</Width>
+                    <Width>6.13402cm</Width>
                     <ZIndex>3</ZIndex>
                     <Style>
                       <Border>
@@ -5459,8 +5801,8 @@ Format(Fields!FechaDeEnvio.Value,
                       </Paragraph>
                     </Paragraphs>
                     <rd:DefaultName>Textbox58</rd:DefaultName>
-                    <Top>1.73566cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Top>1.71186cm</Top>
+                    <Left>6.1174cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>4</ZIndex>
@@ -5496,8 +5838,9 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox59</rd:DefaultName>
                     <Top>1.73566cm</Top>
+                    <Left>0.01857cm</Left>
                     <Height>0.6cm</Height>
-                    <Width>4.39576cm</Width>
+                    <Width>6.09883cm</Width>
                     <ZIndex>5</ZIndex>
                     <Style>
                       <Border>
@@ -5516,7 +5859,7 @@ Format(Fields!FechaDeEnvio.Value,
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>=ReportItems!Textbox68.Value + ReportItems!Textbox70.Value + ReportItems!Textbox72.Value</Value>
+                            <Value>=ReportItems!Textbox68.Value + ReportItems!Textbox72.Value</Value>
                             <Style>
                               <FontWeight>Bold</FontWeight>
                               <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -5530,7 +5873,7 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox60</rd:DefaultName>
                     <Top>2.63905cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Left>6.18795cm</Left>
                     <Height>0.6cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>6</ZIndex>
@@ -5566,8 +5909,9 @@ Format(Fields!FechaDeEnvio.Value,
                     </Paragraphs>
                     <rd:DefaultName>Textbox61</rd:DefaultName>
                     <Top>2.63905cm</Top>
+                    <Left>0.01857cm</Left>
                     <Height>0.6cm</Height>
-                    <Width>4.43112cm</Width>
+                    <Width>6.16938cm</Width>
                     <ZIndex>7</ZIndex>
                     <Style>
                       <Border>
@@ -5581,7 +5925,7 @@ Format(Fields!FechaDeEnvio.Value,
                   </Textbox>
                   <Line Name="Line6">
                     <Top>2.48825cm</Top>
-                    <Left>4.43112cm</Left>
+                    <Left>6.18795cm</Left>
                     <Height>0cm</Height>
                     <Width>4.91334cm</Width>
                     <ZIndex>8</ZIndex>
@@ -5594,11 +5938,11 @@ Format(Fields!FechaDeEnvio.Value,
                   </Line>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
-                <Top>11.42379cm</Top>
-                <Left>10.6909cm</Left>
+                <Top>11.16979cm</Top>
+                <Left>8.93407cm</Left>
                 <Height>3.23905cm</Height>
-                <Width>9.34446cm</Width>
-                <ZIndex>6</ZIndex>
+                <Width>11.10129cm</Width>
+                <ZIndex>5</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -5629,7 +5973,7 @@ Format(Fields!FechaDeEnvio.Value,
                 <Left>11.71365cm</Left>
                 <Height>0.6cm</Height>
                 <Width>7.39772cm</Width>
-                <ZIndex>7</ZIndex>
+                <ZIndex>6</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>

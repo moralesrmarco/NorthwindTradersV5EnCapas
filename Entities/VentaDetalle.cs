@@ -1,6 +1,7 @@
 ﻿//https://www.youtube.com/watch?v=VjBAQV_cFxM&list=PLgvaYP_E7xkKhk3QYJCvNXndiypRugCrf&index=6 tiene un ejemplo de como armar una clase cuando existe relacion con otras clases
 
 using System;
+using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace Entities
@@ -61,10 +62,10 @@ namespace Entities
         // Importe del IVA (diferencia entre precio con IVA y base neta)
         public decimal ImporteDelIVA => Math.Round(ImporteConDescuento - BaseSinIva, 2, MidpointRounding.AwayFromZero);
 
-        public decimal ImporteSinIVA => BaseSinIva;
+        public decimal ImporteSinIVA => BaseSinIva; // ya viene redondeado
 
         // Subtotal = Importe con descuento (ya incluye IVA)
-        public decimal Subtotal => ImporteConDescuento;
+        public decimal Subtotal => ImporteConDescuento; // ya viene redondeado
 
         // Tasas expresadas en porcentaje
         public decimal TasaDescuentoPorcentaje => Math.Round(Discount * 100, 2, MidpointRounding.AwayFromZero);
