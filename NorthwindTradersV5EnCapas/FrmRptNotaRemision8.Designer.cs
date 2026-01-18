@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.pdfViewer = new PdfiumViewer.PdfViewer();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.reportViewer1);
+            this.groupBox1.Controls.Add(this.pdfViewer);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(30, 30);
@@ -48,16 +48,14 @@
             this.groupBox1.Text = "» Nota de remisión en dos tantos «";
             this.groupBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
-            // reportViewer1
+            // pdfViewer
             // 
-            this.reportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "NorthwindTradersV5EnCapas.RptNotaRemision9.rdlc";
-            this.reportViewer1.Location = new System.Drawing.Point(30, 49);
-            this.reportViewer1.Margin = new System.Windows.Forms.Padding(4);
-            this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.ServerReport.BearerToken = null;
-            this.reportViewer1.Size = new System.Drawing.Size(1062, 614);
-            this.reportViewer1.TabIndex = 0;
+            this.pdfViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pdfViewer.Location = new System.Drawing.Point(30, 49);
+            this.pdfViewer.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.pdfViewer.Name = "pdfViewer";
+            this.pdfViewer.Size = new System.Drawing.Size(1328, 768);
+            this.pdfViewer.TabIndex = 0;
             // 
             // FrmRptNotaRemision8
             // 
@@ -84,6 +82,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private PdfiumViewer.PdfViewer pdfViewer;
     }
 }
