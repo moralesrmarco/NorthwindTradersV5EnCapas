@@ -873,8 +873,8 @@ namespace NorthwindTradersV5EnCapas
                     VentaDetalle ventaDetalle = new VentaDetalle();
                     ventaDetalle.Venta.OrderID = int.Parse(txtId.Text);
                     ventaDetalle.Venta.RowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
-                                                ? BitConverter.GetBytes(tagVal)
-                                                : null; // para evitar excepcion devuelve null si el valor no es convertible a long
+                                                    ? BitConverter.GetBytes(tagVal)
+                                                    : null; // para evitar excepcion devuelve null si el valor no es convertible a long
                     ventaDetalle.Producto.ProductID = int.Parse(cboProducto.SelectedValue.ToString());
                     ventaDetalle.UnitPrice = nudPrecio.Value;
                     ventaDetalle.Quantity = Convert.ToInt16(nudCantidad.Value);
