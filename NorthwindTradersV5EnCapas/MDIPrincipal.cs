@@ -181,6 +181,11 @@ namespace NorthwindTradersV5EnCapas
             Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
         }
 
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            Utils.CerrarTodasLasPestañas(TabControlPrincipal);
+        }
+
         private void mantenimientoDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //ActualizarBarraDeEstado();
@@ -440,5 +445,6 @@ namespace NorthwindTradersV5EnCapas
             FrmVentasDetalleCrud frm = new FrmVentasDetalleCrud();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de detalle de ventas «");
         }
+
     }
 }

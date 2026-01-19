@@ -274,13 +274,11 @@ namespace NorthwindTradersV5EnCapas
             DgvDetalle.Columns["ImporteSinIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["ImporteDelIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["Subtotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DgvDetalle.Columns["Modificar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            DgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 
             DgvDetalle.Columns["ImporteDelDescuento"].HeaderText = "Importe\ndel\ndescuento";
             DgvDetalle.Columns["ImporteConDescuento"].HeaderText = "Importe\ncon\ndescuento";
-
-            DgvDetalle.Columns["Modificar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            DgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 
             DgvDetalle.Columns["Precio"].DefaultCellStyle.Format = "c2";
             DgvDetalle.Columns["Cantidad"].DefaultCellStyle.Format = "n0";
@@ -436,11 +434,18 @@ namespace NorthwindTradersV5EnCapas
 
             return valida;
         }
+        
+        private void DgvVentas_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
+            Utils.OrdenarPorColumna<DtoVentaDgv>(DgvVentas, e);
+        }
 
         private void BorrarDatosBusqueda()
         {
             nudBIdIni.Value = nudBIdFin.Value = 0;
             txtBCliente.Text = txtBEmpleado.Text = txtBCompañiaT.Text = txtBDirigidoa.Text = "";
+            dtpBFVentaIni.Value = dtpBFVentaFin.Value = dtpBFRequeridoIni.Value = dtpBFRequeridoFin.Value = dtpBFEnvioIni.Value = dtpBFEnvioFin.Value = DateTime.Today;
             dtpBFVentaIni.Checked = dtpBFVentaFin.Checked = dtpBFRequeridoIni.Checked = dtpBFRequeridoFin.Checked = dtpBFEnvioIni.Checked = dtpBFEnvioFin.Checked = false;
             chkbBFVentaNull.Checked = chkbBFRequeridoNull.Checked = chkbBFEnvioNull.Checked = false;
         }
@@ -887,7 +892,7 @@ namespace NorthwindTradersV5EnCapas
                         LlenarDatosDetalleVenta(orderId);
                         BtnNota.Enabled = true;
                         CargarValoresOriginales();
-                        DgvDetalle.Focus();
+                        cboCategoria.Focus();
                     }
                     if (numRegs == -1)
                         U.NotificacionError(strProductoVenta + Utils.nfrfa);

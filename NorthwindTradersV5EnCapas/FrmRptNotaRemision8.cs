@@ -63,8 +63,8 @@ namespace NorthwindTradersV5EnCapas
                 DataTable dtDummy = new DataTable("DataSetDummy");
                 dtDummy.Columns.Add("Dummy_", typeof(int));
                 dtDummy.Rows.Add(1); // una fila ficticia
-                ReportDataSource rds = new ReportDataSource("DataSetDummy", dtDummy);
-                localReport.DataSources.Add(rds);
+                ReportDataSource rdsDummy = new ReportDataSource("DataSetDummy", dtDummy);
+                localReport.DataSources.Add(rdsDummy);
 
                 // 1. Renderizar Cliente
                 ReportParameter[] parametersCliente = new ReportParameter[3];
@@ -73,9 +73,9 @@ namespace NorthwindTradersV5EnCapas
                 parametersCliente[2] = new ReportParameter("Para", "Para: Cliente.");
                 localReport.SetParameters(parametersCliente);
 
-                DataTable dt = _ventaBLL.ObtenerVentaPorIdDt(Id);
+                DataTable dtVenta = _ventaBLL.ObtenerVentaPorIdDt(Id);
                 List<VentaDetalle> ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(Id);
-                localReport.DataSources.Add(new ReportDataSource("DataSetVenta", dt));
+                localReport.DataSources.Add(new ReportDataSource("DataSetVenta", dtVenta));
                 localReport.DataSources.Add(new ReportDataSource("DataSet1", ventaDetalles));
 
                 byte[] pdfCliente = localReport.Render("PDF");
@@ -89,15 +89,15 @@ namespace NorthwindTradersV5EnCapas
 
                 // Reusar mismos DataSources
                 localReport.DataSources.Clear();
-                localReport.DataSources.Add(rds);
-                localReport.DataSources.Add(new ReportDataSource("DataSetVenta", dt));
+                localReport.DataSources.Add(rdsDummy);
+                localReport.DataSources.Add(new ReportDataSource("DataSetVenta", dtVenta));
                 localReport.DataSources.Add(new ReportDataSource("DataSet1", ventaDetalles));
 
                 byte[] pdfControl = localReport.Render("PDF");
 
                 // 3. Combinar ambos PDFs
-                var helper = new ReporteServicePdfHelper();
-                byte[] pdfFinal = helper.CombinarPDFs(new[] { pdfCliente, pdfControl });
+                var reporteServicePdfHelper = new ReporteServicePdfHelper();
+                byte[] pdfFinal = reporteServicePdfHelper.CombinarPDFs(new[] { pdfCliente, pdfControl });
                 // 4. Mostrar el PDF final en el visor del diseñador
                 CargarPdf(pdfFinal);
 

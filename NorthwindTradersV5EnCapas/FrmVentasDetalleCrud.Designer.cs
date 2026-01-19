@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.GrbTotales = new System.Windows.Forms.GroupBox();
+            this.LblSubtotalDelImporteSinIVA = new System.Windows.Forms.Label();
+            this.nudSubtotalDelImporteSinIVA = new Utilities.NudNoWheel();
             this.label21 = new System.Windows.Forms.Label();
             this.LblSubtotalDelImporteDelIVA = new System.Windows.Forms.Label();
             this.LblSubtotalDelImporteConDescuento = new System.Windows.Forms.Label();
@@ -139,10 +141,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.LblSubtotalDelImporteSinIVA = new System.Windows.Forms.Label();
-            this.nudSubtotalDelImporteSinIVA = new Utilities.NudNoWheel();
             this.panel1.SuspendLayout();
             this.GrbTotales.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteSinIVA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelIVA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteConDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelDescuento)).BeginInit();
@@ -176,7 +177,6 @@
             this.GrbPedidos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgvVentas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteSinIVA)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -219,11 +219,37 @@
             this.GrbTotales.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GrbTotales.Location = new System.Drawing.Point(395, 713);
             this.GrbTotales.Name = "GrbTotales";
-            this.GrbTotales.Size = new System.Drawing.Size(1103, 174);
+            this.GrbTotales.Size = new System.Drawing.Size(1114, 174);
             this.GrbTotales.TabIndex = 7;
             this.GrbTotales.TabStop = false;
             this.GrbTotales.Text = "»   Totales de la venta:   «";
             this.GrbTotales.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
+            // 
+            // LblSubtotalDelImporteSinIVA
+            // 
+            this.LblSubtotalDelImporteSinIVA.AutoSize = true;
+            this.LblSubtotalDelImporteSinIVA.Location = new System.Drawing.Point(70, 99);
+            this.LblSubtotalDelImporteSinIVA.Name = "LblSubtotalDelImporteSinIVA";
+            this.LblSubtotalDelImporteSinIVA.Size = new System.Drawing.Size(228, 17);
+            this.LblSubtotalDelImporteSinIVA.TabIndex = 30;
+            this.LblSubtotalDelImporteSinIVA.Text = "Subtotal del importe sin IVA $:";
+            // 
+            // nudSubtotalDelImporteSinIVA
+            // 
+            this.nudSubtotalDelImporteSinIVA.DecimalPlaces = 2;
+            this.nudSubtotalDelImporteSinIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudSubtotalDelImporteSinIVA.Location = new System.Drawing.Point(305, 97);
+            this.nudSubtotalDelImporteSinIVA.Maximum = new decimal(new int[] {
+            -727379968,
+            232,
+            0,
+            0});
+            this.nudSubtotalDelImporteSinIVA.Name = "nudSubtotalDelImporteSinIVA";
+            this.nudSubtotalDelImporteSinIVA.Size = new System.Drawing.Size(167, 23);
+            this.nudSubtotalDelImporteSinIVA.TabIndex = 29;
+            this.nudSubtotalDelImporteSinIVA.TabStop = false;
+            this.nudSubtotalDelImporteSinIVA.ThousandsSeparator = true;
+            this.nudSubtotalDelImporteSinIVA.WheelEnabled = true;
             // 
             // label21
             // 
@@ -265,7 +291,7 @@
             // 
             this.nudSubtotalDelImporteDelIVA.DecimalPlaces = 2;
             this.nudSubtotalDelImporteDelIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporteDelIVA.Location = new System.Drawing.Point(816, 97);
+            this.nudSubtotalDelImporteDelIVA.Location = new System.Drawing.Point(814, 97);
             this.nudSubtotalDelImporteDelIVA.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -400,7 +426,7 @@
             // 
             this.LblTotal.AutoSize = true;
             this.LblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblTotal.Location = new System.Drawing.Point(734, 136);
+            this.LblTotal.Location = new System.Drawing.Point(739, 136);
             this.LblTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblTotal.Name = "LblTotal";
             this.LblTotal.Size = new System.Drawing.Size(73, 20);
@@ -417,7 +443,7 @@
             this.GrbDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.GrbDetalle.Name = "GrbDetalle";
             this.GrbDetalle.Padding = new System.Windows.Forms.Padding(10);
-            this.GrbDetalle.Size = new System.Drawing.Size(1103, 305);
+            this.GrbDetalle.Size = new System.Drawing.Size(1114, 305);
             this.GrbDetalle.TabIndex = 6;
             this.GrbDetalle.TabStop = false;
             this.GrbDetalle.Text = "»   Detalle de la venta:   «";
@@ -448,7 +474,7 @@
             this.DgvDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.DgvDetalle.Name = "DgvDetalle";
             this.DgvDetalle.RowHeadersWidth = 51;
-            this.DgvDetalle.Size = new System.Drawing.Size(1083, 269);
+            this.DgvDetalle.Size = new System.Drawing.Size(1094, 269);
             this.DgvDetalle.TabIndex = 0;
             this.DgvDetalle.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDetalle_CellClick);
             // 
@@ -617,7 +643,7 @@
             this.GrbAgregarProducto.Margin = new System.Windows.Forms.Padding(4);
             this.GrbAgregarProducto.Name = "GrbAgregarProducto";
             this.GrbAgregarProducto.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbAgregarProducto.Size = new System.Drawing.Size(1103, 206);
+            this.GrbAgregarProducto.Size = new System.Drawing.Size(1114, 206);
             this.GrbAgregarProducto.TabIndex = 5;
             this.GrbAgregarProducto.TabStop = false;
             this.GrbAgregarProducto.Text = "»   Agregar producto:   «";
@@ -626,7 +652,7 @@
             // LblSubtotalDelImporteSinIVA2
             // 
             this.LblSubtotalDelImporteSinIVA2.AutoSize = true;
-            this.LblSubtotalDelImporteSinIVA2.Location = new System.Drawing.Point(547, 134);
+            this.LblSubtotalDelImporteSinIVA2.Location = new System.Drawing.Point(565, 134);
             this.LblSubtotalDelImporteSinIVA2.Name = "LblSubtotalDelImporteSinIVA2";
             this.LblSubtotalDelImporteSinIVA2.Size = new System.Drawing.Size(228, 17);
             this.LblSubtotalDelImporteSinIVA2.TabIndex = 48;
@@ -636,7 +662,7 @@
             // 
             this.nudSubtotalDelImporteSinIVA2.DecimalPlaces = 2;
             this.nudSubtotalDelImporteSinIVA2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporteSinIVA2.Location = new System.Drawing.Point(783, 132);
+            this.nudSubtotalDelImporteSinIVA2.Location = new System.Drawing.Point(801, 132);
             this.nudSubtotalDelImporteSinIVA2.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -652,7 +678,7 @@
             // LblTotal2
             // 
             this.LblTotal2.AutoSize = true;
-            this.LblTotal2.Location = new System.Drawing.Point(616, 170);
+            this.LblTotal2.Location = new System.Drawing.Point(634, 170);
             this.LblTotal2.Name = "LblTotal2";
             this.LblTotal2.Size = new System.Drawing.Size(160, 17);
             this.LblTotal2.TabIndex = 46;
@@ -662,7 +688,7 @@
             // 
             this.nudTotal2.DecimalPlaces = 2;
             this.nudTotal2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudTotal2.Location = new System.Drawing.Point(786, 168);
+            this.nudTotal2.Location = new System.Drawing.Point(804, 168);
             this.nudTotal2.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -688,7 +714,7 @@
             // 
             this.nudSubtotalDelImporteDelIVA2.DecimalPlaces = 2;
             this.nudSubtotalDelImporteDelIVA2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporteDelIVA2.Location = new System.Drawing.Point(320, 168);
+            this.nudSubtotalDelImporteDelIVA2.Location = new System.Drawing.Point(313, 168);
             this.nudSubtotalDelImporteDelIVA2.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -704,7 +730,7 @@
             // LblSubtotalDelImporteConDescuento2
             // 
             this.LblSubtotalDelImporteConDescuento2.AutoSize = true;
-            this.LblSubtotalDelImporteConDescuento2.Location = new System.Drawing.Point(10, 134);
+            this.LblSubtotalDelImporteConDescuento2.Location = new System.Drawing.Point(29, 134);
             this.LblSubtotalDelImporteConDescuento2.Name = "LblSubtotalDelImporteConDescuento2";
             this.LblSubtotalDelImporteConDescuento2.Size = new System.Drawing.Size(284, 17);
             this.LblSubtotalDelImporteConDescuento2.TabIndex = 42;
@@ -714,7 +740,7 @@
             // 
             this.nudSubtotalDelImporteConDescuento2.DecimalPlaces = 2;
             this.nudSubtotalDelImporteConDescuento2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporteConDescuento2.Location = new System.Drawing.Point(295, 132);
+            this.nudSubtotalDelImporteConDescuento2.Location = new System.Drawing.Point(313, 132);
             this.nudSubtotalDelImporteConDescuento2.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -730,7 +756,7 @@
             // LblSubtotalDelImporteDelDescuento2
             // 
             this.LblSubtotalDelImporteDelDescuento2.AutoSize = true;
-            this.LblSubtotalDelImporteDelDescuento2.Location = new System.Drawing.Point(496, 99);
+            this.LblSubtotalDelImporteDelDescuento2.Location = new System.Drawing.Point(514, 99);
             this.LblSubtotalDelImporteDelDescuento2.Name = "LblSubtotalDelImporteDelDescuento2";
             this.LblSubtotalDelImporteDelDescuento2.Size = new System.Drawing.Size(280, 17);
             this.LblSubtotalDelImporteDelDescuento2.TabIndex = 40;
@@ -740,7 +766,7 @@
             // 
             this.nudSubtotalDelImporteDelDescuento2.DecimalPlaces = 2;
             this.nudSubtotalDelImporteDelDescuento2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporteDelDescuento2.Location = new System.Drawing.Point(786, 97);
+            this.nudSubtotalDelImporteDelDescuento2.Location = new System.Drawing.Point(804, 97);
             this.nudSubtotalDelImporteDelDescuento2.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -757,7 +783,7 @@
             // 
             this.nudSubtotalDelImporte2.DecimalPlaces = 2;
             this.nudSubtotalDelImporte2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporte2.Location = new System.Drawing.Point(295, 97);
+            this.nudSubtotalDelImporte2.Location = new System.Drawing.Point(313, 97);
             this.nudSubtotalDelImporte2.Maximum = new decimal(new int[] {
             -727379968,
             232,
@@ -773,7 +799,7 @@
             // LblSubtotalDelImporte2
             // 
             this.LblSubtotalDelImporte2.AutoSize = true;
-            this.LblSubtotalDelImporte2.Location = new System.Drawing.Point(121, 100);
+            this.LblSubtotalDelImporte2.Location = new System.Drawing.Point(140, 100);
             this.LblSubtotalDelImporte2.Name = "LblSubtotalDelImporte2";
             this.LblSubtotalDelImporte2.Size = new System.Drawing.Size(173, 17);
             this.LblSubtotalDelImporte2.TabIndex = 37;
@@ -1013,7 +1039,7 @@
             this.GrbPedido.Margin = new System.Windows.Forms.Padding(4);
             this.GrbPedido.Name = "GrbPedido";
             this.GrbPedido.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbPedido.Size = new System.Drawing.Size(1103, 125);
+            this.GrbPedido.Size = new System.Drawing.Size(1114, 125);
             this.GrbPedido.TabIndex = 4;
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
@@ -1506,11 +1532,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GrbPedidos.Controls.Add(this.DgvVentas);
             this.GrbPedidos.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrbPedidos.Location = new System.Drawing.Point(21, 59);
+            this.GrbPedidos.Location = new System.Drawing.Point(6, 59);
             this.GrbPedidos.Margin = new System.Windows.Forms.Padding(4);
             this.GrbPedidos.Name = "GrbPedidos";
             this.GrbPedidos.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbPedidos.Size = new System.Drawing.Size(1473, 295);
+            this.GrbPedidos.Size = new System.Drawing.Size(1503, 295);
             this.GrbPedidos.TabIndex = 2;
             this.GrbPedidos.TabStop = false;
             this.GrbPedidos.Text = "»   Ventas:   «";
@@ -1524,9 +1550,10 @@
             this.DgvVentas.Margin = new System.Windows.Forms.Padding(4);
             this.DgvVentas.Name = "DgvVentas";
             this.DgvVentas.RowHeadersWidth = 51;
-            this.DgvVentas.Size = new System.Drawing.Size(1465, 271);
+            this.DgvVentas.Size = new System.Drawing.Size(1495, 271);
             this.DgvVentas.TabIndex = 0;
             this.DgvVentas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVentas_CellClick);
+            this.DgvVentas.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvVentas_ColumnHeaderMouseClick);
             // 
             // label1
             // 
@@ -1534,10 +1561,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Location = new System.Drawing.Point(21, 10);
+            this.label1.Location = new System.Drawing.Point(6, 10);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1421, 39);
+            this.label1.Size = new System.Drawing.Size(1503, 39);
             this.label1.TabIndex = 1;
             this.label1.Text = "     Busque la venta y seleccionela en la lista que se muestra";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1545,32 +1572,6 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // LblSubtotalDelImporteSinIVA
-            // 
-            this.LblSubtotalDelImporteSinIVA.AutoSize = true;
-            this.LblSubtotalDelImporteSinIVA.Location = new System.Drawing.Point(70, 99);
-            this.LblSubtotalDelImporteSinIVA.Name = "LblSubtotalDelImporteSinIVA";
-            this.LblSubtotalDelImporteSinIVA.Size = new System.Drawing.Size(228, 17);
-            this.LblSubtotalDelImporteSinIVA.TabIndex = 30;
-            this.LblSubtotalDelImporteSinIVA.Text = "Subtotal del importe sin IVA $:";
-            // 
-            // nudSubtotalDelImporteSinIVA
-            // 
-            this.nudSubtotalDelImporteSinIVA.DecimalPlaces = 2;
-            this.nudSubtotalDelImporteSinIVA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudSubtotalDelImporteSinIVA.Location = new System.Drawing.Point(305, 97);
-            this.nudSubtotalDelImporteSinIVA.Maximum = new decimal(new int[] {
-            -727379968,
-            232,
-            0,
-            0});
-            this.nudSubtotalDelImporteSinIVA.Name = "nudSubtotalDelImporteSinIVA";
-            this.nudSubtotalDelImporteSinIVA.Size = new System.Drawing.Size(167, 23);
-            this.nudSubtotalDelImporteSinIVA.TabIndex = 29;
-            this.nudSubtotalDelImporteSinIVA.TabStop = false;
-            this.nudSubtotalDelImporteSinIVA.ThousandsSeparator = true;
-            this.nudSubtotalDelImporteSinIVA.WheelEnabled = true;
             // 
             // FrmVentasDetalleCrud
             // 
@@ -1590,6 +1591,7 @@
             this.panel1.ResumeLayout(false);
             this.GrbTotales.ResumeLayout(false);
             this.GrbTotales.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteSinIVA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelIVA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteConDescuento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteDelDescuento)).EndInit();
@@ -1626,7 +1628,6 @@
             this.GrbPedidos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DgvVentas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSubtotalDelImporteSinIVA)).EndInit();
             this.ResumeLayout(false);
 
         }
