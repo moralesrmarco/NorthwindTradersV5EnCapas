@@ -1226,7 +1226,6 @@ namespace NorthwindTradersV5EnCapas
                 dgvDetalle.Columns["Eliminar"].Visible = false;
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
-                    btnGenerar.Enabled = false;
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }
@@ -1234,14 +1233,12 @@ namespace NorthwindTradersV5EnCapas
                 {
                     VentaGenerada = false;
                     btnGenerar.Text = "Modificar venta";
-                    btnGenerar.Enabled = true;
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }
                 else if (tabcOperacion.SelectedTab == tabpEliminar)
                 {
                     btnGenerar.Text = "Eliminar venta";
-                    btnGenerar.Enabled = true;
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }
@@ -1486,17 +1483,6 @@ namespace NorthwindTradersV5EnCapas
             return;
         }
 
-        //private void btnNota_Click(object sender, EventArgs e)
-        //{
-        //    if (!ChkRowVersion())
-        //    {
-        //        U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
-        //    }
-        //    FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
-        //    frmRptNotaRemision8.Id = int.Parse(txtId.Text);
-        //    frmRptNotaRemision8.ShowDialog();
-        //}
-
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             BorrarDatosVenta();
@@ -1536,66 +1522,5 @@ namespace NorthwindTradersV5EnCapas
                 return -4;
             }
         }
-
-        //private bool ChkRowVersion()
-        //{
-        //    bool rowVersionOk = true;
-        //    if (txtId.Tag == null)
-        //        return true;
-        //    if (!int.TryParse(txtId.Text, out int ventaId))
-        //        return false;
-        //    byte[] rowVersion = (byte[])txtId.Tag;
-        //    try
-        //    {
-        //        MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-        //        Venta venta = _ventaBLL.ObtenerVentaPorId(ventaId);
-        //        if (venta == null || !rowVersion.SequenceEqual(venta.RowVersion))
-        //            return false;
-        //        // Validar filas del grid contra DB 
-        //        // 1) Validar que cada fila del grid exista en DB y coincida RowVersion
-        //        foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
-        //        {
-        //            if (!int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int productoId))
-        //                return false;
-        //            byte[] rowVersionGrid = (byte[])dgvr.Cells["RowVersion"].Value;
-        //            byte[] rowVersionDetalleEnDB = _ventaDetalleBLL.ObtenerVentaDetalleRowVersion(ventaId, productoId);
-        //            if (!rowVersionGrid.SequenceEqual(rowVersionDetalleEnDB))
-        //                return false;
-        //        }
-        //        // Validar que DB no tenga detalles adicionales
-        //        // 2) Validar que cada detalle en DB exista en el grid y coincida RowVersion
-        //        List<VentaDetalle> ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(ventaId);
-
-        //        if (ventaDetalles != null)
-        //        {
-        //            // Construir diccionario del grid para búsquedas O(1)
-        //            var gridMap = new Dictionary<int, byte[]>(); // productoId -> rowVersionGrid
-        //            foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
-        //            {
-        //                if (int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int pid))
-        //                    if (dgvr.Cells["RowVersion"].Value is byte[] rv)
-        //                        gridMap[pid] = rv;
-        //            }
-        //            foreach (var pd in ventaDetalles)
-        //            {
-        //                if (!gridMap.TryGetValue(pd.Producto.ProductID, out byte[] rowVersionGrid) || !rowVersionGrid.SequenceEqual(pd.RowVersion))
-        //                    return false;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            // Política: si DB no tiene detalles y el grid sí, considerarlo inconsistente
-        //            if (dgvDetalle.Rows.Count > 0)
-        //                return false;
-        //        }
-        //        MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        U.MsgCatchOue(ex);
-        //        return false;
-        //    }
-        //    return rowVersionOk;
-        //}
     }
 }
