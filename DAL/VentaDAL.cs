@@ -16,9 +16,10 @@ namespace DAL
             _connectionString = connectionString;
         }
 
-        public int InsertarVentaCompleta(Venta venta, out int orderId)
+        public int InsertarVentaCompleta(Venta venta, out int orderId, out byte[] rowVersion)
         {
             orderId = 0;
+            rowVersion = null;
             int filasAfectadas = 0;
             try
             {
@@ -33,8 +34,14 @@ namespace DAL
                             using (var cmd = new SqlCommand("SpVentaInsertar", cn, tx))
                             {
                                 cmd.CommandType = CommandType.StoredProcedure;
-                                cmd.Parameters.AddWithValue("@OrderID", 0);
-                                cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
+                                //cmd.Parameters.AddWithValue("@OrderID", 0);
+                                //cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
+                                // OrderID
+                                cmd.Parameters.Add("@OrderID", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                                // RowVersion
+                                cmd.Parameters.Add("@RowVersion", SqlDbType.Binary, 8).Direction = ParameterDirection.Output;
+
                                 cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
                                 cmd.Parameters.AddWithValue("@EmployeeID", venta.Empleado.EmployeeID);
                                 cmd.Parameters.AddWithValue("@OrderDate", venta.OrderDate.HasValue ? (object)venta.OrderDate.Value : DBNull.Value);
@@ -50,6 +57,11 @@ namespace DAL
                                 cmd.Parameters.AddWithValue("@Freight", venta.Freight);
                                 filasAfectadas += cmd.ExecuteNonQuery();
                                 orderId = Convert.ToInt32(cmd.Parameters["@OrderID"].Value);
+                                // Aquí obtienes el RowVersion como arreglo de bytes
+                                rowVersion = (byte[])cmd.Parameters["@RowVersion"].Value;
+
+                                // Si quieres guardarlo en tu objeto Venta:
+                                venta.RowVersion = rowVersion;
                             }
                             // 2) Preparar comandos reutilizables para cada detalle:
                             // 2.1) Preparar SELECT UnitsInStock FOR UPDATE

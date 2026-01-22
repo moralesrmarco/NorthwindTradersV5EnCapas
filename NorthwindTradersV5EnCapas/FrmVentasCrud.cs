@@ -2,7 +2,6 @@
 using BLL.Services;
 using Entities;
 using Entities.DTOs;
-using Microsoft.Extensions.Logging.Abstractions;
 using NorthwindTradersV5EnCapas.Helpers;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace NorthwindTradersV5EnCapas
 {
@@ -173,10 +171,11 @@ namespace NorthwindTradersV5EnCapas
         {
             cboCliente.Enabled = cboEmpleado.Enabled = cboTransportista.Enabled = cboCategoria.Enabled = true;
             cboProducto.Enabled = false;
+            btnAgregar.Enabled = false;
             dtpVenta.Enabled = dtpRequerido.Enabled = dtpEnvio.Enabled = true;
             txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = false;
             HabilitarFlete();
-            btnAgregar.Enabled = btnGenerar.Enabled = true;
+            btnGenerar.Enabled = true;
         }
 
         private void DeshabilitarControlesProducto()
@@ -185,6 +184,12 @@ namespace NorthwindTradersV5EnCapas
             OcultarIconosValidacion();
             btnAgregar.Enabled = false;
             cboProducto.Enabled = false;
+        }
+
+        private void DeshabilitarTodosControles()
+        {
+            DeshabilitarControles();
+            DeshabilitarControlesProducto();
         }
 
         private void OcultarIconosValidacion()
@@ -355,7 +360,7 @@ namespace NorthwindTradersV5EnCapas
             dgvDetalle.Columns["ImporteSinIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvDetalle.Columns["ImporteDelIVA"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvDetalle.Columns["Subtotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            dgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             dgvDetalle.Columns["ImporteDelDescuento"].HeaderText = "Importe\ndel\ndescuento";
             dgvDetalle.Columns["ImporteConDescuento"].HeaderText = "Importe\ncon\ndescuento";
@@ -412,6 +417,7 @@ namespace NorthwindTradersV5EnCapas
             dtpHoraRequerido.Value = dtpHoraEnvio.Value = DateTime.Today;
             dtpRequerido.Checked = dtpEnvio.Checked = false;
             txtDirigidoa.Text = txtDomicilio.Text = txtCiudad.Text = txtRegion.Text = txtCP.Text = txtPais.Text = "";
+            nudFlete.Value = 0;
             btnNota.Enabled = false;
         }
 
@@ -491,7 +497,7 @@ namespace NorthwindTradersV5EnCapas
         private bool ValidarControlesProducto()
         {
             errorProvider1.Clear();
-            bool valida = false;
+            bool valida = true;
             if (cboCategoria.SelectedIndex <= 0)
             {
                 valida = false;
@@ -970,18 +976,18 @@ namespace NorthwindTradersV5EnCapas
                 int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
                 LlenarDatosVenta(ref orderId);
                 LlenarDatosDetalleVenta(orderId);
+                DeshabilitarTodosControles();
+                //// Aqui checar logica
 
-                // Aqui checar logica
-
-                if (orderId != 0)
-                    HabilitarControles();
-                else
-                {
-                    DeshabilitarControles();
-                    BorrarDatosVenta();
-                    CargarValoresOriginales();
-                    return;
-                }
+                //if (orderId != 0)
+                //    HabilitarControles();
+                //else
+                //{
+                //    DeshabilitarControles();
+                //    BorrarDatosVenta();
+                //    CargarValoresOriginales();
+                //    return;
+                //}
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
                     btnNota.Enabled = true;
@@ -1096,14 +1102,13 @@ namespace NorthwindTradersV5EnCapas
                 numDetalle = 1;
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(orderId);
+                dgvDetalle.Columns["Eliminar"].Visible = false;
                 if (ventaDetalles.Count == 0)
                 {
-                    dgvDetalle.Columns["Eliminar"].Visible = false;
                     U.NotificacionWarning("No se encontraron detalles para la venta especificada");
                 }
                 else
                 {
-                    dgvDetalle.Columns["Eliminar"].Visible = true;
                     foreach (var ventaDetalle in ventaDetalles)
                     {
                         dgvDetalle.Rows.Add(new object[]
@@ -1143,13 +1148,6 @@ namespace NorthwindTradersV5EnCapas
             DeshabilitarControlesProducto();
             var ventaDetalle = new VentaDetalle
             {
-                Venta = new Venta()
-                {
-                    OrderID = int.Parse(txtId.Text),
-                    RowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
-                                    ? BitConverter.GetBytes(tagVal)
-                                    : null; // para evitar excepcion devuelve null si el valor no es convertible a long
-                },
                 Producto = new Producto
                 {
                     ProductID = (int)cboProducto.SelectedValue,
@@ -1182,6 +1180,7 @@ namespace NorthwindTradersV5EnCapas
             InicializarCboProducto();
             InicializarValoresAgregarProducto();
             InicializarNudsProducto();
+            dgvDetalle.Focus();
             cboCategoria.Focus();
         }
 
@@ -1197,6 +1196,7 @@ namespace NorthwindTradersV5EnCapas
         {
             numDetalle = 1;
             BorrarDatosVenta();
+            BorrarDatosDetalleVenta();
             BorrarMensajesError();
             if (tabcOperacion.SelectedTab == tabpRegistrar)
             {
@@ -1209,11 +1209,8 @@ namespace NorthwindTradersV5EnCapas
                 BorrarDatosBusqueda();
                 HabilitarControles();
                 btnGenerar.Text = "Generar venta";
-                btnGenerar.Enabled = true;
-                btnAgregar.Visible = true;
-                btnAgregar.Enabled = true;
                 dgvDetalle.Columns["Eliminar"].Visible = true;
-                grbProducto.Enabled = true;
+                dtpHoraRequerido.Enabled = dtpHoraEnvio.Enabled = false;
                 btnNota.Enabled = false;
                 btnNuevo.Enabled = false;
             }
@@ -1227,11 +1224,9 @@ namespace NorthwindTradersV5EnCapas
                 DeshabilitarControles();
                 btnGenerar.Enabled = false;
                 dgvDetalle.Columns["Eliminar"].Visible = false;
-                grbProducto.Enabled = false;
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
                     btnGenerar.Enabled = false;
-                    btnAgregar.Visible = false;
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }
@@ -1240,7 +1235,6 @@ namespace NorthwindTradersV5EnCapas
                     VentaGenerada = false;
                     btnGenerar.Text = "Modificar venta";
                     btnGenerar.Enabled = true;
-                    btnAgregar.Visible = false;
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }
@@ -1248,18 +1242,12 @@ namespace NorthwindTradersV5EnCapas
                 {
                     btnGenerar.Text = "Eliminar venta";
                     btnGenerar.Enabled = true;
-                    btnAgregar.Visible = false;
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }
             }
             CargarValoresOriginales();
         }
-
-
-
-
-
 
         private void btnGenerar_Click(object sender, EventArgs e)
         {
@@ -1309,10 +1297,12 @@ namespace NorthwindTradersV5EnCapas
                             };
                             venta.VentaDetalles.Add(ventaDetalles);
                         }
-                        int orderId = 0;
-                        numRegs = _ventaBLL.InsertarVentaCompleta(venta, out orderId);
+                        //int orderId = 0;
+                        numRegs = _ventaBLL.InsertarVentaCompleta(venta, out int orderId, out byte[] rowVersion);
                         txtId.Text = orderId.ToString();
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron {numRegs - (numRegs - 1)} registro(s) en ventas y {numRegs - 1} registro(s) en el detalle de ventas");
+                        venta.RowVersion = rowVersion;
+                        txtId.Tag = venta.RowVersionStr;
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se insertaron 1 registro en ventas y {venta.VentaDetalles.Count} registro(s) en el detalle de ventas");
                         string paraNotificacion = $"La venta con Id: {txtId.Text} del Cliente: {cboCliente.Text}:";
                         if (numRegs > 0) 
                             U.NotificacionInformation(paraNotificacion + Utils.srs);
@@ -1333,8 +1323,9 @@ namespace NorthwindTradersV5EnCapas
                     BorrarDatosBusqueda();
                     LlenarDgvVentas(false);
                     dgvDetalle.Rows.Clear();
-                    dgvDetalle.Columns["Eliminar"].Visible = false;
+                    //dgvDetalle.Columns["Eliminar"].Visible = false;
                     LlenarDatosDetalleVenta(Convert.ToInt32(txtId.Text));
+                    txtId.Focus();
                 }
             }
             else if (tabcOperacion.SelectedTab == tabpModificar)
@@ -1343,11 +1334,11 @@ namespace NorthwindTradersV5EnCapas
                 {
                     if (ValidarControlesVenta())
                     {
-                        if (!ChkRowVersion())
-                        {
-                            U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, no se realizará la actualización del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
-                            return;
-                        }
+                        //if (!ChkRowVersion())
+                        //{
+                        //    U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, no se realizará la actualización del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
+                        //    return;
+                        //}
                         MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
                         DeshabilitarControles();
                         btnGenerar.Enabled = false;
@@ -1406,11 +1397,11 @@ namespace NorthwindTradersV5EnCapas
             {
                 if (U.NotificacionQuestion($"[orange]¿Esta seguro de eliminar la venta con Id: {txtId.Text} del Cliente: {cboCliente.Text}?") == DialogResult.Yes)
                 {
-                    if (!ChkRowVersion())
-                    {
-                        U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, no se realizará la eliminación del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
-                        return;
-                    }
+                    //if (!ChkRowVersion())
+                    //{
+                    //    U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, no se realizará la eliminación del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
+                    //    return;
+                    //}
                     MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
                     btnGenerar.Enabled = false;
                     try
@@ -1452,92 +1443,159 @@ namespace NorthwindTradersV5EnCapas
         private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (!VentaGenerada && Utils.HayCambios(this, valoresOriginales, errorProvider1))
-                if (U.NotificacionQuestion("[orange]Se detectaron cambios en los datos de la venta que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?") == DialogResult.No)
+                if (U.NotificacionQuestion("[gold]Se detectaron cambios en los datos de la venta que no han sido guardados.\n[blue]Si cambia de pestaña se perderan los datos no guardados.\n[red]¿Desea cambiar de pestaña?") == DialogResult.No)
                     e.Cancel = true;
         }
 
         private void btnNota_Click(object sender, EventArgs e)
         {
-            if (!ChkRowVersion())
+            int result = ChkRowVersion();
+            string strVenta = $"La venta con Id: {txtId.Text}:";
+            if (result == -1)
+                U.NotificacionError(strVenta + Utils.oevvd);
+            else if (result == -2)
+                U.NotificacionError(strVenta + Utils.fepou);
+            else if (result == -3)
+                U.NotificacionError(strVenta + Utils.fmpousmn);
+            else if (result == -4)
+                U.NotificacionError(strVenta + Utils.oed);
+            if (result == 1 || result == -3)
             {
-                U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
+                FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
+                frmRptNotaRemision8.Id = int.Parse(txtId.Text);
+                frmRptNotaRemision8.ShowDialog();
             }
-            FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
-            frmRptNotaRemision8.Id = int.Parse(txtId.Text);
-            frmRptNotaRemision8.ShowDialog();
+            if (result == -2)
+            {
+                nudCantidad.Leave -= nudCantidad_Leave;
+                nudDescuento.Leave -= nudDescuento_Leave;
+                nudCantidad.ValueChanged -= nudCantidad_ValueChanged;
+                nudDescuento.ValueChanged -= nudDescuento_ValueChanged;
+                DeshabilitarControles();
+                btnNota.Enabled = false;
+                BorrarDatosVenta();
+                BorrarDatosDetalleVenta();
+                LlenarDgvVentas(false);
+                CargarValoresOriginales();
+                tabcOperacion.Focus();
+                nudCantidad.Leave += nudCantidad_Leave;
+                nudDescuento.Leave += nudDescuento_Leave;
+                nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+                nudDescuento.ValueChanged += nudDescuento_ValueChanged;
+            }
+            return;
         }
+
+        //private void btnNota_Click(object sender, EventArgs e)
+        //{
+        //    if (!ChkRowVersion())
+        //    {
+        //        U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, se mostrará la nota de remisión con los datos proporcionados por el otro usuario");
+        //    }
+        //    FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
+        //    frmRptNotaRemision8.Id = int.Parse(txtId.Text);
+        //    frmRptNotaRemision8.ShowDialog();
+        //}
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             BorrarDatosVenta();
+            BorrarDatosDetalleVenta();
             HabilitarControles();
             btnNota.Enabled = false;
             btnNuevo.Enabled = false;
             VentaGenerada = false;
-            dgvDetalle.Columns["Eliminar"].Visible = true;
+            //dgvDetalle.Columns["Eliminar"].Visible = true;
             numDetalle = 1;
             CargarValoresOriginales();
+            tabcOperacion.Focus();
         }
 
-        private bool ChkRowVersion()
+        private int ChkRowVersion()
         {
-            bool rowVersionOk = true;
             if (txtId.Tag == null)
-                return true;
-            if (!int.TryParse(txtId.Text, out int ventaId))
-                return false;
-            byte[] rowVersion = (byte[])txtId.Tag;
+                return -1;
+            byte[] rowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
+                                ? BitConverter.GetBytes(tagVal)
+                                : null; // para evitar excepcion devuelve null si el valor no es convertible a long
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                Venta venta = _ventaBLL.ObtenerVentaPorId(ventaId);
-                if (venta == null || !rowVersion.SequenceEqual(venta.RowVersion))
-                    return false;
-                // Validar filas del grid contra DB 
-                // 1) Validar que cada fila del grid exista en DB y coincida RowVersion
-                foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
-                {
-                    if (!int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int productoId))
-                        return false;
-                    byte[] rowVersionGrid = (byte[])dgvr.Cells["RowVersion"].Value;
-                    byte[] rowVersionDetalleEnDB = _ventaDetalleBLL.ObtenerVentaDetalleRowVersion(ventaId, productoId);
-                    if (!rowVersionGrid.SequenceEqual(rowVersionDetalleEnDB))
-                        return false;
-                }
-                // Validar que DB no tenga detalles adicionales
-                // 2) Validar que cada detalle en DB exista en el grid y coincida RowVersion
-                List<VentaDetalle> ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(ventaId);
-
-                if (ventaDetalles != null)
-                {
-                    // Construir diccionario del grid para búsquedas O(1)
-                    var gridMap = new Dictionary<int, byte[]>(); // productoId -> rowVersionGrid
-                    foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
-                    {
-                        if (int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int pid))
-                            if (dgvr.Cells["RowVersion"].Value is byte[] rv)
-                                gridMap[pid] = rv;
-                    }
-                    foreach (var pd in ventaDetalles)
-                    {
-                        if (!gridMap.TryGetValue(pd.Producto.ProductID, out byte[] rowVersionGrid) || !rowVersionGrid.SequenceEqual(pd.RowVersion))
-                            return false;
-                    }
-                }
-                else
-                {
-                    // Política: si DB no tiene detalles y el grid sí, considerarlo inconsistente
-                    if (dgvDetalle.Rows.Count > 0)
-                        return false;
-                }
-                MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
+                Venta venta = _ventaBLL.ObtenerVentaPorId(int.Parse(txtId.Text));
+                if (venta == null)
+                    return -2;
+                // no se necesita checar los rowversions de los detalles de la venta porque si un detalle cambia o es eliminado o es insertado uno nuevo, el rowversion de la venta también cambia, es suficiente con checar el rowversion de la venta
+                if (!venta.RowVersion.SequenceEqual(rowVersion))
+                    return -3;
+                MDIPrincipal.ActualizarBarraDeEstado();
+                return 1;
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
-                return false;
+                return -4;
             }
-            return rowVersionOk;
         }
+
+        //private bool ChkRowVersion()
+        //{
+        //    bool rowVersionOk = true;
+        //    if (txtId.Tag == null)
+        //        return true;
+        //    if (!int.TryParse(txtId.Text, out int ventaId))
+        //        return false;
+        //    byte[] rowVersion = (byte[])txtId.Tag;
+        //    try
+        //    {
+        //        MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+        //        Venta venta = _ventaBLL.ObtenerVentaPorId(ventaId);
+        //        if (venta == null || !rowVersion.SequenceEqual(venta.RowVersion))
+        //            return false;
+        //        // Validar filas del grid contra DB 
+        //        // 1) Validar que cada fila del grid exista en DB y coincida RowVersion
+        //        foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
+        //        {
+        //            if (!int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int productoId))
+        //                return false;
+        //            byte[] rowVersionGrid = (byte[])dgvr.Cells["RowVersion"].Value;
+        //            byte[] rowVersionDetalleEnDB = _ventaDetalleBLL.ObtenerVentaDetalleRowVersion(ventaId, productoId);
+        //            if (!rowVersionGrid.SequenceEqual(rowVersionDetalleEnDB))
+        //                return false;
+        //        }
+        //        // Validar que DB no tenga detalles adicionales
+        //        // 2) Validar que cada detalle en DB exista en el grid y coincida RowVersion
+        //        List<VentaDetalle> ventaDetalles = _ventaDetalleBLL.ObtenerVentaDetallePorVentaId(ventaId);
+
+        //        if (ventaDetalles != null)
+        //        {
+        //            // Construir diccionario del grid para búsquedas O(1)
+        //            var gridMap = new Dictionary<int, byte[]>(); // productoId -> rowVersionGrid
+        //            foreach (DataGridViewRow dgvr in dgvDetalle.Rows)
+        //            {
+        //                if (int.TryParse(dgvr.Cells["ProductoId"].Value?.ToString(), out int pid))
+        //                    if (dgvr.Cells["RowVersion"].Value is byte[] rv)
+        //                        gridMap[pid] = rv;
+        //            }
+        //            foreach (var pd in ventaDetalles)
+        //            {
+        //                if (!gridMap.TryGetValue(pd.Producto.ProductID, out byte[] rowVersionGrid) || !rowVersionGrid.SequenceEqual(pd.RowVersion))
+        //                    return false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Política: si DB no tiene detalles y el grid sí, considerarlo inconsistente
+        //            if (dgvDetalle.Rows.Count > 0)
+        //                return false;
+        //        }
+        //        MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        U.MsgCatchOue(ex);
+        //        return false;
+        //    }
+        //    return rowVersionOk;
+        //}
     }
 }

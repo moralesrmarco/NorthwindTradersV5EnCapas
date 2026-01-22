@@ -17,9 +17,9 @@ namespace BLL
             _ventaDAL = new VentaDAL(_connectionString);
         }
 
-        public int InsertarVentaCompleta(Venta venta, out int orderId)
+        public int InsertarVentaCompleta(Venta venta, out int orderId, out byte[] rowVersion)
         {
-            return _ventaDAL.InsertarVentaCompleta(venta, out orderId);
+            return _ventaDAL.InsertarVentaCompleta(venta, out orderId, out rowVersion);
         }
 
         public int Actualizar(Venta venta)
