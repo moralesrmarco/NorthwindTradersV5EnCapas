@@ -98,14 +98,14 @@
             // 
             // LblPrecio
             // 
-            this.LblPrecio.AutoSize = true;
             this.LblPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblPrecio.Location = new System.Drawing.Point(76, 107);
+            this.LblPrecio.Location = new System.Drawing.Point(26, 94);
             this.LblPrecio.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblPrecio.Name = "LblPrecio";
-            this.LblPrecio.Size = new System.Drawing.Size(73, 17);
+            this.LblPrecio.Size = new System.Drawing.Size(120, 43);
             this.LblPrecio.TabIndex = 0;
-            this.LblPrecio.Text = "Precio $:";
+            this.LblPrecio.Text = "Precio con IVA incluido $:";
+            this.LblPrecio.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label3
             // 

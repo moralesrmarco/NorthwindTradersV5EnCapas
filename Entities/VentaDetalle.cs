@@ -1,7 +1,6 @@
 ﻿//https://www.youtube.com/watch?v=VjBAQV_cFxM&list=PLgvaYP_E7xkKhk3QYJCvNXndiypRugCrf&index=6 tiene un ejemplo de como armar una clase cuando existe relacion con otras clases
 
 using System;
-using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace Entities
@@ -66,6 +65,28 @@ namespace Entities
 
         // Subtotal = Importe con descuento (ya incluye IVA)
         public decimal Subtotal => ImporteConDescuento; // ya viene redondeado
+
+        /*****************************************************/
+        public decimal PrecioPorUnidadSinIVAAntesDeDescuento => Math.Round(UnitPrice / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero); // ok
+
+        public decimal IVADelPrecioPorUnidadAntesDescuento => Math.Round(UnitPrice - PrecioPorUnidadSinIVAAntesDeDescuento, 2, MidpointRounding.AwayFromZero); // ok
+
+        public decimal PrecioPorUnidadConIVADespuesDescuento => Math.Round(UnitPrice * (1 - Discount), 2, MidpointRounding.AwayFromZero); // ok
+
+        public decimal IVADelPrecioporUnidadDespuesDescuento => Math.Round(PrecioPorUnidadConIVADespuesDescuento - PrecioPorUnidadSinIVADepuesDescuento, 2, MidpointRounding.AwayFromZero); // ok
+
+        public decimal PrecioPorUnidadSinIVADepuesDescuento => Math.Round(PrecioPorUnidadConIVADespuesDescuento / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero); // ok
+        
+        public decimal AhorroPorUnidadSinIVA => Math.Round(PrecioPorUnidadSinIVAAntesDeDescuento - PrecioPorUnidadSinIVADepuesDescuento, 2, MidpointRounding.AwayFromZero);
+
+        public decimal AhorroEnIVAPorUnidadDespuesDescuento => Math.Round(IVADelPrecioPorUnidadAntesDescuento - IVADelPrecioporUnidadDespuesDescuento, 2, MidpointRounding.AwayFromZero); 
+
+        public decimal AhorroPorUnidadConIVA => Math.Round(UnitPrice - PrecioPorUnidadConIVADespuesDescuento, 2, MidpointRounding.AwayFromZero);
+
+
+        public decimal AhorroTotalPorProducto => 0; // Math.Round(AhorroPorUnidad * Quantity, 2, MidpointRounding.AwayFromZero);
+
+
 
         // Tasas expresadas en porcentaje
         public decimal TasaDescuentoPorcentaje => Math.Round(Discount * 100, 2, MidpointRounding.AwayFromZero);

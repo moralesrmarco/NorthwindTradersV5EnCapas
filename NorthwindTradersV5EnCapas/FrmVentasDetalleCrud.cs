@@ -277,6 +277,7 @@ namespace NorthwindTradersV5EnCapas
             DgvDetalle.Columns["Modificar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
+            DgvDetalle.Columns["Precio"].HeaderText = "Precio\ncon IVA\nincluido";
             DgvDetalle.Columns["ImporteDelDescuento"].HeaderText = "Importe\ndel\ndescuento";
             DgvDetalle.Columns["ImporteConDescuento"].HeaderText = "Importe\ncon\ndescuento";
 

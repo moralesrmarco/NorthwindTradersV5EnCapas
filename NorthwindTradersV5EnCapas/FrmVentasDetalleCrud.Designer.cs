@@ -219,7 +219,7 @@
             this.GrbTotales.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GrbTotales.Location = new System.Drawing.Point(395, 713);
             this.GrbTotales.Name = "GrbTotales";
-            this.GrbTotales.Size = new System.Drawing.Size(1114, 174);
+            this.GrbTotales.Size = new System.Drawing.Size(1072, 174);
             this.GrbTotales.TabIndex = 7;
             this.GrbTotales.TabStop = false;
             this.GrbTotales.Text = "»   Totales de la venta:   «";
@@ -443,7 +443,7 @@
             this.GrbDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.GrbDetalle.Name = "GrbDetalle";
             this.GrbDetalle.Padding = new System.Windows.Forms.Padding(10);
-            this.GrbDetalle.Size = new System.Drawing.Size(1114, 305);
+            this.GrbDetalle.Size = new System.Drawing.Size(1072, 305);
             this.GrbDetalle.TabIndex = 6;
             this.GrbDetalle.TabStop = false;
             this.GrbDetalle.Text = "»   Detalle de la venta:   «";
@@ -474,7 +474,7 @@
             this.DgvDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.DgvDetalle.Name = "DgvDetalle";
             this.DgvDetalle.RowHeadersWidth = 51;
-            this.DgvDetalle.Size = new System.Drawing.Size(1094, 269);
+            this.DgvDetalle.Size = new System.Drawing.Size(1052, 269);
             this.DgvDetalle.TabIndex = 0;
             this.DgvDetalle.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDetalle_CellClick);
             // 
@@ -496,10 +496,10 @@
             // Precio
             // 
             this.Precio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Precio.HeaderText = "Precio";
+            this.Precio.HeaderText = "Precio con IVA incluido";
             this.Precio.MinimumWidth = 6;
             this.Precio.Name = "Precio";
-            this.Precio.Width = 83;
+            this.Precio.Width = 136;
             // 
             // Cantidad
             // 
@@ -643,7 +643,7 @@
             this.GrbAgregarProducto.Margin = new System.Windows.Forms.Padding(4);
             this.GrbAgregarProducto.Name = "GrbAgregarProducto";
             this.GrbAgregarProducto.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbAgregarProducto.Size = new System.Drawing.Size(1114, 206);
+            this.GrbAgregarProducto.Size = new System.Drawing.Size(1072, 206);
             this.GrbAgregarProducto.TabIndex = 5;
             this.GrbAgregarProducto.TabStop = false;
             this.GrbAgregarProducto.Text = "»   Agregar producto:   «";
@@ -1039,7 +1039,7 @@
             this.GrbPedido.Margin = new System.Windows.Forms.Padding(4);
             this.GrbPedido.Name = "GrbPedido";
             this.GrbPedido.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbPedido.Size = new System.Drawing.Size(1114, 125);
+            this.GrbPedido.Size = new System.Drawing.Size(1072, 125);
             this.GrbPedido.TabIndex = 4;
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
@@ -1536,7 +1536,7 @@
             this.GrbPedidos.Margin = new System.Windows.Forms.Padding(4);
             this.GrbPedidos.Name = "GrbPedidos";
             this.GrbPedidos.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbPedidos.Size = new System.Drawing.Size(1503, 295);
+            this.GrbPedidos.Size = new System.Drawing.Size(1461, 295);
             this.GrbPedidos.TabIndex = 2;
             this.GrbPedidos.TabStop = false;
             this.GrbPedidos.Text = "»   Ventas:   «";
@@ -1550,7 +1550,7 @@
             this.DgvVentas.Margin = new System.Windows.Forms.Padding(4);
             this.DgvVentas.Name = "DgvVentas";
             this.DgvVentas.RowHeadersWidth = 51;
-            this.DgvVentas.Size = new System.Drawing.Size(1495, 271);
+            this.DgvVentas.Size = new System.Drawing.Size(1453, 271);
             this.DgvVentas.TabIndex = 0;
             this.DgvVentas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVentas_CellClick);
             this.DgvVentas.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvVentas_ColumnHeaderMouseClick);
@@ -1564,7 +1564,7 @@
             this.label1.Location = new System.Drawing.Point(6, 10);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1503, 39);
+            this.label1.Size = new System.Drawing.Size(1461, 39);
             this.label1.TabIndex = 1;
             this.label1.Text = "     Busque la venta y seleccionela en la lista que se muestra";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1726,6 +1726,10 @@
         private System.Windows.Forms.Label LblSubtotalDelImporte2;
         private System.Windows.Forms.Label LblTotal2;
         private Utilities.NudNoWheel nudTotal2;
+        private System.Windows.Forms.Label LblSubtotalDelImporteSinIVA2;
+        private Utilities.NudNoWheel nudSubtotalDelImporteSinIVA2;
+        private System.Windows.Forms.Label LblSubtotalDelImporteSinIVA;
+        private Utilities.NudNoWheel nudSubtotalDelImporteSinIVA;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewTextBoxColumn Producto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
@@ -1742,9 +1746,5 @@
         private System.Windows.Forms.DataGridViewButtonColumn Eliminar;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductoId;
         private System.Windows.Forms.DataGridViewTextBoxColumn RowVersion;
-        private System.Windows.Forms.Label LblSubtotalDelImporteSinIVA2;
-        private Utilities.NudNoWheel nudSubtotalDelImporteSinIVA2;
-        private System.Windows.Forms.Label LblSubtotalDelImporteSinIVA;
-        private Utilities.NudNoWheel nudSubtotalDelImporteSinIVA;
     }
 }

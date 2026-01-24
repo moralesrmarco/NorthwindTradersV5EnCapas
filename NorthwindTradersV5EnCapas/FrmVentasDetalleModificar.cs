@@ -45,7 +45,7 @@ namespace NorthwindTradersV5EnCapas
             // Obtener el símbolo de moneda según la configuración regional del equipo
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
-            LblPrecio.Text = "Precio " + simboloMoneda + ":";
+            LblPrecio.Text = "Precio con IVA incluido " + simboloMoneda + ":";
             LblImporte.Text = "Importe " + simboloMoneda + ":";
             LblImporteDelDecuento.Text = "Importe del descuento " + simboloMoneda + ":";
             LblImporteConDescunto.Text = "Importe con descuento " + simboloMoneda + ":";

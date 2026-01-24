@@ -19,12 +19,12 @@ namespace NorthwindTradersV5EnCapas
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private VentaBLL _ventaBLL;
         private VentaDetalleBLL _ventaDetalleBLL;
-        private readonly ClienteService _clienteService;
-        private readonly EmpleadoService _empleadoService;
-        private readonly TransportistaService _transportistaService;
-        private readonly CategoriaService _categoriaService;
-        private readonly ProductoService _productoService;
-        private readonly VentaService _ventaService;
+        private ClienteService _clienteService;
+        private EmpleadoService _empleadoService;
+        private TransportistaService _transportistaService;
+        private CategoriaService _categoriaService;
+        private ProductoService _productoService;
+        private VentaService _ventaService;
         private Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
         int numDetalle = 1;
@@ -35,15 +35,6 @@ namespace NorthwindTradersV5EnCapas
         public FrmVentasCrud()
         {
             InitializeComponent();
-            WindowState = FormWindowState.Maximized;
-            _ventaBLL = new VentaBLL(_connectionString);
-            _ventaDetalleBLL = new VentaDetalleBLL(_connectionString);
-            _clienteService = new ClienteService(_connectionString);
-            _empleadoService = new EmpleadoService(_connectionString);
-            _transportistaService = new TransportistaService(_connectionString);
-            _categoriaService = new CategoriaService(_connectionString);
-            _productoService = new ProductoService(_connectionString);
-            _ventaService = new VentaService(_connectionString);
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint(this, sender, e);
@@ -63,9 +54,20 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmVentasCrud_Load(object sender, EventArgs e)
         {
+            WindowState = FormWindowState.Maximized;
+            _ventaBLL = new VentaBLL(_connectionString);
+            _ventaDetalleBLL = new VentaDetalleBLL(_connectionString);
+            _clienteService = new ClienteService(_connectionString);
+            _empleadoService = new EmpleadoService(_connectionString);
+            _transportistaService = new TransportistaService(_connectionString);
+            _categoriaService = new CategoriaService(_connectionString);
+            _productoService = new ProductoService(_connectionString);
+            _ventaService = new VentaService(_connectionString);
+
             tabcOperacion.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
+
             // Obtener el símbolo de moneda según la configuración regional del equipo
             string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
             // Mostrarlo en el Label
@@ -77,8 +79,10 @@ namespace NorthwindTradersV5EnCapas
             LblSubtotalDelImporteDelIVA.Text = LblSubtotalDelImporteDelIVA2.Text = "Subtotal del importe del IVA (Incluido) " + simboloMoneda + ":";
             LblTotal.Text = "Total " + simboloMoneda + ":";
             LblTotal2.Text = "Total del producto " + simboloMoneda + ":";
+
             dtpHoraRequerido.Value = DateTime.Today; 
             dtpHoraEnvio.Value = DateTime.Today; 
+
             DeshabilitarControles();
             LlenarCboCliente();
             LlenarCboEmpleado();
@@ -104,6 +108,12 @@ namespace NorthwindTradersV5EnCapas
         {
             Utilities.NudHelper.SetEnabled(nudPrecio, false);
             Utilities.NudHelper.SetEnabled(nudUInventario, false);
+            Utilities.NudHelper.SetEnabled(nudPrecioPorUnidadSinIVAIncluidoAntesDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudIVADelPrecioPorUnidadAntesDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudPrecioPorUnidadSinIVADepuesDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudAhorroPorUnidadSinIVA,false);
+            Utilities.NudHelper.SetEnabled(nudIVADelPrecioPorUnidadDespuesDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudAhorroEnIVAPorUnidadDespuesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudNumProd, false);
             Utilities.NudHelper.SetEnabled(nudTotalDeUnidades, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporte, false);
@@ -362,6 +372,7 @@ namespace NorthwindTradersV5EnCapas
             dgvDetalle.Columns["Subtotal"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvDetalle.Columns["Eliminar"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
+            dgvDetalle.Columns["Precio"].HeaderText = "Precio\ncon IVA\nincluido";
             dgvDetalle.Columns["ImporteDelDescuento"].HeaderText = "Importe\ndel\ndescuento";
             dgvDetalle.Columns["ImporteConDescuento"].HeaderText = "Importe\ncon\ndescuento";
 
@@ -442,7 +453,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void InicializarNudsProducto()
         {
-            nudSubtotalDelImporte2.Value = nudSubtotalDelImporteDelDescuento2.Value = nudSubtotalDelImporteConDescuento2.Value = nudSubtotalDelImporteSinIVA2.Value = nudSubtotalDelImporteDelIVA2.Value = nudTotal2.Value = 0;
+            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = nudIVADelPrecioPorUnidadAntesDescuento.Value = nudPrecioPorUnidadSinIVADepuesDescuento.Value = nudAhorroPorUnidadSinIVA.Value = nudIVADelPrecioPorUnidadDespuesDescuento.Value = nudAhorroEnIVAPorUnidadDespuesDescuento.Value = nudSubtotalDelImporte2.Value = nudSubtotalDelImporteDelDescuento2.Value = nudSubtotalDelImporteConDescuento2.Value = nudSubtotalDelImporteSinIVA2.Value = nudSubtotalDelImporteDelIVA2.Value = nudTotal2.Value = 0;
         }
 
         private void BorrarMensajesError() => errorProvider1.Clear();
@@ -594,6 +605,15 @@ namespace NorthwindTradersV5EnCapas
 
         private void CalcularTotalProducto(VentaDetalle ventaDetalle)
         {
+            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVAAntesDeDescuento;
+            nudIVADelPrecioPorUnidadAntesDescuento.Value = ventaDetalle.IVADelPrecioPorUnidadAntesDescuento;
+            nudPrecioPorUnidadConIVADespuesDescuento.Value = ventaDetalle.PrecioPorUnidadConIVADespuesDescuento;
+            nudIVADelPrecioPorUnidadDespuesDescuento.Value = ventaDetalle.IVADelPrecioporUnidadDespuesDescuento;
+            nudPrecioPorUnidadSinIVADepuesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVADepuesDescuento;
+            nudAhorroPorUnidadSinIVA.Value = ventaDetalle.AhorroPorUnidadSinIVA;
+            nudAhorroEnIVAPorUnidadDespuesDescuento.Value = ventaDetalle.AhorroEnIVAPorUnidadDespuesDescuento;
+            nudAhorroPorUnidadConIVA.Value = ventaDetalle.AhorroPorUnidadConIVA;
+
             nudSubtotalDelImporte2.Value = ventaDetalle.Importe;
             nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
             nudSubtotalDelImporteConDescuento2.Value = ventaDetalle.ImporteConDescuento;
@@ -977,17 +997,6 @@ namespace NorthwindTradersV5EnCapas
                 LlenarDatosVenta(ref orderId);
                 LlenarDatosDetalleVenta(orderId);
                 DeshabilitarTodosControles();
-                //// Aqui checar logica
-
-                //if (orderId != 0)
-                //    HabilitarControles();
-                //else
-                //{
-                //    DeshabilitarControles();
-                //    BorrarDatosVenta();
-                //    CargarValoresOriginales();
-                //    return;
-                //}
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
                     btnNota.Enabled = true;
