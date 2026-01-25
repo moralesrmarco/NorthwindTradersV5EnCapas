@@ -67,12 +67,12 @@ namespace NorthwindTradersV5EnCapas
             nudDescuento.Value = ventaDetalle.TasaDescuentoPorcentaje;
             nudDescuento.ValueChanged += nudDescuento_ValueChanged;
             nudDescuento.Leave += nudDescuento_Leave;
-            nudImporte.Value = ventaDetalle.Importe;
+            nudImporte.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
             nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
-            nudImporteConDescuento.Value = ventaDetalle.ImporteConDescuento;
+            nudImporteConDescuento.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
             nudTasaIVA.Value = ventaDetalle.TasaIVAPorcentaje;
-            nudImporteSinIVA.Value = ventaDetalle.ImporteSinIVA;
-            nudImporteDelIVA.Value = ventaDetalle.ImporteDelIVA;
+            nudImporteSinIVA.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
+            nudImporteDelIVA.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
             nudSubtotal.Value = ventaDetalle.Subtotal;
             CantidadOld = ventaDetalle.Quantity;
             DescuentoOld = ventaDetalle.TasaDescuentoPorcentaje;
@@ -228,11 +228,11 @@ namespace NorthwindTradersV5EnCapas
                     Quantity = Convert.ToInt16(nudCantidad.Value),
                     Discount = nudDescuento.Value / 100
                 };
-                nudImporte.Value = ventaDetalle.Importe;
+                nudImporte.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
                 nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
-                nudImporteConDescuento.Value = ventaDetalle.ImporteConDescuento;
-                nudImporteSinIVA.Value = ventaDetalle.ImporteSinIVA;
-                nudImporteDelIVA.Value = ventaDetalle.ImporteDelIVA;
+                nudImporteConDescuento.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
+                nudImporteSinIVA.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
+                nudImporteDelIVA.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
                 nudSubtotal.Value = ventaDetalle.Subtotal;
             }
             catch (Exception ex)

@@ -54,12 +54,12 @@ namespace BLL
                 dr["ProductName"] = ventaDetalle.Producto.ProductName;
                 dr["UnitPrice"] = ventaDetalle.UnitPrice;
                 dr["Quantity"] = ventaDetalle.Quantity;
-                dr["Importe"] = ventaDetalle.Importe;
+                dr["Importe"] = ventaDetalle.SubtotalDelImporteConIVAIncluido;
                 dr["Discount"] = ventaDetalle.Discount;
                 dr["ImporteDelDescuento"] = ventaDetalle.ImporteDelDescuento;
-                dr["ImporteConDescuento"] = ventaDetalle.ImporteConDescuento;
+                dr["ImporteConDescuento"] = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
                 dr["TasaIVA"] = ventaDetalle.TasaIVA;
-                dr["ImporteDelIVA"] = ventaDetalle.ImporteDelIVA;
+                dr["ImporteDelIVA"] = ventaDetalle.SubtotalIVADespuesDelDescuento;
                 dr["Subtotal"] = ventaDetalle.Subtotal;
                 dt.Rows.Add(dr);
             }

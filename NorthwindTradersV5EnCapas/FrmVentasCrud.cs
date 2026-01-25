@@ -68,18 +68,6 @@ namespace NorthwindTradersV5EnCapas
             tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
 
-            // Obtener el símbolo de moneda según la configuración regional del equipo
-            string simboloMoneda = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
-            // Mostrarlo en el Label
-            LblPrecio.Text = "Precio " + simboloMoneda + ":";
-            LblSubtotalDelImporte.Text = LblSubtotalDelImporte2.Text = "Subtotal del importe " + simboloMoneda + ":";
-            LblSubtotalDelImporteDelDescuento.Text = LblSubtotalDelImporteDelDescuento2.Text = "Subtotal del importe del descuento " + simboloMoneda + ":";
-            LblSubtotalDelImporteConDescuento.Text = LblSubtotalDelImporteConDescuento2.Text = "Subtotal del importe con descuento " + simboloMoneda + ":";
-            LblSubtotalDelImporteSinIVA.Text = LblSubtotalDelImporteSinIVA2.Text = "Subtotal del importe sin IVA " + simboloMoneda + ":";
-            LblSubtotalDelImporteDelIVA.Text = LblSubtotalDelImporteDelIVA2.Text = "Subtotal del importe del IVA (Incluido) " + simboloMoneda + ":";
-            LblTotal.Text = "Total " + simboloMoneda + ":";
-            LblTotal2.Text = "Total del producto " + simboloMoneda + ":";
-
             dtpHoraRequerido.Value = DateTime.Today; 
             dtpHoraEnvio.Value = DateTime.Today; 
 
@@ -106,14 +94,18 @@ namespace NorthwindTradersV5EnCapas
 
         private void DeshabilitarNudsNoSeleccionables()
         {
-            Utilities.NudHelper.SetEnabled(nudPrecio, false);
+            Utilities.NudHelper.SetEnabled(nudPrecioConIVAIncluido, false);
             Utilities.NudHelper.SetEnabled(nudUInventario, false);
+
             Utilities.NudHelper.SetEnabled(nudPrecioPorUnidadSinIVAIncluidoAntesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudIVADelPrecioPorUnidadAntesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudPrecioPorUnidadSinIVADepuesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudAhorroPorUnidadSinIVA,false);
             Utilities.NudHelper.SetEnabled(nudIVADelPrecioPorUnidadDespuesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudAhorroEnIVAPorUnidadDespuesDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudPrecioPorUnidadConIVADespuesDescuento, false);
+            Utilities.NudHelper.SetEnabled(nudAhorroPorUnidadConIVA, false);
+
             Utilities.NudHelper.SetEnabled(nudNumProd, false);
             Utilities.NudHelper.SetEnabled(nudTotalDeUnidades, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporte, false);
@@ -122,11 +114,17 @@ namespace NorthwindTradersV5EnCapas
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVA, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVA, false);
             Utilities.NudHelper.SetEnabled(nudTotal, false);
-            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporte2, false);
+
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConIVAIncluido2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVASinDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVASinDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConIVAConDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalIVADespuesDelDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVAConDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelAhorroSinIvaDespuesDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelAhorroEnIVADespuesDescuento2, false);
+
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelDescuento2, false);
-            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConDescuento2, false);
-            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVA2, false);
-            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVA2, false);
             Utilities.NudHelper.SetEnabled(nudTotal2, false);
         }
 
@@ -441,7 +439,7 @@ namespace NorthwindTradersV5EnCapas
             dgvDetalle.Rows.Clear();
         }
 
-        private void InicializarValoresAgregarProducto() => nudPrecio.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = 0;
+        private void InicializarValoresAgregarProducto() => nudPrecioConIVAIncluido.Value = nudCantidad.Value = nudUInventario.Value = nudDescuento.Value = 0;
 
         private void InicializarValoresEnvio() => txtDirigidoa.Text = txtDomicilio.Text = txtCiudad.Text = txtRegion.Text = txtCP.Text = txtPais.Text = "";
         
@@ -453,7 +451,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void InicializarNudsProducto()
         {
-            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = nudIVADelPrecioPorUnidadAntesDescuento.Value = nudPrecioPorUnidadSinIVADepuesDescuento.Value = nudAhorroPorUnidadSinIVA.Value = nudIVADelPrecioPorUnidadDespuesDescuento.Value = nudAhorroEnIVAPorUnidadDespuesDescuento.Value = nudSubtotalDelImporte2.Value = nudSubtotalDelImporteDelDescuento2.Value = nudSubtotalDelImporteConDescuento2.Value = nudSubtotalDelImporteSinIVA2.Value = nudSubtotalDelImporteDelIVA2.Value = nudTotal2.Value = 0;
+            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = nudIVADelPrecioPorUnidadAntesDescuento.Value = nudPrecioPorUnidadConIVADespuesDescuento.Value = nudPrecioPorUnidadSinIVADepuesDescuento.Value = nudAhorroPorUnidadSinIVA.Value = nudIVADelPrecioPorUnidadDespuesDescuento.Value = nudAhorroEnIVAPorUnidadDespuesDescuento.Value = nudAhorroPorUnidadConIVA.Value = nudSubtotalDelImporteConIVAIncluido2.Value = nudSubtotalDelImporteDelDescuento2.Value = nudSubtotalDelImporteConIVAConDescuento2.Value = nudSubtotalDelImporteSinIVAConDescuento2.Value = nudSubtotalDelAhorroEnIVADespuesDescuento2.Value = nudSubtotalDelImporteDelIVASinDescuento2.Value = nudTotal2.Value = 0;
         }
 
         private void BorrarMensajesError() => errorProvider1.Clear();
@@ -539,7 +537,7 @@ namespace NorthwindTradersV5EnCapas
             }
             // necesario crear un objeto temporal para calcular el subtotal con la formulas ya definidas en la clase VentaDetalle
             VentaDetalle ventaDetalle = new VentaDetalle();
-            ventaDetalle.UnitPrice = nudPrecio.Value;
+            ventaDetalle.UnitPrice = nudPrecioConIVAIncluido.Value;
             ventaDetalle.Quantity = (short)nudCantidad.Value;
             ventaDetalle.Discount = nudDescuento.Value / 100m;
             CalcularTotalProducto(ventaDetalle);
@@ -605,8 +603,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void CalcularTotalProducto(VentaDetalle ventaDetalle)
         {
-            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVAAntesDeDescuento;
-            nudIVADelPrecioPorUnidadAntesDescuento.Value = ventaDetalle.IVADelPrecioPorUnidadAntesDescuento;
+            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVASinDescuento;
+            nudIVADelPrecioPorUnidadAntesDescuento.Value = ventaDetalle.IVADelPrecioPorUnidadSinDescuento;
             nudPrecioPorUnidadConIVADespuesDescuento.Value = ventaDetalle.PrecioPorUnidadConIVADespuesDescuento;
             nudIVADelPrecioPorUnidadDespuesDescuento.Value = ventaDetalle.IVADelPrecioporUnidadDespuesDescuento;
             nudPrecioPorUnidadSinIVADepuesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVADepuesDescuento;
@@ -614,11 +612,20 @@ namespace NorthwindTradersV5EnCapas
             nudAhorroEnIVAPorUnidadDespuesDescuento.Value = ventaDetalle.AhorroEnIVAPorUnidadDespuesDescuento;
             nudAhorroPorUnidadConIVA.Value = ventaDetalle.AhorroPorUnidadConIVA;
 
-            nudSubtotalDelImporte2.Value = ventaDetalle.Importe;
+            nudSubtotalDelImporteConIVAIncluido2.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
+            nudSubtotalDelImporteSinIVASinDescuento2.Value = ventaDetalle.SubtotalDelImporteSinIVASinDescuento;
+            nudSubtotalDelImporteDelIVASinDescuento2.Value = ventaDetalle.SubtotalDelImporteDelIVASinDescuento;
+            nudSubtotalDelImporteConIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
+            nudSubtotalIVADespuesDelDescuento2.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
+            nudSubtotalDelImporteSinIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
+            nudSubtotalDelAhorroSinIvaDespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroSinIvaDespuesDescuento;
+            nudSubtotalDelAhorroEnIVADespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroEnIVADespuesDescuento;
+
+            //nudSubtotalDelImporteConIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
+
+
             nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
-            nudSubtotalDelImporteConDescuento2.Value = ventaDetalle.ImporteConDescuento;
-            nudSubtotalDelImporteSinIVA2.Value = ventaDetalle.ImporteSinIVA;
-            nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.ImporteDelIVA;
+            //nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.ImporteDelIVA;
             nudTotal2.Value = ventaDetalle.Subtotal;
         }
 
@@ -922,7 +929,7 @@ namespace NorthwindTradersV5EnCapas
                     var dtoProductoCostoEInventario = _productoService.ObtenerProductoCostoEInventario(int.Parse(productId));
                     if (dtoProductoCostoEInventario != null)
                     {
-                        nudPrecio.Value = dtoProductoCostoEInventario.UnitPrice;
+                        nudPrecioConIVAIncluido.Value = dtoProductoCostoEInventario.UnitPrice;
                         nudUInventario.Value = dtoProductoCostoEInventario.UnitsInStock;
                         UInventarioOld = short.Parse(dtoProductoCostoEInventario.UnitsInStock.ToString());
                         ValidarCantidadEInventarioHelper.ValidarInventario
@@ -1126,13 +1133,13 @@ namespace NorthwindTradersV5EnCapas
                             ventaDetalle.Producto.ProductName,
                             ventaDetalle.UnitPrice,
                             ventaDetalle.Quantity,
-                            ventaDetalle.Importe,
+                            ventaDetalle.SubtotalDelImporteConIVAIncluido,
                             ventaDetalle.Discount,
                             ventaDetalle.ImporteDelDescuento,
-                            ventaDetalle.ImporteConDescuento,
+                            ventaDetalle.SubtotalDelImporteConIVAConDescuento,
                             ventaDetalle.TasaIVA,
-                            ventaDetalle.ImporteSinIVA,
-                            ventaDetalle.ImporteDelIVA,
+                            ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
+                            ventaDetalle.SubtotalIVADespuesDelDescuento,
                             ventaDetalle.Subtotal,
                             "Eliminar",
                             ventaDetalle.Producto.ProductID,
@@ -1162,7 +1169,7 @@ namespace NorthwindTradersV5EnCapas
                     ProductID = (int)cboProducto.SelectedValue,
                     ProductName = cboProducto.Text
                 },
-                UnitPrice = nudPrecio.Value,
+                UnitPrice = nudPrecioConIVAIncluido.Value,
                 Quantity = (short)nudCantidad.Value,
                 Discount = nudDescuento.Value / 100m
             };
@@ -1172,13 +1179,13 @@ namespace NorthwindTradersV5EnCapas
                 ventaDetalle.Producto.ProductName,
                 ventaDetalle.UnitPrice, 
                 ventaDetalle.Quantity, 
-                ventaDetalle.Importe, 
+                ventaDetalle.SubtotalDelImporteConIVAIncluido, 
                 ventaDetalle.Discount,
                 ventaDetalle.ImporteDelDescuento,
-                ventaDetalle.ImporteConDescuento,
+                ventaDetalle.SubtotalDelImporteConIVAConDescuento,
                 ventaDetalle.TasaIVA,
-                ventaDetalle.ImporteSinIVA,
-                ventaDetalle.ImporteDelIVA,
+                ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
+                ventaDetalle.SubtotalIVADespuesDelDescuento,
                 ventaDetalle.Subtotal,
                 "Eliminar", 
                 ventaDetalle.Producto.ProductID

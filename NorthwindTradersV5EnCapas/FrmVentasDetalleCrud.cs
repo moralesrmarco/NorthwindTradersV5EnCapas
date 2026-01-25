@@ -798,13 +798,13 @@ namespace NorthwindTradersV5EnCapas
                             ventaDetalle.Producto.ProductName,
                             ventaDetalle.UnitPrice,
                             ventaDetalle.Quantity,
-                            ventaDetalle.Importe,
+                            ventaDetalle.SubtotalDelImporteConIVAIncluido,
                             ventaDetalle.Discount,
                             ventaDetalle.ImporteDelDescuento,
-                            ventaDetalle.ImporteConDescuento,
+                            ventaDetalle.SubtotalDelImporteConIVAConDescuento,
                             ventaDetalle.TasaIVA,
-                            ventaDetalle.ImporteSinIVA,
-                            ventaDetalle.ImporteDelIVA,
+                            ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
+                            ventaDetalle.SubtotalIVADespuesDelDescuento,
                             ventaDetalle.Subtotal,
                             "  Modificar  ",
                             "  Eliminar  ",
@@ -825,11 +825,11 @@ namespace NorthwindTradersV5EnCapas
 
         private void CalcularTotalProducto(VentaDetalle ventaDetalle)
         {
-            nudSubtotalDelImporte2.Value = ventaDetalle.Importe;
+            nudSubtotalDelImporte2.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
             nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
-            nudSubtotalDelImporteConDescuento2.Value = ventaDetalle.ImporteConDescuento;
-            nudSubtotalDelImporteSinIVA2.Value = ventaDetalle.ImporteSinIVA;
-            nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.ImporteDelIVA;
+            nudSubtotalDelImporteConDescuento2.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
+            nudSubtotalDelImporteSinIVA2.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
+            nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
             nudTotal2.Value = ventaDetalle.Subtotal;
         }
 
