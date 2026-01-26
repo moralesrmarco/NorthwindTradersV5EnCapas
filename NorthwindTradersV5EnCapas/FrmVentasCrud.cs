@@ -104,7 +104,7 @@ namespace NorthwindTradersV5EnCapas
             Utilities.NudHelper.SetEnabled(nudIVADelPrecioPorUnidadDespuesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudAhorroEnIVAPorUnidadDespuesDescuento, false);
             Utilities.NudHelper.SetEnabled(nudPrecioPorUnidadConIVADespuesDescuento, false);
-            Utilities.NudHelper.SetEnabled(nudAhorroPorUnidadConIVA, false);
+            Utilities.NudHelper.SetEnabled(nudAhorroTotalPorUnidadConIVA, false);
 
             Utilities.NudHelper.SetEnabled(nudNumProd, false);
             Utilities.NudHelper.SetEnabled(nudTotalDeUnidades, false);
@@ -118,13 +118,12 @@ namespace NorthwindTradersV5EnCapas
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConIVAIncluido2, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVASinDescuento2, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelIVASinDescuento2, false);
-            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteConIVAConDescuento2, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalIVADespuesDelDescuento2, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteSinIVAConDescuento2, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelAhorroSinIvaDespuesDescuento2, false);
             Utilities.NudHelper.SetEnabled(nudSubtotalDelAhorroEnIVADespuesDescuento2, false);
+            Utilities.NudHelper.SetEnabled(nudSubtotalDelAhorroTotalDespuesDescuento2, false);
 
-            Utilities.NudHelper.SetEnabled(nudSubtotalDelImporteDelDescuento2, false);
             Utilities.NudHelper.SetEnabled(nudTotal2, false);
         }
 
@@ -451,7 +450,11 @@ namespace NorthwindTradersV5EnCapas
 
         private void InicializarNudsProducto()
         {
-            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = nudIVADelPrecioPorUnidadAntesDescuento.Value = nudPrecioPorUnidadConIVADespuesDescuento.Value = nudPrecioPorUnidadSinIVADepuesDescuento.Value = nudAhorroPorUnidadSinIVA.Value = nudIVADelPrecioPorUnidadDespuesDescuento.Value = nudAhorroEnIVAPorUnidadDespuesDescuento.Value = nudAhorroPorUnidadConIVA.Value = nudSubtotalDelImporteConIVAIncluido2.Value = nudSubtotalDelImporteDelDescuento2.Value = nudSubtotalDelImporteConIVAConDescuento2.Value = nudSubtotalDelImporteSinIVAConDescuento2.Value = nudSubtotalDelAhorroEnIVADespuesDescuento2.Value = nudSubtotalDelImporteDelIVASinDescuento2.Value = nudTotal2.Value = 0;
+            nudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = nudIVADelPrecioPorUnidadAntesDescuento.Value = nudPrecioPorUnidadConIVADespuesDescuento.Value = nudIVADelPrecioPorUnidadDespuesDescuento.Value = nudPrecioPorUnidadSinIVADepuesDescuento.Value = nudAhorroPorUnidadSinIVA.Value = nudAhorroEnIVAPorUnidadDespuesDescuento.Value = nudAhorroTotalPorUnidadConIVA.Value = 0;
+
+            nudSubtotalDelImporteConIVAIncluido2.Value = nudSubtotalDelImporteSinIVASinDescuento2.Value = nudSubtotalDelImporteDelIVASinDescuento2.Value = nudSubtotalIVADespuesDelDescuento2.Value = nudSubtotalDelImporteSinIVAConDescuento2.Value = nudSubtotalDelAhorroSinIvaDespuesDescuento2.Value = nudSubtotalDelAhorroEnIVADespuesDescuento2.Value = nudSubtotalDelAhorroTotalDespuesDescuento2.Value = 0;
+
+            nudTotal2.Value = 0;
         }
 
         private void BorrarMensajesError() => errorProvider1.Clear();
@@ -610,22 +613,17 @@ namespace NorthwindTradersV5EnCapas
             nudPrecioPorUnidadSinIVADepuesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVADepuesDescuento;
             nudAhorroPorUnidadSinIVA.Value = ventaDetalle.AhorroPorUnidadSinIVA;
             nudAhorroEnIVAPorUnidadDespuesDescuento.Value = ventaDetalle.AhorroEnIVAPorUnidadDespuesDescuento;
-            nudAhorroPorUnidadConIVA.Value = ventaDetalle.AhorroPorUnidadConIVA;
+            nudAhorroTotalPorUnidadConIVA.Value = ventaDetalle.AhorroTotalPorUnidadConIVA;
 
             nudSubtotalDelImporteConIVAIncluido2.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
             nudSubtotalDelImporteSinIVASinDescuento2.Value = ventaDetalle.SubtotalDelImporteSinIVASinDescuento;
             nudSubtotalDelImporteDelIVASinDescuento2.Value = ventaDetalle.SubtotalDelImporteDelIVASinDescuento;
-            nudSubtotalDelImporteConIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
             nudSubtotalIVADespuesDelDescuento2.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
             nudSubtotalDelImporteSinIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
             nudSubtotalDelAhorroSinIvaDespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroSinIvaDespuesDescuento;
             nudSubtotalDelAhorroEnIVADespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroEnIVADespuesDescuento;
+            nudSubtotalDelAhorroTotalDespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
 
-            //nudSubtotalDelImporteConIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
-
-
-            nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
-            //nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.ImporteDelIVA;
             nudTotal2.Value = ventaDetalle.Subtotal;
         }
 

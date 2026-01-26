@@ -50,6 +50,26 @@ namespace Entities
         // Precio unitario sin IVA después del descuento
         public decimal PrecioBaseSinIva => Math.Round(PrecioPorUnidadConIVADespuesDescuento / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero);
 
+        public decimal PrecioPorUnidadSinIVASinDescuento => Math.Round(UnitPrice / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero);
+
+        public decimal IVADelPrecioPorUnidadSinDescuento => Math.Round(UnitPrice - PrecioPorUnidadSinIVASinDescuento, 2, MidpointRounding.AwayFromZero);
+
+        public decimal PrecioPorUnidadConIVADespuesDescuento => Math.Round(UnitPrice * (1 - Discount), 2, MidpointRounding.AwayFromZero);
+
+        public decimal IVADelPrecioporUnidadDespuesDescuento => Math.Round(PrecioPorUnidadConIVADespuesDescuento - PrecioPorUnidadSinIVADepuesDescuento, 2, MidpointRounding.AwayFromZero);
+
+        public decimal PrecioPorUnidadSinIVADepuesDescuento => Math.Round(PrecioPorUnidadConIVADespuesDescuento / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero);
+
+        public decimal AhorroPorUnidadSinIVA => Math.Round(PrecioPorUnidadSinIVASinDescuento - PrecioPorUnidadSinIVADepuesDescuento, 2, MidpointRounding.AwayFromZero);
+
+        public decimal AhorroEnIVAPorUnidadDespuesDescuento => Math.Round(IVADelPrecioPorUnidadSinDescuento - IVADelPrecioporUnidadDespuesDescuento, 2, MidpointRounding.AwayFromZero);
+
+        public decimal AhorroTotalPorUnidadConIVA => Math.Round(UnitPrice - PrecioPorUnidadConIVADespuesDescuento, 2, MidpointRounding.AwayFromZero);
+
+        // Tasas expresadas en porcentaje
+        public decimal TasaDescuentoPorcentaje => Math.Round(Discount * 100, 2, MidpointRounding.AwayFromZero);
+        public decimal TasaIVAPorcentaje => Math.Round(TasaIVA * 100, 2, MidpointRounding.AwayFromZero);
+
         // Importe bruto (con IVA incluido)
         public decimal SubtotalDelImporteConIVAIncluido => Math.Round(UnitPrice * Quantity, 2, MidpointRounding.AwayFromZero);
 
@@ -68,52 +88,31 @@ namespace Entities
 
         public decimal SubtotalDelAhorroEnIVADespuesDescuento => Math.Round(AhorroEnIVAPorUnidadDespuesDescuento * Quantity, 2, MidpointRounding.AwayFromZero);
 
-        //public decimal SubtotalDelImporteDelIVA => Math.Round(IVADelPrecioporUnidadDespuesDescuento * Quantity, 2, MidpointRounding.AwayFromZero);
-
-
-        // Importe del descuento
-        public decimal ImporteDelDescuento => Math.Round(SubtotalDelImporteConIVAIncluido * Discount, 2, MidpointRounding.AwayFromZero);
-
-
-
-        // Importe del IVA (diferencia entre precio con IVA y base neta)
-
+        public decimal SubtotalDelAhorroTotalDespuesDescuento => Math.Round(AhorroTotalPorUnidadConIVA * Quantity, 2, MidpointRounding.AwayFromZero);
 
         // Subtotal = Importe con descuento (ya incluye IVA)
         public decimal Subtotal => SubtotalDelImporteConIVAConDescuento; // ya viene redondeado
-
-
-
-
-        public decimal PrecioPorUnidadSinIVASinDescuento => Math.Round(UnitPrice / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero);
-
-        public decimal IVADelPrecioPorUnidadSinDescuento => Math.Round(UnitPrice - PrecioPorUnidadSinIVASinDescuento, 2, MidpointRounding.AwayFromZero);
-
-        public decimal PrecioPorUnidadConIVADespuesDescuento => Math.Round(UnitPrice * (1 - Discount), 2, MidpointRounding.AwayFromZero);
-
-        public decimal IVADelPrecioporUnidadDespuesDescuento => Math.Round(PrecioPorUnidadConIVADespuesDescuento - PrecioPorUnidadSinIVADepuesDescuento, 2, MidpointRounding.AwayFromZero);
-
-        public decimal PrecioPorUnidadSinIVADepuesDescuento => Math.Round(PrecioPorUnidadConIVADespuesDescuento / (1 + TasaIVA), 2, MidpointRounding.AwayFromZero);
-        
-        public decimal AhorroPorUnidadSinIVA => Math.Round(PrecioPorUnidadSinIVASinDescuento - PrecioPorUnidadSinIVADepuesDescuento, 2, MidpointRounding.AwayFromZero);
-
-        public decimal AhorroEnIVAPorUnidadDespuesDescuento => Math.Round(IVADelPrecioPorUnidadSinDescuento - IVADelPrecioporUnidadDespuesDescuento, 2, MidpointRounding.AwayFromZero); 
-
-        public decimal AhorroPorUnidadConIVA => Math.Round(UnitPrice - PrecioPorUnidadConIVADespuesDescuento, 2, MidpointRounding.AwayFromZero);
-
-
-        public decimal AhorroTotalPorProducto => 0; // Math.Round(AhorroPorUnidad * Quantity, 2, MidpointRounding.AwayFromZero);
-
-
-
-        // Tasas expresadas en porcentaje
-        public decimal TasaDescuentoPorcentaje => Math.Round(Discount * 100, 2, MidpointRounding.AwayFromZero);
-        public decimal TasaIVAPorcentaje => Math.Round(TasaIVA * 100, 2, MidpointRounding.AwayFromZero);
 
         public VentaDetalle()
         {
             Venta = new Venta();
             Producto = new Producto();
         }
+
+
+
+
+        // Quitar despues de corregir todos los programas que hacen uso de esta propiedad, porque si ahorita lo quito me marca error en todos los proyectos que la usan.
+        public decimal ImporteDelDescuento => Math.Round(SubtotalDelImporteConIVAIncluido * Discount, 2, MidpointRounding.AwayFromZero);
+
+
+
+
+
+
+
+
+
+
     }
 }
