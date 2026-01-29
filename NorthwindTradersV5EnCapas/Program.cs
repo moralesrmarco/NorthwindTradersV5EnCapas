@@ -17,7 +17,7 @@ namespace NorthwindTradersV5EnCapas
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new MDIPrincipal());
-            Application.Run(new FrmVentasCrudCopia());
+            Application.Run(new FrmVentasCrud());
         }
     }
 }

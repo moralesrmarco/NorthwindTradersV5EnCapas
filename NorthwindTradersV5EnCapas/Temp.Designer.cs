@@ -46,10 +46,6 @@
             this.label36 = new System.Windows.Forms.Label();
             this.nudTotal = new Utilities.NudNoWheel();
             this.LblTotal = new System.Windows.Forms.Label();
-            this.GrbOperaciones = new System.Windows.Forms.GroupBox();
-            this.btnNuevo = new System.Windows.Forms.Button();
-            this.btnNota = new System.Windows.Forms.Button();
-            this.btnGenerar = new System.Windows.Forms.Button();
             this.grbDetalle = new System.Windows.Forms.GroupBox();
             this.dgvDetalle = new System.Windows.Forms.DataGridView();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -76,7 +72,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudNumProd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalDeUnidades)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotal)).BeginInit();
-            this.GrbOperaciones.SuspendLayout();
             this.grbDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).BeginInit();
             this.SuspendLayout();
@@ -343,54 +338,6 @@
             this.LblTotal.TabIndex = 18;
             this.LblTotal.Text = "Total $:";
             // 
-            // GrbOperaciones
-            // 
-            this.GrbOperaciones.Controls.Add(this.btnNuevo);
-            this.GrbOperaciones.Controls.Add(this.btnNota);
-            this.GrbOperaciones.Controls.Add(this.btnGenerar);
-            this.GrbOperaciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrbOperaciones.Location = new System.Drawing.Point(41, 252);
-            this.GrbOperaciones.Margin = new System.Windows.Forms.Padding(2);
-            this.GrbOperaciones.Name = "GrbOperaciones";
-            this.GrbOperaciones.Padding = new System.Windows.Forms.Padding(2);
-            this.GrbOperaciones.Size = new System.Drawing.Size(1000, 60);
-            this.GrbOperaciones.TabIndex = 7;
-            this.GrbOperaciones.TabStop = false;
-            this.GrbOperaciones.Text = "»   Operaciones:   «";
-            // 
-            // btnNuevo
-            // 
-            this.btnNuevo.Enabled = false;
-            this.btnNuevo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNuevo.Location = new System.Drawing.Point(380, 17);
-            this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(144, 30);
-            this.btnNuevo.TabIndex = 3;
-            this.btnNuevo.Text = "Nueva venta";
-            this.btnNuevo.UseVisualStyleBackColor = true;
-            // 
-            // btnNota
-            // 
-            this.btnNota.AutoSize = true;
-            this.btnNota.Enabled = false;
-            this.btnNota.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNota.Location = new System.Drawing.Point(538, 17);
-            this.btnNota.Name = "btnNota";
-            this.btnNota.Size = new System.Drawing.Size(173, 30);
-            this.btnNota.TabIndex = 2;
-            this.btnNota.Text = "Nota de remisión";
-            this.btnNota.UseVisualStyleBackColor = true;
-            // 
-            // btnGenerar
-            // 
-            this.btnGenerar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerar.Location = new System.Drawing.Point(726, 17);
-            this.btnGenerar.Name = "btnGenerar";
-            this.btnGenerar.Size = new System.Drawing.Size(144, 30);
-            this.btnGenerar.TabIndex = 1;
-            this.btnGenerar.Text = "Generar venta";
-            this.btnGenerar.UseVisualStyleBackColor = true;
-            // 
             // grbDetalle
             // 
             this.grbDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -553,7 +500,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2006, 601);
             this.Controls.Add(this.grbDetalle);
-            this.Controls.Add(this.GrbOperaciones);
             this.Controls.Add(this.GrbTotales);
             this.Name = "Temp";
             this.Text = "Temp";
@@ -567,8 +513,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudNumProd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotalDeUnidades)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudTotal)).EndInit();
-            this.GrbOperaciones.ResumeLayout(false);
-            this.GrbOperaciones.PerformLayout();
             this.grbDetalle.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).EndInit();
             this.ResumeLayout(false);
@@ -595,10 +539,6 @@
         private System.Windows.Forms.Label label36;
         private Utilities.NudNoWheel nudTotal;
         private System.Windows.Forms.Label LblTotal;
-        private System.Windows.Forms.GroupBox GrbOperaciones;
-        private System.Windows.Forms.Button btnNuevo;
-        private System.Windows.Forms.Button btnNota;
-        private System.Windows.Forms.Button btnGenerar;
         private System.Windows.Forms.GroupBox grbDetalle;
         private System.Windows.Forms.DataGridView dgvDetalle;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;

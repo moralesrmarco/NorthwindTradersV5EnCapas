@@ -1,6 +1,6 @@
 ﻿namespace NorthwindTradersV5EnCapas
 {
-    partial class FrmVentasCrudCopia
+    partial class FrmVentasCrud_old_pararevisar
     {
         /// <summary>
         /// Required designer variable.

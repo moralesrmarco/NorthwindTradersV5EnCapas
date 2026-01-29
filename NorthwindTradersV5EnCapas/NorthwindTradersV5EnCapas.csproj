@@ -380,6 +380,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FrmVentasCrud-old-pararevisar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrud-old-pararevisar.Designer.cs">
+      <DependentUpon>FrmVentasCrud-old-pararevisar.cs</DependentUpon>
+    </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Temp.cs">
       <SubType>Form</SubType>
@@ -527,6 +533,9 @@
     <EmbeddedResource Include="RptProductos.rdlc" />
     <EmbeddedResource Include="RptProductosPorProveedor.rdlc" />
     <EmbeddedResource Include="RptProveedores.rdlc" />
+    <EmbeddedResource Include="FrmVentasCrud-old-pararevisar.resx">
+      <DependentUpon>FrmVentasCrud-old-pararevisar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Temp.resx">
       <DependentUpon>Temp.cs</DependentUpon>
     </EmbeddedResource>

@@ -18,7 +18,7 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmVentasCrudCopia : Form
+    public partial class FrmVentasCrud_old_pararevisar : Form
     {
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private VentaBLL _ventaBLL;
@@ -36,7 +36,7 @@ namespace NorthwindTradersV5EnCapas
         private short CantidadOld = 0;
         private short UInventarioOld = 0;
 
-        public FrmVentasCrudCopia()
+        public FrmVentasCrud_old_pararevisar()
         {
             InitializeComponent();
         }
