@@ -15,6 +15,14 @@ namespace NorthwindTradersV5EnCapas
         public FrmVentasCrud()
         {
             InitializeComponent();
+            WindowState = FormWindowState.Maximized;
+        }
+
+        private void FrmVentasCrud_Load(object sender, EventArgs e)
+        {
+            grbProducto.Visible = true;
+            flowLayoutPanel1.PerformLayout();
+            tableLayoutPanel1.PerformLayout();
         }
     }
 }

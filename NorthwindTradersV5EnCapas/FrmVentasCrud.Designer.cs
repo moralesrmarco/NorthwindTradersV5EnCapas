@@ -204,7 +204,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GrbOperaciones = new System.Windows.Forms.GroupBox();
             this.grbDetalle = new System.Windows.Forms.GroupBox();
             this.dgvDetalle = new System.Windows.Forms.DataGridView();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -277,7 +277,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbError1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.GrbOperaciones.SuspendLayout();
             this.grbDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).BeginInit();
             this.SuspendLayout();
@@ -295,8 +295,6 @@
             // 
             // GrbTotales
             // 
-            this.GrbTotales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.GrbTotales.Controls.Add(this.label63);
             this.GrbTotales.Controls.Add(this.LblSubtotalDelImporteSinIVA);
             this.GrbTotales.Controls.Add(this.nudSubtotalDelImporteSinIVA);
@@ -314,8 +312,9 @@
             this.GrbTotales.Controls.Add(this.label36);
             this.GrbTotales.Controls.Add(this.nudTotal);
             this.GrbTotales.Controls.Add(this.LblTotal);
+            this.GrbTotales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GrbTotales.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrbTotales.Location = new System.Drawing.Point(331, 963);
+            this.GrbTotales.Location = new System.Drawing.Point(331, 979);
             this.GrbTotales.Margin = new System.Windows.Forms.Padding(2);
             this.GrbTotales.Name = "GrbTotales";
             this.GrbTotales.Padding = new System.Windows.Forms.Padding(2);
@@ -559,13 +558,14 @@
             // 
             // grbVenta
             // 
+            this.grbVenta.AutoSize = true;
             this.grbVenta.Controls.Add(this.flowLayoutPanel1);
-            this.grbVenta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grbVenta.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbVenta.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbVenta.Location = new System.Drawing.Point(332, 322);
             this.grbVenta.Name = "grbVenta";
             this.grbVenta.Padding = new System.Windows.Forms.Padding(8, 0, 8, 10);
-            this.grbVenta.Size = new System.Drawing.Size(1138, 636);
+            this.grbVenta.Size = new System.Drawing.Size(1138, 652);
             this.grbVenta.TabIndex = 6;
             this.grbVenta.TabStop = false;
             this.grbVenta.Text = "»   Venta:   «";
@@ -581,7 +581,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(8, 13);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1122, 614);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1122, 629);
             this.flowLayoutPanel1.TabIndex = 7;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -589,6 +589,7 @@
             // 
             this.grbProducto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grbProducto.AutoSize = true;
             this.grbProducto.Controls.Add(this.GrbSubtotales);
             this.grbProducto.Controls.Add(this.label59);
             this.grbProducto.Controls.Add(this.nudPrecioPorUnidadConIVADespuesDescuento);
@@ -634,14 +635,13 @@
             this.grbProducto.Controls.Add(this.label58);
             this.grbProducto.Controls.Add(this.label48);
             this.grbProducto.Controls.Add(this.label52);
-            this.grbProducto.Location = new System.Drawing.Point(3, 214);
+            this.grbProducto.Location = new System.Drawing.Point(3, 221);
             this.grbProducto.MaximumSize = new System.Drawing.Size(1536, 864);
             this.grbProducto.Name = "grbProducto";
-            this.grbProducto.Size = new System.Drawing.Size(1130, 397);
+            this.grbProducto.Size = new System.Drawing.Size(969, 405);
             this.grbProducto.TabIndex = 2;
             this.grbProducto.TabStop = false;
             this.grbProducto.Text = "»   Agregar producto:   «";
-            this.grbProducto.Visible = false;
             // 
             // label52
             // 
@@ -1161,7 +1161,7 @@
             this.GrbSubtotales.Controls.Add(this.label65);
             this.GrbSubtotales.Location = new System.Drawing.Point(12, 185);
             this.GrbSubtotales.Name = "GrbSubtotales";
-            this.GrbSubtotales.Size = new System.Drawing.Size(1108, 201);
+            this.GrbSubtotales.Size = new System.Drawing.Size(953, 201);
             this.GrbSubtotales.TabIndex = 86;
             this.GrbSubtotales.TabStop = false;
             this.GrbSubtotales.Text = "»   Subtotales de la venta del producto:   «";
@@ -1502,6 +1502,7 @@
             // 
             this.grbTransportista.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grbTransportista.AutoSize = true;
             this.grbTransportista.Controls.Add(this.nudFlete);
             this.grbTransportista.Controls.Add(this.txtCP);
             this.grbTransportista.Controls.Add(this.txtCiudad);
@@ -1518,9 +1519,9 @@
             this.grbTransportista.Controls.Add(this.label31);
             this.grbTransportista.Controls.Add(this.label30);
             this.grbTransportista.Controls.Add(this.label29);
-            this.grbTransportista.Location = new System.Drawing.Point(3, 91);
+            this.grbTransportista.Location = new System.Drawing.Point(3, 89);
             this.grbTransportista.Name = "grbTransportista";
-            this.grbTransportista.Size = new System.Drawing.Size(1130, 117);
+            this.grbTransportista.Size = new System.Drawing.Size(969, 126);
             this.grbTransportista.TabIndex = 1;
             this.grbTransportista.TabStop = false;
             this.grbTransportista.Text = "»   Forma de envío:   «";
@@ -1680,6 +1681,7 @@
             // 
             // panel2
             // 
+            this.panel2.AutoSize = true;
             this.panel2.Controls.Add(this.dtpHoraEnvio);
             this.panel2.Controls.Add(this.dtpHoraRequerido);
             this.panel2.Controls.Add(this.dtpHoraVenta);
@@ -1700,7 +1702,7 @@
             this.panel2.Controls.Add(this.label20);
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1130, 82);
+            this.panel2.Size = new System.Drawing.Size(814, 80);
             this.panel2.TabIndex = 0;
             // 
             // label20
@@ -2005,6 +2007,7 @@
             // 
             this.grbBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.grbBuscar.AutoSize = true;
             this.grbBuscar.Controls.Add(this.nudBIdFin);
             this.grbBuscar.Controls.Add(this.nudBIdIni);
             this.grbBuscar.Controls.Add(this.btnLimpiar);
@@ -2041,7 +2044,7 @@
             this.grbBuscar.Location = new System.Drawing.Point(8, 322);
             this.grbBuscar.Name = "grbBuscar";
             this.tableLayoutPanel1.SetRowSpan(this.grbBuscar, 5);
-            this.grbBuscar.Size = new System.Drawing.Size(311, 1174);
+            this.grbBuscar.Size = new System.Drawing.Size(303, 1190);
             this.grbBuscar.TabIndex = 5;
             this.grbBuscar.TabStop = false;
             this.grbBuscar.Text = "»   Buscar una venta:   «";
@@ -2380,7 +2383,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 324F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.grbBuscar, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.GrbOperaciones, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.grbVentas, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tabcOperacion, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.grbVenta, 1, 2);
@@ -2398,7 +2401,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1478, 1499);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1478, 1515);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // pbWarning
@@ -2492,30 +2495,28 @@
             this.button3.Text = "Generar venta";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // GrbOperaciones
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(331, 1129);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(1140, 60);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "»   Operaciones:   «";
+            this.GrbOperaciones.Controls.Add(this.button1);
+            this.GrbOperaciones.Controls.Add(this.button2);
+            this.GrbOperaciones.Controls.Add(this.button3);
+            this.GrbOperaciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GrbOperaciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GrbOperaciones.Location = new System.Drawing.Point(331, 1145);
+            this.GrbOperaciones.Margin = new System.Windows.Forms.Padding(2);
+            this.GrbOperaciones.Name = "GrbOperaciones";
+            this.GrbOperaciones.Padding = new System.Windows.Forms.Padding(2);
+            this.GrbOperaciones.Size = new System.Drawing.Size(1140, 60);
+            this.GrbOperaciones.TabIndex = 7;
+            this.GrbOperaciones.TabStop = false;
+            this.GrbOperaciones.Text = "»   Operaciones:   «";
             // 
             // grbDetalle
             // 
-            this.grbDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grbDetalle.Controls.Add(this.dgvDetalle);
+            this.grbDetalle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbDetalle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbDetalle.Location = new System.Drawing.Point(332, 1194);
+            this.grbDetalle.Location = new System.Drawing.Point(332, 1210);
             this.grbDetalle.Name = "grbDetalle";
             this.grbDetalle.Padding = new System.Windows.Forms.Padding(10);
             this.grbDetalle.Size = new System.Drawing.Size(1138, 302);
@@ -2676,6 +2677,7 @@
             this.Name = "FrmVentasCrud";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.Text = "» Mantenimiento de Ventas «";
+            this.Load += new System.EventHandler(this.FrmVentasCrud_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.GrbTotales.ResumeLayout(false);
@@ -2691,6 +2693,7 @@
             this.grbVenta.ResumeLayout(false);
             this.grbVenta.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.grbProducto.ResumeLayout(false);
             this.grbProducto.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAhorroEnIVAPorUnidadDespuesDescuento)).EndInit();
@@ -2737,14 +2740,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudBIdIni)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBIdFin)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbError1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.GrbOperaciones.ResumeLayout(false);
+            this.GrbOperaciones.PerformLayout();
             this.grbDetalle.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).EndInit();
             this.ResumeLayout(false);
@@ -2926,7 +2930,7 @@
         private System.Windows.Forms.Label label36;
         private Utilities.NudNoWheel nudTotal;
         private System.Windows.Forms.Label LblTotal;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox GrbOperaciones;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
