@@ -56,7 +56,7 @@ namespace BLL
                 dr["Quantity"] = ventaDetalle.Quantity;
                 dr["Importe"] = ventaDetalle.SubtotalDelImporteConIVAIncluido;
                 dr["Discount"] = ventaDetalle.Discount;
-                dr["ImporteDelDescuento"] = ventaDetalle.ImporteDelDescuento;
+                dr["ImporteDelDescuento"] = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
                 dr["ImporteConDescuento"] = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
                 dr["TasaIVA"] = ventaDetalle.TasaIVA;
                 dr["ImporteDelIVA"] = ventaDetalle.SubtotalIVADespuesDelDescuento;

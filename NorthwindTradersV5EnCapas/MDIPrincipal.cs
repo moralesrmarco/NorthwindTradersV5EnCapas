@@ -436,7 +436,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void mantenimientoDeVentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmVentasCrud frm = new FrmVentasCrud();
+            FrmVentasCrudCopia frm = new FrmVentasCrudCopia();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de ventas «");
         }
 

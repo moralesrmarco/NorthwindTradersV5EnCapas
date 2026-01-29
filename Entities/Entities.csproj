@@ -84,6 +84,7 @@
     <Compile Include="DTOs\Dummy.cs" />
     <Compile Include="Empleado.cs" />
     <Compile Include="Venta.cs" />
+    <Compile Include="VentaDetalle - Copia.cs" />
     <Compile Include="VentaDetalle.cs" />
     <Compile Include="Producto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

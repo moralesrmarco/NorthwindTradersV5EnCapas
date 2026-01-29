@@ -1,6 +1,6 @@
 ﻿namespace NorthwindTradersV5EnCapas
 {
-    partial class FrmVentasCrud
+    partial class FrmVentasCrudCopia
     {
         /// <summary>
         /// Required designer variable.
@@ -266,7 +266,7 @@
             // 
             // grbBuscar
             // 
-            this.grbBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.grbBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.grbBuscar.Controls.Add(this.nudBIdFin);
             this.grbBuscar.Controls.Add(this.nudBIdIni);
@@ -988,7 +988,7 @@
             // 
             // grbTransportista
             // 
-            this.grbTransportista.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grbTransportista.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grbTransportista.Controls.Add(this.nudFlete);
             this.grbTransportista.Controls.Add(this.txtCP);
@@ -1168,7 +1168,7 @@
             // 
             // grbProducto
             // 
-            this.grbProducto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grbProducto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grbProducto.Controls.Add(this.GrbSubtotales);
             this.grbProducto.Controls.Add(this.label59);
@@ -1225,7 +1225,7 @@
             // 
             // GrbSubtotales
             // 
-            this.GrbSubtotales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.GrbSubtotales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GrbSubtotales.Controls.Add(this.label71);
             this.GrbSubtotales.Controls.Add(this.label70);

@@ -126,8 +126,8 @@ namespace NorthwindTradersV5EnCapas
             cboProducto.Enabled = false;
         }
 
-        private void InicializarNuds() 
-        { 
+        private void InicializarNuds()
+        {
             nudNumProd.Value = nudTotalDeUnidades.Value = nudSubtotalDelImporte.Value = nudSubtotalDelImporteDelDescuento.Value = nudSubtotalDelImporteConDescuento.Value = nudSubtotalDelImporteSinIVA.Value = nudSubtotalDelImporteDelIVA.Value = nudTotal.Value = 0;
             InicializarNudsProducto();
         }
@@ -435,7 +435,7 @@ namespace NorthwindTradersV5EnCapas
 
             return valida;
         }
-        
+
         private void DgvVentas_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // debe estar vinculado a la clase List<> a la cual esta vinculado el DataGridView.DataSource
@@ -800,7 +800,8 @@ namespace NorthwindTradersV5EnCapas
                             ventaDetalle.Quantity,
                             ventaDetalle.SubtotalDelImporteConIVAIncluido,
                             ventaDetalle.Discount,
-                            ventaDetalle.ImporteDelDescuento,
+                            //ventaDetalle.ImporteDelDescuento,
+                            ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento,
                             ventaDetalle.SubtotalDelImporteConIVAConDescuento,
                             ventaDetalle.TasaIVA,
                             ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
@@ -826,7 +827,8 @@ namespace NorthwindTradersV5EnCapas
         private void CalcularTotalProducto(VentaDetalle ventaDetalle)
         {
             nudSubtotalDelImporte2.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
-            nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
+            //nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.ImporteDelDescuento;
+            nudSubtotalDelImporteDelDescuento2.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
             nudSubtotalDelImporteConDescuento2.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
             nudSubtotalDelImporteSinIVA2.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
             nudSubtotalDelImporteDelIVA2.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;

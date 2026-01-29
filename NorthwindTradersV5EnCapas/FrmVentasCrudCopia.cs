@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmVentasCrud : Form
+    public partial class FrmVentasCrudCopia : Form
     {
-        public FrmVentasCrud()
+        public FrmVentasCrudCopia()
         {
             InitializeComponent();
         }

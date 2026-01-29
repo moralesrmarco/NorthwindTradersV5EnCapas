@@ -20,7 +20,7 @@ namespace Entities
     IVA = PrecioConIVA - BaseSinIVA
     */
 
-    public class VentaDetalle
+    public class VentaDetalleCopia
     {
         // Relación con la venta
         // un item de ventadetalle tiene una venta
@@ -93,7 +93,7 @@ namespace Entities
         // Subtotal = Importe con descuento (ya incluye IVA)
         public decimal Subtotal => SubtotalDelImporteConIVAConDescuento; // ya viene redondeado
 
-        public VentaDetalle()
+        public VentaDetalleCopia()
         {
             Venta = new Venta();
             Producto = new Producto();

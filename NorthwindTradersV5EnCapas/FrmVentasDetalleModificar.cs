@@ -68,7 +68,8 @@ namespace NorthwindTradersV5EnCapas
             nudDescuento.ValueChanged += nudDescuento_ValueChanged;
             nudDescuento.Leave += nudDescuento_Leave;
             nudImporte.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
-            nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
+            //nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
+            nudImporteDelDescuento.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
             nudImporteConDescuento.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
             nudTasaIVA.Value = ventaDetalle.TasaIVAPorcentaje;
             nudImporteSinIVA.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
@@ -229,7 +230,8 @@ namespace NorthwindTradersV5EnCapas
                     Discount = nudDescuento.Value / 100
                 };
                 nudImporte.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
-                nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
+                //nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
+                nudImporteDelDescuento.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
                 nudImporteConDescuento.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
                 nudImporteSinIVA.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
                 nudImporteDelIVA.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;

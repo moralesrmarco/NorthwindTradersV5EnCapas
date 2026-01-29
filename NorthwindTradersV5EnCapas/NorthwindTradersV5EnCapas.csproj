@@ -136,6 +136,7 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -207,6 +208,24 @@
     <Compile Include="FrmCategoriasConProductosListado.Designer.cs">
       <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmVentasCrud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrud.Designer.cs">
+      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasCrud_old.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrud_old.Designer.cs">
+      <DependentUpon>FrmVentasCrud_old.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasCrudCopia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrudCopia.Designer.cs">
+      <DependentUpon>FrmVentasCrudCopia.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVentasDetalleModificar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,12 +243,6 @@
     </Compile>
     <Compile Include="FrmRptNotaRemision8.Designer.cs">
       <DependentUpon>FrmRptNotaRemision8.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVentasCrud.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasCrud.Designer.cs">
-      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmProductosConsultaAlfabetica.cs">
       <SubType>Form</SubType>
@@ -405,6 +418,15 @@
     <EmbeddedResource Include="FrmCategoriasConProductosListado.resx">
       <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrud.resx">
+      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrud_old.resx">
+      <DependentUpon>FrmVentasCrud_old.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrudCopia.resx">
+      <DependentUpon>FrmVentasCrudCopia.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasDetalleModificar.resx">
       <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
     </EmbeddedResource>
@@ -413,10 +435,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRptNotaRemision8.resx">
       <DependentUpon>FrmRptNotaRemision8.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasCrud.resx">
-      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmProductosConsultaAlfabetica.resx">
       <DependentUpon>FrmProductosConsultaAlfabetica.cs</DependentUpon>
