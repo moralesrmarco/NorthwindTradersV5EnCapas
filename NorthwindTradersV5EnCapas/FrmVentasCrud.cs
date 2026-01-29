@@ -21,8 +21,6 @@ namespace NorthwindTradersV5EnCapas
         private void FrmVentasCrud_Load(object sender, EventArgs e)
         {
             grbProducto.Visible = true;
-            flowLayoutPanel1.PerformLayout();
-            tableLayoutPanel1.PerformLayout();
         }
     }
 }
