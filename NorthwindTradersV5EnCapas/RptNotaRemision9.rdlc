@@ -52,32 +52,44 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="BaseSinIva">
-          <DataField>BaseSinIva</DataField>
+        <Field Name="AhorroEnIVAPorUnidadDespuesDescuento">
+          <DataField>AhorroEnIVAPorUnidadDespuesDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AhorroPorUnidadSinIVA">
+          <DataField>AhorroPorUnidadSinIVA</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="AhorroTotalPorUnidadConIVA">
+          <DataField>AhorroTotalPorUnidadConIVA</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Discount">
           <DataField>Discount</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="Importe">
-          <DataField>Importe</DataField>
+        <Field Name="IVADelPrecioporUnidadDespuesDescuento">
+          <DataField>IVADelPrecioporUnidadDespuesDescuento</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="ImporteConDescuento">
-          <DataField>ImporteConDescuento</DataField>
+        <Field Name="IVADelPrecioPorUnidadSinDescuento">
+          <DataField>IVADelPrecioPorUnidadSinDescuento</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="ImporteDelDescuento">
-          <DataField>ImporteDelDescuento</DataField>
+        <Field Name="PrecioBaseSinIva">
+          <DataField>PrecioBaseSinIva</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="ImporteDelIVA">
-          <DataField>ImporteDelIVA</DataField>
+        <Field Name="PrecioPorUnidadConIVADespuesDescuento">
+          <DataField>PrecioPorUnidadConIVADespuesDescuento</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="ImporteSinIVA">
-          <DataField>ImporteSinIVA</DataField>
+        <Field Name="PrecioPorUnidadSinIVADepuesDescuento">
+          <DataField>PrecioPorUnidadSinIVADepuesDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PrecioPorUnidadSinIVASinDescuento">
+          <DataField>PrecioPorUnidadSinIVASinDescuento</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="ProductName">
@@ -98,6 +110,42 @@
         </Field>
         <Field Name="Subtotal">
           <DataField>Subtotal</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelAhorroEnIVADespuesDescuento">
+          <DataField>SubtotalDelAhorroEnIVADespuesDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelAhorroSinIvaDespuesDescuento">
+          <DataField>SubtotalDelAhorroSinIvaDespuesDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelAhorroTotalDespuesDescuento">
+          <DataField>SubtotalDelAhorroTotalDespuesDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelImporteConIVAConDescuento">
+          <DataField>SubtotalDelImporteConIVAConDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelImporteConIVAIncluido">
+          <DataField>SubtotalDelImporteConIVAIncluido</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelImporteDelIVASinDescuento">
+          <DataField>SubtotalDelImporteDelIVASinDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelImporteSinIVAConDescuento">
+          <DataField>SubtotalDelImporteSinIVAConDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalDelImporteSinIVASinDescuento">
+          <DataField>SubtotalDelImporteSinIVASinDescuento</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="SubtotalIVADespuesDelDescuento">
+          <DataField>SubtotalIVADespuesDelDescuento</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="TasaDescuentoPorcentaje">
@@ -1405,7 +1453,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Precio</Value>
+                                      <Value>Precio con IVA incluido</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -1933,7 +1981,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!Importe.Value</Value>
+                                      <Value>=Fields!SubtotalDelImporteConIVAIncluido.Value</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -2004,7 +2052,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!ImporteDelDescuento.Value</Value>
+                                      <Value>=Fields!SubtotalDelAhorroTotalDespuesDescuento.Value</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -2040,7 +2088,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!ImporteConDescuento.Value</Value>
+                                      <Value>=Fields!SubtotalDelImporteConIVAConDescuento.Value</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -2111,7 +2159,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!ImporteSinIVA.Value</Value>
+                                      <Value>=Fields!SubtotalDelImporteSinIVAConDescuento.Value</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -2147,7 +2195,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!ImporteDelIVA.Value</Value>
+                                      <Value>=Fields!SubtotalIVADespuesDelDescuento.Value</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -2369,7 +2417,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Math.Round(Fields!Importe.Value,2, MidpointRounding.AwayFromZero))</Value>
+                                      <Value>=Sum(Math.Round(Fields!SubtotalDelImporteConIVAIncluido.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2442,7 +2490,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Math.Round(Fields!ImporteDelDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
+                                      <Value>=Sum(Math.Round(Fields!SubtotalDelAhorroTotalDespuesDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2480,7 +2528,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Math.Round(Fields!ImporteConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
+                                      <Value>=Sum(Math.Round(Fields!SubtotalDelImporteConIVAConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2552,7 +2600,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Math.Round(Fields!ImporteSinIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
+                                      <Value>=Sum(Math.Round(Fields!SubtotalDelImporteSinIVAConDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -2589,7 +2637,7 @@ Format(Fields!FechaDeEnvio.Value,
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Sum(Math.Round(Fields!ImporteDelIVA.Value, 2, MidpointRounding.AwayFromZero))</Value>
+                                      <Value>=Sum(Math.Round(Fields!SubtotalIVADespuesDelDescuento.Value, 2, MidpointRounding.AwayFromZero))</Value>
                                       <Style>
                                         <FontSize>6pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
@@ -3293,7 +3341,6 @@ Format(Fields!FechaDeEnvio.Value,
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
-                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                       </TablixCells>
@@ -3338,7 +3385,7 @@ Format(Fields!FechaDeEnvio.Value,
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>6.94918in</Height>
+        <Height>6.94919in</Height>
         <Style />
       </Body>
       <Width>7.87402in</Width>
