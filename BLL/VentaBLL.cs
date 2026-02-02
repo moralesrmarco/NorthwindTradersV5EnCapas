@@ -27,9 +27,9 @@ namespace BLL
             return _ventaDAL.Actualizar(venta);
         }
 
-        public int Eliminar(Venta venta)
+        public int Eliminar(Venta venta, out string productoExcede)
         {
-            return _ventaDAL.Eliminar(venta);
+            return _ventaDAL.Eliminar(venta, out productoExcede);
         }
 
         public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)

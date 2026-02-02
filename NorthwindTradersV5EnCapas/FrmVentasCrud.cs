@@ -1055,27 +1055,37 @@ namespace NorthwindTradersV5EnCapas
                 BorrarMensajesError();
                 DataGridViewRow dgvr = dgvVentas.CurrentRow;
                 txtId.Text = dgvr.Cells["OrderId"].Value.ToString();
+                // se tiene que definir aqui para verificar la concurrencia porque como lo venia haciendo habia un lapso de tiempo que podia cambiar el registro, se tiene que comparar contra lo que esta definido en el dgvVentas
+                txtId.Tag = dgvr.Cells["RowVersionStr"].Value;
                 int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
                 LlenarDatosVenta(ref orderId);
-                LlenarDatosDetalleVenta(orderId);
-                DeshabilitarTodosControles();
-                if (tabcOperacion.SelectedTab == tabpConsultar)
+                if (orderId != 0)
                 {
-                    btnNota.Enabled = true;
-                    btnNuevo.Enabled = false;
+                    LlenarDatosDetalleVenta(orderId);
+                    DeshabilitarTodosControles();
+                    if (tabcOperacion.SelectedTab == tabpConsultar)
+                    {
+                        btnNota.Enabled = true;
+                        btnNuevo.Enabled = false;
+                    }
+                    else if (tabcOperacion.SelectedTab == tabpModificar)
+                    {
+                        HabilitarControles();
+                        btnGenerar.Enabled = true;
+                        btnNota.Enabled = false;
+                        btnNuevo.Enabled = false;
+                    }
+                    else if (tabcOperacion.SelectedTab == tabpEliminar)
+                    {
+                        btnGenerar.Enabled = true;
+                        btnNota.Enabled = false;
+                        btnNuevo.Enabled = false;
+                    }
                 }
-                else if (tabcOperacion.SelectedTab == tabpModificar)
+                else
                 {
-                    HabilitarControles();
-                    btnGenerar.Enabled = true;
-                    btnNota.Enabled = false;
-                    btnNuevo.Enabled = false;
-                }
-                else if (tabcOperacion.SelectedTab == tabpEliminar)
-                {
-                    btnGenerar.Enabled = true;
-                    btnNota.Enabled = false;
-                    btnNuevo.Enabled = false;
+                    LlenarDgvVentas(false);
+                    DeshabilitarTodosControles();
                 }
             }
             CargarValoresOriginales();
@@ -1091,7 +1101,6 @@ namespace NorthwindTradersV5EnCapas
                 var venta = _ventaBLL.ObtenerVentaPorId(orderId);
                 if (venta != null)
                 {
-                    txtId.Text = venta.OrderID.ToString();
                     cboCliente.SelectedIndexChanged -= new EventHandler(cboCliente_SelectedIndexChanged);
                     cboCliente.SelectedValue = venta.Cliente.CustomerID;
                     cboCliente.SelectedIndexChanged += new EventHandler(cboCliente_SelectedIndexChanged);
@@ -1104,7 +1113,6 @@ namespace NorthwindTradersV5EnCapas
                     txtCP.Text = venta.ShipPostalCode ?? "";
                     txtPais.Text = venta.ShipCountry ?? "";
                     nudFlete.Value = venta.Freight ?? 0;
-                    txtId.Tag = venta.RowVersionStr;
                     if (venta.OrderDate.HasValue)
                     {
                         dtpVenta.Value = venta.OrderDate.Value;
@@ -1151,8 +1159,6 @@ namespace NorthwindTradersV5EnCapas
                 }
                 else
                 {
-                    // checar aqui
-
                     txtId.Text = string.Empty;
                     txtId.Tag = null;
                     orderId = 0;
@@ -1402,11 +1408,6 @@ namespace NorthwindTradersV5EnCapas
                 {
                     if (ValidarControlesVenta())
                     {
-                        //if (!ChkRowVersion())
-                        //{
-                        //    U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, no se realizará la actualización del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
-                        //    return;
-                        //}
                         MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
                         DeshabilitarControles();
                         btnGenerar.Enabled = false;
@@ -1434,9 +1435,9 @@ namespace NorthwindTradersV5EnCapas
                         venta.ShipPostalCode = txtCP.Text.Trim();
                         venta.ShipCountry = txtPais.Text.Trim();
                         venta.Freight = nudFlete.Value;
-                        venta.RowVersion = (byte[])txtId.Tag;
+                        venta.RowVersion = RowVersionHelper.RowVersionObjToByteArray(txtId.Tag);
                         numRegs = _ventaBLL.Actualizar(venta);
-                        txtId.Tag = venta.RowVersion; // se tiene que actualizar por la nota de remision no detecte un cambio
+                        txtId.Tag = venta.RowVersionStr; // se tiene que actualizar por la nota de remision no detecte un cambio
                         MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
                         string idVentaCliente = $"La venta con Id: {venta.OrderID} - Cliente: {cboCliente.Text}:";
                         if (numRegs > 0)
@@ -1460,24 +1461,25 @@ namespace NorthwindTradersV5EnCapas
                     btnNuevo.Enabled = false;
                     LlenarDgvVentas(false);
                 }
+                else if (numRegs >= -2)
+                {
+                    LlenarDgvVentas(false);
+                    BorrarDatosVenta();
+                    BorrarDatosDetalleVenta();
+                }
             }
             else if (tabcOperacion.SelectedTab == tabpEliminar)
             {
                 if (U.NotificacionQuestion($"[orange]¿Esta seguro de eliminar la venta con Id: {txtId.Text} del Cliente: {cboCliente.Text}?") == DialogResult.Yes)
                 {
-                    //if (!ChkRowVersion())
-                    //{
-                    //    U.NotificacionWarning("El registro ha sido modificado por otro usuario de la red, no se realizará la eliminación del registro, vuelva a cargar el registro para que se muestre la venta con los datos proporcionados por el otro usuario");
-                    //    return;
-                    //}
                     MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
                     btnGenerar.Enabled = false;
                     try
                     {
                         Venta venta = new Venta();
                         venta.OrderID = int.Parse(txtId.Text);
-                        venta.RowVersion = (byte[])txtId.Tag;
-                        numRegs = _ventaBLL.Eliminar(venta);
+                        venta.RowVersion = RowVersionHelper.RowVersionObjToByteArray(txtId.Tag);
+                        numRegs = _ventaBLL.Eliminar(venta, out string productoExcede);
                         string idVentaCliente = $"La venta con Id: {txtId.Text} - Cliente: {cboCliente.Text}:";
                         if (numRegs > 0)
                             U.NotificacionInformation(idVentaCliente + Utils.ses);
@@ -1485,6 +1487,10 @@ namespace NorthwindTradersV5EnCapas
                             U.NotificacionError(idVentaCliente + Utils.nfefe);
                         else if (numRegs == -2)
                             U.NotificacionError(idVentaCliente + Utils.nfefm);
+                        else if (numRegs == -7)
+                            U.NotificacionError(idVentaCliente + $"\n[red]No fue eliminada de la base de datos, el nuevo inventario del producto {productoExcede}, excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades)"); // Stock excedió el máximo permitido
+                        else if (numRegs == -8)
+                            U.NotificacionError(idVentaCliente + $"\n[red]No fue eliminada de la base de datos, el nuevo inventario del producto {productoExcede}, sería invalido (negativo)"); // stock negativo, este caso nunca ocurre porque la base de datos no lo permite con un check constraint
                         else
                             U.NotificacionError(idVentaCliente + Utils.nfemd);
                     }
@@ -1492,16 +1498,17 @@ namespace NorthwindTradersV5EnCapas
                     {
                         U.MsgCatchOue(ex);
                     }
-                    if (numRegs > 0)
+                    if (numRegs >= -8)
                     {
-                        BorrarDatosBusqueda();
                         LlenarDgvVentas(false);
                         BorrarDatosVenta();
+                        BorrarDatosDetalleVenta();
                     }
                 }
                 else
                 {
                     BorrarDatosVenta();
+                    BorrarDatosDetalleVenta();
                     btnGenerar.Enabled = false;
                 }
             }
@@ -1571,9 +1578,7 @@ namespace NorthwindTradersV5EnCapas
         {
             if (txtId.Tag == null)
                 return -1;
-            byte[] rowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
-                                ? BitConverter.GetBytes(tagVal)
-                                : null; // para evitar excepcion devuelve null si el valor no es convertible a long
+            byte[] rowVersion = RowVersionHelper.RowVersionObjToByteArray(txtId.Tag);
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);

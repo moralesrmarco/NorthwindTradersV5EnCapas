@@ -214,18 +214,6 @@
     <Compile Include="FrmVentasCrud.Designer.cs">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmVentasCrud_old.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasCrud_old.Designer.cs">
-      <DependentUpon>FrmVentasCrud_old.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVentasCrudCopia.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasCrudCopia.Designer.cs">
-      <DependentUpon>FrmVentasCrudCopia.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmVentasDetalleModificar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -380,12 +368,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FrmVentasCrud-old-pararevisar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasCrud-old-pararevisar.Designer.cs">
-      <DependentUpon>FrmVentasCrud-old-pararevisar.cs</DependentUpon>
-    </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Temp.cs">
       <SubType>Form</SubType>
@@ -426,12 +408,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasCrud.resx">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasCrud_old.resx">
-      <DependentUpon>FrmVentasCrud_old.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasCrudCopia.resx">
-      <DependentUpon>FrmVentasCrudCopia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasDetalleModificar.resx">
       <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
@@ -533,9 +509,6 @@
     <EmbeddedResource Include="RptProductos.rdlc" />
     <EmbeddedResource Include="RptProductosPorProveedor.rdlc" />
     <EmbeddedResource Include="RptProveedores.rdlc" />
-    <EmbeddedResource Include="FrmVentasCrud-old-pararevisar.resx">
-      <DependentUpon>FrmVentasCrud-old-pararevisar.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Temp.resx">
       <DependentUpon>Temp.cs</DependentUpon>
     </EmbeddedResource>

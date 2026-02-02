@@ -188,7 +188,7 @@ namespace DAL
             return filasAfectadas;
         }
 
-        public int Eliminar(Venta venta)
+        public int Eliminar(Venta venta, out string produtoExcede)
         {
             int filasAfectadas = 0;
             try
@@ -199,12 +199,16 @@ namespace DAL
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@OrderID", venta.OrderID);
                     cmd.Parameters.AddWithValue("@RowVersion", venta.RowVersion);
+                    var paramProductoExcede = cmd.Parameters.Add("@ProductoExcede", SqlDbType.VarChar, 40);
+                    paramProductoExcede.Direction = ParameterDirection.Output;
                     // Parámetro de retorno
                     var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
                     returnParameter.Direction = ParameterDirection.ReturnValue;
                     con.Open();
                     cmd.ExecuteNonQuery();
+                    paramProductoExcede.Value = paramProductoExcede.Value == DBNull.Value ? string.Empty : paramProductoExcede.Value;
                     filasAfectadas = (int)returnParameter.Value;
+                    produtoExcede = paramProductoExcede.Value.ToString();
                 }
             }
             catch (Exception ex)

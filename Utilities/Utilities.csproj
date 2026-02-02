@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InventarioHelper.cs" />
+    <Compile Include="RowVersionHelper.cs" />
     <Compile Include="ValidarCantidadEInventarioHelper.cs" />
     <Compile Include="NudHelper.cs" />
     <Compile Include="NudNoWheel.cs">
