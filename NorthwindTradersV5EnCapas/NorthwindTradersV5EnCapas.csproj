@@ -148,6 +148,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlAgregarProducto.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlAgregarProducto.Designer.cs">
+      <DependentUpon>ControlAgregarProducto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlBuscarVenta.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlBuscarVenta.Designer.cs">
+      <DependentUpon>ControlBuscarVenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlDetalleDeLaVenta.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlDetalleDeLaVenta.Designer.cs">
+      <DependentUpon>ControlDetalleDeLaVenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlTotalesDeLaVenta.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlTotalesDeLaVenta.Designer.cs">
+      <DependentUpon>ControlTotalesDeLaVenta.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmCategoriasCrud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,6 +237,12 @@
     </Compile>
     <Compile Include="FrmVentasCrud.Designer.cs">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasDetalleCrud - Copia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasDetalleCrud - Copia.Designer.cs">
+      <DependentUpon>FrmVentasDetalleCrud - Copia.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmVentasDetalleModificar.cs">
       <SubType>Form</SubType>
@@ -376,6 +406,18 @@
       <DependentUpon>Temp.cs</DependentUpon>
     </Compile>
     <Compile Include="U.cs" />
+    <EmbeddedResource Include="ControlAgregarProducto.resx">
+      <DependentUpon>ControlAgregarProducto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlBuscarVenta.resx">
+      <DependentUpon>ControlBuscarVenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlDetalleDeLaVenta.resx">
+      <DependentUpon>ControlDetalleDeLaVenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlTotalesDeLaVenta.resx">
+      <DependentUpon>ControlTotalesDeLaVenta.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCategoriasCrud.resx">
       <DependentUpon>FrmCategoriasCrud.cs</DependentUpon>
     </EmbeddedResource>
@@ -408,6 +450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasCrud.resx">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasDetalleCrud - Copia.resx">
+      <DependentUpon>FrmVentasDetalleCrud - Copia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasDetalleModificar.resx">
       <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
