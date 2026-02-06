@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,12 +29,20 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@Quantity", ventaDetalle.Quantity);
                     cmd.Parameters.AddWithValue("@Discount", ventaDetalle.Discount);
                     cmd.Parameters.AddWithValue("@TasaIVA", ventaDetalle.TasaIVA);
-                    cmd.Parameters.AddWithValue("@VentaRowVersion", ventaDetalle.Venta.RowVersion);
+                    //cmd.Parameters.AddWithValue("@VentaRowVersion", ventaDetalle.Venta.RowVersion);
+                    var paramRowVersion = new SqlParameter("@VentaRowVersion", SqlDbType.Binary, 8)
+                    {
+                        Direction = ParameterDirection.InputOutput,
+                        Value = ventaDetalle.Venta.RowVersion
+                    };
+                    cmd.Parameters.Add(paramRowVersion);
                     con.Open();
                     // Parámetro de retorno
                     var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
                     returnParameter.Direction = ParameterDirection.ReturnValue;
                     cmd.ExecuteNonQuery();
+                    // Obtener el nuevo RowVersion
+                    ventaDetalle.Venta.RowVersion = (byte[])paramRowVersion.Value;
                     return (int)returnParameter.Value;
                 }
             }

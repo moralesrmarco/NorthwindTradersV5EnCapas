@@ -45,7 +45,7 @@ namespace NorthwindTradersV5EnCapas
 
             if (pantallas.Length >= 4)
             {
-                Screen pantalla4 = pantallas[3];
+                Screen pantalla4 = pantallas[2];
 
                 // Posicionar el MDI en la pantalla 4
                 mdiPrincipal.StartPosition = FormStartPosition.Manual;

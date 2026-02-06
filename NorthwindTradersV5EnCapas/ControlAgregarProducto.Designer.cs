@@ -841,6 +841,9 @@
             this.nudDescuento.Size = new System.Drawing.Size(68, 20);
             this.nudDescuento.TabIndex = 3;
             this.nudDescuento.WheelEnabled = true;
+            this.nudDescuento.ValueChanged += new System.EventHandler(this.NudCantidadDescuento_LeaveValueChanged_Handler);
+            this.nudDescuento.Enter += new System.EventHandler(this.NudEnter_Handler);
+            this.nudDescuento.Leave += new System.EventHandler(this.NudCantidadDescuento_LeaveValueChanged_Handler);
             // 
             // nudCantidad
             // 
@@ -857,6 +860,9 @@
             this.nudCantidad.TabIndex = 2;
             this.nudCantidad.ThousandsSeparator = true;
             this.nudCantidad.WheelEnabled = true;
+            this.nudCantidad.ValueChanged += new System.EventHandler(this.NudCantidadDescuento_LeaveValueChanged_Handler);
+            this.nudCantidad.Enter += new System.EventHandler(this.NudEnter_Handler);
+            this.nudCantidad.Leave += new System.EventHandler(this.NudCantidadDescuento_LeaveValueChanged_Handler);
             // 
             // nudUInventario
             // 
@@ -911,6 +917,7 @@
             this.cboProducto.Name = "cboProducto";
             this.cboProducto.Size = new System.Drawing.Size(324, 21);
             this.cboProducto.TabIndex = 1;
+            this.cboProducto.SelectedIndexChanged += new System.EventHandler(this.CboProducto_SelectedIndexChanged_Handler);
             // 
             // cboCategoria
             // 
@@ -921,6 +928,7 @@
             this.cboCategoria.Name = "cboCategoria";
             this.cboCategoria.Size = new System.Drawing.Size(266, 21);
             this.cboCategoria.TabIndex = 0;
+            this.cboCategoria.SelectedIndexChanged += new System.EventHandler(this.CboCategoria_SelectedIndexChanged_Handler);
             // 
             // btnAgregar
             // 
@@ -931,6 +939,7 @@
             this.btnAgregar.TabIndex = 4;
             this.btnAgregar.Text = "+";
             this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.BtnAgregar_Click_Handler);
             // 
             // label41
             // 

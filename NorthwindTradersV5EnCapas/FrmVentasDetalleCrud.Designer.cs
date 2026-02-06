@@ -33,15 +33,15 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.grbVentas = new System.Windows.Forms.GroupBox();
-            this.DgvVentas = new System.Windows.Forms.DataGridView();
             this.GrbPedido = new System.Windows.Forms.GroupBox();
             this.BtnNota = new System.Windows.Forms.Button();
             this.txtCliente = new System.Windows.Forms.TextBox();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.grbVentas = new System.Windows.Forms.GroupBox();
+            this.DgvVentas = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.controlAgregarProducto = new NorthwindTradersV5EnCapas.ControlAgregarProducto();
             this.controlTotalesDeLaVenta = new NorthwindTradersV5EnCapas.ControlTotalesDeLaVenta();
             this.controlDetalleDeLaVenta = new NorthwindTradersV5EnCapas.ControlDetalleDeLaVenta();
@@ -49,9 +49,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.GrbPedido.SuspendLayout();
             this.grbVentas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgvVentas)).BeginInit();
-            this.GrbPedido.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -97,44 +97,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1478, 1272);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(8, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1529, 32);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "     Busque la venta y seleccionela en la lista que se muestra";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // grbVentas
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.grbVentas, 2);
-            this.grbVentas.Controls.Add(this.DgvVentas);
-            this.grbVentas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grbVentas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbVentas.Location = new System.Drawing.Point(8, 35);
-            this.grbVentas.Name = "grbVentas";
-            this.grbVentas.Padding = new System.Windows.Forms.Padding(10);
-            this.grbVentas.Size = new System.Drawing.Size(1529, 250);
-            this.grbVentas.TabIndex = 3;
-            this.grbVentas.TabStop = false;
-            this.grbVentas.Text = "»   Ventas:   «";
-            // 
-            // DgvVentas
-            // 
-            this.DgvVentas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvVentas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DgvVentas.Location = new System.Drawing.Point(10, 23);
-            this.DgvVentas.Name = "DgvVentas";
-            this.DgvVentas.RowHeadersWidth = 51;
-            this.DgvVentas.Size = new System.Drawing.Size(1509, 217);
-            this.DgvVentas.TabIndex = 0;
-            this.DgvVentas.TabStop = false;
-            // 
             // GrbPedido
             // 
             this.GrbPedido.Controls.Add(this.BtnNota);
@@ -151,6 +113,7 @@
             this.GrbPedido.TabIndex = 7;
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
+            this.GrbPedido.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // BtnNota
             // 
@@ -204,6 +167,46 @@
             this.label17.Size = new System.Drawing.Size(22, 13);
             this.label17.TabIndex = 19;
             this.label17.Text = "Id:";
+            // 
+            // grbVentas
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.grbVentas, 2);
+            this.grbVentas.Controls.Add(this.DgvVentas);
+            this.grbVentas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbVentas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grbVentas.Location = new System.Drawing.Point(8, 35);
+            this.grbVentas.Name = "grbVentas";
+            this.grbVentas.Padding = new System.Windows.Forms.Padding(10);
+            this.grbVentas.Size = new System.Drawing.Size(1529, 250);
+            this.grbVentas.TabIndex = 3;
+            this.grbVentas.TabStop = false;
+            this.grbVentas.Text = "»   Ventas:   «";
+            this.grbVentas.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
+            // 
+            // DgvVentas
+            // 
+            this.DgvVentas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvVentas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DgvVentas.Location = new System.Drawing.Point(10, 23);
+            this.DgvVentas.Name = "DgvVentas";
+            this.DgvVentas.RowHeadersWidth = 51;
+            this.DgvVentas.Size = new System.Drawing.Size(1509, 217);
+            this.DgvVentas.TabIndex = 0;
+            this.DgvVentas.TabStop = false;
+            this.DgvVentas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVentas_CellClick);
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(8, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(1529, 32);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "     Busque la venta y seleccionela en la lista que se muestra";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // controlAgregarProducto
             // 
@@ -259,10 +262,10 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.grbVentas.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.DgvVentas)).EndInit();
             this.GrbPedido.ResumeLayout(false);
             this.GrbPedido.PerformLayout();
+            this.grbVentas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DgvVentas)).EndInit();
             this.ResumeLayout(false);
 
         }

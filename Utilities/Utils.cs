@@ -68,7 +68,7 @@ namespace Utilities
                 return null;
             return dtpFecha.Value.Date.Add(dtpHora.Value.TimeOfDay);
         }
-        
+
         /// <summary>
         /// Ordena un DataGridView enlazado a una lista genérica y muestra el glyph de ordenamiento.
         /// </summary>
@@ -741,54 +741,106 @@ namespace Utilities
         // Método para pintar GroupBox con borde negro y texto negro
         public static void GrbPaint(Form form, object sender, PaintEventArgs e)
         {
-            GroupBox groupBox = sender as GroupBox;
-            if (groupBox != null)
-            {
-                DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.Black);
-            }
+            if (sender is GroupBox groupBox)
+                DrawGroupBox(form, groupBox, e.Graphics, Color.Black, SystemColors.Desktop, Color.White);
         }
+
+        //public static void GrbPaint(Form form, object sender, PaintEventArgs e)
+        //{
+        //    GroupBox groupBox = sender as GroupBox;
+        //    if (groupBox != null)
+        //    {
+        //        DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.Black);
+        //    }
+        //}
 
         // Método para pintar GroupBox con borde gris y texto negro
         public static void GrbPaint2(Form form, object sender, PaintEventArgs e)
         {
-            GroupBox groupBox = sender as GroupBox;
-            if (groupBox != null)
-            {
-                DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.LightSlateGray);
-            }
+            if (sender is GroupBox groupBox)
+                DrawGroupBox(form, groupBox, e.Graphics, Color.LightSlateGray, Color.LightSeaGreen, Color.White);
         }
 
-        // Método genérico para dibujar cualquier GroupBox
-        public static void DrawGroupBox(Form form, GroupBox box, Graphics g, Color textColor, Color borderColor)
-        {
-            if (box != null)
-            {
-                using (Brush textBrush = new SolidBrush(textColor))
-                using (Brush borderBrush = new SolidBrush(borderColor))
-                using (Pen borderPen = new Pen(borderBrush))
-                {
-                    SizeF strSize = g.MeasureString(box.Text, box.Font);
-                    Rectangle rect = new Rectangle(
-                        box.ClientRectangle.X,
-                        box.ClientRectangle.Y + (int)(strSize.Height / 2),
-                        box.ClientRectangle.Width - 1,
-                        box.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
+        //public static void GrbPaint2(Form form, object sender, PaintEventArgs e)
+        //{
+        //    GroupBox groupBox = sender as GroupBox;
+        //    if (groupBox != null)
+        //    {
+        //        DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.LightSlateGray);
+        //    }
+        //}
 
-                    // Limpiar el área con el color de fondo del formulario
-                    g.Clear(form.BackColor);
-                    // Dibujar el texto del GroupBox
-                    g.DrawString(box.Text, box.Font, textBrush, box.Padding.Left, 0);
-                    // Dibujar los bordes
-                    // Izquierda
-                    g.DrawLine(borderPen, rect.Location, new Point(rect.X, rect.Y + rect.Height));
-                    // Derecha
-                    g.DrawLine(borderPen, new Point(rect.X + rect.Width, rect.Y), new Point(rect.X + rect.Width, rect.Y + rect.Height));
-                    // Abajo
-                    g.DrawLine(borderPen, new Point(rect.X, rect.Y + rect.Height), new Point(rect.X + rect.Width, rect.Y + rect.Height));
-                    // Arriba (partido en dos para dejar espacio al texto)
-                    g.DrawLine(borderPen, new Point(rect.X, rect.Y), new Point(rect.X + box.Padding.Left, rect.Y));
-                    g.DrawLine(borderPen, new Point(rect.X + box.Padding.Left + (int)(strSize.Width), rect.Y), new Point(rect.X + rect.Width, rect.Y));
-                }
+        // Método genérico para dibujar cualquier GroupBox
+        public static void DrawGroupBox(Form form, GroupBox box, Graphics g,
+                                        Color borderColor, Color textBackColor, Color textColor,
+                                        int radius = 30)
+        {
+            if (box == null) return;
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            // Medir el texto
+            SizeF strSize = g.MeasureString(box.Text, box.Font);
+            int textStart = box.Padding.Left;
+
+            // Rectángulo principal del GroupBox
+            Rectangle rect = new Rectangle(
+                box.ClientRectangle.X,
+                box.ClientRectangle.Y + (int)(strSize.Height / 2),
+                box.ClientRectangle.Width - 1,
+                box.ClientRectangle.Height - (int)(strSize.Height / 2) - 1);
+
+            g.Clear(form.BackColor);
+
+            // Rectángulo detrás del texto (con desplazamiento de 20 px si quieres margen)
+            Rectangle textRect = new Rectangle(textStart + 20, 0, (int)strSize.Width, (int)strSize.Height);
+
+            // Fondo detrás del texto
+            using (Brush backBrush = new SolidBrush(textBackColor))
+                g.FillRectangle(backBrush, textRect);
+
+            // Borde negro de 1px alrededor del rectángulo
+            using (Pen borderPenText = new Pen(Color.Black, 1))
+                g.DrawRectangle(borderPenText, textRect);
+
+            // Texto encima
+            using (Brush textBrush = new SolidBrush(textColor))
+                g.DrawString(box.Text, box.Font, textBrush, textRect.X, textRect.Y);
+
+            using (Pen borderPen = new Pen(borderColor, 1.5f))
+            using (var path = new System.Drawing.Drawing2D.GraphicsPath())
+            {
+                // Esquina sup. izq
+                path.AddArc(rect.X, rect.Y, radius, radius, 180, 90);
+
+                // Línea superior hasta inicio del texto (termina unos píxeles antes del rectángulo del texto)
+                path.AddLine(rect.X + radius - 10, rect.Y, textRect.X, rect.Y);
+
+                // Salto del texto: continuar desde fin del texto
+                path.StartFigure();
+
+                // Línea superior después del texto (arranca unos píxeles después del rectángulo del texto)
+                path.AddLine(textRect.Right, rect.Y, rect.Right - radius, rect.Y);
+
+                // Esquina sup. der
+                path.AddArc(rect.Right - radius, rect.Y, radius, radius, 270, 90);
+
+                // Lado derecho
+                path.AddLine(rect.Right, rect.Y + radius, rect.Right, rect.Bottom - radius);
+
+                // Esquina inf. der
+                path.AddArc(rect.Right - radius, rect.Bottom - radius, radius, radius, 0, 90);
+
+                // Línea inferior
+                path.AddLine(rect.Right - radius, rect.Bottom, rect.X + radius, rect.Bottom);
+
+                // Esquina inf. izq
+                path.AddArc(rect.X, rect.Bottom - radius, radius, radius, 90, 90);
+
+                // Lado izquierdo
+                path.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius - 14);
+
+                g.DrawPath(borderPen, path);
             }
         }
     }

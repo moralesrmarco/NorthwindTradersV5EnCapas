@@ -42,7 +42,7 @@
             this.ImporteSinIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ImporteDelIVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Modificar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Modificar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Eliminar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.ProductoId = new System.Windows.Forms.DataGridViewButtonColumn();
             this.RowVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -186,6 +186,8 @@
             // 
             this.Modificar.HeaderText = "Modificar producto";
             this.Modificar.Name = "Modificar";
+            this.Modificar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Modificar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // Eliminar
             // 
@@ -242,7 +244,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ImporteSinIVA;
         private System.Windows.Forms.DataGridViewTextBoxColumn ImporteDelIVA;
         private System.Windows.Forms.DataGridViewTextBoxColumn Subtotal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Modificar;
+        private System.Windows.Forms.DataGridViewButtonColumn Modificar;
         private System.Windows.Forms.DataGridViewButtonColumn Eliminar;
         private System.Windows.Forms.DataGridViewButtonColumn ProductoId;
         private System.Windows.Forms.DataGridViewTextBoxColumn RowVersion;

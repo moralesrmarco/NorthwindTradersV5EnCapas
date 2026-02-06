@@ -122,6 +122,9 @@
             this.nudBIdFin.Name = "nudBIdFin";
             this.nudBIdFin.Size = new System.Drawing.Size(112, 20);
             this.nudBIdFin.TabIndex = 1;
+            this.nudBIdFin.ValueChanged += new System.EventHandler(this.NudBIdValueChanged_Handler);
+            this.nudBIdFin.Enter += new System.EventHandler(this.NudEnter_Handler);
+            this.nudBIdFin.Leave += new System.EventHandler(this.NudBIdLeave_Handler);
             // 
             // nudBIdIni
             // 
@@ -136,6 +139,9 @@
             this.nudBIdIni.Name = "nudBIdIni";
             this.nudBIdIni.Size = new System.Drawing.Size(112, 20);
             this.nudBIdIni.TabIndex = 0;
+            this.nudBIdIni.ValueChanged += new System.EventHandler(this.NudBIdValueChanged_Handler);
+            this.nudBIdIni.Enter += new System.EventHandler(this.NudEnter_Handler);
+            this.nudBIdIni.Leave += new System.EventHandler(this.NudBIdLeave_Handler);
             // 
             // btnLimpiar
             // 
@@ -146,6 +152,7 @@
             this.btnLimpiar.TabIndex = 15;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // btnBuscar
             // 
@@ -155,6 +162,7 @@
             this.btnBuscar.TabIndex = 16;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // label19
             // 
@@ -241,6 +249,8 @@
             this.dtpBFEnvioFin.ShowCheckBox = true;
             this.dtpBFEnvioFin.Size = new System.Drawing.Size(101, 20);
             this.dtpBFEnvioFin.TabIndex = 11;
+            this.dtpBFEnvioFin.ValueChanged += new System.EventHandler(this.dtpBFEnvioFin_ValueChanged);
+            this.dtpBFEnvioFin.Leave += new System.EventHandler(this.dtpBFEnvioFin_Leave);
             // 
             // dtpBFEnvioIni
             // 
@@ -252,6 +262,8 @@
             this.dtpBFEnvioIni.ShowCheckBox = true;
             this.dtpBFEnvioIni.Size = new System.Drawing.Size(101, 20);
             this.dtpBFEnvioIni.TabIndex = 10;
+            this.dtpBFEnvioIni.ValueChanged += new System.EventHandler(this.dtpBFEnvioIni_ValueChanged);
+            this.dtpBFEnvioIni.Leave += new System.EventHandler(this.dtpBFEnvioIni_Leave);
             // 
             // chkbBFEnvioNull
             // 
@@ -264,6 +276,7 @@
             this.chkbBFEnvioNull.TabIndex = 9;
             this.chkbBFEnvioNull.Text = "Fecha = null";
             this.chkbBFEnvioNull.UseVisualStyleBackColor = true;
+            this.chkbBFEnvioNull.CheckedChanged += new System.EventHandler(this.chkbBFEnvioNull_CheckedChanged);
             // 
             // label14
             // 
@@ -304,6 +317,8 @@
             this.dtpBFRequeridoFin.ShowCheckBox = true;
             this.dtpBFRequeridoFin.Size = new System.Drawing.Size(101, 20);
             this.dtpBFRequeridoFin.TabIndex = 8;
+            this.dtpBFRequeridoFin.ValueChanged += new System.EventHandler(this.dtpBFRequeridoFin_ValueChanged);
+            this.dtpBFRequeridoFin.Leave += new System.EventHandler(this.dtpBFRequeridoFin_Leave);
             // 
             // dtpBFRequeridoIni
             // 
@@ -315,6 +330,8 @@
             this.dtpBFRequeridoIni.ShowCheckBox = true;
             this.dtpBFRequeridoIni.Size = new System.Drawing.Size(101, 20);
             this.dtpBFRequeridoIni.TabIndex = 7;
+            this.dtpBFRequeridoIni.ValueChanged += new System.EventHandler(this.dtpBFRequeridoIni_ValueChanged);
+            this.dtpBFRequeridoIni.Leave += new System.EventHandler(this.dtpBFRequeridoIni_Leave);
             // 
             // chkbBFRequeridoNull
             // 
@@ -327,6 +344,7 @@
             this.chkbBFRequeridoNull.TabIndex = 6;
             this.chkbBFRequeridoNull.Text = "Fecha = null";
             this.chkbBFRequeridoNull.UseVisualStyleBackColor = true;
+            this.chkbBFRequeridoNull.CheckedChanged += new System.EventHandler(this.chkbBFRequeridoNull_CheckedChanged);
             // 
             // label11
             // 
@@ -348,6 +366,7 @@
             this.chkbBFVentaNull.TabIndex = 3;
             this.chkbBFVentaNull.Text = "Fecha = null";
             this.chkbBFVentaNull.UseVisualStyleBackColor = true;
+            this.chkbBFVentaNull.CheckedChanged += new System.EventHandler(this.chkbBFVentaNull_CheckedChanged);
             // 
             // label10
             // 
@@ -379,6 +398,8 @@
             this.dtpBFVentaFin.ShowCheckBox = true;
             this.dtpBFVentaFin.Size = new System.Drawing.Size(101, 20);
             this.dtpBFVentaFin.TabIndex = 5;
+            this.dtpBFVentaFin.ValueChanged += new System.EventHandler(this.dtpBFVentaFin_ValueChanged);
+            this.dtpBFVentaFin.Leave += new System.EventHandler(this.dtpBFVentaFin_Leave);
             // 
             // dtpBFVentaIni
             // 
@@ -390,6 +411,8 @@
             this.dtpBFVentaIni.ShowCheckBox = true;
             this.dtpBFVentaIni.Size = new System.Drawing.Size(101, 20);
             this.dtpBFVentaIni.TabIndex = 4;
+            this.dtpBFVentaIni.ValueChanged += new System.EventHandler(this.dtpBFVentaIni_ValueChanged);
+            this.dtpBFVentaIni.Leave += new System.EventHandler(this.dtpBFVentaIni_Leave);
             // 
             // label8
             // 

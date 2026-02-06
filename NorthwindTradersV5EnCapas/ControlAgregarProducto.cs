@@ -1,4 +1,5 @@
 ﻿using NorthwindTradersV5EnCapas.Helpers;
+using System;
 using System.Data;
 using System.Windows.Forms;
 using Utilities;
@@ -44,10 +45,48 @@ namespace NorthwindTradersV5EnCapas
         public PictureBox PbInfo1 => pbInfo1;
         public PictureBox PbWarning1 => pbWarning1;
 
+        // Declaras el evento aquí
+        public event EventHandler NudEnter;
+        public event EventHandler NudCantidadDescuento_LeaveValueChanged;
+        public event EventHandler CboCategoria_SelectedIndexChanged;
+        public event EventHandler CboProducto_SelectedIndexChanged;
+        public event EventHandler BtnAgregar_Click;
 
         public ControlAgregarProducto()
         {
             InitializeComponent();
+            grbProducto.Paint += (s, e) => Utils.GrbPaint(this.ParentForm, s, e);
+            GrbSubtotales.Paint += (s, e) => Utils.GrbPaint2(this.ParentForm, s, e);
+        }
+
+        private void NudEnter_Handler(object sender, EventArgs e)
+        {
+            // Dispara el evento hacia el formulario
+            NudEnter?.Invoke(sender, e);
+        }
+
+        private void NudCantidadDescuento_LeaveValueChanged_Handler(object sender, EventArgs e)
+        {
+            // Dispara el evento hacia el formulario
+            NudCantidadDescuento_LeaveValueChanged?.Invoke(sender, e);
+        }
+
+        private void CboCategoria_SelectedIndexChanged_Handler(object sender, EventArgs e)
+        {
+            // Dispara el evento hacia el formulario
+            CboCategoria_SelectedIndexChanged?.Invoke(sender, e);
+        }
+
+        private void CboProducto_SelectedIndexChanged_Handler(object sender, EventArgs e)
+        {
+            // Dispara el evento hacia el formulario
+            CboProducto_SelectedIndexChanged?.Invoke(sender, e);
+        }
+
+        private void BtnAgregar_Click_Handler(object sender, EventArgs e)
+        {
+            // Dispara el evento hacia el formulario
+            BtnAgregar_Click?.Invoke(sender, e);
         }
 
         public void LlenarCboCategoria(DataTable categorias)
