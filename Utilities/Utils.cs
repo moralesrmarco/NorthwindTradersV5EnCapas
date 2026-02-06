@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using WinFormsSortOrder = System.Windows.Forms.SortOrder;
 
@@ -709,242 +710,81 @@ namespace Utilities
             {
                 Image img = tabControl.ImageList.Images[key];
                 int iconX = rect.Right - 16 - 5; // margen de 5px
-                int iconY = rect.Top + (rect.Height - 16) / 2;
-                e.Graphics.DrawImage(img, iconX, iconY, 16, 16);
+                int iconY = rect.Top + (rect.Height - 16) / 2 + 2; // +2 para centrar mejor verticalmente
+                e.Graphics.DrawImage(img, iconX, iconY, 11, 14);
             }
         }
 
-        //public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
-        //{
-        //    TabPage page = tabControl.TabPages[e.Index];
-        //    bool isSelected = (e.Index == tabControl.SelectedIndex);
+        public static void ConfigurarTabControl(TabControl tabControl, Image iconOff, Image iconOn)
+        {
+            // Configuración básica
+            tabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
+            tabControl.Appearance = TabAppearance.Normal;
+            tabControl.SizeMode = TabSizeMode.Fixed;
 
-        //    // Colores y fuente
-        //    Color backColor = isSelected ? SystemColors.Highlight : SystemColors.GradientActiveCaption;
-        //    Color textColor = isSelected ? SystemColors.HighlightText : SystemColors.ActiveCaptionText;
-        //    Font textFont = isSelected ? new Font(e.Font, FontStyle.Italic) : e.Font;
+            // Configuración de íconos
+            tabControl.ImageList = new ImageList();
+            tabControl.ImageList.ImageSize = new Size(11, 14);
+            tabControl.ImageList.Images.Add("tabIcon", iconOff);
+            tabControl.ImageList.Images.Add("tabIconOn", iconOn);
 
-        //    Rectangle rect = e.Bounds;
+            foreach (TabPage page in tabControl.TabPages)
+                page.ImageKey = "tabIcon";
 
-        //    using (SolidBrush brush = new SolidBrush(backColor))
-        //        e.Graphics.FillRectangle(brush, rect);
+            int maxWidth = 0;
+            foreach (TabPage page in tabControl.TabPages)
+            {
+                Size textSize = TextRenderer.MeasureText(page.Text, tabControl.Font);
+                int width = textSize.Width + 12 + 10;
+                if (width > maxWidth) maxWidth = width;
+            }
+            tabControl.ItemSize = new Size(maxWidth, tabControl.ItemSize.Height);
 
-        //    // Dibujar texto
-        //    TextRenderer.DrawText(e.Graphics, page.Text, textFont,
-        //                          new Point(rect.Left + 4, rect.Top + (rect.Height - e.Font.Height) / 2),
-        //                          textColor);
+            // Asociar evento de dibujo centralizado
+            tabControl.DrawItem += (s, e) => DibujarPestañas(tabControl, e);
 
-        //    // Dibujar ícono
-        //    if (tabControl.ImageList != null && !string.IsNullOrEmpty(page.ImageKey))
-        //    {
-        //        Image img = tabControl.ImageList.Images[page.ImageKey];
-        //        if (img != null)
-        //        {
-        //            int iconX = rect.Right - 16 - 5; // ícono a la derecha con margen de 5px
-        //            int iconY = rect.Top + (rect.Height - 16) / 2;
+            // Buscar manejadores en el formulario contenedor
+            var form = tabControl.FindForm();
+            if (form != null)
+            {
+                var type = form.GetType();
 
-        //            if (isSelected)
-        //            {
-        //                // Crear versión verde del ícono
-        //                using (Bitmap bmp = new Bitmap(img.Width, img.Height))
-        //                using (Graphics g = Graphics.FromImage(bmp))
-        //                {
-        //                    // Dibujar el original en negro transparente
-        //                    g.DrawImage(img, 0, 0, img.Width, img.Height);
+                // Selected
+                var selectedMethod = type.GetMethod("tabcOperacion_Selected",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                if (selectedMethod != null)
+                {
+                    var handler = (TabControlEventHandler)Delegate.CreateDelegate(
+                        typeof(TabControlEventHandler), form, selectedMethod);
 
-        //                    // Aplicar un overlay verde
-        //                    using (SolidBrush overlay = new SolidBrush(Color.FromArgb(150, Color.Green)))
-        //                    {
-        //                        g.FillRectangle(overlay, new Rectangle(0, 0, img.Width, img.Height));
-        //                    }
+                    tabControl.Selected -= handler;
+                    tabControl.Selected += handler;
+                }
 
-        //                    e.Graphics.DrawImage(bmp, iconX, iconY, 16, 16);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // Ícono normal
-        //                e.Graphics.DrawImage(img, iconX, iconY, 16, 16);
-        //            }
-        //        }
-        //    }
-        //}
+                var selectingMethod = type.GetMethod("tabcOperacion_Selecting",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                if (selectingMethod != null)
+                {
+                    var handler = (TabControlCancelEventHandler)Delegate.CreateDelegate(
+                        typeof(TabControlCancelEventHandler), form, selectingMethod);
 
-        //public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
-        //{
-        //    TabPage page = tabControl.TabPages[e.Index];
-        //    bool isSelected = (e.Index == tabControl.SelectedIndex);
+                    tabControl.Selecting -= handler; // evita duplicado
+                    tabControl.Selecting += handler;
+                }
 
-        //    Color backColor = isSelected ? SystemColors.Highlight : SystemColors.GradientActiveCaption;
-        //    Color textColor = isSelected ? SystemColors.HighlightText : SystemColors.ActiveCaptionText;
-        //    Font textFont = isSelected ? new Font(e.Font, FontStyle.Italic) : e.Font;
+                // DrawItem
+                var drawItemMethod = type.GetMethod("tabcOperacion_DrawItem",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                if (drawItemMethod != null)
+                {
+                    var handler = (DrawItemEventHandler)Delegate.CreateDelegate(
+                        typeof(DrawItemEventHandler), form, drawItemMethod);
 
-        //    Rectangle rect = e.Bounds;
-
-        //    using (SolidBrush brush = new SolidBrush(backColor))
-        //        e.Graphics.FillRectangle(brush, rect);
-
-        //    // Dibujar texto
-        //    TextRenderer.DrawText(e.Graphics, page.Text, textFont,
-        //                          new Point(rect.Left + 4, rect.Top + (rect.Height - e.Font.Height) / 2),
-        //                          textColor);
-
-        //    // Dibujar ícono al final con 5px de margen
-        //    if (tabControl.ImageList != null && !string.IsNullOrEmpty(page.ImageKey))
-        //    {
-        //        Image img = tabControl.ImageList.Images[page.ImageKey];
-        //        if (img != null)
-        //        {
-        //            int iconX = rect.Right - 16 - 5; // ícono de 16px + margen de 5px
-        //            int iconY = rect.Top + (rect.Height - 16) / 2;
-        //            e.Graphics.DrawImage(img, iconX, iconY, 16, 16);
-        //        }
-        //    }
-        //}
-
-        //public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
-        //{
-        //    TabPage page = tabControl.TabPages[e.Index];
-        //    bool isSelected = (e.Index == tabControl.SelectedIndex);
-
-        //    // Colores y fuente
-        //    Color backColor = isSelected ? SystemColors.Highlight : SystemColors.GradientActiveCaption;
-        //    Color textColor = isSelected ? SystemColors.HighlightText : SystemColors.ActiveCaptionText;
-        //    Font textFont = isSelected ? new Font(e.Font, FontStyle.Italic) : e.Font;
-
-        //    Rectangle rect = e.Bounds;
-
-        //    // Fondo
-        //    using (SolidBrush brush = new SolidBrush(backColor))
-        //        e.Graphics.FillRectangle(brush, rect);
-
-        //    // Medir el texto
-        //    Size textSize = TextRenderer.MeasureText(page.Text, textFont);
-
-        //    // Posición del texto
-        //    int textX = rect.Left + 4;
-        //    int textY = rect.Top + (rect.Height - textSize.Height) / 2;
-
-        //    // Dibujar texto
-        //    TextRenderer.DrawText(e.Graphics, page.Text, textFont,
-        //                          new Point(textX, textY), textColor);
-
-        //    // Dibujar ícono a la derecha del texto
-        //    if (tabControl.ImageList != null && !string.IsNullOrEmpty(page.ImageKey))
-        //    {
-        //        Image img = tabControl.ImageList.Images[page.ImageKey];
-        //        if (img != null)
-        //        {
-        //            int iconX = textX + textSize.Width + 6; // espacio después del texto
-        //            int iconY = rect.Top + (rect.Height - 16) / 2;
-        //            e.Graphics.DrawImage(img, iconX, iconY, 16, 16);
-        //        }
-        //    }
-        //}
-
-        //public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
-        //{
-        //    TabPage page = tabControl.TabPages[e.Index];
-        //    bool isSelected = (e.Index == tabControl.SelectedIndex);
-
-        //    // Colores y fuente
-        //    Color backColor = isSelected ? SystemColors.Highlight : SystemColors.GradientActiveCaption;
-        //    Color textColor = isSelected ? SystemColors.HighlightText : SystemColors.ActiveCaptionText;
-        //    Font textFont = isSelected ? new Font(e.Font, FontStyle.Italic) : e.Font;
-
-        //    Rectangle rect = e.Bounds;
-
-        //    // Fondo
-        //    using (SolidBrush brush = new SolidBrush(backColor))
-        //        e.Graphics.FillRectangle(brush, rect);
-
-        //    // Medir el texto para saber dónde termina
-        //    Size textSize = TextRenderer.MeasureText(page.Text, textFont);
-
-        //    // Posición del texto (centrado verticalmente)
-        //    Rectangle textRect = new Rectangle(rect.Left + 4, rect.Top, rect.Width - 24, rect.Height);
-
-        //    // Dibujar el texto
-        //    TextRenderer.DrawText(e.Graphics,
-        //                          page.Text,
-        //                          textFont,
-        //                          textRect,
-        //                          textColor,
-        //                          TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
-
-        //    // Dibujar el ícono a la derecha del texto
-        //    if (tabControl.ImageList != null && !string.IsNullOrEmpty(page.ImageKey))
-        //    {
-        //        Image img = tabControl.ImageList.Images[page.ImageKey];
-        //        if (img != null)
-        //        {
-        //            int iconX = textRect.Left + textSize.Width + 6; // 6px de espacio después del texto
-        //            int iconY = rect.Top + (rect.Height - 16) / 2;  // centrado verticalmente
-        //            e.Graphics.DrawImage(img, iconX, iconY, 16, 16);
-        //        }
-        //    }
-        //}
-
-        //public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
-        //{
-        //    TabPage page = tabControl.TabPages[e.Index];
-        //    bool isSelected = (e.Index == tabControl.SelectedIndex);
-
-        //    // Colores y fuente
-        //    Color backColor = isSelected ? SystemColors.Highlight : SystemColors.GradientActiveCaption;
-        //    Color textColor = isSelected ? SystemColors.HighlightText : SystemColors.ActiveCaptionText;
-        //    Font textFont = isSelected ? new Font(e.Font, FontStyle.Italic) : e.Font;
-
-        //    Rectangle rect = e.Bounds;
-
-        //    // Fondo
-        //    using (SolidBrush brush = new SolidBrush(backColor))
-        //        e.Graphics.FillRectangle(brush, rect);
-
-        //    // Ícono (si existe en ImageList)
-        //    if (tabControl.ImageList != null && !string.IsNullOrEmpty(page.ImageKey))
-        //    {
-        //        Image img = tabControl.ImageList.Images[page.ImageKey];
-        //        if (img != null)
-        //        {
-        //            e.Graphics.DrawImage(img, rect.Left + 4, rect.Top + (rect.Height - 16) / 2, 16, 16);
-        //            rect = new Rectangle(rect.Left + 24, rect.Top, rect.Width - 24, rect.Height); // desplazar texto
-        //        }
-        //    }
-
-        //    // Texto
-        //    TextRenderer.DrawText(e.Graphics,
-        //                          page.Text,
-        //                          textFont,
-        //                          rect,
-        //                          textColor,
-        //                          TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
-        //}
-
-        //public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
-        //{
-        //    TabPage page = tabControl.TabPages[e.Index];
-        //    bool isSelected = (e.Index == tabControl.SelectedIndex);
-        //    // Colores fijos
-        //    Color backColor = isSelected ? SystemColors.Highlight : SystemColors.GradientActiveCaption;
-        //    Color textColor = isSelected ? SystemColors.HighlightText : SystemColors.ActiveCaptionText;
-        //    // Fuente fija: itálica si está seleccionada, regular si no
-        //    Font textFont = isSelected
-        //        ? new Font(e.Font, FontStyle.Italic)
-        //        : new Font(e.Font, FontStyle.Regular);
-        //    // Pintar fondo
-        //    using (SolidBrush brush = new SolidBrush(backColor))
-        //    {
-        //        e.Graphics.FillRectangle(brush, e.Bounds);
-        //    }
-        //    // Pintar texto centrado
-        //    TextRenderer.DrawText(e.Graphics,
-        //                          page.Text,
-        //                          textFont,
-        //                          e.Bounds,
-        //                          textColor,
-        //                          TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-        //}
+                    tabControl.DrawItem -= handler;
+                    tabControl.DrawItem += handler;
+                }
+            }
+        }
 
         public static void OpenForm<T>(Form mdiParent) where T : Form, new()
         {

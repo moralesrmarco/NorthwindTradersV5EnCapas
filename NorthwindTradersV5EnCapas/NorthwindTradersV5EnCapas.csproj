@@ -610,6 +610,7 @@
     <None Include="Resources\pestana.bmp" />
     <None Include="Resources\pestana.png" />
     <None Include="Resources\pestanaOn.png" />
+    <None Include="Resources\pestanaOff.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

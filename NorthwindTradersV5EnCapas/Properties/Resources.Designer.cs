@@ -103,9 +103,9 @@ namespace NorthwindTradersV5EnCapas.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pestana {
+        internal static System.Drawing.Bitmap pestanaOff {
             get {
-                object obj = ResourceManager.GetObject("pestana", resourceCulture);
+                object obj = ResourceManager.GetObject("pestanaOff", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
