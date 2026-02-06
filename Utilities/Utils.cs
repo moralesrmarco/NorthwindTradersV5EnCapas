@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -745,30 +746,12 @@ namespace Utilities
                 DrawGroupBox(form, groupBox, e.Graphics, Color.Black, SystemColors.Desktop, Color.White);
         }
 
-        //public static void GrbPaint(Form form, object sender, PaintEventArgs e)
-        //{
-        //    GroupBox groupBox = sender as GroupBox;
-        //    if (groupBox != null)
-        //    {
-        //        DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.Black);
-        //    }
-        //}
-
         // Método para pintar GroupBox con borde gris y texto negro
         public static void GrbPaint2(Form form, object sender, PaintEventArgs e)
         {
             if (sender is GroupBox groupBox)
                 DrawGroupBox(form, groupBox, e.Graphics, Color.LightSlateGray, Color.LightSeaGreen, Color.White);
         }
-
-        //public static void GrbPaint2(Form form, object sender, PaintEventArgs e)
-        //{
-        //    GroupBox groupBox = sender as GroupBox;
-        //    if (groupBox != null)
-        //    {
-        //        DrawGroupBox(form, groupBox, e.Graphics, Color.Black, Color.LightSlateGray);
-        //    }
-        //}
 
         // Método genérico para dibujar cualquier GroupBox
         public static void DrawGroupBox(Form form, GroupBox box, Graphics g,
@@ -792,20 +775,36 @@ namespace Utilities
 
             g.Clear(form.BackColor);
 
-            // Rectángulo detrás del texto (con desplazamiento de 20 px si quieres margen)
-            Rectangle textRect = new Rectangle(textStart + 20, 0, (int)strSize.Width, (int)strSize.Height);
+            int textRadius = 10;   // radio de las esquinas del rectángulo del texto
+            int textPadding = 7;  // espacio en blanco antes y después del texto
 
-            // Fondo detrás del texto
-            using (Brush backBrush = new SolidBrush(textBackColor))
-                g.FillRectangle(backBrush, textRect);
+            // Rectángulo detrás del texto con padding horizontal
+            Rectangle textRect = new Rectangle(
+                textStart + 20,
+                0,
+                (int)strSize.Width + (textPadding * 2),
+                (int)strSize.Height
+            );
 
-            // Borde negro de 1px alrededor del rectángulo
-            using (Pen borderPenText = new Pen(Color.Black, 1))
-                g.DrawRectangle(borderPenText, textRect);
+            // Fondo con esquinas redondeadas
+            using (GraphicsPath textPath = new GraphicsPath())
+            {
+                textPath.AddArc(textRect.X, textRect.Y, textRadius, textRadius, 180, 90); // sup. izq
+                textPath.AddArc(textRect.Right - textRadius, textRect.Y, textRadius, textRadius, 270, 90); // sup. der
+                textPath.AddArc(textRect.Right - textRadius, textRect.Bottom - textRadius, textRadius, textRadius, 0, 90); // inf. der
+                textPath.AddArc(textRect.X, textRect.Bottom - textRadius, textRadius, textRadius, 90, 90); // inf. izq
+                textPath.CloseFigure();
 
-            // Texto encima
+                using (Brush backBrush = new SolidBrush(textBackColor))
+                    g.FillPath(backBrush, textPath);
+
+                using (Pen borderPenText = new Pen(Color.Black, 1))
+                    g.DrawPath(borderPenText, textPath);
+            }
+
+            // Texto encima con padding interno
             using (Brush textBrush = new SolidBrush(textColor))
-                g.DrawString(box.Text, box.Font, textBrush, textRect.X, textRect.Y);
+                g.DrawString(box.Text, box.Font, textBrush, textRect.X + textPadding, textRect.Y);
 
             using (Pen borderPen = new Pen(borderColor, 1.5f))
             using (var path = new System.Drawing.Drawing2D.GraphicsPath())
@@ -813,13 +812,13 @@ namespace Utilities
                 // Esquina sup. izq
                 path.AddArc(rect.X, rect.Y, radius, radius, 180, 90);
 
-                // Línea superior hasta inicio del texto (termina unos píxeles antes del rectángulo del texto)
+                // Línea superior hasta inicio del texto
                 path.AddLine(rect.X + radius - 10, rect.Y, textRect.X, rect.Y);
 
-                // Salto del texto: continuar desde fin del texto
+                // Salto del texto
                 path.StartFigure();
 
-                // Línea superior después del texto (arranca unos píxeles después del rectángulo del texto)
+                // Línea superior después del texto
                 path.AddLine(textRect.Right, rect.Y, rect.Right - radius, rect.Y);
 
                 // Esquina sup. der
