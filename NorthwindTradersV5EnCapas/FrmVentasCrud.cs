@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -120,7 +121,41 @@ namespace NorthwindTradersV5EnCapas
             _productoService = new ProductoService(_connectionString);
             _ventaService = new VentaService(_connectionString);
 
+            // Configuración del TabControl
             tabcOperacion.DrawMode = TabDrawMode.OwnerDrawFixed;
+            //tabcOperacion.DrawMode = TabDrawMode.Normal;
+            //tabcOperacion.DrawMode = TabDrawMode.OwnerDrawVariable;
+
+            tabcOperacion.Appearance = TabAppearance.Normal;
+            tabcOperacion.SizeMode = TabSizeMode.Fixed;
+
+            // Configuración de íconos desde Resources
+            tabcOperacion.ImageList = new ImageList();
+            tabcOperacion.ImageList.ImageSize = new Size(16, 16);
+            // Íconos desde Resources
+            tabcOperacion.ImageList.Images.Add("tabIcon", Properties.Resources.pestana);
+            tabcOperacion.ImageList.Images.Add("tabIconOn", Properties.Resources.pestanaOn);
+
+            // Asignar el mismo ícono a todas las pestañas
+            foreach (TabPage page in tabcOperacion.TabPages)
+            {
+                page.ImageKey = "tabIcon";
+            }
+
+            // Calcular ancho máximo necesario para texto + ícono + margen
+            int maxWidth = 0;
+            foreach (TabPage page in tabcOperacion.TabPages)
+            {
+                Size textSize = TextRenderer.MeasureText(page.Text, tabcOperacion.Font);
+                int width = textSize.Width + 16 + 10; // texto + ícono + margen
+                if (width > maxWidth) maxWidth = width;
+            }
+            tabcOperacion.ItemSize = new Size(maxWidth, tabcOperacion.ItemSize.Height);
+            //tabcOperacion.ItemSize = new Size(maxWidth, 30);
+
+            //// Asignar el ícono a la primera pestaña
+            //tabcOperacion.TabPages[0].ImageKey = "tabIcon";
+
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
 
             dtpHoraRequerido.Value = DateTime.Today;

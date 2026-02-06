@@ -607,6 +607,9 @@
     <None Include="Resources\Categorias.png" />
     <None Include="Resources\btnCerrarWindow.png" />
     <None Include="Resources\btnCerrarWindows.png" />
+    <None Include="Resources\pestana.bmp" />
+    <None Include="Resources\pestana.png" />
+    <None Include="Resources\pestanaOn.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
