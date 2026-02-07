@@ -16,12 +16,10 @@ namespace NorthwindTradersV5EnCapas
             set { toolStripStatus = value; }
         }
 
-
         public MDIPrincipal()
         {
             InitializeComponent();
-            TabControlPrincipal.DrawMode = TabDrawMode.OwnerDrawFixed;
-            TabControlPrincipal.DrawItem += TabControlPrincipal_DrawItem;
+            TabControlPrincipal.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
             Instance = this;
             this.Text = Utils.nwtr;
             // Suscribirse al evento de Utils
@@ -30,8 +28,6 @@ namespace NorthwindTradersV5EnCapas
                 ActualizarBarraDeEstado();
             };
         }
-
-        private void TabControlPrincipal_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
 
         private void TabControlPrincipal_SelectedIndexChanged(object sender, EventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 

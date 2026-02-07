@@ -619,6 +619,10 @@ namespace Utilities
             }
             // Crear una nueva pestaña
             TabPage nuevaPestaña = new TabPage(titulo);
+            // Asignar ícono por defecto
+            if (tabControl.ImageList != null && tabControl.ImageList.Images.ContainsKey("tabIcon"))
+                nuevaPestaña.ImageKey = "tabIcon";
+
             // Configurar el formulario para incrustarlo
             formulario.TopLevel = false;
             formulario.FormBorderStyle = FormBorderStyle.None;
@@ -633,57 +637,24 @@ namespace Utilities
             // Disparar evento
             FormularioAgregado?.Invoke(formulario);
             formulario.Show();
-        }
 
-        public static void CerrarTodasLasPestañas(TabControl tabControl)
-        {
-            // Usamos una lista temporal para las páginas que sí se pueden quitar
-            var paginasParaQuitar = new List<TabPage>();
-            foreach (TabPage page in tabControl.TabPages)
-            {
-                Form form = null;
-                foreach (Control ctrl in page.Controls)
-                {
-                    if (ctrl is Form f)
-                    {
-                        form = f;
-                        f.Close(); // dispara FormClosing
-                        break;
-                    }
-                }
-                // Solo marcamos la página para quitar si el form se cerró de verdad
-                if (form == null || form.IsDisposed)
-                {
-                    paginasParaQuitar.Add(page);
-                }
-            }
-            // Ahora sí quitamos solo las pestañas que se cerraron
-            foreach (var page in paginasParaQuitar)
-            {
-                tabControl.TabPages.Remove(page);
-            }
-        }
+            //// Ajustar tamaños si es ControlCustomTab
+            //if (tabControl is ControlCustomTab custom)
+            //    custom.AjustarTabSizes();
 
-        public static void CerrarPestañaSeleccionada(TabControl tabControl)
-        {
-            if (tabControl.SelectedTab != null)
-            {
-                Form form = null;
-                foreach (Control ctrl in tabControl.SelectedTab.Controls)
-                {
-                    if (ctrl is Form f)
-                    {
-                        form = f;
-                        f.Close();
-                        break;
-                    }
-                }
-                // Solo quitar la pestaña si el formulario se cerró de verdad
-                if (form == null || form.IsDisposed)
-                {
-                    tabControl.TabPages.Remove(tabControl.SelectedTab);
-                }
-            }
+            //  -Alternativa sin is
+            //Si prefieres no depender del tipo, usamos reflexión:
+            //if (tabControl.GetType().Name == "ControlCustomTab")
+            //{
+            //    ((dynamic)tabControl).AjustarTabSizes();
+            //}
+
+            // Ajustar tamaños si el control tiene el método AjustarTabSizes
+            var metodo = tabControl.GetType().GetMethod("AjustarTabSizes",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+
+            if (metodo != null)
+                metodo.Invoke(tabControl, null);
         }
 
         public static void DibujarPestañas(TabControl tabControl, DrawItemEventArgs e)
@@ -782,6 +753,57 @@ namespace Utilities
 
                     tabControl.DrawItem -= handler;
                     tabControl.DrawItem += handler;
+                }
+            }
+        }
+
+        public static void CerrarTodasLasPestañas(TabControl tabControl)
+        {
+            // Usamos una lista temporal para las páginas que sí se pueden quitar
+            var paginasParaQuitar = new List<TabPage>();
+            foreach (TabPage page in tabControl.TabPages)
+            {
+                Form form = null;
+                foreach (Control ctrl in page.Controls)
+                {
+                    if (ctrl is Form f)
+                    {
+                        form = f;
+                        f.Close(); // dispara FormClosing
+                        break;
+                    }
+                }
+                // Solo marcamos la página para quitar si el form se cerró de verdad
+                if (form == null || form.IsDisposed)
+                {
+                    paginasParaQuitar.Add(page);
+                }
+            }
+            // Ahora sí quitamos solo las pestañas que se cerraron
+            foreach (var page in paginasParaQuitar)
+            {
+                tabControl.TabPages.Remove(page);
+            }
+        }
+
+        public static void CerrarPestañaSeleccionada(TabControl tabControl)
+        {
+            if (tabControl.SelectedTab != null)
+            {
+                Form form = null;
+                foreach (Control ctrl in tabControl.SelectedTab.Controls)
+                {
+                    if (ctrl is Form f)
+                    {
+                        form = f;
+                        f.Close();
+                        break;
+                    }
+                }
+                // Solo quitar la pestaña si el formulario se cerró de verdad
+                if (form == null || form.IsDisposed)
+                {
+                    tabControl.TabPages.Remove(tabControl.SelectedTab);
                 }
             }
         }

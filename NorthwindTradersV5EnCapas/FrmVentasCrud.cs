@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -35,6 +34,7 @@ namespace NorthwindTradersV5EnCapas
         public FrmVentasCrud()
         {
             InitializeComponent();
+            tabcOperacion.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
             this.Load += FrmVentasCrud_Load;
             this.FormClosed += FrmVentasCrud_FormClosed;
             this.FormClosing += FrmVentasCrud_FormClosing;
@@ -107,8 +107,6 @@ namespace NorthwindTradersV5EnCapas
                     e.Cancel = true;
         }
 
-        private void tabcOperacion_DrawItem(object sender, DrawItemEventArgs e) => Utils.DibujarPestañas(sender as TabControl, e);
-
         private void FrmVentasCrud_Load(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Maximized;
@@ -121,13 +119,6 @@ namespace NorthwindTradersV5EnCapas
             _productoService = new ProductoService(_connectionString);
             _ventaService = new VentaService(_connectionString);
             
-            // Configuración del TabControl
-            Utils.ConfigurarTabControl(
-                tabcOperacion,
-                Properties.Resources.pestanaOff,
-                Properties.Resources.pestanaOn
-            );
-
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
 
             dtpHoraRequerido.Value = DateTime.Today;

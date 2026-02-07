@@ -70,7 +70,7 @@
             this.btnGenerar = new System.Windows.Forms.Button();
             this.grbVentas = new System.Windows.Forms.GroupBox();
             this.dgvVentas = new System.Windows.Forms.DataGridView();
-            this.tabcOperacion = new System.Windows.Forms.TabControl();
+            this.tabcOperacion = new ControlCustomTab();
             this.tabpConsultar = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.tabpRegistrar = new System.Windows.Forms.TabPage();
@@ -2809,7 +2809,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox grbVentas;
         private System.Windows.Forms.DataGridView dgvVentas;
-        private System.Windows.Forms.TabControl tabcOperacion;
+        private ControlCustomTab tabcOperacion;
         private System.Windows.Forms.TabPage tabpConsultar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabpRegistrar;

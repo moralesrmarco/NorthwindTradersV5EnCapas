@@ -160,6 +160,9 @@
     <Compile Include="ControlBuscarVenta.Designer.cs">
       <DependentUpon>ControlBuscarVenta.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlCustomTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ControlDetalleDeLaVenta.cs">
       <SubType>UserControl</SubType>
     </Compile>
