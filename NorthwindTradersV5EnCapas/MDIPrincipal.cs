@@ -19,7 +19,7 @@ namespace NorthwindTradersV5EnCapas
         public MDIPrincipal()
         {
             InitializeComponent();
-            TabControlPrincipal.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
+            //TabControlPrincipal.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
             Instance = this;
             this.Text = Utils.nwtr;
             // Suscribirse al evento de Utils
@@ -164,283 +164,282 @@ namespace NorthwindTradersV5EnCapas
 
         private void cerrarTodasLasPestañasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Utils.CerrarTodasLasPestañas(TabControlPrincipal);
+            //Utils.CerrarTodasLasPestañas(TabControlPrincipal);
         }
 
         private void cerrarLaPestañaSeleccionadaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
+            //Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
+            //Utils.CerrarPestañaSeleccionada(TabControlPrincipal);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            Utils.CerrarTodasLasPestañas(TabControlPrincipal);
+            //Utils.CerrarTodasLasPestañas(TabControlPrincipal);
         }
 
         private void mantenimientoDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //ActualizarBarraDeEstado();
             FrmEmpleadosCrud frm = new FrmEmpleadosCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de empleados «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de empleados «");
         }
 
         private void frmEjemploUsoJerarquiaClaseEmpleadoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //ActualizarBarraDeEstado();
             FrmEjemploUsoJerarquiaClaseEmpleado frm = new FrmEjemploUsoJerarquiaClaseEmpleado();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Ejemplo uso jerarquía clase Empleado «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Ejemplo uso jerarquía clase Empleado «");
         }
 
         private void reporteDeEmpleadosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptEmpleados frm = new FrmRptEmpleados();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados «");
         }
 
         private void reporteDeEmpleadosConFotoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptEmpleadosConFoto frm = new FrmRptEmpleadosConFoto();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados con foto «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados con foto «");
         }
 
         private void reporteDeEmpleadosConFoto2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptEmpleado2 frm = new FrmRptEmpleado2();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados con foto 2 «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de empleados con foto 2 «");
         }
 
         private void mantenimientoDeClientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmClientesCrud frm = new FrmClientesCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de clientes «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de clientes «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmClientesyProveedoresDirectorio frm = new FrmClientesyProveedoresDirectorio();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores «");
         }
 
         private void directorioDeClientesYProveedoresPorCiudadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmClientesyProveedoresDirectorioxCiudad frm = new FrmClientesyProveedoresDirectorioxCiudad();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por ciudad «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por ciudad «");
         }
 
         private void directorioDeClientesYProveedoresPorPaísToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmClientesyProveedoresDirectorioxPais frm = new FrmClientesyProveedoresDirectorioxPais();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por país «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por país «");
         }
 
         private void directorioDeClientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptClientes frm = new FrmRptClientes();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmRptClientesyProveedoresDirectorio frm = new FrmRptClientesyProveedoresDirectorio();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores «");
         }
 
         private void directorioDeClientesYProveedoresPorCiudadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmRptClientesyProveedoresDirectorioxCiudad frm = new FrmRptClientesyProveedoresDirectorioxCiudad();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por ciudad «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por ciudad «");
         }
 
         private void directorioDeClientesYProveedoresPorPaísToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmRptClientesyProveedoresDirectorioxPais frm = new FrmRptClientesyProveedoresDirectorioxPais();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por país «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por país «");
         }
 
         private void mantenimientoDeProveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmProveedoresCrud frm = new FrmProveedoresCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de proveedores «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de proveedores «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             FrmClientesyProveedoresDirectorio frm = new FrmClientesyProveedoresDirectorio();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores «");
         }
 
         private void directorioDeClientesYProveedoresPorCiudadToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             FrmClientesyProveedoresDirectorioxCiudad frm = new FrmClientesyProveedoresDirectorioxCiudad();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por ciudad «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por ciudad «");
         }
 
         private void directorioDeClientesYProveedoresPorPaísToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             FrmClientesyProveedoresDirectorioxPais frm = new FrmClientesyProveedoresDirectorioxPais();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por país «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Directorio de clientes y proveedores por país «");
         }
 
         private void consultaDeProductosPorProveedorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmProveedoresProductos frm = new FrmProveedoresProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por proveedor «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por proveedor «");
         }
 
         private void directorioDeProveedoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptProveedores frm = new FrmRptProveedores();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de proveedores «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de proveedores «");
         }
 
         private void directorioDeClientesYProveedoresToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             FrmRptClientesyProveedoresDirectorio frm = new FrmRptClientesyProveedoresDirectorio();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores «");
         }
 
         private void directorioDeClientesYProveedoresPorCiudadToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             FrmRptClientesyProveedoresDirectorioxCiudad frm = new FrmRptClientesyProveedoresDirectorioxCiudad();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por ciudad «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por ciudad «");
         }
 
         private void directorioDeClientesYProveedoresPorPaísToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             FrmRptClientesyProveedoresDirectorioxPais frm = new FrmRptClientesyProveedoresDirectorioxPais();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por país «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte directorio de clientes y proveedores por país «");
         }
 
         private void reporteDeProductosPorProveedorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptProductosPorProveedor frm = new FrmRptProductosPorProveedor();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor «");
         }
 
         private void reporteDeProductosPorProveedorConDetalleDelProveedorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptProdPorProvConDetProv frm = new FrmRptProdPorProvConDetProv();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor con detalle del proveedor «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor con detalle del proveedor «");
         }
 
         private void mantenimientoDeCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmCategoriasCrud frm = new FrmCategoriasCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de categorías «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de categorías «");
         }
 
         private void consultaDeProductosPorCategoríaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmCategoriasProductos frm = new FrmCategoriasProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por categoría «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por categoría «");
         }
 
         private void listadoDeCategoríasConProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmCategoriasConProductosListado frm = new FrmCategoriasConProductosListado();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de categorías con productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de categorías con productos «");
         }
 
         private void reporteDeCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptCategorias frm = new FrmRptCategorias();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías «");
         }
 
         private void reporteDeCategoríasConProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptCategoriasConProductos frm = new FrmRptCategoriasConProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
         }
 
         private void mantenimientoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmProductosCrud frm = new FrmProductosCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de productos «");
         }
 
         private void listadoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmProductosListado frm = new FrmProductosListado();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de productos «");
         }
 
         private void consultaDeProductosPorCategoríaToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmCategoriasProductos frm = new FrmCategoriasProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por categoría «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por categoría «");
         }
 
         private void consultaDeProductosPorProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmProveedoresProductos frm = new FrmProveedoresProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por proveedor «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta de productos por proveedor «");
         }
 
         private void consultaAlfabéticaDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmProductosConsultaAlfabetica frm = new FrmProductosConsultaAlfabetica();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta alfabética de productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Consulta alfabética de productos «");
         }
 
         private void listadoDeCategoríasConProductosToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmCategoriasConProductosListado frm = new FrmCategoriasConProductosListado();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de categorías con productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Listado de categorías con productos «");
         }
 
         private void productosPorEncimaDelPrecioPromedioToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmProductosPorEncimaPrecioPromedio frm = new FrmProductosPorEncimaPrecioPromedio();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Productos por encima del precio promedio «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Productos por encima del precio promedio «");
         }
 
         private void reporteDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptProductos frm = new FrmRptProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos «");
         }
 
         private void reporteAlfabéticoDeProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmRptProductosAlfabetico frm = new FrmRptProductosAlfabetico();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos en orden alfabético «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos en orden alfabético «");
         }
 
         private void reporteDeProductosPorProveedorConDetalleDelProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmRptProdPorProvConDetProv frm = new FrmRptProdPorProvConDetProv();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor con detalle del proveedor «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor con detalle del proveedor «");
         }
 
         private void reporteDeCategoríasConProductosToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmRptCategoriasConProductos frm = new FrmRptCategoriasConProductos();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de categorías con productos «");
         }
 
         private void reporteDeProductosPorProveedorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FrmRptProductosPorProveedor frm = new FrmRptProductosPorProveedor();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de productos por proveedor «");
         }
 
         private void mantenimientoDeVentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmVentasCrud frm = new FrmVentasCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de ventas «");
+            FrmVentasCrud_old frm = new FrmVentasCrud_old();
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de ventas «");
         }
 
         private void mantenimientoDeDetalleDeVentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmVentasDetalleCrud frm = new FrmVentasDetalleCrud();
-            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de detalle de ventas «");
+            // Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de detalle de ventas «");
         }
-
     }
 }

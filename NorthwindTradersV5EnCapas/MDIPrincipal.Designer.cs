@@ -148,7 +148,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.TabControlPrincipal = new ControlCustomTab();
+            this.TabControlPrincipal = new System.Windows.Forms.TabControl();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -1227,7 +1227,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatus;
-        private ControlCustomTab TabControlPrincipal;
+        private System.Windows.Forms.TabControl TabControlPrincipal;
         private System.Windows.Forms.ToolStripMenuItem cerrarTodasLasPestañasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarLaPestañaSeleccionadaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reporteDeEmpleadosToolStripMenuItem;

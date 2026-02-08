@@ -169,6 +169,12 @@
     <Compile Include="ControlDetalleDeLaVenta.Designer.cs">
       <DependentUpon>ControlDetalleDeLaVenta.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controles\CustomTabHeader.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controles\TabHeaderButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ControlTotalesDeLaVenta.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -240,6 +246,12 @@
     </Compile>
     <Compile Include="FrmVentasCrud.Designer.cs">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasCrud_old.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrud_old.Designer.cs">
+      <DependentUpon>FrmVentasCrud_old.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmVentasDetalleCrud - Copia.cs">
       <SubType>Form</SubType>
@@ -454,6 +466,9 @@
     <EmbeddedResource Include="FrmVentasCrud.resx">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrud_old.resx">
+      <DependentUpon>FrmVentasCrud_old.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasDetalleCrud - Copia.resx">
       <DependentUpon>FrmVentasDetalleCrud - Copia.cs</DependentUpon>
     </EmbeddedResource>
@@ -628,6 +643,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

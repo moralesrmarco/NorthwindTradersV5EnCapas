@@ -7,14 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmVentasCrud : Form
+    public partial class FrmVentasCrud_old : Form
     {
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private VentaBLL _ventaBLL;
@@ -32,12 +31,10 @@ namespace NorthwindTradersV5EnCapas
         private short CantidadOld = 0;
         private short UInventarioOld = 0;
 
-        public FrmVentasCrud()
+        public FrmVentasCrud_old()
         {
             InitializeComponent();
-            headerOperacion.TabControl = tabcOperacion;
-            headerOperacion.Build();
-            //tabcOperacion.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
+            tabcOperacion.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
             this.Load += FrmVentasCrud_Load;
             this.FormClosed += FrmVentasCrud_FormClosed;
             this.FormClosing += FrmVentasCrud_FormClosing;
@@ -121,12 +118,7 @@ namespace NorthwindTradersV5EnCapas
             _categoriaService = new CategoriaService(_connectionString);
             _productoService = new ProductoService(_connectionString);
             _ventaService = new VentaService(_connectionString);
-
-            //tabcOperacion.Appearance = TabAppearance.FlatButtons;
-            tabcOperacion.Appearance = TabAppearance.Normal;
-            tabcOperacion.ItemSize = new Size(0, 1);
-            tabcOperacion.SizeMode = TabSizeMode.Fixed;
-
+            
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
 
             dtpHoraRequerido.Value = DateTime.Today;
