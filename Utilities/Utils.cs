@@ -619,6 +619,8 @@ namespace Utilities
             }
             // Crear una nueva pestaña
             TabPage nuevaPestaña = new TabPage(titulo);
+            nuevaPestaña.ToolTipText = titulo;
+
             // Asignar ícono por defecto
             if (tabControl.ImageList != null && tabControl.ImageList.Images.ContainsKey("tabIcon"))
                 nuevaPestaña.ImageKey = "tabIcon";
@@ -637,17 +639,6 @@ namespace Utilities
             // Disparar evento
             FormularioAgregado?.Invoke(formulario);
             formulario.Show();
-
-            //// Ajustar tamaños si es ControlCustomTab
-            //if (tabControl is ControlCustomTab custom)
-            //    custom.AjustarTabSizes();
-
-            //  -Alternativa sin is
-            //Si prefieres no depender del tipo, usamos reflexión:
-            //if (tabControl.GetType().Name == "ControlCustomTab")
-            //{
-            //    ((dynamic)tabControl).AjustarTabSizes();
-            //}
 
             // Ajustar tamaños si el control tiene el método AjustarTabSizes
             var metodo = tabControl.GetType().GetMethod("AjustarTabSizes",
@@ -697,7 +688,7 @@ namespace Utilities
             tabControl.ImageList = new ImageList();
             tabControl.ImageList.ImageSize = new Size(11, 14);
             tabControl.ImageList.Images.Add("tabIcon", iconOff);
-            tabControl.ImageList.Images.Add("tabIconOn", iconOn);
+            tabControl.ImageList.Images.Add("tabIconOn", iconOn);           
 
             foreach (TabPage page in tabControl.TabPages)
                 page.ImageKey = "tabIcon";
@@ -938,6 +929,13 @@ namespace Utilities
                 path.AddLine(rect.X, rect.Bottom - radius, rect.X, rect.Y + radius - 14);
 
                 g.DrawPath(borderPen, path);
+
+                //// Rellenar el área interna en blanco
+                //using (Brush whiteBrush = new SolidBrush(Color.White))
+                //    g.FillPath(whiteBrush, path);
+
+                //// Dibujar el borde encima
+                //g.DrawPath(borderPen, path);
             }
         }
     }

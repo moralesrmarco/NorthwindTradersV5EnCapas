@@ -36,13 +36,14 @@ namespace NorthwindTradersV5EnCapas
         {
             InitializeComponent();
             headerOperacion.TabControl = tabcOperacion;
+            headerOperacion.IconOn = Properties.Resources.pestanaOn;
+            headerOperacion.IconOff = Properties.Resources.pestanaOff;
             headerOperacion.Build();
-            //tabcOperacion.ConfigurarIconos(Properties.Resources.pestanaOff, Properties.Resources.pestanaOn);
             this.Load += FrmVentasCrud_Load;
             this.FormClosed += FrmVentasCrud_FormClosed;
             this.FormClosing += FrmVentasCrud_FormClosing;
-            //tabcOperacion.Selected += tabcOperacion_Selected;
-            //tabcOperacion.Selecting += tabcOperacion_Selecting;
+            tabcOperacion.Selected += tabcOperacion_Selected;
+            tabcOperacion.Selecting += tabcOperacion_Selecting;
             //tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             grbVentas.Paint += GrbPaint;
             grbBuscar.Paint += GrbPaint;

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Data.SqlTypes;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace NorthwindTradersV5EnCapas.Controles
@@ -12,8 +13,9 @@ namespace NorthwindTradersV5EnCapas.Controles
 
         public CustomTabHeader()
         {
-            Height = 32;
+            Height = 28;
             Dock = DockStyle.Top;
+            DoubleBuffered = true;
             WrapContents = false;
             AutoScroll = false;
             FlowDirection = FlowDirection.LeftToRight;
@@ -24,7 +26,6 @@ namespace NorthwindTradersV5EnCapas.Controles
             if (TabControl == null) return;
 
             Controls.Clear();
-
             for (int i = 0; i < TabControl.TabPages.Count; i++)
             {
                 var btn = new TabHeaderButton(
