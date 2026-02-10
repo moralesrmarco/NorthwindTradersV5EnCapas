@@ -44,7 +44,6 @@ namespace NorthwindTradersV5EnCapas
             this.FormClosing += FrmVentasCrud_FormClosing;
             tabcOperacion.Selected += tabcOperacion_Selected;
             tabcOperacion.Selecting += tabcOperacion_Selecting;
-            //tabcOperacion.DrawItem += tabcOperacion_DrawItem;
             grbVentas.Paint += GrbPaint;
             grbBuscar.Paint += GrbPaint;
             grbVenta.Paint += GrbPaint;
@@ -123,7 +122,6 @@ namespace NorthwindTradersV5EnCapas
             _productoService = new ProductoService(_connectionString);
             _ventaService = new VentaService(_connectionString);
 
-            //tabcOperacion.Appearance = TabAppearance.FlatButtons;
             tabcOperacion.Appearance = TabAppearance.Normal;
             tabcOperacion.ItemSize = new Size(0, 1);
             tabcOperacion.SizeMode = TabSizeMode.Fixed;
@@ -1312,6 +1310,7 @@ namespace NorthwindTradersV5EnCapas
                 dgvDetalle.Columns["Eliminar"].Visible = false;
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
+                    btnGenerar.Text = "Generar venta";
                     btnNota.Enabled = false;
                     btnNuevo.Enabled = false;
                 }

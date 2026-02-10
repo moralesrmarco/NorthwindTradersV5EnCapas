@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using Utilities;
@@ -35,6 +34,9 @@ namespace NorthwindTradersV5EnCapas
             _ventaDetalleBLL = new VentaDetalleBLL(_connectionString);
             _categoriaService = new CategoriaService(_connectionString);
             _productoService = new ProductoService(_connectionString);
+
+            DgvVentas.ColumnHeaderMouseClick += DgvVentas_ColumnHeaderMouseClick;
+
             // Hacer que se pinten en negro los groupboxes de los controles anidados
             foreach (var gb in controlBuscarVenta.Controls.OfType<GroupBox>())
                 gb.Paint += GrbPaint;
@@ -807,7 +809,7 @@ namespace NorthwindTradersV5EnCapas
                     }
                     string strProductoVenta = $"El producto: {ventaDetalle.ProductName} - Venta: {ventaDetalle.Venta.OrderID}:";
                     string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
-                    if (numRegs > 0 || numRegs == -4)
+                    if (numRegs > 0)
                     {
                         int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
                         BorrarDatosVenta();
@@ -816,40 +818,53 @@ namespace NorthwindTradersV5EnCapas
                         LlenarDatosDetalleVenta(orderId);
                         BtnNota.Enabled = true;
                         CargarValoresOriginales();
+                        HabilitarControles();
                         controlAgregarProducto.CboCategoria.Focus();
                     }
-                    if (numRegs == -1)
-                        U.NotificacionError(strProductoVenta + Utils.nfrfa);
-                    if (numRegs == -3)
-                        U.NotificacionError(strVenta + Utils.fepou);
-                    if (numRegs == -4)
-                        U.NotificacionError(strProductoVenta + "\n[red]No fue registrado en la base de datos.\n" + strVenta + Utils.fmpou);
-                    if (numRegs == -6)
-                        U.NotificacionError(strProductoVenta + Utils.nfrii); // Stock insuficiente
-                    if (numRegs == -7)
-                        U.NotificacionError(strProductoVenta + Utils.nfrie); // Stock excedió el máximo permitido. Este caso nunca debería ocurrir porque un alta solo descuenta del inventario, nunca lo aumenta. 
-                    if (numRegs == -8)
-                        U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo. Este caso nunca debería ocurrir porque para que suceda se necesitaria tener un valor negativo en el inventario y eso nunca sucede porque el sistema ya tiene validaciones que no lo permiten.
-                    if (numRegs < -8) // Este caso aun no está definido, por lo tanto es un error desconocido
-                        U.NotificacionError(strProductoVenta + Utils.nfrs); // motivo desconocido
-                    if (numRegs <= 0 && numRegs != -4)
-                    {
-                        DeshabilitarControles();
-                        BorrarDatosDetalleVenta();
-                        if (numRegs != -3)
-                        {
-                            LlenarDatosDetalleVenta(int.Parse(txtId.Text));
-                            controlAgregarProducto.CboCategoria.Enabled = true;
-                        }
-                        if (numRegs == -3)
-                        {
-                            BorrarDatosVenta();
-                            LlenarDgvVentas(false);
-                        }
-                        CargarValoresOriginales();
-                    }
                     else
-                        HabilitarControles();
+                    {
+                        if (numRegs == -1)
+                            U.NotificacionError(strProductoVenta + Utils.nfrfa);
+                        else if (numRegs == -3)
+                            U.NotificacionError(strVenta + Utils.fepou);
+                        else if (numRegs == -4)
+                            U.NotificacionError(strProductoVenta + "\n[red]No fue registrado en la base de datos.\n" + strVenta + Utils.fmpou);
+                        else if (numRegs == -5)
+                            U.NotificacionError(strProductoVenta + Utils.nfrs);
+                        else if (numRegs == -6)
+                            U.NotificacionError(strProductoVenta + Utils.nfrii); // Stock insuficiente
+                        else if (numRegs == -7)
+                            U.NotificacionError(strProductoVenta + Utils.nfrie); // Stock excedió el máximo permitido. Este caso nunca debería ocurrir porque un alta solo descuenta del inventario, nunca lo aumenta. 
+                        else if (numRegs == -8)
+                            U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo. Este caso nunca debería ocurrir porque para que suceda se necesitaria tener un valor negativo en el inventario y eso nunca sucede porque el sistema ya tiene validaciones que no lo permiten.
+                        else if (numRegs < -8) // Este caso aun no está definido, por lo tanto es un error desconocido
+                            U.NotificacionError(strProductoVenta + Utils.nfrs); // motivo desconocido
+                        if (numRegs <= 0)
+                        {
+                            if (numRegs == -6)
+                            {
+                                InicializarValoresAgregarProducto();
+                                controlAgregarProducto.CboCategoria.SelectedIndex = 0;
+                                controlAgregarProducto.CboCategoria.Enabled = true;
+                            }
+                            else 
+                            {
+                                DeshabilitarControles();
+                                BorrarDatosDetalleVenta();
+                                if (numRegs != -3 && numRegs != -4 && numRegs != -5 && numRegs < -8)
+                                {
+                                    LlenarDatosDetalleVenta(int.Parse(txtId.Text));
+                                    controlAgregarProducto.CboCategoria.Enabled = true;
+                                }
+                                if (numRegs == -3 || numRegs == -4 || numRegs == -5 || numRegs < -8)
+                                {
+                                    BorrarDatosVenta();
+                                    LlenarDgvVentas(false);
+                                }
+                            }
+                            CargarValoresOriginales();
+                        }
+                    }
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                 }
                 catch (Exception ex)

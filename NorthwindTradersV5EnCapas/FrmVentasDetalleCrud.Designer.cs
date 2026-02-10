@@ -64,7 +64,7 @@
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(12, 12, 25, 12);
             this.panel1.Size = new System.Drawing.Size(1907, 927);
@@ -74,29 +74,33 @@
             // 
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 405F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1909F));
-            this.tableLayoutPanel1.Controls.Add(this.GrbPedido, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.grbVentas, 0, 1);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 407F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.GrbPedido, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.grbVentas, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.controlAgregarProducto, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.controlTotalesDeLaVenta, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.controlDetalleDeLaVenta, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.controlBuscarVenta, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.controlAgregarProducto, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.controlTotalesDeLaVenta, 1, 8);
+            this.tableLayoutPanel1.Controls.Add(this.controlDetalleDeLaVenta, 1, 10);
+            this.tableLayoutPanel1.Controls.Add(this.controlBuscarVenta, 0, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.tableLayoutPanel1.RowCount = 6;
+            this.tableLayoutPanel1.RowCount = 11;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 1900);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 1644);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // GrbPedido
@@ -108,11 +112,11 @@
             this.GrbPedido.Controls.Add(this.label17);
             this.GrbPedido.Dock = System.Windows.Forms.DockStyle.Top;
             this.GrbPedido.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrbPedido.Location = new System.Drawing.Point(436, 364);
+            this.GrbPedido.Location = new System.Drawing.Point(438, 384);
             this.GrbPedido.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.GrbPedido.Name = "GrbPedido";
-            this.GrbPedido.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.GrbPedido.Size = new System.Drawing.Size(1880, 125);
+            this.GrbPedido.Padding = new System.Windows.Forms.Padding(4);
+            this.GrbPedido.Size = new System.Drawing.Size(1401, 125);
             this.GrbPedido.TabIndex = 7;
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
@@ -136,7 +140,7 @@
             this.txtCliente.Enabled = false;
             this.txtCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCliente.Location = new System.Drawing.Point(120, 52);
-            this.txtCliente.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCliente.Margin = new System.Windows.Forms.Padding(4);
             this.txtCliente.Name = "txtCliente";
             this.txtCliente.ReadOnly = true;
             this.txtCliente.Size = new System.Drawing.Size(603, 23);
@@ -148,7 +152,7 @@
             this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtId.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtId.Location = new System.Drawing.Point(120, 19);
-            this.txtId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtId.Margin = new System.Windows.Forms.Padding(4);
             this.txtId.MaxLength = 10;
             this.txtId.Name = "txtId";
             this.txtId.ReadOnly = true;
@@ -181,11 +185,11 @@
             this.grbVentas.Controls.Add(this.DgvVentas);
             this.grbVentas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbVentas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbVentas.Location = new System.Drawing.Point(10, 44);
-            this.grbVentas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grbVentas.Location = new System.Drawing.Point(10, 54);
+            this.grbVentas.Margin = new System.Windows.Forms.Padding(4);
             this.grbVentas.Name = "grbVentas";
-            this.grbVentas.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
-            this.grbVentas.Size = new System.Drawing.Size(2306, 312);
+            this.grbVentas.Padding = new System.Windows.Forms.Padding(12);
+            this.grbVentas.Size = new System.Drawing.Size(1829, 312);
             this.grbVentas.TabIndex = 3;
             this.grbVentas.TabStop = false;
             this.grbVentas.Text = "»   Ventas:   «";
@@ -196,10 +200,10 @@
             this.DgvVentas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvVentas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DgvVentas.Location = new System.Drawing.Point(12, 28);
-            this.DgvVentas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DgvVentas.Margin = new System.Windows.Forms.Padding(4);
             this.DgvVentas.Name = "DgvVentas";
             this.DgvVentas.RowHeadersWidth = 51;
-            this.DgvVentas.Size = new System.Drawing.Size(2282, 272);
+            this.DgvVentas.Size = new System.Drawing.Size(1805, 272);
             this.DgvVentas.TabIndex = 0;
             this.DgvVentas.TabStop = false;
             this.DgvVentas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVentas_CellClick);
@@ -213,7 +217,7 @@
             this.label1.Location = new System.Drawing.Point(10, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(2306, 40);
+            this.label1.Size = new System.Drawing.Size(1829, 40);
             this.label1.TabIndex = 2;
             this.label1.Text = "     Busque la venta y seleccionela en la lista que se muestra";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -221,38 +225,38 @@
             // controlAgregarProducto
             // 
             this.controlAgregarProducto.Dock = System.Windows.Forms.DockStyle.Top;
-            this.controlAgregarProducto.Location = new System.Drawing.Point(436, 497);
+            this.controlAgregarProducto.Location = new System.Drawing.Point(438, 527);
             this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlAgregarProducto.Name = "controlAgregarProducto";
-            this.controlAgregarProducto.Size = new System.Drawing.Size(1880, 491);
+            this.controlAgregarProducto.Size = new System.Drawing.Size(1401, 491);
             this.controlAgregarProducto.TabIndex = 8;
             // 
             // controlTotalesDeLaVenta
             // 
             this.controlTotalesDeLaVenta.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlTotalesDeLaVenta.Location = new System.Drawing.Point(436, 996);
+            this.controlTotalesDeLaVenta.Location = new System.Drawing.Point(438, 1036);
             this.controlTotalesDeLaVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlTotalesDeLaVenta.Name = "controlTotalesDeLaVenta";
-            this.controlTotalesDeLaVenta.Size = new System.Drawing.Size(1880, 206);
+            this.controlTotalesDeLaVenta.Size = new System.Drawing.Size(1401, 206);
             this.controlTotalesDeLaVenta.TabIndex = 9;
             // 
             // controlDetalleDeLaVenta
             // 
             this.controlDetalleDeLaVenta.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlDetalleDeLaVenta.Location = new System.Drawing.Point(436, 1210);
+            this.controlDetalleDeLaVenta.Location = new System.Drawing.Point(438, 1260);
             this.controlDetalleDeLaVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlDetalleDeLaVenta.Name = "controlDetalleDeLaVenta";
-            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1880, 686);
+            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1401, 380);
             this.controlDetalleDeLaVenta.TabIndex = 10;
             // 
             // controlBuscarVenta
             // 
             this.controlBuscarVenta.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlBuscarVenta.Location = new System.Drawing.Point(11, 365);
+            this.controlBuscarVenta.Location = new System.Drawing.Point(11, 385);
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(5);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
-            this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 4);
-            this.controlBuscarVenta.Size = new System.Drawing.Size(395, 1530);
+            this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
+            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1254);
             this.controlBuscarVenta.TabIndex = 11;
             // 
             // FrmVentasDetalleCrud
@@ -262,8 +266,9 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1919, 951);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ControlBox = false;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmVentasDetalleCrud";
             this.Padding = new System.Windows.Forms.Padding(12, 12, 0, 12);
             this.Text = "» Mantenimiento de detalle de ventas «";

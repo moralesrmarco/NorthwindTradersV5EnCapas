@@ -118,6 +118,7 @@ namespace NorthwindTradersV5EnCapas
             _pdfStream = new MemoryStream(pdfBytes);
             _pdfDoc = PdfiumViewer.PdfDocument.Load(_pdfStream);
             pdfViewer.Document = _pdfDoc;
+            pdfViewer.ZoomMode = PdfiumViewer.PdfViewerZoomMode.FitWidth;
         }
 
     }

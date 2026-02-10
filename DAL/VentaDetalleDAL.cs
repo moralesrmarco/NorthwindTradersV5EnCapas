@@ -29,7 +29,6 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@Quantity", ventaDetalle.Quantity);
                     cmd.Parameters.AddWithValue("@Discount", ventaDetalle.Discount);
                     cmd.Parameters.AddWithValue("@TasaIVA", ventaDetalle.TasaIVA);
-                    //cmd.Parameters.AddWithValue("@VentaRowVersion", ventaDetalle.Venta.RowVersion);
                     var paramRowVersion = new SqlParameter("@VentaRowVersion", SqlDbType.Binary, 8)
                     {
                         Direction = ParameterDirection.InputOutput,
