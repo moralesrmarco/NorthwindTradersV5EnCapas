@@ -266,7 +266,8 @@ namespace DAL
                                 // Relación con Categoria
                                 Categoria = new Categoria
                                 {
-                                    CategoryID = reader["CategoryID"] != DBNull.Value ? Convert.ToInt32(reader["CategoryID"]) : 0
+                                    CategoryID = reader["CategoryID"] != DBNull.Value ? Convert.ToInt32(reader["CategoryID"]) : 0,
+                                    CategoryName = reader["CategoryName"] != DBNull.Value ? reader["CategoryName"].ToString() : null
                                 }
                             };
                         }

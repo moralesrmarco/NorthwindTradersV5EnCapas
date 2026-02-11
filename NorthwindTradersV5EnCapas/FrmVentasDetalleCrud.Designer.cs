@@ -34,7 +34,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.GrbPedido = new System.Windows.Forms.GroupBox();
-            this.BtnNota = new System.Windows.Forms.Button();
             this.txtCliente = new System.Windows.Forms.TextBox();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -46,6 +45,7 @@
             this.controlTotalesDeLaVenta = new NorthwindTradersV5EnCapas.ControlTotalesDeLaVenta();
             this.controlDetalleDeLaVenta = new NorthwindTradersV5EnCapas.ControlDetalleDeLaVenta();
             this.controlBuscarVenta = new NorthwindTradersV5EnCapas.ControlBuscarVenta();
+            this.BtnNota = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -121,18 +121,6 @@
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
             this.GrbPedido.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
-            // 
-            // BtnNota
-            // 
-            this.BtnNota.Enabled = false;
-            this.BtnNota.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnNota.Location = new System.Drawing.Point(502, 85);
-            this.BtnNota.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnNota.Name = "BtnNota";
-            this.BtnNota.Size = new System.Drawing.Size(220, 32);
-            this.BtnNota.TabIndex = 20;
-            this.BtnNota.Text = "Nota de remisión";
-            this.BtnNota.UseVisualStyleBackColor = true;
             // 
             // txtCliente
             // 
@@ -259,15 +247,27 @@
             this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1254);
             this.controlBuscarVenta.TabIndex = 11;
             // 
+            // BtnNota
+            // 
+            this.BtnNota.Enabled = false;
+            this.BtnNota.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnNota.Location = new System.Drawing.Point(502, 85);
+            this.BtnNota.Margin = new System.Windows.Forms.Padding(2);
+            this.BtnNota.Name = "BtnNota";
+            this.BtnNota.Size = new System.Drawing.Size(220, 32);
+            this.BtnNota.TabIndex = 20;
+            this.BtnNota.Text = "Nota de remisión";
+            this.BtnNota.UseVisualStyleBackColor = true;
+            // 
             // FrmVentasDetalleCrud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1919, 951);
+            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.ControlBox = false;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmVentasDetalleCrud";
             this.Padding = new System.Windows.Forms.Padding(12, 12, 0, 12);
@@ -296,7 +296,6 @@
         private System.Windows.Forms.GroupBox grbVentas;
         private System.Windows.Forms.DataGridView DgvVentas;
         private System.Windows.Forms.GroupBox GrbPedido;
-        private System.Windows.Forms.Button BtnNota;
         private System.Windows.Forms.TextBox txtCliente;
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.Label label20;
@@ -305,5 +304,6 @@
         private ControlTotalesDeLaVenta controlTotalesDeLaVenta;
         private ControlDetalleDeLaVenta controlDetalleDeLaVenta;
         private ControlBuscarVenta controlBuscarVenta;
+        private System.Windows.Forms.Button BtnNota;
     }
 }

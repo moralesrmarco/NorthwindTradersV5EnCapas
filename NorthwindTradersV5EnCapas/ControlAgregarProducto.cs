@@ -12,6 +12,7 @@ namespace NorthwindTradersV5EnCapas
         public ComboBox CboCategoria => cboCategoria;
         public ComboBox CboProducto => cboProducto;
         public Button BtnAgregar => btnAgregar;
+        public GroupBox GrbProducto => grbProducto;
 
         public NudNoWheel NudPrecioConIVAIncluido => nudPrecioConIVAIncluido;
         public NudNoWheel NudUInventario => nudUInventario;

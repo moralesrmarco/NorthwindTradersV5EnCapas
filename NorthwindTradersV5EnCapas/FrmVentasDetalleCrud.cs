@@ -2,8 +2,6 @@
 using BLL.Services;
 using Entities;
 using Entities.DTOs;
-using NorthwindTradersV5EnCapas.Helpers;
-using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
