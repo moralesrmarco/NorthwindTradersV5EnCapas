@@ -153,7 +153,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 380F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 3891);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 1947);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // GrbOperaciones
@@ -163,11 +163,11 @@
             this.GrbOperaciones.Controls.Add(this.btnGenerar);
             this.GrbOperaciones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GrbOperaciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrbOperaciones.Location = new System.Drawing.Point(413, 3428);
-            this.GrbOperaciones.Margin = new System.Windows.Forms.Padding(2);
+            this.GrbOperaciones.Location = new System.Drawing.Point(436, 1484);
+            this.GrbOperaciones.Margin = new System.Windows.Forms.Padding(25, 2, 2, 2);
             this.GrbOperaciones.Name = "GrbOperaciones";
             this.GrbOperaciones.Padding = new System.Windows.Forms.Padding(2);
-            this.GrbOperaciones.Size = new System.Drawing.Size(1428, 71);
+            this.GrbOperaciones.Size = new System.Drawing.Size(1405, 71);
             this.GrbOperaciones.TabIndex = 7;
             this.GrbOperaciones.TabStop = false;
             this.GrbOperaciones.Text = "»   Operaciones:   «";
@@ -349,11 +349,11 @@
             this.grbVenta.Controls.Add(this.tableLayoutPanel2);
             this.grbVenta.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbVenta.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grbVenta.Location = new System.Drawing.Point(415, 421);
-            this.grbVenta.Margin = new System.Windows.Forms.Padding(4);
+            this.grbVenta.Location = new System.Drawing.Point(436, 421);
+            this.grbVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.grbVenta.Name = "grbVenta";
             this.grbVenta.Padding = new System.Windows.Forms.Padding(12, 0, 12, 12);
-            this.grbVenta.Size = new System.Drawing.Size(1424, 2776);
+            this.grbVenta.Size = new System.Drawing.Size(1403, 832);
             this.grbVenta.TabIndex = 6;
             this.grbVenta.TabStop = false;
             this.grbVenta.Text = "»   Venta:   «";
@@ -376,7 +376,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1400, 2748);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1379, 804);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // grbTransportista
@@ -403,7 +403,7 @@
             this.grbTransportista.Margin = new System.Windows.Forms.Padding(4);
             this.grbTransportista.Name = "grbTransportista";
             this.grbTransportista.Padding = new System.Windows.Forms.Padding(4);
-            this.grbTransportista.Size = new System.Drawing.Size(1392, 152);
+            this.grbTransportista.Size = new System.Drawing.Size(1371, 152);
             this.grbTransportista.TabIndex = 1;
             this.grbTransportista.TabStop = false;
             this.grbTransportista.Text = "»   Forma de envío:   «";
@@ -601,7 +601,7 @@
             this.panel2.Location = new System.Drawing.Point(4, 4);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1392, 98);
+            this.panel2.Size = new System.Drawing.Size(1371, 98);
             this.panel2.TabIndex = 0;
             // 
             // dtpHoraEnvio
@@ -807,7 +807,7 @@
             this.controlAgregarProducto.Location = new System.Drawing.Point(4, 290);
             this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(4);
             this.controlAgregarProducto.Name = "controlAgregarProducto";
-            this.controlAgregarProducto.Size = new System.Drawing.Size(1392, 510);
+            this.controlAgregarProducto.Size = new System.Drawing.Size(1371, 510);
             this.controlAgregarProducto.TabIndex = 2;
             // 
             // headerOperacion
@@ -827,19 +827,19 @@
             // controlDetalleDeLaVenta
             // 
             this.controlDetalleDeLaVenta.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlDetalleDeLaVenta.Location = new System.Drawing.Point(415, 3515);
-            this.controlDetalleDeLaVenta.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.controlDetalleDeLaVenta.Location = new System.Drawing.Point(436, 1571);
+            this.controlDetalleDeLaVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlDetalleDeLaVenta.Name = "controlDetalleDeLaVenta";
-            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1424, 372);
+            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1403, 372);
             this.controlDetalleDeLaVenta.TabIndex = 11;
             // 
             // controlTotalesDeLaVenta
             // 
             this.controlTotalesDeLaVenta.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlTotalesDeLaVenta.Location = new System.Drawing.Point(415, 3215);
-            this.controlTotalesDeLaVenta.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.controlTotalesDeLaVenta.Location = new System.Drawing.Point(436, 1271);
+            this.controlTotalesDeLaVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlTotalesDeLaVenta.Name = "controlTotalesDeLaVenta";
-            this.controlTotalesDeLaVenta.Size = new System.Drawing.Size(1424, 197);
+            this.controlTotalesDeLaVenta.Size = new System.Drawing.Size(1403, 197);
             this.controlTotalesDeLaVenta.TabIndex = 12;
             // 
             // controlBuscarVenta
@@ -849,7 +849,7 @@
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(4);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
-            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 800);
+            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1522);
             this.controlBuscarVenta.TabIndex = 13;
             // 
             // errorProvider1

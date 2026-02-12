@@ -2803,7 +2803,7 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // FrmVentasCrud
+            // FrmVentasCrudCopia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -2812,7 +2812,7 @@
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FrmVentasCrud";
+            this.Name = "FrmVentasCrudCopia";
             this.Padding = new System.Windows.Forms.Padding(12, 12, 0, 12);
             this.Text = "» Mantenimiento de Ventas «";
             this.Load += new System.EventHandler(this.FrmVentasCrud_Load);

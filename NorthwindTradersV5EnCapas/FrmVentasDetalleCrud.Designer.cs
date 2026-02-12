@@ -34,6 +34,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.GrbPedido = new System.Windows.Forms.GroupBox();
+            this.BtnNota = new System.Windows.Forms.Button();
             this.txtCliente = new System.Windows.Forms.TextBox();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -45,7 +46,6 @@
             this.controlTotalesDeLaVenta = new NorthwindTradersV5EnCapas.ControlTotalesDeLaVenta();
             this.controlDetalleDeLaVenta = new NorthwindTradersV5EnCapas.ControlDetalleDeLaVenta();
             this.controlBuscarVenta = new NorthwindTradersV5EnCapas.ControlBuscarVenta();
-            this.BtnNota = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -100,7 +100,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 1644);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 2938);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // GrbPedido
@@ -121,6 +121,18 @@
             this.GrbPedido.TabStop = false;
             this.GrbPedido.Text = "»   Venta:   «";
             this.GrbPedido.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
+            // 
+            // BtnNota
+            // 
+            this.BtnNota.Enabled = false;
+            this.BtnNota.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnNota.Location = new System.Drawing.Point(502, 85);
+            this.BtnNota.Margin = new System.Windows.Forms.Padding(2);
+            this.BtnNota.Name = "BtnNota";
+            this.BtnNota.Size = new System.Drawing.Size(220, 32);
+            this.BtnNota.TabIndex = 20;
+            this.BtnNota.Text = "Nota de remisión";
+            this.BtnNota.UseVisualStyleBackColor = true;
             // 
             // txtCliente
             // 
@@ -234,7 +246,7 @@
             this.controlDetalleDeLaVenta.Location = new System.Drawing.Point(438, 1260);
             this.controlDetalleDeLaVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlDetalleDeLaVenta.Name = "controlDetalleDeLaVenta";
-            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1401, 380);
+            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1401, 1674);
             this.controlDetalleDeLaVenta.TabIndex = 10;
             // 
             // controlBuscarVenta
@@ -244,20 +256,8 @@
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(5);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
-            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1254);
+            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 2548);
             this.controlBuscarVenta.TabIndex = 11;
-            // 
-            // BtnNota
-            // 
-            this.BtnNota.Enabled = false;
-            this.BtnNota.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnNota.Location = new System.Drawing.Point(502, 85);
-            this.BtnNota.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnNota.Name = "BtnNota";
-            this.BtnNota.Size = new System.Drawing.Size(220, 32);
-            this.BtnNota.TabIndex = 20;
-            this.BtnNota.Text = "Nota de remisión";
-            this.BtnNota.UseVisualStyleBackColor = true;
             // 
             // FrmVentasDetalleCrud
             // 
