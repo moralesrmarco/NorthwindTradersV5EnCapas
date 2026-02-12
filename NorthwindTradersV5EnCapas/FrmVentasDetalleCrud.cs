@@ -908,7 +908,6 @@ namespace NorthwindTradersV5EnCapas
                         ventaDetalle.Venta.RowVersion = null; // o manejar el error según tu lógica
                     }
                     EliminarProducto(ventaDetalle);
-                    BtnNota.Enabled = false;
                 }
                 if (e.ColumnIndex == dgv.Columns["Modificar"].Index)
                 {
@@ -986,6 +985,7 @@ namespace NorthwindTradersV5EnCapas
                         LlenarDatosVenta(ref orderId);
                         LlenarDatosDetalleVenta(orderId);
                         CargarValoresOriginales();
+                        BtnNota.Enabled = true;
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {DgvVentas.RowCount} registro(s) en ventas");
                     }
                     if (numRegs == -1)

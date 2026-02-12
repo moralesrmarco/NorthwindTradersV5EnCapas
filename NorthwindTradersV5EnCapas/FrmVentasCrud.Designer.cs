@@ -314,7 +314,7 @@
             this.tableLayoutPanel1.Controls.Add(this.grbDetalle, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.headerOperacion, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 15);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(6, 0, 6, 0);
@@ -327,7 +327,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(2311, 2333);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 1868);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // grbBuscar
@@ -373,7 +373,7 @@
             this.grbBuscar.Name = "grbBuscar";
             this.grbBuscar.Padding = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.SetRowSpan(this.grbBuscar, 5);
-            this.grbBuscar.Size = new System.Drawing.Size(378, 1928);
+            this.grbBuscar.Size = new System.Drawing.Size(378, 1463);
             this.grbBuscar.TabIndex = 5;
             this.grbBuscar.TabStop = false;
             this.grbBuscar.Text = "»   Buscar una venta:   «";
@@ -746,7 +746,7 @@
             this.GrbOperaciones.Margin = new System.Windows.Forms.Padding(2);
             this.GrbOperaciones.Name = "GrbOperaciones";
             this.GrbOperaciones.Padding = new System.Windows.Forms.Padding(2);
-            this.GrbOperaciones.Size = new System.Drawing.Size(1890, 75);
+            this.GrbOperaciones.Size = new System.Drawing.Size(1428, 75);
             this.GrbOperaciones.TabIndex = 7;
             this.GrbOperaciones.TabStop = false;
             this.GrbOperaciones.Text = "»   Operaciones:   «";
@@ -796,7 +796,7 @@
             this.grbVentas.Margin = new System.Windows.Forms.Padding(4);
             this.grbVentas.Name = "grbVentas";
             this.grbVentas.Padding = new System.Windows.Forms.Padding(12);
-            this.grbVentas.Size = new System.Drawing.Size(2291, 300);
+            this.grbVentas.Size = new System.Drawing.Size(1829, 300);
             this.grbVentas.TabIndex = 2;
             this.grbVentas.TabStop = false;
             this.grbVentas.Text = "»   Ventas:   «";
@@ -809,7 +809,7 @@
             this.dgvVentas.Margin = new System.Windows.Forms.Padding(4);
             this.dgvVentas.Name = "dgvVentas";
             this.dgvVentas.RowHeadersWidth = 51;
-            this.dgvVentas.Size = new System.Drawing.Size(2267, 260);
+            this.dgvVentas.Size = new System.Drawing.Size(1805, 260);
             this.dgvVentas.TabIndex = 0;
             this.dgvVentas.TabStop = false;
             // 
@@ -826,7 +826,7 @@
             this.tabcOperacion.Margin = new System.Windows.Forms.Padding(4);
             this.tabcOperacion.Name = "tabcOperacion";
             this.tabcOperacion.SelectedIndex = 0;
-            this.tabcOperacion.Size = new System.Drawing.Size(2291, 53);
+            this.tabcOperacion.Size = new System.Drawing.Size(1829, 53);
             this.tabcOperacion.TabIndex = 1;
             // 
             // tabpConsultar
@@ -836,7 +836,7 @@
             this.tabpConsultar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpConsultar.Name = "tabpConsultar";
             this.tabpConsultar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpConsultar.Size = new System.Drawing.Size(2283, 24);
+            this.tabpConsultar.Size = new System.Drawing.Size(1821, 24);
             this.tabpConsultar.TabIndex = 0;
             this.tabpConsultar.Tag = 117;
             this.tabpConsultar.Text = "   Consultar venta   ";
@@ -932,7 +932,7 @@
             this.grbVenta.Margin = new System.Windows.Forms.Padding(4);
             this.grbVenta.Name = "grbVenta";
             this.grbVenta.Padding = new System.Windows.Forms.Padding(12, 0, 12, 12);
-            this.grbVenta.Size = new System.Drawing.Size(1886, 792);
+            this.grbVenta.Size = new System.Drawing.Size(1424, 792);
             this.grbVenta.TabIndex = 6;
             this.grbVenta.TabStop = false;
             this.grbVenta.Text = "»   Venta:   «";
@@ -953,7 +953,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1862, 764);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1400, 764);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // grbProducto
@@ -1010,15 +1010,13 @@
             this.grbProducto.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.grbProducto.Name = "grbProducto";
             this.grbProducto.Padding = new System.Windows.Forms.Padding(4);
-            this.grbProducto.Size = new System.Drawing.Size(1854, 490);
+            this.grbProducto.Size = new System.Drawing.Size(1392, 490);
             this.grbProducto.TabIndex = 2;
             this.grbProducto.TabStop = false;
             this.grbProducto.Text = "»   Agregar producto:   «";
             // 
             // GrbSubtotales
             // 
-            this.GrbSubtotales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.GrbSubtotales.Controls.Add(this.label71);
             this.GrbSubtotales.Controls.Add(this.label70);
             this.GrbSubtotales.Controls.Add(this.nudSubtotalDelAhorroSinIvaDespuesDescuento2);
@@ -1048,7 +1046,7 @@
             this.GrbSubtotales.Margin = new System.Windows.Forms.Padding(4);
             this.GrbSubtotales.Name = "GrbSubtotales";
             this.GrbSubtotales.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbSubtotales.Size = new System.Drawing.Size(1827, 251);
+            this.GrbSubtotales.Size = new System.Drawing.Size(1110, 251);
             this.GrbSubtotales.TabIndex = 86;
             this.GrbSubtotales.TabStop = false;
             this.GrbSubtotales.Text = "»   Subtotales de la venta del producto:   «";
@@ -1966,7 +1964,7 @@
             this.grbTransportista.Margin = new System.Windows.Forms.Padding(4);
             this.grbTransportista.Name = "grbTransportista";
             this.grbTransportista.Padding = new System.Windows.Forms.Padding(4);
-            this.grbTransportista.Size = new System.Drawing.Size(1854, 152);
+            this.grbTransportista.Size = new System.Drawing.Size(1392, 152);
             this.grbTransportista.TabIndex = 1;
             this.grbTransportista.TabStop = false;
             this.grbTransportista.Text = "»   Forma de envío:   «";
@@ -2164,7 +2162,7 @@
             this.panel2.Location = new System.Drawing.Point(4, 4);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1854, 98);
+            this.panel2.Size = new System.Drawing.Size(1392, 98);
             this.panel2.TabIndex = 0;
             // 
             // dtpHoraEnvio
@@ -2388,7 +2386,7 @@
             this.GrbTotales.Margin = new System.Windows.Forms.Padding(2);
             this.GrbTotales.Name = "GrbTotales";
             this.GrbTotales.Padding = new System.Windows.Forms.Padding(2);
-            this.GrbTotales.Size = new System.Drawing.Size(1890, 200);
+            this.GrbTotales.Size = new System.Drawing.Size(1428, 200);
             this.GrbTotales.TabIndex = 7;
             this.GrbTotales.TabStop = false;
             this.GrbTotales.Text = "»   Totales de la venta:   «";
@@ -2636,7 +2634,7 @@
             this.grbDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.grbDetalle.Name = "grbDetalle";
             this.grbDetalle.Padding = new System.Windows.Forms.Padding(12);
-            this.grbDetalle.Size = new System.Drawing.Size(1886, 380);
+            this.grbDetalle.Size = new System.Drawing.Size(1424, 380);
             this.grbDetalle.TabIndex = 9;
             this.grbDetalle.TabStop = false;
             this.grbDetalle.Text = "»   Detalle de la venta:   «";
@@ -2665,7 +2663,7 @@
             this.dgvDetalle.Margin = new System.Windows.Forms.Padding(4);
             this.dgvDetalle.Name = "dgvDetalle";
             this.dgvDetalle.RowHeadersWidth = 51;
-            this.dgvDetalle.Size = new System.Drawing.Size(1862, 805);
+            this.dgvDetalle.Size = new System.Drawing.Size(1400, 340);
             this.dgvDetalle.TabIndex = 0;
             this.dgvDetalle.TabStop = false;
             // 
@@ -2796,7 +2794,7 @@
             this.headerOperacion.Location = new System.Drawing.Point(6, 0);
             this.headerOperacion.Margin = new System.Windows.Forms.Padding(0);
             this.headerOperacion.Name = "headerOperacion";
-            this.headerOperacion.Size = new System.Drawing.Size(2299, 28);
+            this.headerOperacion.Size = new System.Drawing.Size(1837, 28);
             this.headerOperacion.TabControl = null;
             this.headerOperacion.TabIndex = 10;
             this.headerOperacion.WrapContents = false;

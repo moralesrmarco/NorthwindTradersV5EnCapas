@@ -191,8 +191,6 @@
             // 
             // GrbSubtotales
             // 
-            this.GrbSubtotales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.GrbSubtotales.Controls.Add(this.label71);
             this.GrbSubtotales.Controls.Add(this.label70);
             this.GrbSubtotales.Controls.Add(this.nudSubtotalDelAhorroSinIvaDespuesDescuento2);
@@ -222,7 +220,7 @@
             this.GrbSubtotales.Margin = new System.Windows.Forms.Padding(4);
             this.GrbSubtotales.Name = "GrbSubtotales";
             this.GrbSubtotales.Padding = new System.Windows.Forms.Padding(4);
-            this.GrbSubtotales.Size = new System.Drawing.Size(1443, 235);
+            this.GrbSubtotales.Size = new System.Drawing.Size(1186, 235);
             this.GrbSubtotales.TabIndex = 86;
             this.GrbSubtotales.TabStop = false;
             this.GrbSubtotales.Text = "»   Subtotales de la venta del producto:   «";

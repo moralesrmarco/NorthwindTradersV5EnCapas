@@ -85,10 +85,8 @@ namespace NorthwindTradersV5EnCapas
             cboCategoria.SelectedIndexChanged += cboCategoria_SelectedIndexChanged;
             cboProducto.SelectedIndexChanged += cboProducto_SelectedIndexChanged;
             nudCantidad.Enter += Nud_Enter;
-            //nudCantidad.Leave += nudCantidad_Leave; // me da la impresion de que ya lo habia quitado por algo
             nudCantidad.ValueChanged += nudCantidad_ValueChanged;
             nudDescuento.Enter += Nud_Enter;
-            //nudDescuento.Leave += nudDescuento_Leave; // me da la impresion de que ya lo habia quitado por algo
             nudDescuento.ValueChanged += nudDescuento_ValueChanged;
             btnAgregar.Click += btnAgregar_Click;
             btnNuevo.Click += btnNuevo_Click;
@@ -1394,6 +1392,9 @@ namespace NorthwindTradersV5EnCapas
                 catch (Exception ex)
                 {
                     U.MsgCatchOue(ex);
+                    btnNuevo.Enabled = true;
+                    btnNuevo.PerformClick();
+                    btnNuevo.Enabled = false;
                 }
                 if (numRegs > 0)
                 {
