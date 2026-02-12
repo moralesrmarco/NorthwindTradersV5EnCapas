@@ -1013,7 +1013,7 @@
             this.grbProducto.Size = new System.Drawing.Size(1392, 490);
             this.grbProducto.TabIndex = 2;
             this.grbProducto.TabStop = false;
-            this.grbProducto.Text = "»   Agregar producto:   «";
+            this.grbProducto.Text = "»   Agregar producto a la venta:   «";
             // 
             // GrbSubtotales
             // 
