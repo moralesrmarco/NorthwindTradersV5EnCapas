@@ -1,6 +1,6 @@
 ﻿namespace NorthwindTradersV5EnCapas
 {
-    partial class FrmVentasCrud
+    partial class FrmVentasCrudCopia
     {
         /// <summary>
         /// Required designer variable.
@@ -332,7 +332,7 @@
             // 
             // grbBuscar
             // 
-            this.grbBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.grbBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.grbBuscar.AutoSize = true;
             this.grbBuscar.Controls.Add(this.nudBIdFin);
@@ -958,7 +958,7 @@
             // 
             // grbProducto
             // 
-            this.grbProducto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grbProducto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grbProducto.Controls.Add(this.GrbSubtotales);
             this.grbProducto.Controls.Add(this.label59);
@@ -1942,7 +1942,7 @@
             // 
             // grbTransportista
             // 
-            this.grbTransportista.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.grbTransportista.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grbTransportista.Controls.Add(this.nudFlete);
             this.grbTransportista.Controls.Add(this.txtCP);

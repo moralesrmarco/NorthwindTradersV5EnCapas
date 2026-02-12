@@ -241,6 +241,18 @@
     <Compile Include="FrmCategoriasConProductosListado.Designer.cs">
       <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmVentasCrudV2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrudV2.Designer.cs">
+      <DependentUpon>FrmVentasCrudV2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasCrud - Copia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrud - Copia.Designer.cs">
+      <DependentUpon>FrmVentasCrud - Copia.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVentasCrud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -450,6 +462,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCategoriasConProductosListado.resx">
       <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrudV2.resx">
+      <DependentUpon>FrmVentasCrudV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrud - Copia.resx">
+      <DependentUpon>FrmVentasCrud - Copia.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasCrud.resx">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>

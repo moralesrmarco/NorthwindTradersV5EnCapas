@@ -1,6 +1,6 @@
 ﻿namespace NorthwindTradersV5EnCapas
 {
-    partial class FrmVentasCrud
+    partial class FrmVentasCrudV2
     {
         /// <summary>
         /// Required designer variable.
@@ -122,13 +122,7 @@
             this.nudPrecioPorUnidadSinIVAIncluidoAntesDescuento = new Utilities.NudNoWheel();
             this.label44 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
-            this.pbWarning = new System.Windows.Forms.PictureBox();
-            this.pbError = new System.Windows.Forms.PictureBox();
-            this.pbInfo = new System.Windows.Forms.PictureBox();
-            this.pbWarning1 = new System.Windows.Forms.PictureBox();
             this.label56 = new System.Windows.Forms.Label();
-            this.pbError1 = new System.Windows.Forms.PictureBox();
-            this.pbInfo1 = new System.Windows.Forms.PictureBox();
             this.nudDescuento = new Utilities.NudNoWheel();
             this.nudCantidad = new Utilities.NudNoWheel();
             this.nudUInventario = new Utilities.NudNoWheel();
@@ -226,6 +220,12 @@
             this.headerOperacion = new NorthwindTradersV5EnCapas.Controles.CustomTabHeader();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pbWarning = new System.Windows.Forms.PictureBox();
+            this.pbError = new System.Windows.Forms.PictureBox();
+            this.pbInfo = new System.Windows.Forms.PictureBox();
+            this.pbWarning1 = new System.Windows.Forms.PictureBox();
+            this.pbError1 = new System.Windows.Forms.PictureBox();
+            this.pbInfo1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.grbBuscar.SuspendLayout();
@@ -258,12 +258,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPrecioPorUnidadSinIVADepuesDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIVADelPrecioPorUnidadAntesDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrecioPorUnidadSinIVAIncluidoAntesDescuento)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbError)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbError1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDescuento)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudUInventario)).BeginInit();
@@ -285,6 +279,12 @@
             this.grbDetalle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -859,7 +859,7 @@
             this.tabpRegistrar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpRegistrar.Name = "tabpRegistrar";
             this.tabpRegistrar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpRegistrar.Size = new System.Drawing.Size(1842, 24);
+            this.tabpRegistrar.Size = new System.Drawing.Size(1821, 24);
             this.tabpRegistrar.TabIndex = 1;
             this.tabpRegistrar.Tag = 116;
             this.tabpRegistrar.Text = "   Registrar venta   ";
@@ -882,7 +882,7 @@
             this.tabpModificar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpModificar.Name = "tabpModificar";
             this.tabpModificar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpModificar.Size = new System.Drawing.Size(1842, 24);
+            this.tabpModificar.Size = new System.Drawing.Size(1821, 24);
             this.tabpModificar.TabIndex = 2;
             this.tabpModificar.Tag = 116;
             this.tabpModificar.Text = "   Modificar venta   ";
@@ -906,7 +906,7 @@
             this.tabpEliminar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpEliminar.Name = "tabpEliminar";
             this.tabpEliminar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpEliminar.Size = new System.Drawing.Size(1842, 24);
+            this.tabpEliminar.Size = new System.Drawing.Size(1821, 24);
             this.tabpEliminar.TabIndex = 3;
             this.tabpEliminar.Tag = 109;
             this.tabpEliminar.Text = "   Eliminar venta   ";
@@ -1584,46 +1584,6 @@
             this.label42.Text = "(con IVA incluido)";
             this.label42.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // pbWarning
-            // 
-            this.pbWarning.Location = new System.Drawing.Point(900, 75);
-            this.pbWarning.Margin = new System.Windows.Forms.Padding(2);
-            this.pbWarning.Name = "pbWarning";
-            this.pbWarning.Size = new System.Drawing.Size(20, 20);
-            this.pbWarning.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbWarning.TabIndex = 37;
-            this.pbWarning.TabStop = false;
-            // 
-            // pbError
-            // 
-            this.pbError.Location = new System.Drawing.Point(875, 75);
-            this.pbError.Margin = new System.Windows.Forms.Padding(2);
-            this.pbError.Name = "pbError";
-            this.pbError.Size = new System.Drawing.Size(20, 20);
-            this.pbError.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbError.TabIndex = 38;
-            this.pbError.TabStop = false;
-            // 
-            // pbInfo
-            // 
-            this.pbInfo.Location = new System.Drawing.Point(850, 75);
-            this.pbInfo.Margin = new System.Windows.Forms.Padding(2);
-            this.pbInfo.Name = "pbInfo";
-            this.pbInfo.Size = new System.Drawing.Size(20, 20);
-            this.pbInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbInfo.TabIndex = 39;
-            this.pbInfo.TabStop = false;
-            // 
-            // pbWarning1
-            // 
-            this.pbWarning1.Location = new System.Drawing.Point(634, 75);
-            this.pbWarning1.Margin = new System.Windows.Forms.Padding(2);
-            this.pbWarning1.Name = "pbWarning1";
-            this.pbWarning1.Size = new System.Drawing.Size(20, 20);
-            this.pbWarning1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbWarning1.TabIndex = 34;
-            this.pbWarning1.TabStop = false;
-            // 
             // label56
             // 
             this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1634,26 +1594,6 @@
             this.label56.TabIndex = 78;
             this.label56.Text = "(con IVA incluido despues del descuento)";
             this.label56.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // pbError1
-            // 
-            this.pbError1.Location = new System.Drawing.Point(609, 75);
-            this.pbError1.Margin = new System.Windows.Forms.Padding(2);
-            this.pbError1.Name = "pbError1";
-            this.pbError1.Size = new System.Drawing.Size(20, 20);
-            this.pbError1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbError1.TabIndex = 35;
-            this.pbError1.TabStop = false;
-            // 
-            // pbInfo1
-            // 
-            this.pbInfo1.Location = new System.Drawing.Point(584, 75);
-            this.pbInfo1.Margin = new System.Windows.Forms.Padding(2);
-            this.pbInfo1.Name = "pbInfo1";
-            this.pbInfo1.Size = new System.Drawing.Size(20, 20);
-            this.pbInfo1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbInfo1.TabIndex = 36;
-            this.pbInfo1.TabStop = false;
             // 
             // nudDescuento
             // 
@@ -2803,7 +2743,67 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // FrmVentasCrud
+            // pbWarning
+            // 
+            this.pbWarning.Location = new System.Drawing.Point(900, 75);
+            this.pbWarning.Margin = new System.Windows.Forms.Padding(2);
+            this.pbWarning.Name = "pbWarning";
+            this.pbWarning.Size = new System.Drawing.Size(20, 20);
+            this.pbWarning.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbWarning.TabIndex = 37;
+            this.pbWarning.TabStop = false;
+            // 
+            // pbError
+            // 
+            this.pbError.Location = new System.Drawing.Point(875, 75);
+            this.pbError.Margin = new System.Windows.Forms.Padding(2);
+            this.pbError.Name = "pbError";
+            this.pbError.Size = new System.Drawing.Size(20, 20);
+            this.pbError.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbError.TabIndex = 38;
+            this.pbError.TabStop = false;
+            // 
+            // pbInfo
+            // 
+            this.pbInfo.Location = new System.Drawing.Point(850, 75);
+            this.pbInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.pbInfo.Name = "pbInfo";
+            this.pbInfo.Size = new System.Drawing.Size(20, 20);
+            this.pbInfo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbInfo.TabIndex = 39;
+            this.pbInfo.TabStop = false;
+            // 
+            // pbWarning1
+            // 
+            this.pbWarning1.Location = new System.Drawing.Point(634, 75);
+            this.pbWarning1.Margin = new System.Windows.Forms.Padding(2);
+            this.pbWarning1.Name = "pbWarning1";
+            this.pbWarning1.Size = new System.Drawing.Size(20, 20);
+            this.pbWarning1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbWarning1.TabIndex = 34;
+            this.pbWarning1.TabStop = false;
+            // 
+            // pbError1
+            // 
+            this.pbError1.Location = new System.Drawing.Point(609, 75);
+            this.pbError1.Margin = new System.Windows.Forms.Padding(2);
+            this.pbError1.Name = "pbError1";
+            this.pbError1.Size = new System.Drawing.Size(20, 20);
+            this.pbError1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbError1.TabIndex = 35;
+            this.pbError1.TabStop = false;
+            // 
+            // pbInfo1
+            // 
+            this.pbInfo1.Location = new System.Drawing.Point(584, 75);
+            this.pbInfo1.Margin = new System.Windows.Forms.Padding(2);
+            this.pbInfo1.Name = "pbInfo1";
+            this.pbInfo1.Size = new System.Drawing.Size(20, 20);
+            this.pbInfo1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbInfo1.TabIndex = 36;
+            this.pbInfo1.TabStop = false;
+            // 
+            // FrmVentasCrud2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -2812,9 +2812,9 @@
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FrmVentasCrud";
+            this.Name = "FrmVentasCrud2";
             this.Padding = new System.Windows.Forms.Padding(12, 12, 0, 12);
-            this.Text = "» Mantenimiento de Ventas «";
+            this.Text = "» Mantenimiento de Ventas Ver. 2 «";
             this.Load += new System.EventHandler(this.FrmVentasCrud_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -2860,12 +2860,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPrecioPorUnidadSinIVADepuesDescuento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIVADelPrecioPorUnidadAntesDescuento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrecioPorUnidadSinIVAIncluidoAntesDescuento)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbError1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDescuento)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudUInventario)).EndInit();
@@ -2890,6 +2884,12 @@
             this.grbDetalle.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInfo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbWarning1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInfo1)).EndInit();
             this.ResumeLayout(false);
 
         }
