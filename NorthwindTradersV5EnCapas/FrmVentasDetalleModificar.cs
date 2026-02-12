@@ -68,55 +68,42 @@ namespace NorthwindTradersV5EnCapas
             controlAgregarProducto.CboProducto.SelectedItem = ventaDetalle.Producto.ProductName;
             controlAgregarProducto.NudPrecioConIVAIncluido.Value = ventaDetalle.UnitPrice;
             controlAgregarProducto.NudUInventario.Value = ObtenerUInventario();
-            //nudCantidad.ValueChanged -= nudCantidad_ValueChanged;
-            //nudCantidad.Leave -= nudCantidad_Leave;
             controlAgregarProducto.NudCantidad.Value = ventaDetalle.Quantity;
-            //nudCantidad.ValueChanged += nudCantidad_ValueChanged;
-            //nudCantidad.Leave += nudCantidad_Leave;
-            //nudDescuento.ValueChanged -= nudDescuento_ValueChanged;
-            //nudDescuento.Leave -= nudDescuento_Leave;
             controlAgregarProducto.NudDescuento.Value = ventaDetalle.TasaDescuentoPorcentaje;
-            //nudDescuento.ValueChanged += nudDescuento_ValueChanged;
-            //nudDescuento.Leave += nudDescuento_Leave;
-            //nudImporte.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
-            ////nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
-            //nudImporteDelDescuento.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
-            //nudImporteConDescuento.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
-            //nudTasaIVA.Value = ventaDetalle.TasaIVAPorcentaje;
-            //nudImporteSinIVA.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
-            //nudImporteDelIVA.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
-            //nudSubtotal.Value = ventaDetalle.Subtotal;
+            DeshabilitarNudsNoSeleccionables();
+            CalcularTotalProducto();
             CantidadOld = ventaDetalle.Quantity;
             DescuentoOld = ventaDetalle.TasaDescuentoPorcentaje;
-            //UInventarioOld = Convert.ToInt16(nudUInventario.Value);
-            DeshabilitarNudsNoSeleccionables();
+            UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
+            ValidarCantidadEInventarioHelper.ValidarInventario
+            (
+                controlAgregarProducto.NudCantidad.Value,
+                CantidadOld,
+                UInventarioOld,
+                controlAgregarProducto.NudUInventario.Value,
+                controlAgregarProducto.NudUInventario,
+                toolTip1,
+                controlAgregarProducto.PbError1,
+                controlAgregarProducto.PbInfo1,
+                controlAgregarProducto.PbWarning1,
+                errorProvider1
+            );
+            ValidarCantidadEInventarioHelper.ValidarCantidad
+            (
+                controlAgregarProducto.NudCantidad.Value,
+                CantidadOld,
+                UInventarioOld,
+                controlAgregarProducto.NudUInventario.Value,
+                controlAgregarProducto.NudUInventario,
+                toolTip1,
+                controlAgregarProducto.PbError,
+                controlAgregarProducto.PbInfo,
+                controlAgregarProducto.PbWarning,
+                errorProvider1
+            );
             CargarValoresOriginales();
-            //ValidarCantidadEInventarioHelper.ValidarInventario
-            //(
-            //    nudCantidad.Value,
-            //    CantidadOld,
-            //    UInventarioOld,
-            //    nudUInventario.Value,
-            //    nudUInventario,
-            //    toolTip1,
-            //    pbError1,
-            //    pbInfo1,
-            //    pbWarning1,
-            //    errorProvider1
-            //);
-            //ValidarCantidadEInventarioHelper.ValidarCantidad
-            //(
-            //    nudCantidad.Value,
-            //    CantidadOld,
-            //    UInventarioOld,
-            //    nudUInventario.Value,
-            //    nudCantidad,
-            //    toolTip1,
-            //    pbError,
-            //    pbInfo,
-            //    pbWarning,
-            //    errorProvider1
-            //);
+            controlAgregarProducto.NudEnter += NudEnterHandler;
+            controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged += NudCantidadDescuento_LeaveValueChangedHandler;
         }
 
         private Decimal ObtenerUInventario()
@@ -178,60 +165,60 @@ namespace NorthwindTradersV5EnCapas
                 btnModificar.Enabled = false;
                 errorProvider1.Clear();
                 // Recalcula importes
-                CalcularImportes();
-                //InventarioHelper.ActualizarInventarioUi
-                //(
-                //    nudCantidad.Value,
-                //    CantidadOld,
-                //    UInventarioOld,
-                //    nudUInventario
-                //);
-                //// Validación informativa (inventario)
-                //// no afecta el retorno, solo muestra íconos
-                //ValidarCantidadEInventarioHelper.ValidarInventario
-                //(
-                //    nudCantidad.Value,
-                //    CantidadOld,
-                //    UInventarioOld,
-                //    nudUInventario.Value,
-                //    nudUInventario,
-                //    toolTip1,
-                //    pbError1,
-                //    pbInfo1,
-                //    pbWarning1,
-                //    errorProvider1
-                //);
+                CalcularTotalProducto();
+                InventarioHelper.ActualizarInventarioUi
+                (
+                    controlAgregarProducto.NudCantidad.Value,
+                    CantidadOld,
+                    UInventarioOld,
+                    controlAgregarProducto.NudUInventario
+                );
+                // Validación informativa (inventario)
+                // no afecta el retorno, solo muestra íconos
+                ValidarCantidadEInventarioHelper.ValidarInventario
+                (
+                    controlAgregarProducto.NudCantidad.Value,
+                    CantidadOld,
+                    UInventarioOld,
+                    controlAgregarProducto.NudUInventario.Value,
+                    controlAgregarProducto.NudUInventario,
+                    toolTip1,
+                    controlAgregarProducto.PbError1,
+                    controlAgregarProducto.PbInfo1,
+                    controlAgregarProducto.PbWarning1,
+                    errorProvider1
+                );
                 //// Valida reglas de negocio con StatusIconHelper
                 //// Validación restrictiva (cantidad)
-                //if (!ValidarCantidadEInventarioHelper.ValidarCantidad
-                //    (
-                //        nudCantidad.Value,
-                //        CantidadOld,
-                //        UInventarioOld,
-                //        nudUInventario.Value,
-                //        nudCantidad,
-                //        toolTip1,
-                //        pbError,
-                //        pbInfo,
-                //        pbWarning,
-                //        errorProvider1
-                //    )
-                //)
-                //{
-                //    return false;
-                //}
-                //if (nudSubtotal.Value <= 0)
-                //{
-                //    errorProvider1.SetError(nudSubtotal, "El valor del subtotal del producto no puede ser cero.");
-                //    return false;
-                //}
+                if (!ValidarCantidadEInventarioHelper.ValidarCantidad
+                    (
+                        controlAgregarProducto.NudCantidad.Value,
+                        CantidadOld,
+                        UInventarioOld,
+                        controlAgregarProducto.NudUInventario.Value,
+                        controlAgregarProducto.NudUInventario,
+                        toolTip1,
+                        controlAgregarProducto.PbError,
+                        controlAgregarProducto.PbInfo,
+                        controlAgregarProducto.PbWarning,
+                        errorProvider1
+                    )
+                )
+                {
+                    return false;
+                }
+                if (controlAgregarProducto.NudTotal2.Value <= 0)
+                {
+                    errorProvider1.SetError(controlAgregarProducto.NudTotal2, "El valor del total del producto no puede ser cero.");
+                    return false;
+                }
                 // Habilitar el botón Modificar si hubo cambios y las validaciones pasaron
-                //bool hayCambios = (nudCantidad.Value != CantidadOld) || (nudDescuento.Value != DescuentoOld);
-                //if (hayCambios)
-                //{
-                //    btnModificar.Enabled = true;
-                //    return true;
-                //}
+                bool hayCambios = (controlAgregarProducto.NudCantidad.Value != CantidadOld) || (controlAgregarProducto.NudDescuento.Value != DescuentoOld);
+                if (hayCambios)
+                {
+                    btnModificar.Enabled = true;
+                    return true;
+                }
 
                 return false;
             }
@@ -242,23 +229,35 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
-        private void CalcularImportes()
+        private void CalcularTotalProducto()
         {
             try
             {
-                //VentaDetalle ventaDetalle = new VentaDetalle()
-                //{
-                //    UnitPrice = nudPrecio.Value,
-                //    Quantity = Convert.ToInt16(nudCantidad.Value),
-                //    Discount = nudDescuento.Value / 100
-                //};
-                //nudImporte.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
-                ////nudImporteDelDescuento.Value = ventaDetalle.ImporteDelDescuento;
-                //nudImporteDelDescuento.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
-                //nudImporteConDescuento.Value = ventaDetalle.SubtotalDelImporteConIVAConDescuento;
-                //nudImporteSinIVA.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
-                //nudImporteDelIVA.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
-                //nudSubtotal.Value = ventaDetalle.Subtotal;
+                VentaDetalle ventaDetalle = new VentaDetalle()
+                {
+                    UnitPrice = controlAgregarProducto.NudPrecioConIVAIncluido.Value,
+                    Quantity = Convert.ToInt16(controlAgregarProducto.NudCantidad.Value),
+                    Discount = controlAgregarProducto.NudDescuento.Value / 100m
+                };
+                controlAgregarProducto.NudPrecioPorUnidadSinIVAIncluidoAntesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVASinDescuento;
+                controlAgregarProducto.NudIVADelPrecioPorUnidadAntesDescuento.Value = ventaDetalle.IVADelPrecioPorUnidadSinDescuento;
+                controlAgregarProducto.NudPrecioPorUnidadConIVADespuesDescuento.Value = ventaDetalle.PrecioPorUnidadConIVADespuesDescuento;
+                controlAgregarProducto.NudIVADelPrecioPorUnidadDespuesDescuento.Value = ventaDetalle.IVADelPrecioporUnidadDespuesDescuento;
+                controlAgregarProducto.NudPrecioPorUnidadSinIVADepuesDescuento.Value = ventaDetalle.PrecioPorUnidadSinIVADepuesDescuento;
+                controlAgregarProducto.NudAhorroPorUnidadSinIVA.Value = ventaDetalle.AhorroPorUnidadSinIVA;
+                controlAgregarProducto.NudAhorroEnIVAPorUnidadDespuesDescuento.Value = ventaDetalle.AhorroEnIVAPorUnidadDespuesDescuento;
+                controlAgregarProducto.NudAhorroTotalPorUnidadConIVA.Value = ventaDetalle.AhorroTotalPorUnidadConIVA;
+
+                controlAgregarProducto.NudSubtotalDelImporteConIVAIncluido2.Value = ventaDetalle.SubtotalDelImporteConIVAIncluido;
+                controlAgregarProducto.NudSubtotalDelImporteSinIVASinDescuento2.Value = ventaDetalle.SubtotalDelImporteSinIVASinDescuento;
+                controlAgregarProducto.NudSubtotalDelImporteDelIVASinDescuento2.Value = ventaDetalle.SubtotalDelImporteDelIVASinDescuento;
+                controlAgregarProducto.NudSubtotalIVADespuesDelDescuento2.Value = ventaDetalle.SubtotalIVADespuesDelDescuento;
+                controlAgregarProducto.NudSubtotalDelImporteSinIVAConDescuento2.Value = ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
+                controlAgregarProducto.NudSubtotalDelAhorroSinIvaDespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroSinIvaDespuesDescuento;
+                controlAgregarProducto.NudSubtotalDelAhorroEnIVADespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroEnIVADespuesDescuento;
+                controlAgregarProducto.NudSubtotalDelAhorroTotalDespuesDescuento2.Value = ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
+
+                controlAgregarProducto.NudTotal2.Value = ventaDetalle.Subtotal;
             }
             catch (Exception ex)
             {
@@ -283,8 +282,8 @@ namespace NorthwindTradersV5EnCapas
                         RowVersion = ventaDetalle.Venta.RowVersion
                     },
                     Producto = new Producto() { ProductID = ventaDetalle.Producto.ProductID },
-                    //Quantity = short.Parse(nudCantidad.Value.ToString()),
-                    //Discount = decimal.Parse((nudDescuento.Value / 100).ToString()),
+                    Quantity = short.Parse(controlAgregarProducto.NudCantidad.Value.ToString()),
+                    Discount = decimal.Parse((controlAgregarProducto.NudDescuento.Value / 100m).ToString()),
                     RowVersion = ventaDetalle.RowVersion
                 };
                 numRegs = _ventaDetalleBLL.Actualizar(ventaDetalleModificacion);
@@ -331,15 +330,9 @@ namespace NorthwindTradersV5EnCapas
             this.Close();
         }
 
-        private void nudCantidad_Leave(object sender, EventArgs e) => ValidarControles();
+        private void NudCantidadDescuento_LeaveValueChangedHandler(object sender, EventArgs e) => ValidarControles();
 
-        private void nudDescuento_Leave(object sender, EventArgs e) => ValidarControles();
-
-        private void nudCantidad_ValueChanged(object sender, EventArgs e) => ValidarControles();
-
-        private void nudDescuento_ValueChanged(object sender, EventArgs e) => ValidarControles();
-
-        private void Nud_Enter(object sender, EventArgs e)
+        private void NudEnterHandler(object sender, EventArgs e)
         {
             if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
             {
