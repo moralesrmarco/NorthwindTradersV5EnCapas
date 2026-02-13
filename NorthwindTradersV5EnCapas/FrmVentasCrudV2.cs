@@ -137,7 +137,7 @@ namespace NorthwindTradersV5EnCapas
             controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Visible = false;
             InicializarCboProducto();
             CargarValoresOriginales();
-
+            // algoritmo para colapsar tablelayout2
             tableLayoutPanel2.AutoSize = true;
             tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
@@ -157,6 +157,9 @@ namespace NorthwindTradersV5EnCapas
             tableLayoutPanel2.RowStyles[4].SizeType = SizeType.AutoSize;
 
             tableLayoutPanel1.RowStyles[5].SizeType = SizeType.AutoSize; // fila 6 → índice 5
+            
+            controlBuscarVenta.AutoSize = true;
+            controlBuscarVenta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             controlAgregarProducto.Visible = false;
             tableLayoutPanel2.RowStyles[4].Height = 0;

@@ -850,7 +850,9 @@
             // 
             // controlBuscarVenta
             // 
-            this.controlBuscarVenta.Dock = System.Windows.Forms.DockStyle.Top;
+            this.controlBuscarVenta.AutoSize = true;
+            this.controlBuscarVenta.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.controlBuscarVenta.Dock = System.Windows.Forms.DockStyle.Fill;
             this.controlBuscarVenta.Location = new System.Drawing.Point(10, 421);
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(4);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
