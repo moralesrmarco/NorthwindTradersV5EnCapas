@@ -246,7 +246,7 @@
             this.controlDetalleDeLaVenta.Location = new System.Drawing.Point(438, 1260);
             this.controlDetalleDeLaVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
             this.controlDetalleDeLaVenta.Name = "controlDetalleDeLaVenta";
-            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1401, 1674);
+            this.controlDetalleDeLaVenta.Size = new System.Drawing.Size(1401, 380);
             this.controlDetalleDeLaVenta.TabIndex = 10;
             // 
             // controlBuscarVenta
@@ -256,7 +256,7 @@
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(5);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
-            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 2548);
+            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 800);
             this.controlBuscarVenta.TabIndex = 11;
             // 
             // FrmVentasDetalleCrud
