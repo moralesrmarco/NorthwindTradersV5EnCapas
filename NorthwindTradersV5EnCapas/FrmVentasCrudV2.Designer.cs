@@ -802,7 +802,6 @@
             // 
             // controlAgregarProducto
             // 
-            this.controlAgregarProducto.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
             this.controlAgregarProducto.Dock = System.Windows.Forms.DockStyle.Fill;
             this.controlAgregarProducto.Location = new System.Drawing.Point(4, 290);
             this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(4);
