@@ -138,7 +138,33 @@ namespace NorthwindTradersV5EnCapas
             InicializarCboProducto();
             CargarValoresOriginales();
 
-            controlAgregarProducto.GrbProducto.Visible = false;
+            tableLayoutPanel2.AutoSize = true;
+            tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            grbVenta.AutoSize = true;
+            grbVenta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            tableLayoutPanel2.RowStyles[1].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.RowStyles[1].Height = 10;
+            tableLayoutPanel2.RowStyles[3].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.RowStyles[3].Height = 10;
+
+            tableLayoutPanel2.RowStyles[0].SizeType = SizeType.AutoSize;
+            tableLayoutPanel2.RowStyles[2].SizeType = SizeType.AutoSize;
+            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.AutoSize;
+
+            tableLayoutPanel1.RowStyles[5].SizeType = SizeType.AutoSize; // fila 6 → índice 5
+
+            controlAgregarProducto.Visible = false;
+            tableLayoutPanel2.RowStyles[4].Height = 0;
+            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.PerformLayout();   // fuerza recalculo
+            grbVenta.PerformLayout();            // fuerza recalculo
+            tableLayoutPanel1.PerformLayout();   // fuerza recalculo
+            this.PerformLayout(); // fuerza al formulario entero
         }
 
         private void CargarValoresOriginales()
@@ -1128,59 +1154,61 @@ namespace NorthwindTradersV5EnCapas
 
         private void tabcOperacion_Selected(object sender, TabControlEventArgs e)
         {
-            //numDetalle = 1;
-            //BorrarDatosVenta();
-            //BorrarDatosDetalleVenta();
-            //BorrarMensajesError();
-            //grbProducto.Visible = false;
-            //if (tabcOperacion.SelectedTab == tabpRegistrar)
-            //{
-            //    if (EventoCargado)
-            //    {
-            //        dgvVentas.CellClick -= new DataGridViewCellEventHandler(dgvVentas_CellClick);
-            //        EventoCargado = false;
-            //    }
-            //    grbProducto.Visible = true;
-            //    VentaGenerada = false;
-            //    BorrarDatosBusqueda();
-            //    HabilitarControles();
-            //    btnGenerar.Text = "Generar venta";
-            //    dgvDetalle.Columns["Eliminar"].Visible = true;
-            //    dtpHoraRequerido.Enabled = dtpHoraEnvio.Enabled = false;
-            //    btnNota.Enabled = false;
-            //    btnNuevo.Enabled = false;
-            //}
-            //else
-            //{
-            //    if (!EventoCargado)
-            //    {
-            //        dgvVentas.CellClick += new DataGridViewCellEventHandler(dgvVentas_CellClick);
-            //        EventoCargado = true;
-            //    }
-            //    DeshabilitarControles();
-            //    btnGenerar.Enabled = false;
-            //    dgvDetalle.Columns["Eliminar"].Visible = false;
-            //    if (tabcOperacion.SelectedTab == tabpConsultar)
-            //    {
-            //        btnGenerar.Text = "Generar venta";
-            //        btnNota.Enabled = false;
-            //        btnNuevo.Enabled = false;
-            //    }
-            //    else if (tabcOperacion.SelectedTab == tabpModificar)
-            //    {
-            //        VentaGenerada = false;
-            //        btnGenerar.Text = "Modificar venta";
-            //        btnNota.Enabled = false;
-            //        btnNuevo.Enabled = false;
-            //    }
-            //    else if (tabcOperacion.SelectedTab == tabpEliminar)
-            //    {
-            //        btnGenerar.Text = "Eliminar venta";
-            //        btnNota.Enabled = false;
-            //        btnNuevo.Enabled = false;
-            //    }
-            //}
-            //CargarValoresOriginales();
+            numDetalle = 1;
+            BorrarDatosVenta();
+            BorrarDatosDetalleVenta();
+            BorrarMensajesError();
+            controlAgregarProducto.Visible = false;
+            if (tabcOperacion.SelectedTab == tabpRegistrar)
+            {
+                if (EventoCargado)
+                {
+                    dgvVentas.CellClick -= new DataGridViewCellEventHandler(dgvVentas_CellClick);
+                    EventoCargado = false;
+                }
+                controlAgregarProducto.Visible = true;
+                VentaGenerada = false;
+                BorrarDatosBusqueda();
+                HabilitarControles();
+                btnGenerar.Text = "Generar venta";
+                controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Visible = true;
+                controlDetalleDeLaVenta.DgvDetalle.Columns["Modificar"].Visible = true;
+                dtpHoraRequerido.Enabled = dtpHoraEnvio.Enabled = false;
+                btnNota.Enabled = false;
+                btnNuevo.Enabled = false;
+            }
+            else
+            {
+                if (!EventoCargado)
+                {
+                    dgvVentas.CellClick += new DataGridViewCellEventHandler(dgvVentas_CellClick);
+                    EventoCargado = true;
+                }
+                DeshabilitarControles();
+                btnGenerar.Enabled = false;
+                controlDetalleDeLaVenta.DgvDetalle.Columns["Modificar"].Visible = false;
+                controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Visible = false;
+                if (tabcOperacion.SelectedTab == tabpConsultar)
+                {
+                    btnGenerar.Text = "Generar venta";
+                    btnNota.Enabled = false;
+                    btnNuevo.Enabled = false;
+                }
+                else if (tabcOperacion.SelectedTab == tabpModificar)
+                {
+                    VentaGenerada = false;
+                    btnGenerar.Text = "Modificar venta";
+                    btnNota.Enabled = false;
+                    btnNuevo.Enabled = false;
+                }
+                else if (tabcOperacion.SelectedTab == tabpEliminar)
+                {
+                    btnGenerar.Text = "Eliminar venta";
+                    btnNota.Enabled = false;
+                    btnNuevo.Enabled = false;
+                }
+            }
+            CargarValoresOriginales();
         }
 
         private void btnGenerar_Click(object sender, EventArgs e)

@@ -84,13 +84,13 @@
             this.label21 = new System.Windows.Forms.Label();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.controlAgregarProducto = new NorthwindTradersV5EnCapas.ControlAgregarProducto();
             this.headerOperacion = new NorthwindTradersV5EnCapas.Controles.CustomTabHeader();
             this.controlDetalleDeLaVenta = new NorthwindTradersV5EnCapas.ControlDetalleDeLaVenta();
             this.controlTotalesDeLaVenta = new NorthwindTradersV5EnCapas.ControlTotalesDeLaVenta();
             this.controlBuscarVenta = new NorthwindTradersV5EnCapas.ControlBuscarVenta();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.GrbOperaciones.SuspendLayout();
@@ -124,6 +124,7 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 405F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -280,7 +281,7 @@
             this.tabpRegistrar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpRegistrar.Name = "tabpRegistrar";
             this.tabpRegistrar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpRegistrar.Size = new System.Drawing.Size(1842, 24);
+            this.tabpRegistrar.Size = new System.Drawing.Size(1821, 24);
             this.tabpRegistrar.TabIndex = 1;
             this.tabpRegistrar.Tag = 116;
             this.tabpRegistrar.Text = "   Registrar venta   ";
@@ -303,7 +304,7 @@
             this.tabpModificar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpModificar.Name = "tabpModificar";
             this.tabpModificar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpModificar.Size = new System.Drawing.Size(1842, 24);
+            this.tabpModificar.Size = new System.Drawing.Size(1821, 24);
             this.tabpModificar.TabIndex = 2;
             this.tabpModificar.Tag = 116;
             this.tabpModificar.Text = "   Modificar venta   ";
@@ -327,7 +328,7 @@
             this.tabpEliminar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpEliminar.Name = "tabpEliminar";
             this.tabpEliminar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpEliminar.Size = new System.Drawing.Size(1842, 24);
+            this.tabpEliminar.Size = new System.Drawing.Size(1821, 24);
             this.tabpEliminar.TabIndex = 3;
             this.tabpEliminar.Tag = 109;
             this.tabpEliminar.Text = "   Eliminar venta   ";
@@ -346,8 +347,9 @@
             // grbVenta
             // 
             this.grbVenta.AutoSize = true;
+            this.grbVenta.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.grbVenta.Controls.Add(this.tableLayoutPanel2);
-            this.grbVenta.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grbVenta.Dock = System.Windows.Forms.DockStyle.Top;
             this.grbVenta.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbVenta.Location = new System.Drawing.Point(436, 421);
             this.grbVenta.Margin = new System.Windows.Forms.Padding(25, 4, 4, 4);
@@ -361,12 +363,13 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.grbTransportista, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.panel2, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.controlAgregarProducto, 0, 4);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 16);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -800,6 +803,10 @@
             this.label20.TabIndex = 15;
             this.label20.Text = "Id:";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // controlAgregarProducto
             // 
             this.controlAgregarProducto.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -843,17 +850,13 @@
             // 
             // controlBuscarVenta
             // 
-            this.controlBuscarVenta.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controlBuscarVenta.Dock = System.Windows.Forms.DockStyle.Top;
             this.controlBuscarVenta.Location = new System.Drawing.Point(10, 421);
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(4);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
             this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1522);
             this.controlBuscarVenta.TabIndex = 13;
-            // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
             // 
             // FrmVentasCrudV2
             // 
