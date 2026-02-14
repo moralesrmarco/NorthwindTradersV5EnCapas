@@ -137,37 +137,7 @@ namespace NorthwindTradersV5EnCapas
             controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Visible = false;
             InicializarCboProducto();
             CargarValoresOriginales();
-            // algoritmo para colapsar tablelayout2
-            tableLayoutPanel2.AutoSize = true;
-            tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            grbVenta.AutoSize = true;
-            grbVenta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            tableLayoutPanel2.RowStyles[1].SizeType = SizeType.Absolute;
-            tableLayoutPanel2.RowStyles[1].Height = 10;
-            tableLayoutPanel2.RowStyles[3].SizeType = SizeType.Absolute;
-            tableLayoutPanel2.RowStyles[3].Height = 10;
-
-            tableLayoutPanel2.RowStyles[0].SizeType = SizeType.AutoSize;
-            tableLayoutPanel2.RowStyles[2].SizeType = SizeType.AutoSize;
-            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.AutoSize;
-
-            tableLayoutPanel1.RowStyles[5].SizeType = SizeType.AutoSize; // fila 6 → índice 5
-            
-            controlBuscarVenta.AutoSize = true;
-            controlBuscarVenta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            controlAgregarProducto.Visible = false;
-            tableLayoutPanel2.RowStyles[4].Height = 0;
-            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.Absolute;
-            tableLayoutPanel2.PerformLayout();   // fuerza recalculo
-            grbVenta.PerformLayout();            // fuerza recalculo
-            tableLayoutPanel1.PerformLayout();   // fuerza recalculo
-            this.PerformLayout(); // fuerza al formulario entero
+            OcultarControlAgregarProducto();
         }
 
         private void CargarValoresOriginales()
@@ -1161,7 +1131,7 @@ namespace NorthwindTradersV5EnCapas
             BorrarDatosVenta();
             BorrarDatosDetalleVenta();
             BorrarMensajesError();
-            controlAgregarProducto.Visible = false;
+            OcultarControlAgregarProducto();
             if (tabcOperacion.SelectedTab == tabpRegistrar)
             {
                 if (EventoCargado)
@@ -1169,7 +1139,7 @@ namespace NorthwindTradersV5EnCapas
                     dgvVentas.CellClick -= new DataGridViewCellEventHandler(dgvVentas_CellClick);
                     EventoCargado = false;
                 }
-                controlAgregarProducto.Visible = true;
+                MostrarControlAgregarProducto();
                 VentaGenerada = false;
                 BorrarDatosBusqueda();
                 HabilitarControles();
@@ -1489,6 +1459,55 @@ namespace NorthwindTradersV5EnCapas
             //    U.MsgCatchOue(ex);
             //    return -4;
             //}
+        }
+
+        private void OcultarControlAgregarProducto()
+        {
+            // algoritmo para colapsar tablelayout2
+            tableLayoutPanel2.AutoSize = true;
+            tableLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            grbVenta.AutoSize = true;
+            grbVenta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            tableLayoutPanel2.RowStyles[1].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.RowStyles[1].Height = 10;
+            tableLayoutPanel2.RowStyles[3].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.RowStyles[3].Height = 10;
+
+            tableLayoutPanel2.RowStyles[0].SizeType = SizeType.AutoSize;
+            tableLayoutPanel2.RowStyles[2].SizeType = SizeType.AutoSize;
+            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.AutoSize;
+
+            tableLayoutPanel1.RowStyles[5].SizeType = SizeType.AutoSize; // fila 6 → índice 5
+
+            controlBuscarVenta.AutoSize = true;
+            controlBuscarVenta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            controlAgregarProducto.Visible = false;
+            tableLayoutPanel2.RowStyles[4].Height = 0;
+            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.Absolute;
+            tableLayoutPanel2.PerformLayout();   // fuerza recalculo
+            grbVenta.PerformLayout();            // fuerza recalculo
+            tableLayoutPanel1.PerformLayout();   // fuerza recalculo
+            this.PerformLayout(); // fuerza al formulario entero
+        }
+
+        private void MostrarControlAgregarProducto()
+        {
+            // Mostrar el control y restaurar fila
+            controlAgregarProducto.Visible = true;
+            tableLayoutPanel2.RowStyles[4].SizeType = SizeType.AutoSize; // fila 5 → índice 4
+            tableLayoutPanel2.RowStyles[4].Height = 0; // AutoSize ignora este valor
+
+            // Forzar recalculo
+            tableLayoutPanel2.PerformLayout();
+            grbVenta.PerformLayout();
+            tableLayoutPanel1.PerformLayout();
+            this.PerformLayout();
         }
     }
 }
