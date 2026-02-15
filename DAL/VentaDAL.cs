@@ -34,28 +34,41 @@ namespace DAL
                             using (var cmd = new SqlCommand("SpVentaInsertar", cn, tx))
                             {
                                 cmd.CommandType = CommandType.StoredProcedure;
-                                //cmd.Parameters.AddWithValue("@OrderID", 0);
-                                //cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
-                                // OrderID
-                                cmd.Parameters.Add("@OrderID", SqlDbType.Int).Direction = ParameterDirection.Output;
+                                // Parámetro de retorno
+                                var returnParam = cmd.Parameters.Add("@RETURN_VALUE", SqlDbType.Int);
+                                returnParam.Direction = ParameterDirection.ReturnValue;
 
+                                // Parámetros de salida
+                                cmd.Parameters.Add("@OrderID", SqlDbType.Int).Direction = ParameterDirection.Output;
                                 // RowVersion
                                 cmd.Parameters.Add("@RowVersion", SqlDbType.Binary, 8).Direction = ParameterDirection.Output;
-
+                                // Parámetros de entrada
                                 cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
                                 cmd.Parameters.AddWithValue("@EmployeeID", venta.Empleado.EmployeeID);
                                 cmd.Parameters.AddWithValue("@OrderDate", venta.OrderDate.HasValue ? (object)venta.OrderDate.Value : DBNull.Value);
                                 cmd.Parameters.AddWithValue("@RequiredDate", venta.RequiredDate.HasValue ? (object)venta.RequiredDate.Value : DBNull.Value);
                                 cmd.Parameters.AddWithValue("@ShippedDate", venta.ShippedDate.HasValue ? (object)venta.ShippedDate.Value : DBNull.Value);
-                                cmd.Parameters.AddWithValue("@ShipVia", venta.Transportista.ShipperID);
+                                cmd.Parameters.AddWithValue("@ShipVia", ((object)venta.Transportista.ShipperID == null || venta.Transportista.ShipperID.Equals(0)) ? DBNull.Value : (object)venta.Transportista.ShipperID);
                                 cmd.Parameters.AddWithValue("@ShipName", string.IsNullOrWhiteSpace(venta.ShipName) ? (object)DBNull.Value : venta.ShipName);
                                 cmd.Parameters.AddWithValue("@ShipAddress", string.IsNullOrWhiteSpace(venta.ShipAddress) ? (object)DBNull.Value : venta.ShipAddress);
                                 cmd.Parameters.AddWithValue("@ShipCity", string.IsNullOrWhiteSpace(venta.ShipCity) ? (object)DBNull.Value : venta.ShipCity);
                                 cmd.Parameters.AddWithValue("@ShipRegion", string.IsNullOrWhiteSpace(venta.ShipRegion) ? (object)DBNull.Value : venta.ShipRegion);
                                 cmd.Parameters.AddWithValue("@ShipPostalCode", string.IsNullOrWhiteSpace(venta.ShipPostalCode) ? (object)DBNull.Value : venta.ShipPostalCode);
                                 cmd.Parameters.AddWithValue("@ShipCountry", string.IsNullOrWhiteSpace(venta.ShipCountry) ? (object)DBNull.Value : venta.ShipCountry);
-                                cmd.Parameters.AddWithValue("@Freight", venta.Freight);
-                                filasAfectadas += cmd.ExecuteNonQuery();
+                                cmd.Parameters.AddWithValue("@Freight", (object)venta.Freight ?? DBNull.Value);
+
+                                // Ejecutar y capturar código de retorno
+                                cmd.ExecuteNonQuery();
+                                // Capturar código de retorno
+                                var returnValue = (int)returnParam.Value;
+                                // filasAfectadas no depende de ExecuteNonQuery aquí,
+                                // sino del código de retorno del SP
+                                filasAfectadas = returnValue;
+                                if (returnValue != 1)
+                                {
+                                    throw new InvalidOperationException("Error al insertar la venta. Código de error: " + returnValue);
+                                }
+                                // Capturar valores de salida
                                 orderId = Convert.ToInt32(cmd.Parameters["@OrderID"].Value);
                                 // Aquí obtienes el RowVersion como arreglo de bytes
                                 rowVersion = (byte[])cmd.Parameters["@RowVersion"].Value;
@@ -133,7 +146,7 @@ namespace DAL
                         }
                         catch (Exception)
                         {
-                            try { tx.Rollback(); } catch (Exception) { }
+                            try { tx.Rollback(); } catch { }
                             throw;
                         }
                     }
@@ -148,13 +161,17 @@ namespace DAL
 
         public int Actualizar(Venta venta)
         {
-            int filasAfectadas = 0;
+            int returnCode = 0;
             try
             {
                 using (var cn = new SqlConnection(_connectionString))
                 using (var cmd = new SqlCommand("SpVentaActualizar", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    // Parámetro de retorno
+                    var returnParam = cmd.Parameters.Add("@RETURN_VALUE", SqlDbType.Int);
+                    returnParam.Direction = ParameterDirection.ReturnValue;
+                    // Parámetros de entrada
                     cmd.Parameters.AddWithValue("@OrderID", venta.OrderID);
                     cmd.Parameters.AddWithValue("@CustomerID", string.IsNullOrWhiteSpace(venta.Cliente.CustomerID) ? (object)DBNull.Value : venta.Cliente.CustomerID);
                     cmd.Parameters.AddWithValue("@EmployeeID", ((object)venta.Empleado.EmployeeID == null || venta.Empleado.EmployeeID.Equals(0)) ? DBNull.Value : (object)venta.Empleado.EmployeeID);
@@ -162,30 +179,34 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@RequiredDate", venta.RequiredDate.HasValue ? (object)venta.RequiredDate.Value : DBNull.Value);
                     cmd.Parameters.AddWithValue("@ShippedDate", venta.ShippedDate.HasValue ? (object)venta.ShippedDate.Value : DBNull.Value);
                     cmd.Parameters.AddWithValue("@ShipVia", ((object)venta.Transportista.ShipperID == null || venta.Transportista.ShipperID.Equals(0)) ? DBNull.Value : (object)venta.Transportista.ShipperID);
-                    cmd.Parameters.AddWithValue("@Freight", (object)venta.Freight ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ShipName", string.IsNullOrWhiteSpace(venta.ShipName) ? (object)DBNull.Value : venta.ShipName);
                     cmd.Parameters.AddWithValue("@ShipAddress", string.IsNullOrWhiteSpace(venta.ShipAddress) ? (object)DBNull.Value : venta.ShipAddress);
                     cmd.Parameters.AddWithValue("@ShipCity", string.IsNullOrWhiteSpace(venta.ShipCity) ? (object)DBNull.Value : venta.ShipCity);
                     cmd.Parameters.AddWithValue("@ShipRegion", string.IsNullOrWhiteSpace(venta.ShipRegion) ? (object)DBNull.Value : venta.ShipRegion);
                     cmd.Parameters.AddWithValue("@ShipPostalCode", string.IsNullOrWhiteSpace(venta.ShipPostalCode) ? (object)DBNull.Value : venta.ShipPostalCode);
                     cmd.Parameters.AddWithValue("@ShipCountry", string.IsNullOrWhiteSpace(venta.ShipCountry) ? (object)DBNull.Value : venta.ShipCountry);
+                    cmd.Parameters.AddWithValue("@Freight", (object)venta.Freight ?? DBNull.Value);
+                    // Parámetro de salida RowVersion
                     var pRowVersion = new SqlParameter("@RowVersion", SqlDbType.Binary, 8);
                     pRowVersion.Direction = ParameterDirection.InputOutput;
                     pRowVersion.Value = venta.RowVersion;
                     cmd.Parameters.Add(pRowVersion);
-                    var returnParameter = cmd.Parameters.Add("@ReturnVal", SqlDbType.Int);
-                    returnParameter.Direction = ParameterDirection.ReturnValue;
                     cn.Open();
                     cmd.ExecuteNonQuery();
-                    venta.RowVersion = (byte[])cmd.Parameters["@RowVersion"].Value;
-                    filasAfectadas = (int)returnParameter.Value;
+                    // Capturar código de retorno
+                    returnCode = (int)returnParam.Value;
+                    if (returnCode == 1)
+                    {
+                        // Éxito: actualizar RowVersion en el objeto
+                        venta.RowVersion = (byte[])cmd.Parameters["@RowVersion"].Value;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al actualizar la venta: " + ex.Message);
             }
-            return filasAfectadas;
+            return returnCode;
         }
 
         public int Eliminar(Venta venta, out string produtoExcede)
