@@ -988,6 +988,8 @@ namespace NorthwindTradersV5EnCapas
                 var venta = _ventaBLL.ObtenerVentaPorId(orderId);
                 if (venta != null)
                 {
+                    txtId.Text = venta.OrderID.ToString();
+                    txtId.Tag = venta.RowVersionString;
                     cboCliente.SelectedIndexChanged -= new EventHandler(cboCliente_SelectedIndexChanged);
                     cboCliente.SelectedValue = venta.Cliente.CustomerID;
                     cboCliente.SelectedIndexChanged += new EventHandler(cboCliente_SelectedIndexChanged);
@@ -1111,17 +1113,21 @@ namespace NorthwindTradersV5EnCapas
         {
             int numRegs = 0;
             BorrarMensajesError();
-            if (ValidarControlesProducto())
+            if (!ValidarControlesProducto() && !ValidarControlesVenta())
             {
-                //controlAgregarProducto.BtnAgregar.Enabled = false;
+                grbVenta.Focus();
+                return;
+            }
+            else
+            {
                 DeshabilitarControlesProducto();
                 if (tabcOperacion.SelectedTab == tabpRegistrar & !VentaGenerada)
                 {
                     InicializarNudsProducto();
                     var ventaDetalle = new VentaDetalle()
                     {
-                        Producto = new Producto() 
-                        { 
+                        Producto = new Producto()
+                        {
                             ProductID = (int)controlAgregarProducto.CboProducto.SelectedValue,
                             ProductName = controlAgregarProducto.CboProducto.Text
                         },
@@ -1182,7 +1188,7 @@ namespace NorthwindTradersV5EnCapas
                         }
                         string strProductoVenta = $"El producto: {ventaDetalle.ProductName} - Venta: {ventaDetalle.Venta.OrderID}:";
                         string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
-                        if (numRegs > 0)
+                        if (numRegs > 0 || numRegs == -1)
                         {
                             controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged -= NudCantidadDescuento_LeaveValueChangedHandler;
                             int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
@@ -1191,16 +1197,20 @@ namespace NorthwindTradersV5EnCapas
                             LlenarDatosVenta(ref orderId); // necesario para actualizar el RowVersion de la venta
                             LlenarDatosDetalleVenta(orderId);
                             btnNota.Enabled = true;
+                            btnNuevo.Enabled = true;
                             CargarValoresOriginales();
-                            HabilitarControles();
+                            controlAgregarProducto.CboCategoria.Enabled = true;
+                            controlAgregarProducto.BtnAgregar.Enabled = false;
+                            MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
+                            controlDetalleDeLaVenta.DgvDetalle.Focus();
                             controlAgregarProducto.CboCategoria.Focus();
                             controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged += NudCantidadDescuento_LeaveValueChangedHandler;
+                            if (numRegs == -1)
+                                U.NotificacionError(strProductoVenta + Utils.nfrfa);
                         }
                         else
                         {
-                            if (numRegs == -1)
-                                U.NotificacionError(strProductoVenta + Utils.nfrfa);
-                            else if (numRegs == -3)
+                            if (numRegs == -3)
                                 U.NotificacionError(strVenta + Utils.fepou);
                             else if (numRegs == -4)
                                 U.NotificacionError(strProductoVenta + "\n[red]No fue registrado en la base de datos.\n" + strVenta + Utils.fmpou);
@@ -1214,8 +1224,9 @@ namespace NorthwindTradersV5EnCapas
                                 U.NotificacionError(strProductoVenta + Utils.nfrin); // stock negativo. Este caso nunca debería ocurrir porque para que suceda se necesitaria tener un valor negativo en el inventario y eso nunca sucede porque el sistema ya tiene validaciones que no lo permiten.
                             else if (numRegs < -8) // Este caso aun no está definido, por lo tanto es un error desconocido
                                 U.NotificacionError(strProductoVenta + Utils.nfrs); // motivo desconocido
-                            if (numRegs <= 0)
+                            if (numRegs <= 0 & numRegs != -1)
                             {
+                                controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged -= NudCantidadDescuento_LeaveValueChangedHandler;
                                 if (numRegs == -6)
                                 {
                                     InicializarValoresAgregarProducto();
@@ -1235,12 +1246,15 @@ namespace NorthwindTradersV5EnCapas
                                     {
                                         BorrarDatosVenta();
                                         LlenarDgvVentas(false);
+                                        btnNuevo.Enabled = true;
+                                        btnNuevo.PerformClick();
                                     }
                                 }
                                 CargarValoresOriginales();
+                                MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
+                                controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged += NudCantidadDescuento_LeaveValueChangedHandler;
                             }
                         }
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
                     }
                     catch (Exception ex)
                     {
@@ -1251,19 +1265,6 @@ namespace NorthwindTradersV5EnCapas
                             HabilitarControlesProducto();
                         }
                         U.MsgCatchOue(ex);
-                    }
-                    if (numRegs > 0)
-                    {
-                        int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
-                        BorrarDatosVenta();
-                        BorrarDatosDetalleVenta();
-                        LlenarDatosVenta(ref orderId); // necesario para actualizar el RowVersion de la venta
-                        LlenarDatosDetalleVenta(orderId);
-                        controlAgregarProducto.CboCategoria.Enabled = true;
-                        controlAgregarProducto.BtnAgregar.Enabled = true;
-                        btnNota.Enabled = true;
-                        MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
-                        controlDetalleDeLaVenta.DgvDetalle.Focus();
                     }
                 }
             }
@@ -1484,7 +1485,12 @@ namespace NorthwindTradersV5EnCapas
             {
                 try
                 {
-                    if (ValidarControlesVenta())
+                    if (!ValidarControlesVenta())
+                    {
+                        grbVenta.Focus();
+                        return;
+                    }
+                    else
                     {
                         MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
                         DeshabilitarControles();
@@ -1540,9 +1546,10 @@ namespace NorthwindTradersV5EnCapas
                 catch (Exception ex)
                 {
                     U.MsgCatchOue(ex);
+                    HabilitarControles();
+                    HabilitarControlesProducto();
+                    btnGenerar.Enabled = true;
                     btnNuevo.Enabled = true;
-                    btnNuevo.PerformClick();
-                    btnNuevo.Enabled = false;
                 }
                 if (numRegs > 0)
                 {
@@ -1555,7 +1562,7 @@ namespace NorthwindTradersV5EnCapas
                     controlDetalleDeLaVenta.DgvDetalle.Rows.Clear();
                     LlenarDatosDetalleVenta(Convert.ToInt32(txtId.Text));
                     controlAgregarProducto.CboCategoria.Enabled = true;
-                    txtId.Focus();
+                    grbVenta.Focus();
                 }
             }
             //else if (tabcOperacion.SelectedTab == tabpModificar)
@@ -1757,7 +1764,7 @@ namespace NorthwindTradersV5EnCapas
             VentaGenerada = false;
             numDetalle = 1;
             CargarValoresOriginales();
-            tabcOperacion.Focus();
+            dgvVentas.Focus();
         }
 
         private int ChkRowVersion()
