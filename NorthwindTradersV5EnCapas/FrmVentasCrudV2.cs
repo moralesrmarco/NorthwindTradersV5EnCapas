@@ -1272,12 +1272,17 @@ namespace NorthwindTradersV5EnCapas
 
         private void DgvDetalle_CellClickHandler(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0 || (e.ColumnIndex != controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Index & e.ColumnIndex != controlDetalleDeLaVenta.DgvDetalle.Columns["Modificar"].Index)) 
+                return;
             var dgv = controlDetalleDeLaVenta.DgvDetalle; // acceso al DataGridView interno
             try
             {
-
-                if (e.ColumnIndex == dgv.Columns["Eliminar"].Index)
+                if (!VentaGenerada & e.ColumnIndex == dgv.Columns["Eliminar"].Index & tabcOperacion.SelectedTab == tabpRegistrar)
+                {
+                    dgv.Rows.RemoveAt(e.RowIndex);
+                    CalcularTotales();
+                }
+                if ((e.ColumnIndex == dgv.Columns["Eliminar"].Index & tabcOperacion.SelectedTab == tabpModificar) | (VentaGenerada & e.ColumnIndex == dgv.Columns["Eliminar"].Index & tabcOperacion.SelectedTab == tabpRegistrar))
                 {
                     DataGridViewRow dgvr = dgv.CurrentRow;
                     VentaDetalle ventaDetalle = new VentaDetalle();
@@ -1380,8 +1385,7 @@ namespace NorthwindTradersV5EnCapas
                     dgvVentas.CellClick += new DataGridViewCellEventHandler(dgvVentas_CellClick);
                     EventoCargado = true;
                 }
-                DeshabilitarControles();
-                btnGenerar.Enabled = false;
+                DeshabilitarTodosControles();
                 OcultarCols();
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
@@ -1393,17 +1397,12 @@ namespace NorthwindTradersV5EnCapas
                 {
                     MostrarCols();
                     MostrarControlAgregarProducto();
-                    HabilitarControles();
                     VentaGenerada = false;
                     btnGenerar.Text = "Modificar venta";
-                    btnNota.Enabled = false;
-                    btnNuevo.Enabled = false;
                 }
                 else if (tabcOperacion.SelectedTab == tabpEliminar)
                 {
                     btnGenerar.Text = "Eliminar venta";
-                    btnNota.Enabled = false;
-                    btnNuevo.Enabled = false;
                 }
             }
             CargarValoresOriginales();
@@ -1433,6 +1432,9 @@ namespace NorthwindTradersV5EnCapas
                         LlenarDatosDetalleVenta(orderId);
                         CargarValoresOriginales();
                         btnNota.Enabled = true;
+                        btnNuevo.Enabled = true;
+                        btnGenerar.Enabled = false;
+                        controlAgregarProducto.CboCategoria.Enabled = true;
                         MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
                     }
                     if (numRegs == -1)
@@ -1441,7 +1443,7 @@ namespace NorthwindTradersV5EnCapas
                         U.NotificacionError(strProductoVenta + Utils.nfefm);
                     if (numRegs == -3)
                         U.NotificacionError(strVenta + Utils.fepou);
-                    else if (numRegs == -4)
+                    if (numRegs == -4)
                         U.NotificacionError(strProductoVenta + "\n[red]No fue eliminado en la base de datos.\n" + strVenta + Utils.fmpou);
                     if (numRegs == -5)
                         U.NotificacionError(strProductoVenta + Utils.nfecqn); // El campo Quantity del detalle de la venta es nulo, no se da este caso porque la base de datos no lo permite
@@ -1460,8 +1462,8 @@ namespace NorthwindTradersV5EnCapas
                         LlenarDgvVentas(false);
                         CargarValoresOriginales();
                     }
-                    if (numRegs != -3)
-                        HabilitarControles();
+                    //if (numRegs != -3)
+                    //    HabilitarControles();
                 }
             }
             catch (Exception ex)
@@ -1565,72 +1567,72 @@ namespace NorthwindTradersV5EnCapas
                     grbVenta.Focus();
                 }
             }
-            //else if (tabcOperacion.SelectedTab == tabpModificar)
-            //{
-            //    try
-            //    {
-            //        if (ValidarControlesVenta())
-            //        {
-            //            MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
-            //            DeshabilitarControles();
-            //            btnGenerar.Enabled = false;
-            //            Venta venta = new Venta();
-            //            venta.OrderID = int.Parse(txtId.Text);
-            //            venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString().Trim();
-            //            venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
-            //            if (!dtpVenta.Checked)
-            //                venta.OrderDate = null;
-            //            else
-            //                venta.OrderDate = Utils.ObtenerFechaHora(dtpVenta, dtpHoraVenta);
-            //            if (!dtpRequerido.Checked)
-            //                venta.RequiredDate = null;
-            //            else
-            //                venta.RequiredDate = Utils.ObtenerFechaHora(dtpRequerido, dtpHoraRequerido);
-            //            if (!dtpEnvio.Checked)
-            //                venta.ShippedDate = null;
-            //            else
-            //                venta.ShippedDate = Utils.ObtenerFechaHora(dtpEnvio, dtpHoraEnvio);
-            //            venta.Transportista.ShipperID = Convert.ToInt32(cboTransportista.SelectedValue);
-            //            venta.ShipName = txtDirigidoa.Text.Trim();
-            //            venta.ShipAddress = txtDomicilio.Text.Trim();
-            //            venta.ShipCity = txtCiudad.Text.Trim();
-            //            venta.ShipRegion = txtRegion.Text.Trim();
-            //            venta.ShipPostalCode = txtCP.Text.Trim();
-            //            venta.ShipCountry = txtPais.Text.Trim();
-            //            venta.Freight = nudFlete.Value;
-            //            venta.RowVersion = RowVersionHelper.RowVersionObjToByteArray(txtId.Tag);
-            //            numRegs = _ventaBLL.Actualizar(venta);
-            //            txtId.Tag = venta.RowVersionStr; // se tiene que actualizar por la nota de remision no detecte un cambio
-            //            MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
-            //            string idVentaCliente = $"La venta con Id: {venta.OrderID} - Cliente: {cboCliente.Text}:";
-            //            if (numRegs > 0)
-            //                U.NotificacionInformation(idVentaCliente + Utils.sms);
-            //            else if (numRegs == -1)
-            //                U.NotificacionError(idVentaCliente + Utils.nfmfe);
-            //            else if (numRegs == -2)
-            //                U.NotificacionError(idVentaCliente + Utils.nfmfm);
-            //            else
-            //                U.NotificacionError(idVentaCliente + Utils.nfmmd);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        U.MsgCatchOue(ex);
-            //    }
-            //    if (numRegs > 0)
-            //    {
-            //        VentaGenerada = true;
-            //        btnNota.Enabled = true;
-            //        btnNuevo.Enabled = false;
-            //        LlenarDgvVentas(false);
-            //    }
-            //    else if (numRegs >= -2)
-            //    {
-            //        LlenarDgvVentas(false);
-            //        BorrarDatosVenta();
-            //        BorrarDatosDetalleVenta();
-            //    }
-            //}
+            else if (tabcOperacion.SelectedTab == tabpModificar)
+            {
+                try
+                {
+                    if (ValidarControlesVenta())
+                    {
+                        MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                        DeshabilitarControles();
+                        btnGenerar.Enabled = false;
+                        Venta venta = new Venta();
+                        venta.OrderID = int.Parse(txtId.Text);
+                        venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString().Trim();
+                        venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
+                        if (!dtpVenta.Checked)
+                            venta.OrderDate = null;
+                        else
+                            venta.OrderDate = Utils.ObtenerFechaHora(dtpVenta, dtpHoraVenta);
+                        if (!dtpRequerido.Checked)
+                            venta.RequiredDate = null;
+                        else
+                            venta.RequiredDate = Utils.ObtenerFechaHora(dtpRequerido, dtpHoraRequerido);
+                        if (!dtpEnvio.Checked)
+                            venta.ShippedDate = null;
+                        else
+                            venta.ShippedDate = Utils.ObtenerFechaHora(dtpEnvio, dtpHoraEnvio);
+                        venta.Transportista.ShipperID = Convert.ToInt32(cboTransportista.SelectedValue);
+                        venta.ShipName = txtDirigidoa.Text.Trim();
+                        venta.ShipAddress = txtDomicilio.Text.Trim();
+                        venta.ShipCity = txtCiudad.Text.Trim();
+                        venta.ShipRegion = txtRegion.Text.Trim();
+                        venta.ShipPostalCode = txtCP.Text.Trim();
+                        venta.ShipCountry = txtPais.Text.Trim();
+                        venta.Freight = nudFlete.Value;
+                        venta.RowVersion = RowVersionHelper.RowVersionObjToByteArray(txtId.Tag);
+                        numRegs = _ventaBLL.Actualizar(venta);
+                        txtId.Tag = venta.RowVersionStr; // se tiene que actualizar por la nota de remision no detecte un cambio
+                        MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
+                        string idVentaCliente = $"La venta con Id: {venta.OrderID} - Cliente: {cboCliente.Text}:";
+                        if (numRegs > 0)
+                            U.NotificacionInformation(idVentaCliente + Utils.sms);
+                        else if (numRegs == -1)
+                            U.NotificacionError(idVentaCliente + Utils.nfmfe);
+                        else if (numRegs == -2)
+                            U.NotificacionError(idVentaCliente + Utils.nfmfm);
+                        else
+                            U.NotificacionError(idVentaCliente + Utils.nfmmd);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    U.MsgCatchOue(ex);
+                }
+                if (numRegs > 0)
+                {
+                    VentaGenerada = true;
+                    btnNota.Enabled = true;
+                    btnNuevo.Enabled = false;
+                    LlenarDgvVentas(false);
+                }
+                else if (numRegs >= -2)
+                {
+                    LlenarDgvVentas(false);
+                    BorrarDatosVenta();
+                    BorrarDatosDetalleVenta();
+                }
+            }
             //else if (tabcOperacion.SelectedTab == tabpEliminar)
             //{
             //    if (U.NotificacionQuestion($"[orange]¿Esta seguro de eliminar la venta con Id: {txtId.Text} del Cliente: {cboCliente.Text}?") == DialogResult.Yes)
@@ -1675,7 +1677,7 @@ namespace NorthwindTradersV5EnCapas
             //        btnGenerar.Enabled = false;
             //    }
             //}
-            //CargarValoresOriginales();
+            CargarValoresOriginales();
         }
 
         private void tabcOperacion_Selecting(object sender, TabControlCancelEventArgs e)
@@ -1715,43 +1717,6 @@ namespace NorthwindTradersV5EnCapas
                 label1.Focus();
                 controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged += NudCantidadDescuento_LeaveValueChangedHandler;
             }
-            return;
-
-            //int result = ChkRowVersion();
-            //string strVenta = $"La venta con Id: {txtId.Text}:";
-            //if (result == -1)
-            //    U.NotificacionError(strVenta + Utils.oevvd);
-            //else if (result == -2)
-            //    U.NotificacionError(strVenta + Utils.fepou);
-            //else if (result == -3)
-            //    U.NotificacionError(strVenta + Utils.fmpousmn);
-            //else if (result == -4)
-            //    U.NotificacionError(strVenta + Utils.oed);
-            //if (result == 1 || result == -3)
-            //{
-            //    FrmRptNotaRemision8 frmRptNotaRemision8 = new FrmRptNotaRemision8();
-            //    frmRptNotaRemision8.Id = int.Parse(txtId.Text);
-            //    frmRptNotaRemision8.ShowDialog();
-            //}
-            //if (result == -2)
-            //{
-            //    nudCantidad.Leave -= nudCantidad_Leave;
-            //    nudDescuento.Leave -= nudDescuento_Leave;
-            //    nudCantidad.ValueChanged -= nudCantidad_ValueChanged;
-            //    nudDescuento.ValueChanged -= nudDescuento_ValueChanged;
-            //    DeshabilitarControles();
-            //    btnNota.Enabled = false;
-            //    BorrarDatosVenta();
-            //    BorrarDatosDetalleVenta();
-            //    LlenarDgvVentas(false);
-            //    CargarValoresOriginales();
-            //    tabcOperacion.Focus();
-            //    nudCantidad.Leave += nudCantidad_Leave;
-            //    nudDescuento.Leave += nudDescuento_Leave;
-            //    nudCantidad.ValueChanged += nudCantidad_ValueChanged;
-            //    nudDescuento.ValueChanged += nudDescuento_ValueChanged;
-            //}
-            //return;
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
