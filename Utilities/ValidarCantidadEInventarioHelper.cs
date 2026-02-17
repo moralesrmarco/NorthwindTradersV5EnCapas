@@ -92,9 +92,9 @@ namespace Utilities
             decimal inventarioActual,
             NumericUpDown nudUInventario,
             ToolTip toolTip,
-            PictureBox pbError,
-            PictureBox pbInfo,
-            PictureBox pbWarning,
+            PictureBox pbError1,
+            PictureBox pbInfo1,
+            PictureBox pbWarning1,
             ErrorProvider errorProvider
         )
         {
@@ -142,12 +142,12 @@ namespace Utilities
             StatusIconHelper.ShowIcons(
                 nudUInventario,
                 toolTip,
-                (pbError, (Image)errorProvider.Icon.ToBitmap(), errorMsg, showError),
-                (pbInfo, (Image)SystemIcons.Information.ToBitmap(),
+                (pbError1, (Image)errorProvider.Icon.ToBitmap(), errorMsg, showError),
+                (pbInfo1, (Image)SystemIcons.Information.ToBitmap(),
                     "- La cantidad de producto devuelto se añade al inventario.\n" +
                     "- La cantidad de producto añadido se descuenta del inventario.",
                     showInfo),
-                (pbWarning, (Image)SystemIcons.Warning.ToBitmap(), warningMsg, showWarning)
+                (pbWarning1, (Image)SystemIcons.Warning.ToBitmap(), warningMsg, showWarning)
             );
         }
     }

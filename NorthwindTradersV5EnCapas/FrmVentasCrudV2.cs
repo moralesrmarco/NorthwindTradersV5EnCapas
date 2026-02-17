@@ -1358,7 +1358,7 @@ namespace NorthwindTradersV5EnCapas
                     }
                     EliminarProducto(ventaDetalle);
                 }
-                if (e.ColumnIndex == dgv.Columns["Modificar"].Index)
+                if ((e.ColumnIndex == dgv.Columns["Modificar"].Index & tabcOperacion.SelectedTab == tabpModificar) | (VentaGenerada & e.ColumnIndex == dgv.Columns["Modificar"].Index & tabcOperacion.SelectedTab == tabpRegistrar))
                 {
                     DataGridViewRow dgvr = dgv.CurrentRow;
                     using (FrmVentasDetalleModificar frmVentasDetalleModificar = new FrmVentasDetalleModificar())
@@ -1399,6 +1399,39 @@ namespace NorthwindTradersV5EnCapas
                             btnNota.Enabled = false;
                             DeshabilitarControles();
                             LlenarDgvVentas(false);
+                        }
+                    }
+                }
+                if (!VentaGenerada & e.ColumnIndex == dgv.Columns["Modificar"].Index & tabcOperacion.SelectedTab == tabpRegistrar)
+                {
+                    DataGridViewRow dgvr = dgv.CurrentRow;
+                    using (FrmVentasDetalleModificar2 frmPedidosDetalleModificar2 = new FrmVentasDetalleModificar2())
+                    {
+                        VentaDetalle ventaDetalle = new VentaDetalle()
+                        {
+                            Producto = new Producto()
+                            {
+                                ProductID = (int)dgvr.Cells["ProductoId"].Value,
+                                ProductName = dgvr.Cells["Producto"].Value.ToString()
+                            },
+                            UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
+                            Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
+                            Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString())
+                        };
+                        frmPedidosDetalleModificar2.ventaDetalle = ventaDetalle;
+                        DialogResult dialogResult = frmPedidosDetalleModificar2.ShowDialog();
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            // Actualiza los valores en la fila actual del DataGridView
+                            dgvr.Cells["Cantidad"].Value = frmPedidosDetalleModificar2.ventaDetalle.Quantity;
+                            dgvr.Cells["Importe"].Value = frmPedidosDetalleModificar2.ventaDetalle.SubtotalDelImporteConIVAIncluido;
+                            dgvr.Cells["Descuento"].Value = frmPedidosDetalleModificar2.ventaDetalle.Discount;
+                            dgvr.Cells["ImporteDelDescuento"].Value = frmPedidosDetalleModificar2.ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento;
+                            dgvr.Cells["ImporteConDescuento"].Value = frmPedidosDetalleModificar2.ventaDetalle.SubtotalDelImporteConIVAConDescuento;
+                            dgvr.Cells["ImporteSinIVA"].Value = frmPedidosDetalleModificar2.ventaDetalle.SubtotalDelImporteSinIVAConDescuento;
+                            dgvr.Cells["ImporteDelIVA"].Value = frmPedidosDetalleModificar2.ventaDetalle.SubtotalIVADespuesDelDescuento;
+                            dgvr.Cells["Subtotal"].Value = frmPedidosDetalleModificar2.ventaDetalle.Subtotal;
+                            CalcularTotales();
                         }
                     }
                 }

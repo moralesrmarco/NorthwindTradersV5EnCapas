@@ -8,21 +8,23 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmVentasDetalleModificar : Form
+    public partial class FrmVentasDetalleModificar2 : Form
     {
+
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private Dictionary<string, object> valoresOriginales;
         private VentaDetalleBLL _ventaDetalleBLL;
         private VentaBLL _ventaBLL;
         private ProductoBLL _productoBLL;
 
-        public VentaDetalle ventaDetalle;
+        public VentaDetalle ventaDetalle { get; set; }
+
         private short CantidadOld;
         private decimal DescuentoOld;
         private short UInventarioOld;
 
 
-        public FrmVentasDetalleModificar()
+        public FrmVentasDetalleModificar2()
         {
             InitializeComponent();
             _ventaDetalleBLL = new VentaDetalleBLL(_connectionString);
@@ -30,20 +32,20 @@ namespace NorthwindTradersV5EnCapas
             _productoBLL = new ProductoBLL(_connectionString);
         }
 
-        private void FrmVentasDetalleModificar_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
+        private void FrmVentasDetalleModificar2_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmVentasDetalleModificar_FormClosing(object sender, FormClosingEventArgs e)
+        private void FrmVentasDetalleModificar2_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)
                     e.Cancel = true;
         }
 
-        private void FrmVentasDetalleModificar_Load(object sender, EventArgs e)
+        private void FrmVentasDetalleModificar2_Load(object sender, EventArgs e)
         {
             controlAgregarProducto.GrbProducto.Text = "»   Modificar producto de la venta:   «";
             controlAgregarProducto.BtnAgregar.Visible = false;
-            txtId.Text = ventaDetalle.Venta.OrderID.ToString();
+            txtId.Text = string.Empty;
             controlAgregarProducto.CboCategoria.Enabled = false;
             controlAgregarProducto.CboProducto.Enabled = false;
 
@@ -66,7 +68,7 @@ namespace NorthwindTradersV5EnCapas
             }
             controlAgregarProducto.CboProducto.SelectedItem = ventaDetalle.Producto.ProductName;
             controlAgregarProducto.NudPrecioConIVAIncluido.Value = ventaDetalle.UnitPrice;
-            controlAgregarProducto.NudUInventario.Value = ObtenerUInventario();
+            controlAgregarProducto.NudUInventario.Value = ObtenerUInventario(); 
             controlAgregarProducto.NudCantidad.Value = ventaDetalle.Quantity;
             controlAgregarProducto.NudDescuento.Value = ventaDetalle.TasaDescuentoPorcentaje;
             DeshabilitarNudsNoSeleccionables();
@@ -153,7 +155,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
@@ -266,50 +268,14 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            int numRegs = 0;
             // No se realiza la validación porque ya se han realizado previamente en el evento leave y valuechanged de 
             // txtdescuento y txtcantidad
             try
             {
                 btnModificar.Enabled = false;
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
-                VentaDetalle ventaDetalleModificacion = new VentaDetalle
-                {
-                    Venta = new Venta() 
-                    { 
-                        OrderID = ventaDetalle.Venta.OrderID,
-                        RowVersion = ventaDetalle.Venta.RowVersion
-                    },
-                    Producto = new Producto() { ProductID = ventaDetalle.Producto.ProductID },
-                    Quantity = short.Parse(controlAgregarProducto.NudCantidad.Value.ToString()),
-                    Discount = decimal.Parse((controlAgregarProducto.NudDescuento.Value / 100m).ToString()),
-                    RowVersion = ventaDetalle.RowVersion
-                };
-                numRegs = _ventaDetalleBLL.Actualizar(ventaDetalleModificacion);
-                string strProductoVenta = $"El producto: {ventaDetalle.ProductName} - Venta: {ventaDetalle.Venta.OrderID}:";
-                string strVenta = $"La venta con Id: {ventaDetalle.Venta.OrderID}:";
-                if (numRegs > 0)
-                {
-                    // deja que continue el proceso para cerrar el formulario
-                }
-                else if (numRegs == -1)
-                    U.NotificacionError(strProductoVenta + Utils.nfmfe);
-                else if (numRegs == -2)
-                    U.NotificacionError(strProductoVenta + Utils.nfmfm);
-                else if (numRegs == -3)
-                    U.NotificacionError(strVenta + Utils.fepou);
-                else if (numRegs == -4)
-                    U.NotificacionError(strProductoVenta + "\n[red]No fue actualizado en la base de datos.\n" + strVenta + Utils.fmpou);
-                else if (numRegs == -5)
-                    U.NotificacionError(strProductoVenta + Utils.nfmcqn); // El campo Quantity del detalle de la venta es nulo, este caso no ocurre nunca
-                else if (numRegs == -6)
-                    U.NotificacionError(strProductoVenta + Utils.nfmii); // Stock insuficiente
-                else if (numRegs == -7)
-                    U.NotificacionError(strProductoVenta + Utils.nfmie); // Stock excedió el máximo permitido
-                else if (numRegs == -8)
-                    U.NotificacionError(strProductoVenta + Utils.nfmin); // stock negativo, este caso nunca ocurre porque la base de datos no lo permite con un check constraint
-                else
-                    U.NotificacionError(strProductoVenta + Utils.nfmmd);
+                ventaDetalle.Quantity = (short)controlAgregarProducto.NudCantidad.Value;
+                ventaDetalle.Discount = controlAgregarProducto.NudDescuento.Value / 100m;
             }
             catch (Exception ex)
             {
@@ -322,10 +288,10 @@ namespace NorthwindTradersV5EnCapas
             // La siguientes linea es necesaria para que se permita cerrar la ventana. 
             // ya que se validan las variables en FrmPedidosDetalleModificar_FormClosing
             CargarValoresOriginales();
-            if (numRegs == -3)
-                DialogResult = DialogResult.Cancel;
-            else
-                DialogResult = DialogResult.OK;
+            //if (numRegs == -3)
+            //    DialogResult = DialogResult.Cancel;
+            //else
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
