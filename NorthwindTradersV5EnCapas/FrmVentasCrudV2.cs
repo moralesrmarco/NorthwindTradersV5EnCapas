@@ -1119,6 +1119,7 @@ namespace NorthwindTradersV5EnCapas
             else
             {
                 DeshabilitarControlesProducto();
+                btnNuevo.Enabled = false;
                 if (tabcOperacion.SelectedTab == tabpRegistrar & !VentaGenerada)
                 {
                     InicializarNudsProducto();
@@ -1164,8 +1165,68 @@ namespace NorthwindTradersV5EnCapas
                 {
                     try
                     {
-                        MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
                         DeshabilitarTodosControles();
+                        if (Utils.HayCambiosEnVenta(this, valoresOriginales))
+                        {
+                            MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
+                            Venta venta = new Venta();
+                            venta.OrderID = int.Parse(txtId.Text);
+                            venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString().Trim();
+                            venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
+                            if (dtpVenta != null && dtpHoraVenta != null)
+                                venta.OrderDate = Utils.ObtenerFechaHora(dtpVenta, dtpHoraVenta);
+                            if (dtpRequerido != null && dtpHoraRequerido != null)
+                                venta.RequiredDate = Utils.ObtenerFechaHora(dtpRequerido, dtpHoraRequerido);
+                            if (dtpEnvio != null && dtpHoraEnvio != null)
+                                venta.ShippedDate = Utils.ObtenerFechaHora(dtpEnvio, dtpHoraEnvio);
+                            venta.Transportista.ShipperID = Convert.ToInt32(cboTransportista.SelectedValue);
+                            venta.ShipName = txtDirigidoa.Text.Trim();
+                            venta.ShipAddress = txtDomicilio.Text.Trim();
+                            venta.ShipCity = txtCiudad.Text.Trim();
+                            venta.ShipRegion = txtRegion.Text.Trim();
+                            venta.ShipPostalCode = txtCP.Text.Trim();
+                            venta.ShipCountry = txtPais.Text.Trim();
+                            venta.Freight = nudFlete.Value;
+                            venta.RowVersion = RowVersionHelper.RowVersionObjToByteArray(txtId.Tag);
+                            numRegs = _ventaBLL.Actualizar(venta);
+                            txtId.Tag = venta.RowVersionStr; // se tiene que actualizar por la nota de remision no detecte un cambio
+                            MDIPrincipal.ActualizarBarraDeEstado($"Se actualizaron {(numRegs < 0 ? 0 : numRegs)} registro(s)");
+                            string idVentaCliente = $"La venta con Id: {venta.OrderID} - Cliente: {cboCliente.Text}:";
+                            if (numRegs > 0)
+                            {
+                                LlenarDgvVentas(false);
+                                VentaGenerada = true;
+                            }
+                            else if (numRegs == -1)
+                            {
+                                U.NotificacionError(idVentaCliente + Utils.nfmfe);
+                                BorrarDatosVenta();
+                                BorrarDatosDetalleVenta();
+                                btnNuevo.Enabled = true;
+                                return;
+                            }
+                            else if (numRegs == -2)
+                            {
+                                int orderId = string.IsNullOrEmpty(txtId.Text) ? 0 : Convert.ToInt32(txtId.Text);
+                                LlenarDgvVentas(false);
+                                U.NotificacionError(idVentaCliente + Utils.nfmfm);
+                                BorrarDatosVenta();
+                                BorrarDatosDetalleVenta();
+                                LlenarDatosVenta(ref orderId);
+                                LlenarDatosDetalleVenta(orderId);
+                                btnNuevo.Enabled = true;
+                                return;
+                            }
+                            else
+                            {
+                                U.NotificacionError(idVentaCliente + Utils.nfmmd);
+                                BorrarDatosVenta();
+                                BorrarDatosDetalleVenta();
+                                btnNuevo.Enabled = true;
+                                return;
+                            }
+                        }
+                        MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
                         VentaDetalle ventaDetalle = new VentaDetalle();
                         ventaDetalle.Venta.OrderID = int.Parse(txtId.Text);
                         ventaDetalle.Venta.RowVersion = (txtId.Tag != null && long.TryParse(txtId.Tag.ToString(), out long tagVal))
@@ -1262,6 +1323,7 @@ namespace NorthwindTradersV5EnCapas
                         U.MsgCatchOue(ex);
                     }
                 }
+                btnNuevo.Enabled = true;
             }
         }
 
@@ -1444,7 +1506,7 @@ namespace NorthwindTradersV5EnCapas
                         U.NotificacionError(strProductoVenta + Utils.nfeie); // Stock excedió el máximo permitido
                     if (numRegs == -8)
                         U.NotificacionError(strProductoVenta + Utils.nfein); // stock negativo, este caso nunca ocurre porque la base de datos no lo permite con un check constraint
-                    if (numRegs < -9)
+                    if (numRegs <= -9)
                         U.NotificacionError(strProductoVenta + Utils.nfemd);
                     if (numRegs == -3)
                     {
@@ -1453,9 +1515,8 @@ namespace NorthwindTradersV5EnCapas
                         DeshabilitarControles();
                         LlenarDgvVentas(false);
                         CargarValoresOriginales();
+                        tableLayoutPanel1.Focus();
                     }
-                    //if (numRegs != -3)
-                    //    HabilitarControles();
                 }
             }
             catch (Exception ex)

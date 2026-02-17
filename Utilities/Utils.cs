@@ -32,7 +32,7 @@ namespace Utilities
         public const string srs = "\n[green]Se registró satisfactoriamente.";
         public const string nfrs = "\n[red]NO fue registrado en la base de datos por un motivo desconocido.";
         public const string sms = "\n[green]Se actualizó satisfactoriamente.";
-        public const string nfrfa = "\n[red]NO fue registrado el la base de datos, el registro ya fue agregado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfrfa = "\n[red]NO fue registrado en la base de datos, el registro ya fue agregado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfrii = "\n[red]NO fue registrado en la base de datos, el inventario del producto fue insuficiente.\n[gold]El registro de productos pudo haber sido modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfrie = "\n[red]NO fue registrado en la base de datos, el inventario del producto excedió el límite máximo que se puede almacenar en la base de datos (32,767 unidades).";
         public const string nfrin = "\n[red]NO fue registrado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
@@ -220,11 +220,6 @@ namespace Utilities
         // Ahora recibe también el ErrorProvider
         public static bool HayCambios(Control parent, Dictionary<string, object> valoresOriginales, ErrorProvider errorProvider)
         {
-            //if (valoresOriginales == null)
-            //{
-            //    // sin baseline, lanza excepción
-            //    throw new Exception("Error al ejecutar el metodo HayCambios, el diccionario de valores originales no puede ser nulo.");
-            //}
             bool hayCambios = false;
 
             // Limpiar errores previos
@@ -305,6 +300,140 @@ namespace Utilities
                             hayCambios = true;
                             errorProvider.SetError(nud, ecfm);
                         }
+                    }
+                }
+            }
+            return hayCambios;
+        }
+
+        // solo detecta si hay cambios, no muestra errores en los controles
+        public static bool HayCambios(Control parent, Dictionary<string, object> valoresOriginales)
+        {
+            bool hayCambios = false;
+
+            foreach (Control ctrl in GetAllControls(parent))
+            {
+                var name = ctrl.Name;
+                if (string.IsNullOrEmpty(name)) continue;
+
+                if (ctrl is TextBox txt)
+                {
+                    if (name.StartsWith("txtB", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = txt.Text.Trim() ?? string.Empty;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is ComboBox cbo)
+                {
+                    if (name.StartsWith("cboB", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = cbo.SelectedIndex;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is CheckBox chk)
+                {
+                    if (name.StartsWith("chkbB", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = chk.Checked;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is DateTimePicker dtp)
+                {
+                    if (name.StartsWith("dtpB", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = dtp.Value;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is NumericUpDown nud)
+                {
+                    if (name.StartsWith("nudB", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = nud.Value;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+            }
+            return hayCambios;
+        }
+
+        // solo detecta si hay cambios en venta, no muestra errores en los controles
+        public static bool HayCambiosEnVenta(Control parent, Dictionary<string, object> valoresOriginales)
+        {
+            bool hayCambios = false;
+
+            // Lista de controles que sí deben verificarse
+            var controlesPermitidos = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "cboCliente", "cboEmpleado", "dtpVenta", "dtpHoraVenta",
+                "dtpRequerido", "dtpHoraRequerido", "dtpEnvio", "dtpHoraEnvio",
+                "cboTransportista", "txtDirigidoa", "txtDomicilio", "txtCiudad",
+                "txtRegion", "txtCP", "txtPais", "nudFlete"
+            };
+
+            foreach (Control ctrl in GetAllControls(parent))
+            {
+                var name = ctrl.Name;
+                if (string.IsNullOrEmpty(name)) continue;
+
+                // Ignorar controles que no estén en la lista
+                if (!controlesPermitidos.Contains(name))
+                    continue;
+
+                if (ctrl is TextBox txt)
+                {
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = txt.Text.Trim() ?? string.Empty;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is ComboBox cbo)
+                {
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = cbo.SelectedIndex;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is DateTimePicker dtp)
+                {
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = dtp.Value;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
+                    }
+                }
+                else if (ctrl is NumericUpDown nud)
+                {
+                    if (valoresOriginales.TryGetValue(name, out var original))
+                    {
+                        var actual = nud.Value;
+                        if (!Equals(original, actual))
+                            hayCambios = true;
                     }
                 }
             }
