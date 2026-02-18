@@ -247,35 +247,11 @@
     <Compile Include="FrmVentasCrudV2.Designer.cs">
       <DependentUpon>FrmVentasCrudV2.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmVentasCrud - Copia.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasCrud - Copia.Designer.cs">
-      <DependentUpon>FrmVentasCrud - Copia.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVentasCrud.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasCrud.Designer.cs">
-      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmVentasDetalleModificar2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmVentasDetalleModificar2.Designer.cs">
       <DependentUpon>FrmVentasDetalleModificar2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVentasDetalleModificar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasDetalleModificar.Designer.cs">
-      <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVentasDetalleCrud.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVentasDetalleCrud.Designer.cs">
-      <DependentUpon>FrmVentasDetalleCrud.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmRptNotaRemision8.cs">
       <SubType>Form</SubType>
@@ -472,20 +448,8 @@
     <EmbeddedResource Include="FrmVentasCrudV2.resx">
       <DependentUpon>FrmVentasCrudV2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasCrud - Copia.resx">
-      <DependentUpon>FrmVentasCrud - Copia.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasCrud.resx">
-      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasDetalleModificar2.resx">
       <DependentUpon>FrmVentasDetalleModificar2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasDetalleModificar.resx">
-      <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmVentasDetalleCrud.resx">
-      <DependentUpon>FrmVentasDetalleCrud.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRptNotaRemision8.resx">
       <DependentUpon>FrmRptNotaRemision8.cs</DependentUpon>
