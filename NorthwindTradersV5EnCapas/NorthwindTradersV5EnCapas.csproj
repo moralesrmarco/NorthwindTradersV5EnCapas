@@ -241,11 +241,29 @@
     <Compile Include="FrmCategoriasConProductosListado.Designer.cs">
       <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmVentasCrud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasCrud.Designer.cs">
+      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVentasCrudV2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmVentasCrudV2.Designer.cs">
       <DependentUpon>FrmVentasCrudV2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasDetalleCrud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasDetalleCrud.Designer.cs">
+      <DependentUpon>FrmVentasDetalleCrud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmVentasDetalleModificar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVentasDetalleModificar.Designer.cs">
+      <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmVentasDetalleModificar2.cs">
       <SubType>Form</SubType>
@@ -445,8 +463,17 @@
     <EmbeddedResource Include="FrmCategoriasConProductosListado.resx">
       <DependentUpon>FrmCategoriasConProductosListado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasCrud.resx">
+      <DependentUpon>FrmVentasCrud.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasCrudV2.resx">
       <DependentUpon>FrmVentasCrudV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasDetalleCrud.resx">
+      <DependentUpon>FrmVentasDetalleCrud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVentasDetalleModificar.resx">
+      <DependentUpon>FrmVentasDetalleModificar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasDetalleModificar2.resx">
       <DependentUpon>FrmVentasDetalleModificar2.cs</DependentUpon>

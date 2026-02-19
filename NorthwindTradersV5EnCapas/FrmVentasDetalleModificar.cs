@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Windows.Forms;
 using Utilities;
+using static Utilities.InventarioHelper;
 
 namespace NorthwindTradersV5EnCapas
 {
@@ -13,20 +14,18 @@ namespace NorthwindTradersV5EnCapas
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private Dictionary<string, object> valoresOriginales;
         private VentaDetalleBLL _ventaDetalleBLL;
-        private VentaBLL _ventaBLL;
         private ProductoBLL _productoBLL;
 
         public VentaDetalle ventaDetalle;
         private short CantidadOld;
         private decimal DescuentoOld;
         private short UInventarioOld;
-
+        private decimal InventarioRealDb;
 
         public FrmVentasDetalleModificar()
         {
             InitializeComponent();
             _ventaDetalleBLL = new VentaDetalleBLL(_connectionString);
-            _ventaBLL = new VentaBLL(_connectionString);
             _productoBLL = new ProductoBLL(_connectionString);
         }
 
@@ -66,14 +65,33 @@ namespace NorthwindTradersV5EnCapas
             }
             controlAgregarProducto.CboProducto.SelectedItem = ventaDetalle.Producto.ProductName;
             controlAgregarProducto.NudPrecioConIVAIncluido.Value = ventaDetalle.UnitPrice;
-            controlAgregarProducto.NudUInventario.Value = ObtenerUInventario();
+
+            InventarioRealDb = ObtenerUInventario();
+            // Actualizar inventario en UI con modo Reconstruido
+            InventarioHelper.ActualizarInventarioUi(
+                ventaDetalle.Quantity,   // cantidad nueva
+                ventaDetalle.Quantity,   // cantidad vieja (inicialmente igual)
+                InventarioRealDb,        // inventario viejo
+                controlAgregarProducto.NudUInventario,
+                ModoInventario.Reconstruido
+            );
+
+            //InventarioHelper.ActualizarInventarioUi(
+            //        ventaDetalle.Quantity,   // cantidad nueva
+            //        ventaDetalle.Quantity,   // cantidad vieja (inicialmente igual)
+            //        InventarioRealDb,        // inventario viejo
+            //        controlAgregarProducto.NudUInventario
+            //    );
+
+            UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
+
             controlAgregarProducto.NudCantidad.Value = ventaDetalle.Quantity;
             controlAgregarProducto.NudDescuento.Value = ventaDetalle.TasaDescuentoPorcentaje;
             DeshabilitarNudsNoSeleccionables();
             CalcularTotalProducto();
             CantidadOld = ventaDetalle.Quantity;
             DescuentoOld = ventaDetalle.TasaDescuentoPorcentaje;
-            UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
+            //UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
             ValidarCantidadEInventarioHelper.ValidarInventario
             (
                 controlAgregarProducto.NudCantidad.Value,
@@ -92,7 +110,7 @@ namespace NorthwindTradersV5EnCapas
                 controlAgregarProducto.NudCantidad.Value,
                 CantidadOld,
                 UInventarioOld,
-                controlAgregarProducto.NudUInventario.Value,
+                InventarioRealDb, // <-- usar inventario real
                 controlAgregarProducto.NudCantidad,
                 toolTip1,
                 controlAgregarProducto.PbError,
@@ -165,15 +183,22 @@ namespace NorthwindTradersV5EnCapas
                 errorProvider1.Clear();
                 // Recalcula importes
                 CalcularTotalProducto();
-                InventarioHelper.ActualizarInventarioUi
-                (
-                    controlAgregarProducto.NudCantidad.Value,
-                    CantidadOld,
-                    UInventarioOld,
-                    controlAgregarProducto.NudUInventario
+
+                // Recalcular inventario en UI con modo Reconstruido
+                InventarioHelper.ActualizarInventarioUi(
+                    controlAgregarProducto.NudCantidad.Value, // cantidad nueva
+                    CantidadOld,                              // cantidad vieja
+                    UInventarioOld,                           // inventario viejo
+                    controlAgregarProducto.NudUInventario,
+                    ModoInventario.Reconstruido
                 );
-                // Validación informativa (inventario)
-                // no afecta el retorno, solo muestra íconos
+
+                //InventarioHelper.ActualizarInventarioUi(
+                //    controlAgregarProducto.NudCantidad.Value, // cantidad nueva
+                //    CantidadOld,                              // cantidad vieja
+                //    UInventarioOld,                           // inventario viejo
+                //    controlAgregarProducto.NudUInventario
+                //);
                 ValidarCantidadEInventarioHelper.ValidarInventario
                 (
                     controlAgregarProducto.NudCantidad.Value,
@@ -194,7 +219,7 @@ namespace NorthwindTradersV5EnCapas
                         controlAgregarProducto.NudCantidad.Value,
                         CantidadOld,
                         UInventarioOld,
-                        controlAgregarProducto.NudUInventario.Value,
+                        InventarioRealDb, // ✅ inventario real
                         controlAgregarProducto.NudCantidad,
                         toolTip1,
                         controlAgregarProducto.PbError,
