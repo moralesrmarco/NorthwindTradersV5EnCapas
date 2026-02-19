@@ -1394,7 +1394,7 @@ namespace NorthwindTradersV5EnCapas
                             LlenarDatosDetalleVenta(orderId);
                             CargarValoresOriginales();
                         }
-                        else
+                        else if (dialogResult == DialogResult.Cancel)
                         {
                             btnNota.Enabled = false;
                             DeshabilitarControles();

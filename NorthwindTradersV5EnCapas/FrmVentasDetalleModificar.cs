@@ -76,13 +76,6 @@ namespace NorthwindTradersV5EnCapas
                 ModoInventario.Reconstruido
             );
 
-            //InventarioHelper.ActualizarInventarioUi(
-            //        ventaDetalle.Quantity,   // cantidad nueva
-            //        ventaDetalle.Quantity,   // cantidad vieja (inicialmente igual)
-            //        InventarioRealDb,        // inventario viejo
-            //        controlAgregarProducto.NudUInventario
-            //    );
-
             UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
 
             controlAgregarProducto.NudCantidad.Value = ventaDetalle.Quantity;
@@ -91,7 +84,6 @@ namespace NorthwindTradersV5EnCapas
             CalcularTotalProducto();
             CantidadOld = ventaDetalle.Quantity;
             DescuentoOld = ventaDetalle.TasaDescuentoPorcentaje;
-            //UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
             ValidarCantidadEInventarioHelper.ValidarInventario
             (
                 controlAgregarProducto.NudCantidad.Value,
@@ -193,12 +185,6 @@ namespace NorthwindTradersV5EnCapas
                     ModoInventario.Reconstruido
                 );
 
-                //InventarioHelper.ActualizarInventarioUi(
-                //    controlAgregarProducto.NudCantidad.Value, // cantidad nueva
-                //    CantidadOld,                              // cantidad vieja
-                //    UInventarioOld,                           // inventario viejo
-                //    controlAgregarProducto.NudUInventario
-                //);
                 ValidarCantidadEInventarioHelper.ValidarInventario
                 (
                     controlAgregarProducto.NudCantidad.Value,

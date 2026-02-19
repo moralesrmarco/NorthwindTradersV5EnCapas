@@ -80,15 +80,7 @@ namespace NorthwindTradersV5EnCapas
             );
             UInventarioOld = (short)InventarioCalculado;
 
-            ////InventarioCalculado = InventarioHelper.ActualizarInventarioUi(
-            ////    ventaDetalle.Quantity,
-            ////    InventarioRealDb,
-            ////    controlAgregarProducto.NudUInventario,
-            ////    mostrarInventarioReal: false // disponible
-            ////);
-
             //// Guardar el valor para validaciones posteriores
-            //UInventarioOld = (short)InventarioCalculado;
 
             controlAgregarProducto.NudCantidad.Value = ventaDetalle.Quantity;
             controlAgregarProducto.NudDescuento.Value = ventaDetalle.TasaDescuentoPorcentaje;
@@ -96,7 +88,6 @@ namespace NorthwindTradersV5EnCapas
             CalcularTotalProducto();
             CantidadOld = ventaDetalle.Quantity;
             DescuentoOld = ventaDetalle.TasaDescuentoPorcentaje;
-            //UInventarioOld = Convert.ToInt16(controlAgregarProducto.NudUInventario.Value);
             ValidarCantidadEInventarioHelper.ValidarInventario
             (
                 controlAgregarProducto.NudCantidad.Value,
@@ -197,12 +188,6 @@ namespace NorthwindTradersV5EnCapas
                     controlAgregarProducto.NudUInventario,
                     ModoInventario.Disponibilidad
                 );
-
-                //InventarioHelper.ActualizarInventarioUi(
-                //    controlAgregarProducto.NudCantidad.Value,
-                //    InventarioRealDb, // ✅ inventario real obtenido una sola vez en Load
-                //    controlAgregarProducto.NudUInventario
-                //);
 
                 // Validación informativa (inventario)
                 // no afecta el retorno, solo muestra íconos
