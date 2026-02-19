@@ -23,8 +23,6 @@ namespace NorthwindTradersV5EnCapas
         private decimal DescuentoOld;
         private short UInventarioOld;
         private decimal InventarioRealDb;
-        //private decimal CantidadReservada;
-        //private decimal InventarioUi;
         private decimal InventarioCalculado;
 
         public FrmVentasDetalleModificar2()
@@ -73,8 +71,8 @@ namespace NorthwindTradersV5EnCapas
             InventarioRealDb = ObtenerUInventario();
             InventarioCalculado = InventarioHelper.ActualizarInventarioUi(
                 ventaDetalle.Quantity,   // cantidad nueva
-                0,             // cantidad vieja
-                InventarioRealDb,        // inventario real
+                0,  // cantidad vieja
+                InventarioRealDb,   // inventario real
                 controlAgregarProducto.NudUInventario,
                 ModoInventario.Disponibilidad
             );
@@ -183,8 +181,8 @@ namespace NorthwindTradersV5EnCapas
                 // Recalcular inventario en UI con modo Disponibilidad
                 InventarioHelper.ActualizarInventarioUi(
                     controlAgregarProducto.NudCantidad.Value, // cantidad nueva
-                    0,                              // cantidad vieja
-                    UInventarioOld,                           // inventario viejo
+                    0,  // cantidad vieja
+                    InventarioRealDb, // inventario viejo
                     controlAgregarProducto.NudUInventario,
                     ModoInventario.Disponibilidad
                 );
