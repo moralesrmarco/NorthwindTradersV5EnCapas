@@ -13,6 +13,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
+// es importante que la programacion de los datetimepickers se haga justo como esta especificado para que funcionen las validaciones lo resolvi con la ayuda de IA chatgpt
+
 namespace NorthwindTradersV5EnCapas
 {
     public partial class FrmVentasCrudV2 : Form
@@ -140,9 +142,11 @@ namespace NorthwindTradersV5EnCapas
 
         private void InicializarDtps()
         {
+            DeshabilitarEventosFechas();
             dtpVenta.Checked = dtpRequerido.Checked = dtpEnvio.Checked = false;
             dtpVenta.Value = dtpRequerido.Value = dtpEnvio.Value = dtpVenta.MinDate;
             dtpHoraVenta.Value = dtpHoraRequerido.Value = dtpHoraEnvio.Value = DateTime.Today;
+            HabilitarEventosFechas();
         }
 
         private void OcultarCols() => controlDetalleDeLaVenta.DgvDetalle.Columns["Modificar"].Visible = controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Visible = false;
@@ -232,7 +236,7 @@ namespace NorthwindTradersV5EnCapas
             txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = true;
 
             dtpVenta.Enabled = dtpHoraVenta.Enabled = dtpRequerido.Enabled = dtpHoraRequerido.Enabled = dtpEnvio.Enabled = dtpHoraEnvio.Enabled = false;
-            
+
             btnGenerar.Enabled = btnNota.Enabled = false;
 
             controlAgregarProducto.CboCategoria.Enabled = controlAgregarProducto.CboProducto.Enabled = controlAgregarProducto.BtnAgregar.Enabled = false;
@@ -247,7 +251,7 @@ namespace NorthwindTradersV5EnCapas
             txtDirigidoa.ReadOnly = txtDomicilio.ReadOnly = txtCiudad.ReadOnly = txtRegion.ReadOnly = txtCP.ReadOnly = txtPais.ReadOnly = false;
 
             dtpVenta.Enabled = true;
-            dtpRequerido.Enabled = dtpEnvio.Enabled = false;
+            dtpRequerido.Enabled = dtpEnvio.Enabled = true;
 
             controlAgregarProducto.CboProducto.Enabled = controlAgregarProducto.BtnAgregar.Enabled = false;
             controlAgregarProducto.CboCategoria.Enabled = true;
@@ -764,13 +768,12 @@ namespace NorthwindTradersV5EnCapas
         {
             if (dtpVenta.Checked)
             {
-                dtpHoraVenta.Value = DateTime.Now; // este es para que me ponga el componente del time
-                if (dtpVenta.Enabled)
-                    dtpHoraVenta.Enabled = true;
+                dtpVenta.Value = dtpHoraVenta.Value = DateTime.Now;
+                SincronizarHabilitarHoras();
             }
             else
             {
-                dtpHoraVenta.Value = DateTime.Today; // este es para que no me ponga el componente del time
+                dtpVenta.Value = dtpHoraVenta.Value = dtpVenta.MinDate;
                 dtpHoraVenta.Enabled = false;
             }
         }
@@ -779,13 +782,13 @@ namespace NorthwindTradersV5EnCapas
         {
             if (dtpRequerido.Checked)
             {
-                dtpHoraRequerido.Value = Convert.ToDateTime(DateTime.Today.ToShortDateString() + " 12:00:00.000");
-                if (dtpRequerido.Enabled)
-                    dtpHoraRequerido.Enabled = true;
+                dtpRequerido.Value = DateTime.Now;
+                dtpHoraRequerido.Value = DateTime.Today.AddHours(12);
+                SincronizarHabilitarHoras();
             }
             else
             {
-                dtpHoraRequerido.Value = DateTime.Today;
+                dtpRequerido.Value = dtpHoraRequerido.Value = dtpRequerido.MinDate;
                 dtpHoraRequerido.Enabled = false;
             }
         }
@@ -794,13 +797,13 @@ namespace NorthwindTradersV5EnCapas
         {
             if (dtpEnvio.Checked)
             {
-                dtpHoraEnvio.Value = Convert.ToDateTime(DateTime.Today.ToShortDateString() + " 12:00:00.000");
-                if (dtpEnvio.Enabled)
-                    dtpHoraEnvio.Enabled = true;
+                dtpEnvio.Value = DateTime.Now;
+                dtpHoraEnvio.Value = DateTime.Today.AddHours(12);
+                SincronizarHabilitarHoras();
             }
             else
             {
-                dtpHoraEnvio.Value = DateTime.Today;
+                dtpEnvio.Value = dtpHoraEnvio.Value = dtpEnvio.MinDate;
                 dtpHoraEnvio.Enabled = false;
             }
         }
@@ -969,7 +972,7 @@ namespace NorthwindTradersV5EnCapas
                     {
                         HabilitarControles();
 
-                        dtpRequerido.Enabled = dtpEnvio.Enabled = true;
+                        SincronizarHabilitarHoras();
 
                         btnGenerar.Enabled = true;
                         btnNota.Enabled = false;
@@ -987,13 +990,14 @@ namespace NorthwindTradersV5EnCapas
                 }
             }
             CargarValoresOriginales();
-            //controlDetalleDeLaVenta.DgvDetalle.Focus();
             grbVenta.Focus();
         }
 
         private void LlenarDatosVenta(ref int orderId)
         {
             if (orderId == 0) return;
+            // 1. Apagar eventos para que no se disparen los ValueChanged al cargar
+            DeshabilitarEventosFechas();
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
@@ -1031,32 +1035,27 @@ namespace NorthwindTradersV5EnCapas
                     }
                     if (venta.RequiredDate.HasValue)
                     {
-                        dtpRequerido.Checked = true;
-                        dtpHoraRequerido.Enabled = true;                        
                         dtpRequerido.Value = venta.RequiredDate.Value;
                         dtpHoraRequerido.Value = venta.RequiredDate.Value;
-
+                        dtpRequerido.Checked = true; // Forzamos el check si hay dato
                     }
                     else
                     {
-                        dtpRequerido.Checked = false;
-                        dtpHoraRequerido.Enabled = false;                        
                         dtpRequerido.Value = dtpRequerido.MinDate;
-                        dtpHoraRequerido.Value = DateTime.Today;
+                        dtpHoraRequerido.Value = dtpRequerido.MinDate;
+                        dtpRequerido.Checked = false; // FORZAMOS UNCHECK SI ES NULO
                     }
                     if (venta.ShippedDate.HasValue)
                     {
-                        dtpEnvio.Checked = true;
-                        dtpHoraEnvio.Enabled = true;
                         dtpEnvio.Value = venta.ShippedDate.Value;
                         dtpHoraEnvio.Value = venta.ShippedDate.Value;
+                        dtpEnvio.Checked = true;
                     }
                     else
                     {
-                        dtpEnvio.Checked = false;
-                        dtpHoraEnvio.Enabled = false;
                         dtpEnvio.Value = dtpEnvio.MinDate;
-                        dtpHoraEnvio.Value = DateTime.Today;
+                        dtpHoraEnvio.Value = dtpEnvio.MinDate;
+                        dtpEnvio.Checked = false; // FORZAMOS UNCHECK SI ES NULO
                     }
 
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
@@ -1072,6 +1071,12 @@ namespace NorthwindTradersV5EnCapas
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
+            }
+            finally
+            {
+                // 2. Volver a prenderlos para que el usuario sí pueda interactuar
+                HabilitarEventosFechas();
+                SincronizarHabilitarHoras();
             }
         }
 
@@ -1188,7 +1193,7 @@ namespace NorthwindTradersV5EnCapas
                             venta.OrderID = int.Parse(txtId.Text);
                             venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString().Trim();
                             venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
-                            
+
                             if (dtpVenta != null && dtpHoraVenta != null)
                                 venta.OrderDate = Utils.ObtenerFechaHora(dtpVenta, dtpHoraVenta);
                             if (dtpRequerido != null && dtpHoraRequerido != null)
@@ -1346,7 +1351,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void DgvDetalle_CellClickHandler(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || (e.ColumnIndex != controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Index & e.ColumnIndex != controlDetalleDeLaVenta.DgvDetalle.Columns["Modificar"].Index)) 
+            if (e.RowIndex < 0 || (e.ColumnIndex != controlDetalleDeLaVenta.DgvDetalle.Columns["Eliminar"].Index & e.ColumnIndex != controlDetalleDeLaVenta.DgvDetalle.Columns["Modificar"].Index))
                 return;
             var dgv = controlDetalleDeLaVenta.DgvDetalle; // acceso al DataGridView interno
             try
@@ -1484,11 +1489,15 @@ namespace NorthwindTradersV5EnCapas
                 dtpVenta.Value = dtpRequerido.Value = dtpEnvio.Value = DateTime.Today;
                 dtpRequerido.Checked = dtpEnvio.Checked = false;
                 dtpRequerido.Enabled = dtpEnvio.Enabled = true;
+                // Sincronizar las horas para que se deshabiliten al no tener check
+                SincronizarHabilitarHoras();
 
                 btnGenerar.Text = "Generar venta";
                 MostrarCols();
                 dtpHoraRequerido.Enabled = dtpHoraEnvio.Enabled = false;
                 btnNota.Enabled = false;
+                // IMPORTANTE: Tomar la foto AQUÍ
+                CargarValoresOriginales();
             }
             else
             {
@@ -1502,9 +1511,15 @@ namespace NorthwindTradersV5EnCapas
                 InicializarDtps();
                 if (tabcOperacion.SelectedTab == tabpConsultar)
                 {
+                    DeshabilitarEventosFechas();
+                    dtpRequerido.Checked = dtpEnvio.Checked = false;
+                    dtpRequerido.Value = dtpEnvio.Value = dtpRequerido.MinDate; 
                     grbVenta.Text = "»   Consulta de ventas:   «";
                     btnGenerar.Text = "Generar venta";
                     btnNota.Enabled = false;
+                    HabilitarEventosFechas();
+                    // IMPORTANTE: Tomar la foto AQUÍ
+                    CargarValoresOriginales();
                 }
                 else if (tabcOperacion.SelectedTab == tabpModificar)
                 {
@@ -1513,14 +1528,30 @@ namespace NorthwindTradersV5EnCapas
                     MostrarControlAgregarProducto();
                     VentaGenerada = false;
                     btnGenerar.Text = "Modificar venta";
+
+                    // Usamos esta técnica para asegurar que se ejecute DESPUÉS de que la pestaña cargue
+                    this.BeginInvoke(new Action(() => {
+                        DeshabilitarEventosFechas();
+
+                        dtpRequerido.Checked = dtpEnvio.Checked = false;
+                        dtpRequerido.Value = dtpEnvio.Value = dtpRequerido.MinDate;
+                        dtpHoraRequerido.Value = dtpHoraEnvio.Value = dtpRequerido.MinDate;
+
+                        SincronizarHabilitarHoras();
+                        HabilitarEventosFechas();
+
+                        // IMPORTANTE: Tomar la foto AQUÍ, después de limpiar
+                        CargarValoresOriginales();
+                    }));
                 }
                 else if (tabcOperacion.SelectedTab == tabpEliminar)
                 {
                     grbVenta.Text = "»   Eliminarción de ventas:   «";
                     btnGenerar.Text = "Eliminar venta";
+                    // IMPORTANTE: Tomar la foto AQUÍ
+                    CargarValoresOriginales();
                 }
             }
-            CargarValoresOriginales();
         }
 
         private void EliminarProducto(VentaDetalle ventaDetalle)
@@ -1849,7 +1880,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 // Cambiar de pestaña automáticamente
                 tabcOperacion.SelectedTab = tabpRegistrar;
-                tableLayoutPanel1.Focus(); 
+                tableLayoutPanel1.Focus();
                 return;
             }
             // Caso 2: estamos en la pestaña de consultar
@@ -1957,6 +1988,22 @@ namespace NorthwindTradersV5EnCapas
             dtpVenta.ValueChanged += dtpVenta_ValueChanged;
             dtpRequerido.ValueChanged += dtpRequerido_ValueChanged;
             dtpEnvio.ValueChanged += dtpEnvio_ValueChanged;
+        }
+
+        private void SincronizarHabilitarHoras()
+        {
+            // Detectar si el formulario permite edición
+            bool esModificable = (tabcOperacion.SelectedTab == tabpModificar || tabcOperacion.SelectedTab == tabpRegistrar);
+
+            // 1. Habilitar los controles de FECHA (los padres)
+            dtpVenta.Enabled = esModificable;
+            dtpRequerido.Enabled = esModificable;
+            dtpEnvio.Enabled = esModificable;
+
+            // 2. Habilitar los controles de HORA solo si la fecha está seleccionada (Checked)
+            dtpHoraVenta.Enabled = dtpVenta.Checked && esModificable;
+            dtpHoraRequerido.Enabled = dtpRequerido.Checked && esModificable;
+            dtpHoraEnvio.Enabled = dtpEnvio.Checked && esModificable;
         }
     }
 }
