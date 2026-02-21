@@ -51,7 +51,7 @@ namespace Utilities
 
         public const string erfep = "\n[orange]El registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string ses = "\n[green]Se eliminó satisfactoriamente.";
-        public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue borrado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
+        public const string nfefe = "\n[red]NO fue eliminado en la base de datos, el registro fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfefm = "\n[red]NO fue eliminado en la base de datos, el registro fue modificado previamente por otro usuario de la red.\n[black]Intente refrescar los datos.";
         public const string nfemd = "\n[red]NO fue eliminado en la base de datos por un motivo desconocido.";
         public const string fepou = "\n[red]Fue eliminado previamente por otro usuario de la red.\n[black]Intente refrescar los datos";
