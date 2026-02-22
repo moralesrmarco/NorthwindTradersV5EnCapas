@@ -66,11 +66,17 @@ namespace Utilities
 
         public static DateTime? ObtenerFechaHora(DateTimePicker dtpFecha, DateTimePicker dtpHora)
         {
-            if (!dtpFecha.Checked)
+            // Si el 'padre' no está marcado, no importa lo que diga la hora, es NULL
+            if (dtpFecha == null || !dtpFecha.Checked)
                 return null;
+
+            // Si por alguna razón el control de hora es nulo (poco probable pero posible), 
+            // devolvemos solo la fecha a las 00:00:00
+            if (dtpHora == null)
+                return dtpFecha.Value.Date;
+
             return dtpFecha.Value.Date.Add(dtpHora.Value.TimeOfDay);
         }
-
         /// <summary>
         /// Ordena un DataGridView enlazado a una lista genérica y muestra el glyph de ordenamiento.
         /// </summary>

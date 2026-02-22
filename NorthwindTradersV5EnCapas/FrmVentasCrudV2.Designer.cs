@@ -84,13 +84,13 @@
             this.label21 = new System.Windows.Forms.Label();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.controlAgregarProducto = new NorthwindTradersV5EnCapas.ControlAgregarProducto();
             this.headerOperacion = new NorthwindTradersV5EnCapas.Controles.CustomTabHeader();
             this.controlDetalleDeLaVenta = new NorthwindTradersV5EnCapas.ControlDetalleDeLaVenta();
             this.controlTotalesDeLaVenta = new NorthwindTradersV5EnCapas.ControlTotalesDeLaVenta();
             this.controlBuscarVenta = new NorthwindTradersV5EnCapas.ControlBuscarVenta();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.GrbOperaciones.SuspendLayout();
@@ -281,7 +281,7 @@
             this.tabpRegistrar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpRegistrar.Name = "tabpRegistrar";
             this.tabpRegistrar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpRegistrar.Size = new System.Drawing.Size(1821, 24);
+            this.tabpRegistrar.Size = new System.Drawing.Size(1842, 24);
             this.tabpRegistrar.TabIndex = 1;
             this.tabpRegistrar.Tag = 116;
             this.tabpRegistrar.Text = "   Registrar venta   ";
@@ -304,7 +304,7 @@
             this.tabpModificar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpModificar.Name = "tabpModificar";
             this.tabpModificar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpModificar.Size = new System.Drawing.Size(1821, 24);
+            this.tabpModificar.Size = new System.Drawing.Size(1842, 24);
             this.tabpModificar.TabIndex = 2;
             this.tabpModificar.Tag = 116;
             this.tabpModificar.Text = "   Modificar venta   ";
@@ -328,7 +328,7 @@
             this.tabpEliminar.Margin = new System.Windows.Forms.Padding(4);
             this.tabpEliminar.Name = "tabpEliminar";
             this.tabpEliminar.Padding = new System.Windows.Forms.Padding(4);
-            this.tabpEliminar.Size = new System.Drawing.Size(1821, 24);
+            this.tabpEliminar.Size = new System.Drawing.Size(1842, 24);
             this.tabpEliminar.TabIndex = 3;
             this.tabpEliminar.Tag = 109;
             this.tabpEliminar.Text = "   Eliminar venta   ";
@@ -724,9 +724,9 @@
             this.label24.Location = new System.Drawing.Point(478, 44);
             this.label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(141, 17);
+            this.label24.Size = new System.Drawing.Size(132, 17);
             this.label24.TabIndex = 26;
-            this.label24.Text = "Fecha de entrega:";
+            this.label24.Text = "Fecha requerido:";
             // 
             // label23
             // 
@@ -803,10 +803,6 @@
             this.label20.TabIndex = 15;
             this.label20.Text = "Id:";
             // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
-            // 
             // controlAgregarProducto
             // 
             this.controlAgregarProducto.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -859,6 +855,10 @@
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
             this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1522);
             this.controlBuscarVenta.TabIndex = 13;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // FrmVentasCrudV2
             // 
