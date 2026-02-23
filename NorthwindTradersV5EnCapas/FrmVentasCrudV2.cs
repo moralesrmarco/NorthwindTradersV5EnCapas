@@ -815,20 +815,36 @@ namespace NorthwindTradersV5EnCapas
         {
             if (dtpVenta.Checked)
             {
-                SincronizarJerarquiaFechas();
                 if (dtpHoraVenta.Value.TimeOfDay == TimeSpan.Zero)
-                {
                     dtpHoraVenta.Value = DateTime.Now;
-                }
             }
             else
             {
                 dtpRequerido.MinDate = dtpEnvio.MinDate = new DateTime(1753, 1, 1);
-                dtpVenta.Value = dtpVenta.MinDate;
-                dtpHoraVenta.Value = dtpHoraVenta.MinDate;
                 dtpHoraVenta.Enabled = false;
             }
+
+            SincronizarJerarquiaFechas();
         }
+
+        //private void dtpVenta_ValueChanged(object sender, EventArgs e)
+        //{
+        //    if (dtpVenta.Checked)
+        //    {
+        //        SincronizarJerarquiaFechas();
+        //        if (dtpHoraVenta.Value.TimeOfDay == TimeSpan.Zero)
+        //        {
+        //            dtpHoraVenta.Value = DateTime.Now;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        dtpRequerido.MinDate = dtpEnvio.MinDate = new DateTime(1753, 1, 1);
+        //        dtpVenta.Value = dtpVenta.MinDate;
+        //        dtpHoraVenta.Value = dtpHoraVenta.MinDate;
+        //        dtpHoraVenta.Enabled = false;
+        //    }
+        //}
 
         //private void dtpVenta_ValueChanged(object sender, EventArgs e)
         //{
@@ -867,37 +883,42 @@ namespace NorthwindTradersV5EnCapas
         //        dtpHoraVenta.Enabled = false;
         //    }
         //}
-
+        
         private void dtpRequerido_ValueChanged(object sender, EventArgs e)
         {
-            if (dtpRequerido.Checked)
-            {
-                // Hora inteligente por defecto (12:00 PM)
-                if (dtpHoraRequerido.Value.TimeOfDay == TimeSpan.Zero)
-                {
-                    dtpHoraRequerido.Value = DateTime.Today.AddHours(12);
-                }
-
-                SincronizarJerarquiaFechas();
-            }
-            else
-            {
-                dtpEnvio.MinDate = dtpVenta.Checked
-                    ? dtpVenta.Value.Date
-                    : new DateTime(1753, 1, 1);
-
-                dtpRequerido.Value = dtpRequerido.MinDate;
-                dtpHoraRequerido.Value = dtpHoraRequerido.MinDate;
-                dtpHoraRequerido.Enabled = false;
-
-                if (dtpEnvio.Value.Date < dtpEnvio.MinDate)
-                {
-                    dtpEnvio.Value = dtpEnvio.MinDate;
-                }
-
-                SincronizarJerarquiaFechas();
-            }
+            SincronizarJerarquiaFechas();
         }
+
+        //private void dtpRequerido_ValueChanged(object sender, EventArgs e)
+        //{
+        //    if (dtpRequerido.Checked)
+        //    {
+        //        // Hora inteligente por defecto (12:00 PM)
+        //        if (dtpHoraRequerido.Value.TimeOfDay == TimeSpan.Zero)
+        //        {
+        //            dtpHoraRequerido.Value = DateTime.Today.AddHours(12);
+        //        }
+
+        //        SincronizarJerarquiaFechas();
+        //    }
+        //    else
+        //    {
+        //        dtpEnvio.MinDate = dtpVenta.Checked
+        //            ? dtpVenta.Value.Date
+        //            : new DateTime(1753, 1, 1);
+
+        //        dtpRequerido.Value = dtpRequerido.MinDate;
+        //        dtpHoraRequerido.Value = dtpHoraRequerido.MinDate;
+        //        dtpHoraRequerido.Enabled = false;
+
+        //        if (dtpEnvio.Value.Date < dtpEnvio.MinDate)
+        //        {
+        //            dtpEnvio.Value = dtpEnvio.MinDate;
+        //        }
+
+        //        SincronizarJerarquiaFechas();
+        //    }
+        //}
 
         //private void dtpRequerido_ValueChanged(object sender, EventArgs e)
         //{
@@ -933,25 +954,30 @@ namespace NorthwindTradersV5EnCapas
 
         private void dtpEnvio_ValueChanged(object sender, EventArgs e)
         {
-            if (dtpEnvio.Checked)
-            {
-                // 1. Hora inteligente: 12:00 PM por defecto
-                if (dtpHoraEnvio.Value.TimeOfDay == TimeSpan.Zero)
-                {
-                    dtpHoraEnvio.Value = DateTime.Today.AddHours(12);
-                }
-
-                // 2. Cascada: Validar contra Requerido o Venta
-                ValidarHorasEnCascada();
-
-                SincronizarHabilitarHoras();
-            }
-            else
-            {
-                dtpEnvio.Value = dtpHoraEnvio.Value = dtpEnvio.MinDate;
-                dtpHoraEnvio.Enabled = false;
-            }
+            SincronizarJerarquiaFechas();
         }
+
+        //private void dtpEnvio_ValueChanged(object sender, EventArgs e)
+        //{
+        //    if (dtpEnvio.Checked)
+        //    {
+        //        // 1. Hora inteligente: 12:00 PM por defecto
+        //        if (dtpHoraEnvio.Value.TimeOfDay == TimeSpan.Zero)
+        //        {
+        //            dtpHoraEnvio.Value = DateTime.Today.AddHours(12);
+        //        }
+
+        //        // 2. Cascada: Validar contra Requerido o Venta
+        //        ValidarHorasEnCascada();
+
+        //        SincronizarHabilitarHoras();
+        //    }
+        //    else
+        //    {
+        //        dtpEnvio.Value = dtpHoraEnvio.Value = dtpEnvio.MinDate;
+        //        dtpHoraEnvio.Enabled = false;
+        //    }
+        //}
 
         //private void dtpEnvio_ValueChanged(object sender, EventArgs e)
         //{
@@ -982,31 +1008,11 @@ namespace NorthwindTradersV5EnCapas
             // ---------------------------
             if (dtpVenta.Checked && dtpRequerido.Checked)
             {
-                if (dtpRequerido.Value.Date == dtpVenta.Value.Date)
-                {
-                    if (dtpHoraRequerido.Value.TimeOfDay < dtpHoraVenta.Value.TimeOfDay)
-                    {
-                        dtpHoraRequerido.Value =
-                            dtpRequerido.Value.Date.Add(dtpHoraVenta.Value.TimeOfDay);
-                    }
-                }
-            }
-
-            // ---------------------------
-            // BASE PARA ENVÍO
-            // ---------------------------
-            DateTime fechaBase;
-            TimeSpan horaBase;
-
-            if (dtpRequerido.Checked)
-            {
-                fechaBase = dtpRequerido.Value.Date;
-                horaBase = dtpHoraRequerido.Value.TimeOfDay;
-            }
-            else
-            {
-                fechaBase = dtpVenta.Value.Date;
-                horaBase = dtpHoraVenta.Value.TimeOfDay;
+                AjustarHoraSiFechaCoincide(
+                    dtpRequerido,
+                    dtpHoraRequerido,
+                    dtpVenta.Value.Date,
+                    dtpHoraVenta.Value.TimeOfDay);
             }
 
             // ---------------------------
@@ -1014,16 +1020,46 @@ namespace NorthwindTradersV5EnCapas
             // ---------------------------
             if (dtpEnvio.Checked)
             {
-                if (dtpEnvio.Value.Date == fechaBase)
-                {
-                    if (dtpHoraEnvio.Value.TimeOfDay < horaBase)
-                    {
-                        dtpHoraEnvio.Value =
-                            dtpEnvio.Value.Date.Add(horaBase);
-                    }
-                }
+                var (fechaBase, horaBase) = ObtenerBaseJerarquica();
+
+                AjustarHoraSiFechaCoincide(
+                    dtpEnvio,
+                    dtpHoraEnvio,
+                    fechaBase,
+                    horaBase);
             }
         }
+
+        //private void ValidarHorasEnCascada()
+        //{
+        //    // ---------------------------
+        //    // VENTA → REQUERIDO
+        //    // ---------------------------
+        //    if (dtpVenta.Checked && dtpRequerido.Checked)
+        //    {
+        //        if (dtpRequerido.Value.Date == dtpVenta.Value.Date &&
+        //            dtpHoraRequerido.Value.TimeOfDay < dtpHoraVenta.Value.TimeOfDay)
+        //        {
+        //            dtpHoraRequerido.Value =
+        //                dtpRequerido.Value.Date.Add(dtpHoraVenta.Value.TimeOfDay);
+        //        }
+        //    }
+
+        //    // ---------------------------
+        //    // BASE → ENVÍO
+        //    // ---------------------------
+        //    if (dtpEnvio.Checked)
+        //    {
+        //        var (fechaBase, horaBase) = ObtenerBaseJerarquica();
+
+        //        if (dtpEnvio.Value.Date == fechaBase &&
+        //            dtpHoraEnvio.Value.TimeOfDay < horaBase)
+        //        {
+        //            dtpHoraEnvio.Value =
+        //                dtpEnvio.Value.Date.Add(horaBase);
+        //        }
+        //    }
+        //}
 
         //private void ValidarHorasEnCascada()
         //{
@@ -2307,21 +2343,36 @@ namespace NorthwindTradersV5EnCapas
 
         private void dtpHoraVenta_ValueChanged(object sender, EventArgs e)
         {
-            // Si cambio la hora de venta, las demás horas deben re-validarse
-            ValidarHorasEnCascada();
+            SincronizarJerarquiaFechas();
         }
 
         private void dtpHoraRequerido_ValueChanged(object sender, EventArgs e)
         {
-            // Si cambio la hora requerida, el envío debe re-validarse
-            ValidarHorasEnCascada();
+            SincronizarJerarquiaFechas();
         }
 
         private void dtpHoraEnvio_ValueChanged(object sender, EventArgs e)
         {
-            // El envío valida contra los anteriores
-            ValidarHorasEnCascada();
+            SincronizarJerarquiaFechas();
         }
+
+        //private void dtpHoraVenta_ValueChanged(object sender, EventArgs e)
+        //{
+        //    // Si cambio la hora de venta, las demás horas deben re-validarse
+        //    ValidarHorasEnCascada();
+        //}
+
+        //private void dtpHoraRequerido_ValueChanged(object sender, EventArgs e)
+        //{
+        //    // Si cambio la hora requerida, el envío debe re-validarse
+        //    ValidarHorasEnCascada();
+        //}
+
+        //private void dtpHoraEnvio_ValueChanged(object sender, EventArgs e)
+        //{
+        //    // El envío valida contra los anteriores
+        //    ValidarHorasEnCascada();
+        //}
 
         private void SincronizarJerarquiaFechas()
         {
@@ -2499,12 +2550,45 @@ namespace NorthwindTradersV5EnCapas
         //    SincronizarHabilitarHoras();
         //}
 
-        private void AjustarSiEsMenor(DateTimePicker dtp, DateTime limite)
+        //private void AjustarSiEsMenor(DateTimePicker dtp, DateTime limite)
+        //{
+        //    if (!dtp.Checked)
+        //        return;
+        //    if (dtp.Value.Date < limite)
+        //        dtp.Value = limite;
+        //}
+
+        private (DateTime fechaBase, TimeSpan horaBase) ObtenerBaseJerarquica()
         {
-            if (!dtp.Checked)
+            if (dtpRequerido.Checked)
+            {
+                return (
+                    dtpRequerido.Value.Date,
+                    dtpHoraRequerido.Value.TimeOfDay
+                );
+            }
+
+            return (
+                dtpVenta.Value.Date,
+                dtpHoraVenta.Value.TimeOfDay
+            );
+        }
+
+        private void AjustarHoraSiFechaCoincide(
+            DateTimePicker dtpFecha,
+            DateTimePicker dtpHora,
+            DateTime fechaBase,
+            TimeSpan horaBase)
+        {
+            if (!dtpFecha.Checked)
                 return;
-            if (dtp.Value.Date < limite)
-                dtp.Value = limite;
+
+            if (dtpFecha.Value.Date == fechaBase &&
+                dtpHora.Value.TimeOfDay < horaBase)
+            {
+                dtpHora.Value =
+                    dtpFecha.Value.Date.Add(horaBase);
+            }
         }
     }
 }
