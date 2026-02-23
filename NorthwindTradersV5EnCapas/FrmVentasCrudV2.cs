@@ -773,7 +773,6 @@ namespace NorthwindTradersV5EnCapas
         {
             decimal importe, total, totalDeUnidades, subtotalDelImporte, subtotalDelImporteDelDescuento, subtotalDelImporteConDescuento, subtotalDelImporteSinIVA, subtotalDelImporteDelIVA;
             importe = total = totalDeUnidades = subtotalDelImporte = subtotalDelImporteDelDescuento = subtotalDelImporteConDescuento = subtotalDelImporteSinIVA = subtotalDelImporteDelIVA = 0;
-            numDetalle = 0;
             foreach (DataGridViewRow dgvr in controlDetalleDeLaVenta.DgvDetalle.Rows)
             {
                 totalDeUnidades += decimal.Parse(dgvr.Cells["Cantidad"].Value.ToString());
@@ -783,9 +782,9 @@ namespace NorthwindTradersV5EnCapas
                 subtotalDelImporteSinIVA += decimal.Parse(dgvr.Cells["ImporteSinIVA"].Value.ToString());
                 subtotalDelImporteDelIVA += decimal.Parse(dgvr.Cells["ImporteDelIVA"].Value.ToString());
                 total += decimal.Parse(dgvr.Cells["Subtotal"].Value.ToString());
-                dgvr.Cells["Id"].Value = ++numDetalle;
             }
-            controlTotalesDeLaVenta.NudNumProd.Value = numDetalle;
+            ReenumerarFilas();
+            controlTotalesDeLaVenta.NudNumProd.Value = controlDetalleDeLaVenta.DgvDetalle.Rows.Count;
             controlTotalesDeLaVenta.NudTotalDeUnidades.Value = totalDeUnidades;
             controlTotalesDeLaVenta.NudSubtotalDelImporte.Value = subtotalDelImporte;
             controlTotalesDeLaVenta.NudSubtotalDelImporteDelDescuento.Value = subtotalDelImporteDelDescuento;
@@ -1212,26 +1211,8 @@ namespace NorthwindTradersV5EnCapas
                         Quantity = (short)controlAgregarProducto.NudCantidad.Value,
                         Discount = controlAgregarProducto.NudDescuento.Value / 100m,
                     };
-                    controlDetalleDeLaVenta.DgvDetalle.Rows.Add(new object[]
-{
-                            numDetalle,
-                            ventaDetalle.Producto.ProductName,
-                            ventaDetalle.UnitPrice,
-                            ventaDetalle.Quantity,
-                            ventaDetalle.SubtotalDelImporteConIVAIncluido,
-                            ventaDetalle.Discount,
-                            ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento,
-                            ventaDetalle.SubtotalDelImporteConIVAConDescuento,
-                            ventaDetalle.TasaIVA,
-                            ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
-                            ventaDetalle.SubtotalIVADespuesDelDescuento,
-                            ventaDetalle.Subtotal,
-                            "Modificar",
-                            "Eliminar",
-                            ventaDetalle.Producto.ProductID
-                    });
+                    AgregarFila(ventaDetalle);
                     CalcularTotales();
-                    ++numDetalle;
                     controlAgregarProducto.CboCategoria.SelectedIndex = 0;
                     InicializarCboProducto();
                     InicializarValoresAgregarProducto();
@@ -1404,6 +1385,38 @@ namespace NorthwindTradersV5EnCapas
                     }
                 }
                 btnNuevo.Enabled = true;
+            }
+        }
+
+        private void AgregarFila(VentaDetalle ventaDetalle)
+        {
+            controlDetalleDeLaVenta.DgvDetalle.Rows.Insert(0, new object[]
+            {
+                0, // valor temporal, se corregirá en ReenumerarFilas
+                ventaDetalle.Producto.ProductName,
+                ventaDetalle.UnitPrice,
+                ventaDetalle.Quantity,
+                ventaDetalle.SubtotalDelImporteConIVAIncluido,
+                ventaDetalle.Discount,
+                ventaDetalle.SubtotalDelAhorroTotalDespuesDescuento,
+                ventaDetalle.SubtotalDelImporteConIVAConDescuento,
+                ventaDetalle.TasaIVA,
+                ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
+                ventaDetalle.SubtotalIVADespuesDelDescuento,
+                ventaDetalle.Subtotal,
+                "Modificar",
+                "Eliminar",
+                ventaDetalle.Producto.ProductID
+            });
+        }
+
+        private void ReenumerarFilas()
+        {
+            int totalFilas = controlDetalleDeLaVenta.DgvDetalle.Rows.Count;
+            for (int i = 0; i < totalFilas; i++)
+            {
+                // La columna 0 es la de numDetalle
+                controlDetalleDeLaVenta.DgvDetalle.Rows[i].Cells["Id"].Value = totalFilas - i;
             }
         }
 
@@ -1717,21 +1730,22 @@ namespace NorthwindTradersV5EnCapas
                         venta.ShipPostalCode = txtCP.Text.Trim();
                         venta.ShipCountry = txtPais.Text.Trim();
                         venta.Freight = nudFlete.Value;
-                        // llenado de elementos hijos
-                        foreach (DataGridViewRow dgvr in controlDetalleDeLaVenta.DgvDetalle.Rows)
+                        // llenado de elementos hijos ordenados en orden inverso para que el ultimo en capturarse en el dgv sea el primero en insertarse en la base de datos
+                        for (int i = controlDetalleDeLaVenta.DgvDetalle.Rows.Count - 1; i >= 0; i--)
                         {
+                            DataGridViewRow row = controlDetalleDeLaVenta.DgvDetalle.Rows[i];
                             // defensiva: ignorar filas nuevas o vacías
-                            if (dgvr.IsNewRow) continue;
+                            if (row.IsNewRow) continue;
                             VentaDetalle ventaDetalles = new VentaDetalle
                             {
                                 Producto = new Producto
                                 {
-                                    ProductID = int.Parse(dgvr.Cells["ProductoId"].Value.ToString()),
-                                    ProductName = dgvr.Cells["Producto"].Value.ToString()
+                                    ProductID = Convert.ToInt32(row.Cells["ProductoId"].Value),
+                                    ProductName = row.Cells["Producto"].Value.ToString()
                                 },
-                                UnitPrice = decimal.Parse(dgvr.Cells["Precio"].Value.ToString()),
-                                Quantity = short.Parse(dgvr.Cells["Cantidad"].Value.ToString()),
-                                Discount = decimal.Parse(dgvr.Cells["Descuento"].Value.ToString())
+                                UnitPrice = Convert.ToDecimal(row.Cells["Precio"].Value),
+                                Quantity = Convert.ToInt16(row.Cells["Cantidad"].Value),
+                                Discount = Convert.ToDecimal(row.Cells["Descuento"].Value),
                             };
                             venta.VentaDetalles.Add(ventaDetalles);
                         }
