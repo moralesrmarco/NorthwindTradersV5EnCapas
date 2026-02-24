@@ -4,12 +4,14 @@ using Entities;
 using Entities.DTOs;
 using NorthwindTradersV5EnCapas.Helpers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Utilities;
 
@@ -34,6 +36,7 @@ namespace NorthwindTradersV5EnCapas
         bool VentaGenerada = false;
         private short CantidadOld = 0;
         private short UInventarioOld = 0;
+        private readonly DateTime FechaBaseMinDate = new DateTime(1753, 1, 1, 0, 0, 0);
 
         public FrmVentasCrudV2()
         {
@@ -145,15 +148,14 @@ namespace NorthwindTradersV5EnCapas
         {
             DeshabilitarEventosFechas();
             // 1. PRIMERO: Liberamos las restricciones (MinDate) para que acepten cualquier fecha
-            DateTime fechaBaseSql = new DateTime(1753, 1, 1);
-            dtpVenta.MinDate = dtpRequerido.MinDate = dtpEnvio.MinDate = fechaBaseSql;
+            dtpVenta.MinDate = dtpRequerido.MinDate = dtpEnvio.MinDate = FechaBaseMinDate;
 
             // 2. SEGUNDO: Quitamos los checks (IMPORTANTE: hacerlo antes de asignar el valor)
             dtpVenta.Checked = dtpRequerido.Checked = dtpEnvio.Checked = false;
 
             // 3. TERCERO: Asignamos los valores mínimos
             // Ahora no dará error porque el MinDate ya es 1753
-            dtpVenta.Value = dtpRequerido.Value = dtpEnvio.Value = fechaBaseSql;
+            dtpVenta.Value = dtpRequerido.Value = dtpEnvio.Value = FechaBaseMinDate;
 
             // 4. Resetear las horas a la medianoche de hoy
             dtpHoraVenta.Value = dtpHoraRequerido.Value = dtpHoraEnvio.Value = DateTime.Today;
@@ -819,7 +821,7 @@ namespace NorthwindTradersV5EnCapas
             }
             else
             {
-                dtpRequerido.MinDate = dtpEnvio.MinDate = new DateTime(1753, 1, 1);
+                dtpRequerido.MinDate = dtpEnvio.MinDate = FechaBaseMinDate;
                 dtpHoraVenta.Enabled = false;
             }
 
@@ -834,35 +836,6 @@ namespace NorthwindTradersV5EnCapas
         private void dtpEnvio_ValueChanged(object sender, EventArgs e)
         {
             SincronizarJerarquiaFechas();
-        }
-
-        private void ValidarHorasEnCascada()
-        {
-            // ---------------------------
-            // VENTA → REQUERIDO
-            // ---------------------------
-            if (dtpVenta.Checked && dtpRequerido.Checked)
-            {
-                AjustarHoraSiFechaCoincide(
-                    dtpRequerido,
-                    dtpHoraRequerido,
-                    dtpVenta.Value.Date,
-                    dtpHoraVenta.Value.TimeOfDay);
-            }
-
-            // ---------------------------
-            // BASE → ENVÍO
-            // ---------------------------
-            if (dtpEnvio.Checked)
-            {
-                var (fechaBase, horaBase) = ObtenerBaseJerarquica();
-
-                AjustarHoraSiFechaCoincide(
-                    dtpEnvio,
-                    dtpHoraEnvio,
-                    fechaBase,
-                    horaBase);
-            }
         }
 
         private void CboCategoria_SelectedIndexChangedHandler(object sender, EventArgs e)
@@ -1029,7 +1002,7 @@ namespace NorthwindTradersV5EnCapas
                     {
                         HabilitarControles();
 
-                        SincronizarHabilitarHoras();
+                        SincronizarJerarquiaFechas();
 
                         btnGenerar.Enabled = true;
                         btnNota.Enabled = false;
@@ -1076,6 +1049,22 @@ namespace NorthwindTradersV5EnCapas
                     txtPais.Text = venta.ShipCountry ?? "";
                     nudFlete.Value = venta.Freight ?? 0;
 
+                    // --- Paso 1: abrir límites ---
+                    dtpVenta.MinDate = FechaBaseMinDate;
+                    dtpRequerido.MinDate = FechaBaseMinDate;
+                    dtpEnvio.MinDate = FechaBaseMinDate;
+                    dtpHoraVenta.MinDate = FechaBaseMinDate;
+                    dtpHoraRequerido.MinDate = FechaBaseMinDate;
+                    dtpHoraEnvio.MinDate = FechaBaseMinDate;
+
+                    // --- Paso 2: inicializar valores seguros ---
+                    dtpVenta.Value = DateTime.Today;
+                    dtpRequerido.Value = DateTime.Today;
+                    dtpEnvio.Value = DateTime.Today;
+                    dtpHoraVenta.Value = DateTime.Today;
+                    dtpHoraRequerido.Value = DateTime.Today;
+                    dtpHoraEnvio.Value = DateTime.Today;
+
                     if (venta.OrderDate.HasValue)
                     {
                         dtpVenta.Checked = true;
@@ -1085,10 +1074,9 @@ namespace NorthwindTradersV5EnCapas
                     }
                     else
                     {
-                        dtpVenta.Checked = false;
+                        dtpVenta.Value = dtpHoraVenta.Value = DateTime.Today;
                         dtpHoraVenta.Enabled = false;
-                        dtpVenta.Value = dtpVenta.MinDate;
-                        dtpHoraVenta.Value = DateTime.Today;
+                        dtpVenta.Checked = false;
                     }
                     if (venta.RequiredDate.HasValue)
                     {
@@ -1098,8 +1086,7 @@ namespace NorthwindTradersV5EnCapas
                     }
                     else
                     {
-                        dtpRequerido.Value = dtpRequerido.MinDate;
-                        dtpHoraRequerido.Value = dtpRequerido.MinDate;
+                        dtpRequerido.Value = dtpHoraRequerido.Value = DateTime.Today;
                         dtpRequerido.Checked = false; // FORZAMOS UNCHECK SI ES NULO
                     }
                     if (venta.ShippedDate.HasValue)
@@ -1110,11 +1097,9 @@ namespace NorthwindTradersV5EnCapas
                     }
                     else
                     {
-                        dtpEnvio.Value = dtpEnvio.MinDate;
-                        dtpHoraEnvio.Value = dtpEnvio.MinDate;
+                        dtpEnvio.Value = dtpHoraEnvio.Value = DateTime.Today;
                         dtpEnvio.Checked = false; // FORZAMOS UNCHECK SI ES NULO
                     }
-
                     MDIPrincipal.ActualizarBarraDeEstado($"Se muestran {dgvVentas.RowCount} registro(s) en ventas");
                 }
                 else
@@ -1131,9 +1116,9 @@ namespace NorthwindTradersV5EnCapas
             }
             finally
             {
+                SincronizarJerarquiaFechas();
                 // 2. Volver a prenderlos para que el usuario sí pueda interactuar
                 HabilitarEventosFechas();
-                SincronizarHabilitarHoras();
             }
         }
 
@@ -1561,7 +1546,8 @@ namespace NorthwindTradersV5EnCapas
                 dtpRequerido.Checked = dtpEnvio.Checked = false;
                 dtpRequerido.Enabled = dtpEnvio.Enabled = true;
                 // Sincronizar las horas para que se deshabiliten al no tener check
-                SincronizarHabilitarHoras();
+                //SincronizarHabilitarHoras();
+                SincronizarJerarquiaFechas();
 
                 btnGenerar.Text = "Generar venta";
                 MostrarCols();
@@ -1584,7 +1570,7 @@ namespace NorthwindTradersV5EnCapas
                 {
                     DeshabilitarEventosFechas();
                     dtpRequerido.Checked = dtpEnvio.Checked = false;
-                    dtpRequerido.Value = dtpEnvio.Value = dtpRequerido.MinDate; 
+                    dtpRequerido.Value = dtpEnvio.Value = FechaBaseMinDate; 
                     grbVenta.Text = "»   Consulta de ventas:   «";
                     btnGenerar.Text = "Generar venta";
                     btnNota.Enabled = false;
@@ -1605,10 +1591,9 @@ namespace NorthwindTradersV5EnCapas
                         DeshabilitarEventosFechas();
 
                         dtpRequerido.Checked = dtpEnvio.Checked = false;
-                        dtpRequerido.Value = dtpEnvio.Value = dtpRequerido.MinDate;
-                        dtpHoraRequerido.Value = dtpHoraEnvio.Value = dtpRequerido.MinDate;
+                        dtpRequerido.Value = dtpEnvio.Value = dtpHoraRequerido.Value = dtpHoraEnvio.Value = FechaBaseMinDate;
 
-                        SincronizarHabilitarHoras();
+                        SincronizarJerarquiaFechas();
                         HabilitarEventosFechas();
 
                         // IMPORTANTE: Tomar la foto AQUÍ, después de limpiar
@@ -1975,8 +1960,8 @@ namespace NorthwindTradersV5EnCapas
 
                 // 1. Resetear límites (MinDate) para permitir asignar 'Hoy' sin errores
                 DateTime hoy = DateTime.Today;
-                DateTime fechaMinSql = new DateTime(1753, 1, 1);
-                dtpVenta.MinDate = dtpRequerido.MinDate = dtpEnvio.MinDate = fechaMinSql;
+
+                dtpVenta.MinDate = dtpRequerido.MinDate = dtpEnvio.MinDate = FechaBaseMinDate;
 
                 // 2. Configurar valores para una VENTA NUEVA
                 dtpVenta.Value = hoy;
@@ -1999,20 +1984,12 @@ namespace NorthwindTradersV5EnCapas
             }
             finally
             {
+                // 1. Empuja la lógica de las FECHAS (esto pone los MinDates y valida cascada)
+                SincronizarJerarquiaFechas();
+
                 HabilitarEventosFechas();
-                // 1. Empuja la lógica de las FECHAS (esto pone los MinDates)
-                dtpVenta_ValueChanged(dtpVenta, EventArgs.Empty);
-
-                // 2. FORZA EL EMPUJE DE LAS HORAS
-                // Como las horas ya tienen valor, llamamos a la cascada manualmente
-                ValidarHorasEnCascada();
-
-                // 3. Refresca qué horas deben estar habilitadas/deshabilitadas (Gris/Blanco)
-                SincronizarHabilitarHoras();                
                 CargarValoresOriginales();   // Captura la foto "limpia" para evitar alertas de cambios falsas
             }
-            // --- FIN DE LIMPIEZA ---
-
             tableLayoutPanel1.Focus();
         }
 
@@ -2103,30 +2080,26 @@ namespace NorthwindTradersV5EnCapas
 
         private void HabilitarEventosFechas()
         {
-            // Fechas
+            // para que sea idempotente debe ser definido como esta aqui. si no su comportamiento sera como si se llamara recursivamente
+            //-Luego, cuando llamas a HabilitarEventosFechas(), puede que agregue los handlers duplicados, provocando que se disparen varias veces o que parezca “recursivo”.
+
+            dtpVenta.ValueChanged -= dtpVenta_ValueChanged;
             dtpVenta.ValueChanged += dtpVenta_ValueChanged;
-            dtpRequerido.ValueChanged += dtpRequerido_ValueChanged;
-            dtpEnvio.ValueChanged += dtpEnvio_ValueChanged;
-            // Horas
+
+            dtpHoraVenta.ValueChanged -= dtpHoraVenta_ValueChanged;
             dtpHoraVenta.ValueChanged += dtpHoraVenta_ValueChanged;
+
+            dtpRequerido.ValueChanged -= dtpRequerido_ValueChanged;
+            dtpRequerido.ValueChanged += dtpRequerido_ValueChanged;
+
+            dtpHoraRequerido.ValueChanged -= dtpHoraRequerido_ValueChanged;
             dtpHoraRequerido.ValueChanged += dtpHoraRequerido_ValueChanged;
+
+            dtpEnvio.ValueChanged -= dtpEnvio_ValueChanged;
+            dtpEnvio.ValueChanged += dtpEnvio_ValueChanged;
+
+            dtpHoraEnvio.ValueChanged -= dtpHoraEnvio_ValueChanged;
             dtpHoraEnvio.ValueChanged += dtpHoraEnvio_ValueChanged;
-        }
-
-        private void SincronizarHabilitarHoras()
-        {
-            // Detectar si el formulario permite edición
-            bool esModificable = (tabcOperacion.SelectedTab == tabpModificar || tabcOperacion.SelectedTab == tabpRegistrar);
-
-            // 1. Habilitar los controles de FECHA (los padres)
-            dtpVenta.Enabled = esModificable;
-            dtpRequerido.Enabled = esModificable;
-            dtpEnvio.Enabled = esModificable;
-
-            // 2. Habilitar los controles de HORA solo si la fecha está seleccionada (Checked)
-            dtpHoraVenta.Enabled = dtpVenta.Checked && esModificable;
-            dtpHoraRequerido.Enabled = dtpRequerido.Checked && esModificable;
-            dtpHoraEnvio.Enabled = dtpEnvio.Checked && esModificable;
         }
 
         private void dtpHoraVenta_ValueChanged(object sender, EventArgs e)
@@ -2150,95 +2123,16 @@ namespace NorthwindTradersV5EnCapas
 
             try
             {
-                DateTime fechaMinSql = new DateTime(1753, 1, 1);
-
-                bool requeridoChecked = dtpRequerido.Checked;
-                bool envioChecked = dtpEnvio.Checked;
-
-                // -----------------------
-                // VENTA
-                // -----------------------
-                if (!dtpVenta.Checked)
-                {
-                    dtpRequerido.MinDate = fechaMinSql;
-                    dtpEnvio.MinDate = fechaMinSql;
-
-                    dtpRequerido.Checked = requeridoChecked;
-                    dtpEnvio.Checked = envioChecked;
-                    return;
-                }
-
-                // -----------------------
-                // REQUERIDO
-                // -----------------------
-                dtpRequerido.MinDate = dtpVenta.Value.Date;
-
-                if (requeridoChecked)
-                {
-                    if (dtpRequerido.Value.Date < dtpVenta.Value.Date)
-                        dtpRequerido.Value = dtpVenta.Value.Date;
-
-                    dtpEnvio.MinDate = dtpRequerido.Value.Date;
-                }
-                else
-                {
-                    dtpEnvio.MinDate = dtpVenta.Value.Date;
-                }
-
-                // -----------------------
-                // ENVÍO
-                // -----------------------
-                if (envioChecked)
-                {
-                    if (dtpEnvio.Value.Date < dtpEnvio.MinDate)
-                        dtpEnvio.Value = dtpEnvio.MinDate;
-                }
-
-                // -----------------------
-                // HORAS
-                // -----------------------
-                ValidarHorasEnCascada();
-                SincronizarHabilitarHoras();
-
-                dtpRequerido.Checked = requeridoChecked;
-                dtpEnvio.Checked = envioChecked;
+                DateTimePickerHelper.SincronizarJerarquiaFechas(
+                    dtpVenta, dtpHoraVenta,
+                    dtpRequerido, dtpHoraRequerido,
+                    dtpEnvio, dtpHoraEnvio,
+                    tabcOperacion.SelectedTab == tabpModificar || tabcOperacion.SelectedTab == tabpRegistrar
+                );
             }
             finally
             {
                 HabilitarEventosFechas();
-            }
-        }
-
-        private (DateTime fechaBase, TimeSpan horaBase) ObtenerBaseJerarquica()
-        {
-            if (dtpRequerido.Checked)
-            {
-                return (
-                    dtpRequerido.Value.Date,
-                    dtpHoraRequerido.Value.TimeOfDay
-                );
-            }
-
-            return (
-                dtpVenta.Value.Date,
-                dtpHoraVenta.Value.TimeOfDay
-            );
-        }
-
-        private void AjustarHoraSiFechaCoincide(
-            DateTimePicker dtpFecha,
-            DateTimePicker dtpHora,
-            DateTime fechaBase,
-            TimeSpan horaBase)
-        {
-            if (!dtpFecha.Checked)
-                return;
-
-            if (dtpFecha.Value.Date == fechaBase &&
-                dtpHora.Value.TimeOfDay < horaBase)
-            {
-                dtpHora.Value =
-                    dtpFecha.Value.Date.Add(horaBase);
             }
         }
     }

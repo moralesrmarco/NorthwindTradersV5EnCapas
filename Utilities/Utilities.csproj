@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeCascadeHelper.cs" />
+    <Compile Include="DateTimePickerHelper.cs" />
     <Compile Include="InventarioHelper.cs" />
     <Compile Include="RowVersionHelper.cs" />
     <Compile Include="ValidarCantidadEInventarioHelper.cs" />
