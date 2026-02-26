@@ -84,13 +84,13 @@
             this.label21 = new System.Windows.Forms.Label();
             this.txtId = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.headerOperacion = new NorthwindTradersV5EnCapas.Controles.CustomTabHeader();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.controlBuscarVenta = new NorthwindTradersV5EnCapas.ControlBuscarVenta();
             this.controlAgregarProducto = new NorthwindTradersV5EnCapas.ControlAgregarProducto();
+            this.headerOperacion = new NorthwindTradersV5EnCapas.Controles.CustomTabHeader();
+            this.controlBuscarVenta = new NorthwindTradersV5EnCapas.ControlBuscarVenta();
             this.controlDetalleDeLaVenta = new NorthwindTradersV5EnCapas.ControlDetalleDeLaVenta();
             this.controlTotalesDeLaVenta = new NorthwindTradersV5EnCapas.ControlTotalesDeLaVenta();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.GrbOperaciones.SuspendLayout();
@@ -210,7 +210,7 @@
             this.grbVentas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grbVentas.Location = new System.Drawing.Point(8, 81);
             this.grbVentas.Name = "grbVentas";
-            this.grbVentas.Padding = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.grbVentas.Padding = new System.Windows.Forms.Padding(10);
             this.grbVentas.Size = new System.Drawing.Size(1462, 240);
             this.grbVentas.TabIndex = 2;
             this.grbVentas.TabStop = false;
@@ -247,7 +247,7 @@
             this.tabpConsultar.Controls.Add(this.label1);
             this.tabpConsultar.Location = new System.Drawing.Point(4, 22);
             this.tabpConsultar.Name = "tabpConsultar";
-            this.tabpConsultar.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabpConsultar.Padding = new System.Windows.Forms.Padding(3);
             this.tabpConsultar.Size = new System.Drawing.Size(1454, 16);
             this.tabpConsultar.TabIndex = 0;
             this.tabpConsultar.Tag = 117;
@@ -268,8 +268,8 @@
             this.tabpRegistrar.Controls.Add(this.label2);
             this.tabpRegistrar.Location = new System.Drawing.Point(4, 22);
             this.tabpRegistrar.Name = "tabpRegistrar";
-            this.tabpRegistrar.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabpRegistrar.Size = new System.Drawing.Size(1472, 16);
+            this.tabpRegistrar.Padding = new System.Windows.Forms.Padding(3);
+            this.tabpRegistrar.Size = new System.Drawing.Size(1471, 16);
             this.tabpRegistrar.TabIndex = 1;
             this.tabpRegistrar.Tag = 116;
             this.tabpRegistrar.Text = "   Registrar venta   ";
@@ -289,8 +289,8 @@
             this.tabpModificar.Controls.Add(this.label3);
             this.tabpModificar.Location = new System.Drawing.Point(4, 22);
             this.tabpModificar.Name = "tabpModificar";
-            this.tabpModificar.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabpModificar.Size = new System.Drawing.Size(1472, 16);
+            this.tabpModificar.Padding = new System.Windows.Forms.Padding(3);
+            this.tabpModificar.Size = new System.Drawing.Size(1471, 16);
             this.tabpModificar.TabIndex = 2;
             this.tabpModificar.Tag = 116;
             this.tabpModificar.Text = "   Modificar venta   ";
@@ -311,8 +311,8 @@
             this.tabpEliminar.Controls.Add(this.label4);
             this.tabpEliminar.Location = new System.Drawing.Point(4, 22);
             this.tabpEliminar.Name = "tabpEliminar";
-            this.tabpEliminar.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabpEliminar.Size = new System.Drawing.Size(1472, 16);
+            this.tabpEliminar.Padding = new System.Windows.Forms.Padding(3);
+            this.tabpEliminar.Size = new System.Drawing.Size(1471, 16);
             this.tabpEliminar.TabIndex = 3;
             this.tabpEliminar.Tag = 109;
             this.tabpEliminar.Text = "   Eliminar venta   ";
@@ -675,9 +675,9 @@
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(382, 35);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(111, 13);
+            this.label24.Size = new System.Drawing.Size(103, 13);
             this.label24.TabIndex = 26;
-            this.label24.Text = "Fecha de entrega:";
+            this.label24.Text = "Fecha requerido:";
             // 
             // label23
             // 
@@ -747,6 +747,15 @@
             this.label20.TabIndex = 15;
             this.label20.Text = "Id:";
             // 
+            // controlAgregarProducto
+            // 
+            this.controlAgregarProducto.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.controlAgregarProducto.Location = new System.Drawing.Point(4, 232);
+            this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.controlAgregarProducto.Name = "controlAgregarProducto";
+            this.controlAgregarProducto.Size = new System.Drawing.Size(1093, 398);
+            this.controlAgregarProducto.TabIndex = 2;
+            // 
             // headerOperacion
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.headerOperacion, 2);
@@ -761,10 +770,6 @@
             this.headerOperacion.TabIndex = 10;
             this.headerOperacion.WrapContents = false;
             // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
-            // 
             // controlBuscarVenta
             // 
             this.controlBuscarVenta.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -773,15 +778,6 @@
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
             this.controlBuscarVenta.Size = new System.Drawing.Size(318, 1219);
             this.controlBuscarVenta.TabIndex = 11;
-            // 
-            // controlAgregarProducto
-            // 
-            this.controlAgregarProducto.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlAgregarProducto.Location = new System.Drawing.Point(4, 232);
-            this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.controlAgregarProducto.Name = "controlAgregarProducto";
-            this.controlAgregarProducto.Size = new System.Drawing.Size(1093, 398);
-            this.controlAgregarProducto.TabIndex = 2;
             // 
             // controlDetalleDeLaVenta
             // 
@@ -800,6 +796,10 @@
             this.controlTotalesDeLaVenta.Name = "controlTotalesDeLaVenta";
             this.controlTotalesDeLaVenta.Size = new System.Drawing.Size(1121, 165);
             this.controlTotalesDeLaVenta.TabIndex = 13;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // FrmVentasCrud
             // 

@@ -8,6 +8,55 @@ namespace Utilities
         private static readonly DateTime FechaMinSql = new DateTime(1753, 1, 1);
 
         public static void SincronizarJerarquiaFechas(
+    DateTimePicker dtpVenta, DateTimePicker dtpHoraVenta,
+    DateTimePicker dtpRequerido, DateTimePicker dtpHoraRequerido,
+    DateTimePicker dtpEnvio, DateTimePicker dtpHoraEnvio,
+    bool esModificable)
+        {
+            // Habilitar padres
+            dtpVenta.Enabled = esModificable;
+            dtpRequerido.Enabled = esModificable;
+            dtpEnvio.Enabled = esModificable;
+
+            // Habilitar horas solo si la fecha está marcada
+            dtpHoraVenta.Enabled = dtpVenta.Checked && esModificable;
+            dtpHoraRequerido.Enabled = dtpRequerido.Checked && esModificable;
+            dtpHoraEnvio.Enabled = dtpEnvio.Checked && esModificable;
+
+            bool requeridoChecked = dtpRequerido.Checked;
+            bool envioChecked = dtpEnvio.Checked;
+
+            // VENTA
+            if (!dtpVenta.Checked)
+            {
+                dtpRequerido.MinDate = FechaMinSql;
+                dtpEnvio.MinDate = FechaMinSql;
+                dtpRequerido.Checked = requeridoChecked;
+                dtpEnvio.Checked = envioChecked;
+                return;
+            }
+
+            // REQUERIDO depende de VENTA
+            dtpRequerido.MinDate = dtpVenta.Value.Date;
+            if (requeridoChecked && dtpRequerido.Value.Date < dtpVenta.Value.Date)
+            {
+                dtpRequerido.Value = dtpVenta.Value.Date;
+            }
+
+            // ENVÍO depende de VENTA
+            dtpEnvio.MinDate = dtpVenta.Value.Date;
+            if (envioChecked && dtpEnvio.Value.Date < dtpVenta.Value.Date)
+            {
+                dtpEnvio.Value = dtpVenta.Value.Date;
+            }
+
+            // HORAS en cascada
+            ValidarHorasEnCascada(dtpVenta, dtpHoraVenta, dtpRequerido, dtpHoraRequerido, dtpEnvio, dtpHoraEnvio);
+        }
+
+        // esta version es para la jerarquía de fechas/horas: Venta → Requerido → Envío
+        // la dejo para usos futuros
+        public static void SincronizarJerarquiaFechas_V_1(
             DateTimePicker dtpVenta, DateTimePicker dtpHoraVenta,
             DateTimePicker dtpRequerido, DateTimePicker dtpHoraRequerido,
             DateTimePicker dtpEnvio, DateTimePicker dtpHoraEnvio,
@@ -36,7 +85,7 @@ namespace Utilities
                 return;
             }
 
-            // REQUERIDO
+            // REQUERIDO depende de VENTA
             dtpRequerido.MinDate = dtpVenta.Value.Date;
             if (requeridoChecked)
             {
@@ -50,7 +99,7 @@ namespace Utilities
                 dtpEnvio.MinDate = dtpVenta.Value.Date;
             }
 
-            // ENVÍO
+            // ENVÍO depende de REQUERIDO o VENTA
             if (envioChecked)
             {
                 if (dtpEnvio.Value.Date < dtpEnvio.MinDate)

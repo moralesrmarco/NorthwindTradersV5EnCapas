@@ -4,14 +4,12 @@ using Entities;
 using Entities.DTOs;
 using NorthwindTradersV5EnCapas.Helpers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Utilities;
 
@@ -65,11 +63,9 @@ namespace NorthwindTradersV5EnCapas
             // los groupboxes de controlAgregarProducto se pintaran directamente desde el control... porque se pintan de dos distintas maneras
 
             dgvVentas.ColumnHeaderMouseClick += dgvVentas_ColumnHeaderMouseClick;
-
             dgvVentas.CellClick += dgvVentas_CellClick;
 
             HabilitarEventosFechas();
-
 
             // Suscripción al evento del UserControl
             controlBuscarVenta.LimpiarClick += ControlBuscarVenta_LimpiarClick;
@@ -600,8 +596,7 @@ namespace NorthwindTradersV5EnCapas
                 valida = false;
                 errorProvider1.SetError(cboTransportista, "Ingrese la compañía transportista");
             }
-
-            // Validación de Fecha Requerida
+            // Validación de Fecha Requerida Vs Venta
             if (dtpVenta.Checked &&
                 dtpRequerido.Checked &&
                 dtpRequerido.Value.Date < dtpVenta.Value.Date)
@@ -621,21 +616,12 @@ namespace NorthwindTradersV5EnCapas
                 valida = false;
                 errorProvider1.SetError(dtpHoraRequerido, "La fecha/hora requerida no puede ser anterior a la venta.");
             }
-
-            // 2. Validar Envío vs Requerido
-            if (fRequerido.HasValue && fEnvio.HasValue && fEnvio.Value < fRequerido.Value)
-            {
-                valida = false;
-                errorProvider1.SetError(dtpHoraEnvio, "La fecha/hora de envío no puede ser anterior a la requerida.");
-            }
-
-            // 3. Validar Envío vs Venta (por si no hay Requerido)
-            if (!fRequerido.HasValue && fVenta.HasValue && fEnvio.HasValue && fEnvio.Value < fVenta.Value)
+            // 2. Validar Envío vs Venta
+            if (fVenta.HasValue && fEnvio.HasValue && fEnvio.Value < fVenta.Value)
             {
                 valida = false;
                 errorProvider1.SetError(dtpHoraEnvio, "La fecha/hora de envío no puede ser anterior a la venta.");
             }
-
             if (controlTotalesDeLaVenta.NudTotal.Value == 0)
             {
                 valida = false;
@@ -1152,8 +1138,8 @@ namespace NorthwindTradersV5EnCapas
                             ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
                             ventaDetalle.SubtotalIVADespuesDelDescuento,
                             ventaDetalle.Subtotal,
-                            "Modificar",
-                            "Eliminar",
+                            " Modificar ",
+                            " Eliminar ",
                             ventaDetalle.Producto.ProductID,
                             ventaDetalle.RowVersion
                         });
@@ -1173,7 +1159,7 @@ namespace NorthwindTradersV5EnCapas
         {
             int numRegs = 0;
             BorrarMensajesError();
-            if (!ValidarControlesProducto() && !ValidarControlesVenta())
+            if (!ValidarControlesProducto())
             {
                 grbVenta.Focus();
                 return;
@@ -1204,6 +1190,7 @@ namespace NorthwindTradersV5EnCapas
                     InicializarNudsProducto();
                     controlDetalleDeLaVenta.Focus();
                     controlAgregarProducto.CboCategoria.Focus();
+                    btnNuevo.Enabled = true;
                 }
                 else if (tabcOperacion.SelectedTab == tabpModificar | (tabcOperacion.SelectedTab == tabpRegistrar & VentaGenerada))
                 {
@@ -1389,8 +1376,8 @@ namespace NorthwindTradersV5EnCapas
                 ventaDetalle.SubtotalDelImporteSinIVAConDescuento,
                 ventaDetalle.SubtotalIVADespuesDelDescuento,
                 ventaDetalle.Subtotal,
-                "Modificar",
-                "Eliminar",
+                " Modificar ",
+                " Eliminar ",
                 ventaDetalle.Producto.ProductID
             });
         }
@@ -1696,6 +1683,7 @@ namespace NorthwindTradersV5EnCapas
                     {
                         MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
                         DeshabilitarTodosControles();
+                        btnGenerar.Enabled = false;
                         Venta venta = new Venta();
                         venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString().Trim();
                         venta.Empleado.EmployeeID = Convert.ToInt32(cboEmpleado.SelectedValue);
@@ -1779,6 +1767,7 @@ namespace NorthwindTradersV5EnCapas
                     {
                         MDIPrincipal.ActualizarBarraDeEstado(Utils.modificandoRegistro);
                         DeshabilitarTodosControles();
+                        btnGenerar.Enabled = false;
                         Venta venta = new Venta();
                         venta.OrderID = int.Parse(txtId.Text);
                         venta.Cliente.CustomerID = cboCliente.SelectedValue.ToString().Trim();
@@ -1827,6 +1816,7 @@ namespace NorthwindTradersV5EnCapas
                             BorrarDatosDetalleVenta();
                             LlenarDatosVenta(ref orderId);
                             LlenarDatosDetalleVenta(orderId);
+                            DeshabilitarTodosControles();
                         }
                         else
                         {
