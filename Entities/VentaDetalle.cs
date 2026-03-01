@@ -42,6 +42,8 @@ namespace Entities
                                                            //        return Producto.ProductName;
                                                            //    }
                                                            //}
+        
+        public int ProductID => Producto.ProductID;
 
         // Tasa de IVA (ej. 0.16 = 16%)
         public decimal TasaIVA => Utils.TasaIVA; // no es necesario redondear tasa porque ya es exacto.

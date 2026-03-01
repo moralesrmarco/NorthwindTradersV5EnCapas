@@ -93,5 +93,10 @@ namespace BLL
             dt.Rows.Add(dr);
             return dt;
         }
+
+        public DataTable ObtenerVentasPorFechaVenta(DateTime? fechaVentaIni, DateTime? fechaVentaFin)
+        {
+            return _ventaDAL.ObtenerVentasPorFechaVenta(fechaVentaIni, fechaVentaFin);
+        }
     }
 }

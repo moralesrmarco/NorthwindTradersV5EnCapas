@@ -215,7 +215,7 @@ namespace DAL
             try
             {
                 using (var con = new SqlConnection(_connectionString))
-                using (var cmd = new SqlCommand("SpVentaEliminar", con)) 
+                using (var cmd = new SqlCommand("SpVentaEliminar", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@OrderID", venta.OrderID);
@@ -341,7 +341,7 @@ namespace DAL
             {
                 throw;
             }
-            return ventas; 
+            return ventas;
         }
 
         public DtoEnvioInformacion ObtenerUltimaInformacionDeEnvio(string customerId)
@@ -435,6 +435,28 @@ namespace DAL
                 throw new Exception("Error al obtener la venta por ID: " + ex.Message);
             }
             return venta;
+        }
+
+        public DataTable ObtenerVentasPorFechaVenta(DateTime? fechaVentaIni, DateTime? fechaVentaFin)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var con = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentasObtenerPorRangoFechaVenta", con))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@FVentaIni", fechaVentaIni.HasValue ? (object)fechaVentaIni.Value : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FVentaFin", fechaVentaFin.HasValue ? (object)fechaVentaFin.Value : DBNull.Value);
+                    da.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las ventas por fecha de venta: " + ex.Message);
+            }
+            return dt;
         }
     }
 }

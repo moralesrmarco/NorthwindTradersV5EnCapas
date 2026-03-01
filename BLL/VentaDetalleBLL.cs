@@ -36,7 +36,7 @@ namespace BLL
 
         public DataTable ObtenerVentaDetallePorVentaIdDt(int orderId)
         {
-            var ventaDetalles = _ventaDetalleDAL.ObtenerVentaDetallePorVentaId(orderId);
+            List<VentaDetalle> ventaDetalles = _ventaDetalleDAL.ObtenerVentaDetallePorVentaId(orderId);
             DataTable dt = new DataTable();
             dt.Columns.Add("ProductName", typeof(string));
             dt.Columns.Add("UnitPrice", typeof(decimal));

@@ -445,5 +445,16 @@ namespace NorthwindTradersV5EnCapas
             FrmVentasCrudV2 frm = new FrmVentasCrudV2();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de ventas Ver. 2 «");
         }
+
+        private void reporteDeVentasPorRangoDeFechaDeVentaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmRptVentasPorRangoFechaVenta frm = new FrmRptVentasPorRangoFechaVenta();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de ventas por rango de fecha de venta «");
+        }
+
+        private void reporteDeVentasPorDiferentesCriteriosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
