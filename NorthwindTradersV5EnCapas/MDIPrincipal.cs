@@ -454,7 +454,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void reporteDeVentasPorDiferentesCriteriosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmRptVentasPorDiferentesCriterios frm = new FrmRptVentasPorDiferentesCriterios();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte de ventas por diferentes criterios «");
         }
     }
 }

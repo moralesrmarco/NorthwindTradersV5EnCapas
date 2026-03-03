@@ -239,7 +239,7 @@ namespace DAL
             return filasAfectadas;
         }
 
-        public List<Venta> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)
+        public List<Venta> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100 = false)
         {
             var ventas = new List<Venta>();
             try

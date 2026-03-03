@@ -62,6 +62,7 @@ namespace NorthwindTradersV5EnCapas
             }
             else
             {
+                reportViewer1.BackColor = System.Drawing.Color.White;
                 reportViewer1.Clear();
                 ReportDataSource rptDataSource = new ReportDataSource("DataSet1", new DataTable());
                 reportViewer1.LocalReport.DataSources.Add(rptDataSource);

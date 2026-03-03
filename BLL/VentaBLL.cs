@@ -32,7 +32,7 @@ namespace BLL
             return _ventaDAL.Eliminar(venta, out productoExcede);
         }
 
-        public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100)
+        public List<DtoVentaDgv> ObtenerVentas(bool selectorRealizaBusqueda, DtoVentasBuscar criterios, bool top100 = false)
         {
             var ventasTemp = _ventaDAL.ObtenerVentas(selectorRealizaBusqueda, criterios, top100);
             // RowVersion convertido a string es para evitar problemas en el DataGridView
@@ -50,6 +50,29 @@ namespace BLL
                 RowVersionStr = v.RowVersionString
             }).ToList();
             return ventas;
+        }
+
+        public List<DtoVentaRpt> ObtenerVentasRpt(bool selectorRealizaBusqueda, DtoVentasBuscar criterios)
+        {
+            List<Venta> ventas = _ventaDAL.ObtenerVentas(selectorRealizaBusqueda, criterios);
+            var ventasRpt = ventas.Select(v => new DtoVentaRpt
+            {
+                OrderID = v.OrderID,
+                Cliente = v.Cliente.CompanyName,
+                Vendedor = v.Empleado.NameByLastName,
+                FechaDePedido = v.OrderDate,
+                FechaRequerido = v.RequiredDate,
+                FechaDeEnvio = v.ShippedDate,
+                CompaniaTransportista = v.Transportista.CompanyName,
+                DirigidoA = v.ShipName,
+                Domicilio = v.ShipAddress,
+                Ciudad = v.ShipCity,
+                Region = v.ShipRegion,
+                CodigoPostal = v.ShipPostalCode,
+                Pais = v.ShipCountry,
+                Flete = v.Freight ?? 0m
+            }).ToList();
+            return ventasRpt;
         }
 
         public Venta ObtenerVentaPorId(int orderId)

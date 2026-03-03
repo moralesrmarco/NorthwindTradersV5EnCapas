@@ -47,9 +47,6 @@ namespace NorthwindTradersV5EnCapas
             // Suscripción al evento del UserControl
             controlBuscarVenta.LimpiarClick += ControlBuscarVenta_LimpiarClick;
             controlBuscarVenta.BuscarClick += ControlBuscarVenta_BuscarClick;
-            controlBuscarVenta.NudEnter += NudEnterHandler;
-            controlBuscarVenta.NudBIdLeave += NudBIdLeaveHandler;
-            controlBuscarVenta.NudBIdValueChanged += NudBIdValueChangedHandler;
 
             controlAgregarProducto.NudEnter += NudEnterHandler;
             controlAgregarProducto.NudCantidadDescuento_LeaveValueChanged += NudCantidadDescuento_LeaveValueChangedHandler;
@@ -512,10 +509,6 @@ namespace NorthwindTradersV5EnCapas
                 tb.BeginInvoke((Action)(() => tb.SelectAll()));
             }
         }
-
-        private void NudBIdLeaveHandler(object sender, EventArgs e) => Utils.ValidarRango(sender, controlBuscarVenta.NudBIdIni, controlBuscarVenta.NudBIdFin);
-
-        private void NudBIdValueChangedHandler(object sender, EventArgs e) => Utils.ValidarRango(sender, controlBuscarVenta.NudBIdIni, controlBuscarVenta.NudBIdFin);
 
         private void NudCantidadDescuento_LeaveValueChangedHandler(object sender, EventArgs e) => ValidarControles();
 

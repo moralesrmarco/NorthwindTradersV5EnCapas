@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
+using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
     public partial class ControlBuscarVenta : UserControl
     {
         // Propiedades públicas para acceder a los valores
+        public GroupBox grbBuscar => GrbBuscar;
+
         public NumericUpDown NudBIdIni => nudBIdIni;
         public NumericUpDown NudBIdFin => nudBIdFin;
 
@@ -34,9 +37,6 @@ namespace NorthwindTradersV5EnCapas
         // Declaras el evento aquí
         public event EventHandler LimpiarClick;
         public event EventHandler BuscarClick;
-        public event EventHandler NudEnter;
-        public event EventHandler NudBIdLeave;
-        public event EventHandler NudBIdValueChanged;
 
         public ControlBuscarVenta()
         {
@@ -45,7 +45,10 @@ namespace NorthwindTradersV5EnCapas
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            // Dispara el evento hacia el formulario
+            // Comportamiento interno del control
+            LimpiarInterno();
+
+            // Dispara el evento hacia el formulario para que también pueda realizar acciones adicionales si lo desea, solo si el formulario se ha suscrito al evento
             LimpiarClick?.Invoke(this, EventArgs.Empty);
         }
 
@@ -55,11 +58,54 @@ namespace NorthwindTradersV5EnCapas
             BuscarClick?.Invoke(this, EventArgs.Empty);
         }
 
-        private void NudEnter_Handler(object sender, EventArgs e) => NudEnter?.Invoke(sender, e);
+        private void LimpiarInterno() 
+        {
+            NudBIdIni.Value = 0;
+            NudBIdFin.Value = 0;
 
-        private void NudBIdLeave_Handler(object sender, EventArgs e) => NudBIdLeave?.Invoke(sender, e);
+            TxtBCliente.Text = "";
+            TxtBEmpleado.Text = "";
+            TxtBCompañiaT.Text = "";
+            TxtBDirigidoa.Text = "";
 
-        private void NudBIdValueChanged_Handler(object sender, EventArgs e) => NudBIdValueChanged?.Invoke(sender, e);
+            DtpFVentaIni.Value = DateTime.Today;
+            DtpFVentaFin.Value = DateTime.Today;
+            DtpFVentaIni.Checked = false;
+            DtpFVentaFin.Checked = false;
+            ChkbFVentaNull.Checked = false;
+
+            DtpFRequeridoIni.Value = DateTime.Today;
+            DtpFRequeridoFin.Value = DateTime.Today;
+            DtpFRequeridoIni.Checked = false;
+            DtpFRequeridoFin.Checked = false;
+            ChkbFRequeridoNull.Checked = false;
+
+            DtpFEnvioIni.Value = DateTime.Today;
+            DtpFEnvioFin.Value = DateTime.Today;
+            DtpFEnvioIni.Checked = false;
+            DtpFEnvioFin.Checked = false;
+            ChkbFEnvioNull.Checked = false;
+        }
+
+        private void nudEnter(object sender, EventArgs e)
+        {
+            if (sender is NumericUpDown nud && nud.Controls[1] is TextBox tb)
+            {
+                // Diferir la selección para que ocurra después de que el TextBox reciba el foco
+                tb.BeginInvoke((Action)(() => tb.SelectAll()));
+            }
+        }
+
+        private void nudLeave(object sender, EventArgs e) => Utils.ValidarRango(sender, NudBIdIni, NudBIdFin);
+
+        private void txtEnter(object sender, EventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                // Seleccionar todo el texto al recibir el foco
+                this.BeginInvoke((Action)(() => tb.SelectAll()));
+            }
+        }
 
         private void dtpBFVentaIni_ValueChanged(object sender, EventArgs e)
         {
