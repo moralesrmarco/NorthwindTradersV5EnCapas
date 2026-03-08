@@ -81,6 +81,8 @@
     <Compile Include="DTOs\DtoVentaDgv.cs" />
     <Compile Include="DTOs\DtoVentaRpt.cs" />
     <Compile Include="DTOs\DtoVentasBuscar.cs" />
+    <Compile Include="DTOs\DtoVentasMensuales.cs" />
+    <Compile Include="DTOs\DtoVentasMensualesPorAños.cs" />
     <Compile Include="DTOs\Dummy.cs" />
     <Compile Include="Empleado.cs" />
     <Compile Include="Venta.cs" />

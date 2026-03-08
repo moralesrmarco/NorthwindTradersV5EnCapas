@@ -229,6 +229,18 @@
     <Compile Include="FrmEmpleadosCrud.Designer.cs">
       <DependentUpon>FrmEmpleadosCrud.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmGraficaVentasAnuales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficaVentasAnuales.Designer.cs">
+      <DependentUpon>FrmGraficaVentasAnuales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmGraficaVentasMensuales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficaVentasMensuales.Designer.cs">
+      <DependentUpon>FrmGraficaVentasMensuales.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmNotificacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -468,6 +480,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmEmpleadosCrud.resx">
       <DependentUpon>FrmEmpleadosCrud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficaVentasAnuales.resx">
+      <DependentUpon>FrmGraficaVentasAnuales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficaVentasMensuales.resx">
+      <DependentUpon>FrmGraficaVentasMensuales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNotificacion.resx">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>

@@ -63,6 +63,7 @@
     <Compile Include="CategoriaDAL.cs" />
     <Compile Include="ClienteDAL.cs" />
     <Compile Include="EmpleadoDAL.cs" />
+    <Compile Include="GraficasDAL.cs" />
     <Compile Include="Helpers\ComboDataHelper.cs" />
     <Compile Include="VentaDAL.cs" />
     <Compile Include="ProductoDAL.cs" />

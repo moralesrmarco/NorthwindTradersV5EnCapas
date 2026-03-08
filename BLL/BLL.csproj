@@ -63,6 +63,7 @@
     <Compile Include="CategoriaBLL.cs" />
     <Compile Include="ClienteBLL.cs" />
     <Compile Include="EmpleadoBLL.cs" />
+    <Compile Include="Services\GraficasService.cs" />
     <Compile Include="Services\ProductoService.cs" />
     <Compile Include="Services\VentaService.cs" />
     <Compile Include="VentaBLL.cs" />

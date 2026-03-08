@@ -1,0 +1,119 @@
+﻿using Entities.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace DAL
+{
+    public class GraficasDAL
+    {
+
+        private readonly string _connectionString;
+
+        public GraficasDAL(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public DataTable ObtenerAñosDeVentas()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentasObtenerAños", cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    da.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los años de ventas" + ex.Message);
+            }
+            return dt;
+        }
+
+        public List<DtoVentasMensuales> ObtenerVentasMensuales(int year)
+        {
+            var lista = new List<DtoVentasMensuales>();
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("VentasObtenerMensuales", cn))
+                {
+                    cmd.Parameters.AddWithValue("@year", year);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        int colMes = reader.GetOrdinal("Mes");
+                        int colNombreMes = reader.GetOrdinal("NombreMes");
+                        int colTotal = reader.GetOrdinal("Total");
+                        while (reader.Read())
+                        {
+                            int mes = reader.IsDBNull(colMes) ? 0 : Convert.ToInt32(reader.GetValue(colMes));
+                            string nombre = reader.IsDBNull(colNombreMes) ? string.Empty : reader.GetString(colNombreMes);
+                            decimal total = reader.IsDBNull(colTotal) ? 0m : Convert.ToDecimal(reader.GetValue(colTotal));
+                            lista.Add(new DtoVentasMensuales { Mes = mes, NombreMes = nombre, Total = total });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las ventas mensuales: " + ex.Message);
+            }
+            return lista;
+        }
+
+        public int ObtenerTotalAñosConVentas()
+        {
+            using (SqlConnection cn = new SqlConnection(_connectionString))
+            {
+                cn.Open();
+
+                string sql = @"
+                                SELECT COUNT(DISTINCT YEAR(OrderDate))
+                                FROM Orders";
+                using (SqlCommand cmd = new SqlCommand(sql, cn))
+                {
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+        }
+
+        public List<DtoVentasMensualesPorAños> ObtenerVentasMensualesPorAños(int years)
+        {
+            var lista = new List<DtoVentasMensualesPorAños>();
+
+            using (SqlConnection cn = new SqlConnection(_connectionString))
+            {
+                cn.Open();
+
+                using (SqlCommand cmd = new SqlCommand("VentasObtenerMensualesPorAnios", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@years", years);
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(new DtoVentasMensualesPorAños
+                            {
+                                Year = Convert.ToInt32(dr["Year"]),
+                                Mes = Convert.ToInt32(dr["Mes"]),
+                                NombreMes = Convert.ToString(dr["NombreMes"]),
+                                Total = Convert.ToDecimal(dr["Total"])
+                            });
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+    }
+}
