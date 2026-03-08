@@ -115,5 +115,47 @@ namespace DAL
             }
             return lista;
         }
+
+        public DataTable ObtenerTopProductos(int cantidad, int anio)
+        {
+            var dt = new DataTable();
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentasObtenerTopProductos", cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.Parameters.AddWithValue("@Cantidad", cantidad);
+                    cmd.Parameters.AddWithValue("@Anio", anio);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    da.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los productos más vendidos: " + ex.Message);
+            }
+            return dt;
+        }
+
+        public DataTable ObtenerTop10AñosDeVentas()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentasObtenerTop10Años", cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    da.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los años de ventas" + ex.Message);
+            }
+            return dt;
+        }
     }
 }

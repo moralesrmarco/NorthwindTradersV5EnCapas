@@ -139,11 +139,22 @@ namespace NorthwindTradersV5EnCapas
             decimal totalVentas = datos.Sum(x => x.Total);
             Title subTitulo = new Title();
             subTitulo.Text = $"Total de ventas del año {year}: {totalVentas:C2}";
-            subTitulo.Docking = Docking.Top;
-            subTitulo.Font = new Font("Arial", 8, FontStyle.Bold);
+            //subTitulo.Docking = Docking.Top;
+            subTitulo.Font = new Font("Segoe UI", 8, FontStyle.Bold);
             subTitulo.Alignment = ContentAlignment.TopRight;
-            //subTitulo.DockingOffset = 30;
-            subTitulo.IsDockedInsideChartArea = false;
+
+            area.InnerPlotPosition.Auto = false;
+            area.InnerPlotPosition.X = 10;
+            area.InnerPlotPosition.Y = 5;
+            area.InnerPlotPosition.Width = 85;
+            area.InnerPlotPosition.Height = 85;
+            
+            subTitulo.Position.Auto = false;
+
+            subTitulo.Position.X = area.InnerPlotPosition.X - 1;
+            subTitulo.Position.Width = area.InnerPlotPosition.Width + 1;
+            subTitulo.Position.Y = 3;
+            subTitulo.Position.Height = 5;
 
             chartVentas.Series[0]["AnimationDuration"] = "1500";
 

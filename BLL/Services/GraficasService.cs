@@ -1,5 +1,6 @@
 ﻿using DAL;
 using Entities.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -36,6 +37,27 @@ namespace BLL.Services
         public List<DtoVentasMensualesPorAños> ObtenerVentasMensualesPorAños(int years)
         {
             return _graficasDAL.ObtenerVentasMensualesPorAños(years);
+        }
+
+        public DataTable ObtenerTopProductos(int cantidad, int anio)
+        {
+            return _graficasDAL.ObtenerTopProductos(cantidad, anio);
+        }
+
+        public DataTable ObtenerTop10AñosDeVentas()
+        {
+            DataTable dtDb = _graficasDAL.ObtenerTop10AñosDeVentas();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Texto", typeof(string));
+            dt.Columns.Add("Valor", typeof(int));
+            dt.Rows.Add("»--- Seleccione ---«", 0);
+            dt.Rows.Add("Todos los años", -1);
+            foreach (DataRow row in dtDb.Rows)
+            {
+                int anio = Convert.ToInt32(row["YearOrderDate"]);
+                dt.Rows.Add(anio.ToString(), anio);
+            }
+            return dt;
         }
     }
 }

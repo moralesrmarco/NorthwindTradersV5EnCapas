@@ -936,6 +936,7 @@
             this.topProductosMásVendidosToolStripMenuItem.Name = "topProductosMásVendidosToolStripMenuItem";
             this.topProductosMásVendidosToolStripMenuItem.Size = new System.Drawing.Size(413, 26);
             this.topProductosMásVendidosToolStripMenuItem.Text = "Top productos más vendidos";
+            this.topProductosMásVendidosToolStripMenuItem.Click += new System.EventHandler(this.topProductosMásVendidosToolStripMenuItem_Click);
             // 
             // ventasPorVendedoresDeTodosLosAñosToolStripMenuItem
             // 
