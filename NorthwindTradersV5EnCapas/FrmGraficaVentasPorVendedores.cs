@@ -1,5 +1,4 @@
 ﻿using BLL.Services;
-using Entities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -36,7 +35,7 @@ namespace NorthwindTradersV5EnCapas
             // Título del gráfico
             Title titulo = new Title
             {
-                Text = "Gráfica ventas por vendedores de todos los años",
+                Text = "» Gráfica de ventas por vendedores de todos los años «",
                 Font = new Font("Arial", 16, FontStyle.Bold)
             };
             ChartVentasPorVendedores.Titles.Add(titulo);
@@ -60,7 +59,7 @@ namespace NorthwindTradersV5EnCapas
             List<(string Vendedor, decimal TotalVentas)> ventas = new List<(string Vendedor, decimal TotalVentas)>();
             try
             {
-                ventas = _graficasService.ObtenerVentasPorVendedoresTodosAños();
+                ventas = _graficasService.ObtenerVentasPorVendedores();
                 if (!ventas.Any())
                 {
                     U.MsgExclamation("No se encontraron datos de ventas por vendedores para mostrar en la gráfica.");

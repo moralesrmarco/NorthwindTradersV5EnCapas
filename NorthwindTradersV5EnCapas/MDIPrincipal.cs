@@ -481,5 +481,11 @@ namespace NorthwindTradersV5EnCapas
             FrmGraficaVentasPorVendedores frm = new FrmGraficaVentasPorVendedores();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Gráfica de ventas por vendedores de todos los años «");
         }
+
+        private void ventasPorVendedoresPorAñoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmGraficaDeVentasDeVendedoresPorAnio frm = new FrmGraficaDeVentasDeVendedoresPorAnio();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Gráfica de ventas por vendedores por año «");
+        }
     }
 }

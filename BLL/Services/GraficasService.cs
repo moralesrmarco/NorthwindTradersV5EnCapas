@@ -60,9 +60,9 @@ namespace BLL.Services
             return dt;
         }
 
-        public List<(string Vendedor, decimal TotalVentas)> ObtenerVentasPorVendedoresTodosAños()
+        public List<(string Vendedor, decimal TotalVentas)> ObtenerVentasPorVendedores(int anio = 0)
         {
-            return _graficasDAL.ObtenerVentasPorVendedoresTodosAños();
+            return _graficasDAL.ObtenerVentasPorVendedores(anio);
         }
 
     }

@@ -158,15 +158,16 @@ namespace DAL
             return dt;
         }
 
-        public List<(string Vendedor, decimal TotalVentas)> ObtenerVentasPorVendedoresTodosAños()
+        public List<(string Vendedor, decimal TotalVentas)> ObtenerVentasPorVendedores(int anio)
         {
             var resultados = new List<(string Vendedor, decimal TotalVentas)>();
             try
             {
                 using (SqlConnection cn = new SqlConnection(_connectionString))
-                using (SqlCommand cmd = new SqlCommand("SpVentasObtenerPorVendedorTodosAnios", cn))
+                using (SqlCommand cmd = new SqlCommand("SpVentasObtenerPorVendedor", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Anio", anio);
                     cn.Open();
                     using (SqlDataReader rdr = cmd.ExecuteReader())
                     {
