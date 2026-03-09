@@ -943,6 +943,7 @@
             this.ventasPorVendedoresDeTodosLosAñosToolStripMenuItem.Name = "ventasPorVendedoresDeTodosLosAñosToolStripMenuItem";
             this.ventasPorVendedoresDeTodosLosAñosToolStripMenuItem.Size = new System.Drawing.Size(413, 26);
             this.ventasPorVendedoresDeTodosLosAñosToolStripMenuItem.Text = "Ventas por vendedores de todos los años";
+            this.ventasPorVendedoresDeTodosLosAñosToolStripMenuItem.Click += new System.EventHandler(this.ventasPorVendedoresDeTodosLosAñosToolStripMenuItem_Click);
             // 
             // ventasPorVendedoresPorAñoToolStripMenuItem
             // 

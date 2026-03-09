@@ -59,5 +59,11 @@ namespace BLL.Services
             }
             return dt;
         }
+
+        public List<(string Vendedor, decimal TotalVentas)> ObtenerVentasPorVendedoresTodosAños()
+        {
+            return _graficasDAL.ObtenerVentasPorVendedoresTodosAños();
+        }
+
     }
 }

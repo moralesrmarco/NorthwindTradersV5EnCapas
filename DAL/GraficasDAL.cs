@@ -157,5 +157,33 @@ namespace DAL
             }
             return dt;
         }
+
+        public List<(string Vendedor, decimal TotalVentas)> ObtenerVentasPorVendedoresTodosAños()
+        {
+            var resultados = new List<(string Vendedor, decimal TotalVentas)>();
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(_connectionString))
+                using (SqlCommand cmd = new SqlCommand("SpVentasObtenerPorVendedorTodosAnios", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cn.Open();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            string vendedor = rdr["Vendedor"].ToString();
+                            decimal totalVentas = Convert.ToDecimal(rdr["TotalVentas"]);
+                            resultados.Add((vendedor, totalVentas));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las ventas por vendedor: " + ex.Message);
+            }
+            return resultados;
+        }
     }
 }
