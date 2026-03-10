@@ -253,6 +253,12 @@
     <Compile Include="FrmGraficaVentasMensuales.Designer.cs">
       <DependentUpon>FrmGraficaVentasMensuales.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmGraficaVentasMensualesPorVendedorPorAnio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmGraficaVentasMensualesPorVendedorPorAnio.Designer.cs">
+      <DependentUpon>FrmGraficaVentasMensualesPorVendedorPorAnio.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmGraficaVentasPorVendedores.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -510,6 +516,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGraficaVentasMensuales.resx">
       <DependentUpon>FrmGraficaVentasMensuales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmGraficaVentasMensualesPorVendedorPorAnio.resx">
+      <DependentUpon>FrmGraficaVentasMensualesPorVendedorPorAnio.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGraficaVentasPorVendedores.resx">
       <DependentUpon>FrmGraficaVentasPorVendedores.cs</DependentUpon>

@@ -65,5 +65,10 @@ namespace BLL.Services
             return _graficasDAL.ObtenerVentasPorVendedores(anio);
         }
 
+        public DataTable ObtenerVentasMensualesPorVendedoresPorAño(int anio)
+        {
+            return _graficasDAL.ObtenerVentasMensualesPorVendedoresPorAño(anio);
+        }
+
     }
 }
