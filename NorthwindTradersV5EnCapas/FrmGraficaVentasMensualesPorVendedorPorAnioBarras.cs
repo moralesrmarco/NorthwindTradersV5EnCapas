@@ -10,76 +10,73 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmGraficaVentasMensualesPorVendedorPorAnio : Form
+    public partial class FrmGraficaVentasMensualesPorVendedorPorAnioBarras : Form
     {
+
         private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private readonly GraficasService _graficasService;
 
-        public FrmGraficaVentasMensualesPorVendedorPorAnio()
+        public FrmGraficaVentasMensualesPorVendedorPorAnioBarras()
         {
             InitializeComponent();
             _graficasService = new GraficasService(cnStr);
-
-            ChartVentas.MouseMove += ChartVentas_MouseMove;
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint(this, sender, e);
 
-        private void FrmGraficaVentasMensualesPorVendedorPorAnio_Load(object sender, EventArgs e)
+        private void FrmGraficaVentasMensualesPorVendedorPorAnioBarras_Load(object sender, EventArgs e)
         {
             ChartVentas.Cursor = Cursors.Cross;
-            LlenarComboBox();
-            CargarVentasMensualesPorVendedorPorAnio(DateTime.Now.Year);
-            ChartVentas.AntiAliasing = AntiAliasingStyles.All;
-            ChartVentas.TextAntiAliasingQuality = TextAntiAliasingQuality.High;
+            LlenarCmbVentasDelAño();
         }
 
-        private void btnMostrar_Click(object sender, EventArgs e)
-        {
-            if (ComboBoxAño.SelectedIndex == 0)
-            {
-                U.MsgExclamation("Seleccione un año válido.");
-                return;
-            }
-            CargarVentasMensualesPorVendedorPorAnio(Convert.ToInt32(ComboBoxAño.SelectedValue));
-        }
-
-        private void LlenarComboBox()
+        private void LlenarCmbVentasDelAño()
         {
             MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
             try
             {
-                ComboBoxAño.DataSource = _graficasService.ObtenerAñosDeVentas();
-                ComboBoxAño.DisplayMember = "YearOrderDate";
-                ComboBoxAño.ValueMember = "YearOrderDate";
-                ComboBoxAño.SelectedIndex = 0;
+                DataTable dt = _graficasService.ObtenerAñosDeVentas(false);
+                CmbVentasDelAño.DisplayMember = "YearOrderDate";
+                CmbVentasDelAño.ValueMember = "YearOrderDate";
+                CmbVentasDelAño.DataSource = dt;
+                CmbVentasDelAño.SelectedIndex = 0;
+
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
             }
-            MDIPrincipal.ActualizarBarraDeEstado();
+            finally
+            {
+                MDIPrincipal.ActualizarBarraDeEstado();
+            }
         }
 
-        private void CargarVentasMensualesPorVendedorPorAnio(int anio)
+        private void CmbVentasDelAño_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarGrafica(Convert.ToInt32(CmbVentasDelAño.SelectedValue));
+        }
+
+        private void CargarGrafica(int anio)
         {
             ChartVentas.Series.Clear();
             ChartVentas.Titles.Clear();
-            Title titulo = new Title
+
+            Title titulo = new Title()
             {
                 Text = $"Ventas mensuales por vendedores del año {anio}",
                 Font = new Font("Arial", 16, FontStyle.Bold)
             };
             ChartVentas.Titles.Add(titulo);
             groupBox1.Text = $"» {titulo.Text} «";
-            // ChartArea
+
             var area = ChartVentas.ChartAreas[0];
             area.AxisX.Interval = 1;
+            area.AxisX.LabelStyle.Angle = -45;
             area.AxisX.CustomLabels.Clear();
             area.AxisX.MajorGrid.Enabled = true;
             area.AxisX.MajorGrid.LineColor = Color.LightGray;
             area.AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
-            area.AxisX.LabelStyle.Angle = -45;
             area.AxisX.LabelStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
             area.AxisX.Title = "Meses";
 
@@ -93,8 +90,17 @@ namespace NorthwindTradersV5EnCapas
             area.AxisY.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
             area.AxisY.LabelStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
             area.AxisY.LabelStyle.Angle = -45;
-            // Leer datos
-            var dt = new DataTable();
+
+            // Aquí habilitas 3D
+            area.Area3DStyle.Enable3D = true;
+            area.Area3DStyle.Inclination = 30;
+            area.Area3DStyle.Rotation = 30;
+            area.Area3DStyle.PointGapDepth = 25;
+            area.Area3DStyle.WallWidth = 0;
+            area.Area3DStyle.LightStyle = LightStyle.Realistic;
+
+            DataTable dt = null;
+
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
@@ -110,86 +116,73 @@ namespace NorthwindTradersV5EnCapas
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
 
-            // Pivot dinámico por vendedor
-            var grupos = dt.AsEnumerable()
-                          .GroupBy(r => r.Field<string>("Vendedor"));
 
-            int i = 0;
+            var grupos = dt.AsEnumerable().GroupBy(row => row.Field<string>("Vendedor"));
 
+            var nombresMes = dt.AsEnumerable()
+                .OrderBy(r => {
+                    var v = r["Mes"];
+                    return (v == DBNull.Value) ? int.MaxValue : Convert.ToInt32(v);
+                })
+                .Select(r => r.Field<string>("NombreMes") ?? string.Empty)
+                .Distinct()
+                .ToList(); 
+            
+            int colorIndex = 0;
+            
             foreach (var grupo in grupos)
             {
-                // Serie por vendedor
                 var serie = new Series(grupo.Key)
                 {
-                    ChartType = SeriesChartType.Line,
-                    BorderWidth = 2,
-                    MarkerStyle = MarkerStyle.Circle,
-                    MarkerSize = 6,
-                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
-                    LabelForeColor = Color.Black,
-                    Font = new Font("Segoe UI", 8f, FontStyle.Regular),
+                    ChartType = SeriesChartType.Column,
                     IsValueShownAsLabel = false,
-                    LabelFormat = "C2"
+                    Font = new Font("Segoe UI", 8, FontStyle.Regular),
+                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
+                    LabelFormat = "C2",
+                    Color = ChartColors.Paleta[colorIndex % ChartColors.Paleta.Length]
                 };
 
-                serie.Color = ChartColors.Paleta[i % ChartColors.Paleta.Length];
+                serie["DrawingStyle"] = "Cylinder";
+
+
+                foreach (var nombreMes in nombresMes)
+                    serie.Points.AddXY(nombreMes, 0D);
 
                 foreach (var row in grupo)
                 {
-                    string nombreMes = row.Field<string>("NombreMes");
-
+                    object rawMes = row["Mes"];
+                    int mes = rawMes == DBNull.Value ? 0 : Convert.ToInt32(rawMes); // validar 1..n
                     object raw = row["TotalVentas"];
-                    double ventas = raw != DBNull.Value
-                                    ? Convert.ToDouble(raw)
-                                    : 0D;
-
-                    serie.Points.AddXY(nombreMes, ventas);
+                    double ventas = (raw == DBNull.Value) ? 0.0 : Convert.ToDouble(raw);
+                    if (mes >= 1 && mes <= serie.Points.Count)
+                        serie.Points[mes - 1].YValues[0] = ventas;
                 }
-
                 // filtro para mostrar etiqueta solo si Y > 0
                 foreach (DataPoint p in serie.Points)
                 {
                     if (p.YValues[0] > 0)
                     {
-                        p.IsValueShownAsLabel = true;                        
+                        p.IsValueShownAsLabel = true;
+                        p.LabelForeColor = Color.Black; // Color de la etiqueta
+                        p.Font = new Font("Segoe UI", 8, FontStyle.Regular); // Fuente de la etiqueta
                     }
                 }
                 // Sumar todos los valores Y de la serie
                 double totalVendedor = serie.Points.Sum(p => p.YValues[0]);
-
                 serie.LegendText = $"{serie.Name} (Total: {totalVendedor:C2})";
-
                 ChartVentas.Series.Add(serie);
-                i++;
+                colorIndex++;
             }
-            Title subTitulo = new Title();
-            subTitulo.Text = $"Total de ventas del año: {dt.Compute("SUM(TotalVentas)", string.Empty):C2}";
-            subTitulo.Font = new Font("Arial", 8, FontStyle.Bold);
-            subTitulo.Alignment = ContentAlignment.TopLeft;
-            subTitulo.IsDockedInsideChartArea = false;
-            subTitulo.DockingOffset = -5;
+            Title subTitulo = new Title
+            {
+                Text = $"Total de ventas del año: {dt.Compute("SUM(TotalVentas)", string.Empty):C2}",
+                Font = new Font("Arial", 8, FontStyle.Bold),
+                Alignment = ContentAlignment.TopLeft,
+                IsDockedInsideChartArea = false,
+                DockingOffset = -5
+            };
             ChartVentas.Titles.Add(subTitulo);
-            // ————— Aquí forzamos el recálculo de la escala del eje Y —————
             ChartVentas.ResetAutoValues();
-        }
-
-        private void ChartVentas_MouseMove(object sender, MouseEventArgs e)
-        {
-            var result = ChartVentas.HitTest(e.X, e.Y);
-
-            // Restaurar todas las líneas
-            foreach (Series s in ChartVentas.Series)
-            {
-                s.BorderWidth = 2;
-                s.MarkerSize = 6;
-            }
-
-            // Resaltar la línea donde está el mouse
-            if (result.Series != null)
-            {
-                result.Series.BorderWidth = 4;
-                result.Series.MarkerSize = 10;
-            }
         }
     }
 }

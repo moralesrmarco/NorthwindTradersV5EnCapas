@@ -15,12 +15,15 @@ namespace BLL.Services
             _graficasDAL = new GraficasDAL(_connectionString);
         }
 
-        public DataTable ObtenerAñosDeVentas()
+        public DataTable ObtenerAñosDeVentas(bool conFilaSeleccione = true)
         {
             DataTable dt = _graficasDAL.ObtenerAñosDeVentas();
-            DataRow filaSeleccione = dt.NewRow();
-            filaSeleccione["YearOrderDate"] = "»--- Seleccione ---«";
-            dt.Rows.InsertAt(filaSeleccione, 0);
+            if (conFilaSeleccione)
+            {
+                DataRow filaSeleccione = dt.NewRow();
+                filaSeleccione["YearOrderDate"] = "»--- Seleccione ---«";
+                dt.Rows.InsertAt(filaSeleccione, 0);
+            }
             return dt;
         }
 
