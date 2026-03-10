@@ -10,13 +10,13 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmGraficaVentasMensualesPorVendedorPorAnioBarras : Form
+    public partial class FrmGraficaVentasMensualesPorVendedorPorAnioBarras2 : Form
     {
 
         private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private readonly GraficasService _graficasService;
 
-        public FrmGraficaVentasMensualesPorVendedorPorAnioBarras()
+        public FrmGraficaVentasMensualesPorVendedorPorAnioBarras2()
         {
             InitializeComponent();
             _graficasService = new GraficasService(cnStr);
@@ -69,6 +69,8 @@ namespace NorthwindTradersV5EnCapas
             ChartVentas.Titles.Add(titulo);
             groupBox1.Text = $"» {titulo.Text} «";
 
+            ChartVentas.Palette = ChartColorPalette.None;
+
             var area = ChartVentas.ChartAreas[0];
             area.AxisX.Interval = 1;
             area.AxisX.LabelStyle.Angle = -45;
@@ -89,14 +91,6 @@ namespace NorthwindTradersV5EnCapas
             area.AxisY.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
             area.AxisY.LabelStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
             area.AxisY.LabelStyle.Angle = -45;
-
-            // Aquí habilitas 3D
-            area.Area3DStyle.Enable3D = true;
-            area.Area3DStyle.Inclination = 30;
-            area.Area3DStyle.Rotation = 30;
-            area.Area3DStyle.PointGapDepth = 25;
-            area.Area3DStyle.WallWidth = 0;
-            area.Area3DStyle.LightStyle = LightStyle.Realistic;
 
             DataTable dt = null;
 
@@ -141,8 +135,7 @@ namespace NorthwindTradersV5EnCapas
                     Color = ChartColors.Paleta[colorIndex % ChartColors.Paleta.Length]
                 };
 
-                serie["DrawingStyle"] = "Cylinder";
-
+                serie["PointWidth"] = "0.8";
 
                 foreach (var nombreMes in nombresMes)
                     serie.Points.AddXY(nombreMes, 0D);

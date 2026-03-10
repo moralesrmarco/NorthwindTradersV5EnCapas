@@ -123,6 +123,7 @@ namespace NorthwindTradersV5EnCapas
             // 1 serie única
             var series = ChartTopProductos.Series.Add("Productos más vendidos");
             series.ChartType = SeriesChartType.Column;
+            series["DrawingStyle"] = "Cylinder";
 
             series.ShadowOffset = 3;
             series.ShadowColor = Color.FromArgb(120, Color.Black);
