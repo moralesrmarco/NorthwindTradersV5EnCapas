@@ -111,6 +111,8 @@ namespace NorthwindTradersV5EnCapas
             var grupos = dt.AsEnumerable()
                           .GroupBy(r => r.Field<string>("Vendedor"));
 
+            int i = 0;
+
             foreach (var grupo in grupos)
             {
                 // Serie por vendedor
@@ -126,6 +128,8 @@ namespace NorthwindTradersV5EnCapas
                     IsValueShownAsLabel = false,
                     LabelFormat = "C2"
                 };
+
+                serie.Color = ChartColors.Paleta[i % ChartColors.Paleta.Length];
 
                 foreach (var row in grupo)
                 {
@@ -153,6 +157,7 @@ namespace NorthwindTradersV5EnCapas
                 serie.LegendText = $"{serie.Name} (Total: {totalVendedor:C2})";
 
                 ChartVentas.Series.Add(serie);
+                i++;
             }
             Title subTitulo = new Title();
             subTitulo.Text = $"Total de ventas del año: {dt.Compute("SUM(TotalVentas)", string.Empty):C2}";

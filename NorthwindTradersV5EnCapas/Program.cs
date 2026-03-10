@@ -35,20 +35,20 @@ namespace NorthwindTradersV5EnCapas
             }
 
 
-            //FrmVentasCrud mdiPrincipal = new FrmVentasCrud();
+            //FrmGraficaTopProductosMasVendidos mdiPrincipal = new FrmGraficaTopProductosMasVendidos();
 
             //// Obtener pantallas
             //Screen[] pantallas = Screen.AllScreens;
 
             //if (pantallas.Length >= 4)
             //{
-            //    Screen pantalla4 = pantallas[2];
+            //    Screen pantalla4 = pantallas[1];
 
             //    // Posicionar el MDI en la pantalla 4
             //    mdiPrincipal.StartPosition = FormStartPosition.Manual;
             //    mdiPrincipal.Location = pantalla4.WorkingArea.Location;
             //    mdiPrincipal.Bounds = pantalla4.WorkingArea;
-            //    //mdiPrincipal.WindowState = FormWindowState.Maximized; // opcional
+            //    mdiPrincipal.WindowState = FormWindowState.Maximized; // opcional
             //}
             //else
             //{

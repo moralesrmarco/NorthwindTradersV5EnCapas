@@ -6,27 +6,27 @@ namespace Utilities
     {
         public static readonly Color[] Paleta =
         {
-            Color.FromArgb(52,152,219),   // Azul
+            Color.DodgerBlue,   
             Color.FromArgb(231,76,60),    // Rojo
             Color.FromArgb(46,204,113),   // Verde
             Color.FromArgb(155,89,182),   // Morado
-            Color.FromArgb(241,196,15),   // Amarillo
-            Color.FromArgb(230,126,34),   // Naranja
-            Color.FromArgb(26,188,156),   // Turquesa
-            Color.FromArgb(149,165,166),  // Gris claro
+            Color.DarkGoldenrod,   
             Color.DeepPink,
-            Color.FromArgb(192,57,43),    // Rojo oscuro
+            Color.FromArgb(241,196,15),   // Amarillo
+            Color.FromArgb(26,188,156),   // Turquesa
+            Color.LightSalmon,     
+            Color.Maroon,   
 
-            Color.CornflowerBlue,         // Azul claro
-            Color.LimeGreen,              // Verde brillante
+            Color.Navy,        
+            Color.Olive,             
             Color.DarkViolet,             // Violeta
-            Color.Gold,                   // Dorado
+            Color.Khaki,                   // Dorado
             Color.DarkOrange,             // Naranja oscuro
             Color.MediumTurquoise,        // Turquesa claro
-            Color.SlateGray,              // Gris azulado
+            Color.FromArgb(0,168,107),    // Verde esmeralda
             Color.MediumOrchid,           // Lila
-            Color.Teal,                   // Verde azulado
-            Color.Tomato                  // Rojo tomate
+            Color.FromArgb(240,128,128),  // Light coral
+            Color.Magenta                 
         };
     }
 }
