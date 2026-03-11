@@ -526,5 +526,11 @@ namespace NorthwindTradersV5EnCapas
             FrmRptGraficaVentasAnuales frm = new FrmRptGraficaVentasAnuales();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte gráfico comparativo de ventas anuales «");
         }
+
+        private void topProductosMásVendidosToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmRptTopProductosMasVendidos frm = new FrmRptTopProductosMasVendidos();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte gráfico de top productos más vendidos «");
+        }
     }
 }

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ComboBoxAños = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -139,17 +139,17 @@
             // 
             // ChartTopProductos
             // 
-            chartArea2.Name = "ChartArea1";
-            this.ChartTopProductos.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.ChartTopProductos.ChartAreas.Add(chartArea1);
             this.ChartTopProductos.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.ChartTopProductos.Legends.Add(legend2);
+            legend1.Name = "Legend1";
+            this.ChartTopProductos.Legends.Add(legend1);
             this.ChartTopProductos.Location = new System.Drawing.Point(20, 39);
             this.ChartTopProductos.Name = "ChartTopProductos";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.ChartTopProductos.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.ChartTopProductos.Series.Add(series1);
             this.ChartTopProductos.Size = new System.Drawing.Size(1100, 314);
             this.ChartTopProductos.TabIndex = 0;
             this.ChartTopProductos.Text = "chart1";

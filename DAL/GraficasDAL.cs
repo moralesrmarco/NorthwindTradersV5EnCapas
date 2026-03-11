@@ -138,6 +138,28 @@ namespace DAL
             return dt;
         }
 
+        public DataTable ObtenerTopProductosRpt(int cantidad, int anio)
+        {
+            var dt = new DataTable();
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpVentasObtenerTopProductosRpt", cn))
+                using (var da = new SqlDataAdapter(cmd))
+                {
+                    cmd.Parameters.AddWithValue("@Cantidad", cantidad);
+                    cmd.Parameters.AddWithValue("@Anio", anio);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    da.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los productos más vendidos: " + ex.Message);
+            }
+            return dt;
+        }
+
         public DataTable ObtenerTop10AñosDeVentas()
         {
             DataTable dt = new DataTable();

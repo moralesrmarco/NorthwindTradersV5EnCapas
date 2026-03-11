@@ -47,13 +47,19 @@ namespace BLL.Services
             return _graficasDAL.ObtenerTopProductos(cantidad, anio);
         }
 
-        public DataTable ObtenerTop10AñosDeVentas()
+        public DataTable ObtenerTopProductosRpt(int cantidad, int anio)
+        {
+            return _graficasDAL.ObtenerTopProductosRpt(cantidad, anio);
+        }
+
+        public DataTable ObtenerTop10AñosDeVentas(bool conFilaSeleccione = true)
         {
             DataTable dtDb = _graficasDAL.ObtenerTop10AñosDeVentas();
             DataTable dt = new DataTable();
             dt.Columns.Add("Texto", typeof(string));
             dt.Columns.Add("Valor", typeof(int));
-            dt.Rows.Add("»--- Seleccione ---«", 0);
+            if (conFilaSeleccione)
+                dt.Rows.Add("»--- Seleccione ---«", 0);
             dt.Rows.Add("Todos los años", -1);
             foreach (DataRow row in dtDb.Rows)
             {
