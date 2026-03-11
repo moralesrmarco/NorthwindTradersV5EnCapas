@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entities.Config;
+using System;
+using System.Configuration;
 using System.Drawing;
 using System.Windows.Forms;
 using Utilities;
@@ -33,6 +35,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void MDIPrincipal_Load(object sender, EventArgs e)
         {
+            ConfiguracionFiscal.TasaIVA = Convert.ToDecimal(ConfigurationManager.AppSettings["TasaIVA"]);
             foreach (Control ctrl in this.Controls)
             {
                 if (ctrl is MdiClient)
@@ -510,6 +513,12 @@ namespace NorthwindTradersV5EnCapas
         {
             FrmGraficaEjemploTodas frm = new FrmGraficaEjemploTodas();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Ejemplo de gráficas «");
+        }
+
+        private void ventasMensualesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmRptGraficaVentasMensuales frm = new FrmRptGraficaVentasMensuales();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte gráfico de ventas mensuales «");
         }
     }
 }

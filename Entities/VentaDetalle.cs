@@ -1,7 +1,7 @@
 ﻿//https://www.youtube.com/watch?v=VjBAQV_cFxM&list=PLgvaYP_E7xkKhk3QYJCvNXndiypRugCrf&index=6 tiene un ejemplo de como armar una clase cuando existe relacion con otras clases
 
+using Entities.Config;
 using System;
-using Utilities;
 
 namespace Entities
 {
@@ -46,7 +46,9 @@ namespace Entities
         public int ProductID => Producto.ProductID;
 
         // Tasa de IVA (ej. 0.16 = 16%)
-        public decimal TasaIVA => Utils.TasaIVA; // no es necesario redondear tasa porque ya es exacto.
+        //public decimal TasaIVA => Utils.TasaIVA; // no es necesario redondear tasa porque ya es exacto.
+
+        public decimal TasaIVA => ConfiguracionFiscal.TasaIVA;
 
         // Base sin IVA (separando el impuesto del precio con IVA)
         // Precio unitario sin IVA después del descuento

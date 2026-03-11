@@ -17,7 +17,6 @@ namespace Utilities
     public static class Utils
     {
         #region VariablesGlobales
-        public static readonly decimal TasaIVA = Convert.ToDecimal(ConfigurationManager.AppSettings["TasaIVA"]);
         public static string nwtr => ConfigurationManager.AppSettings["nwtr"];
         public const string clbdd = "Consultando la base de datos... ";
         public const string oueclbdd = "Ocurrio un error con la base de datos:\n";

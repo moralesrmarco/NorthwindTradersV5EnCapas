@@ -67,6 +67,7 @@
     <Compile Include="DateTimeCascadeHelper.cs" />
     <Compile Include="DateTimePickerHelper.cs" />
     <Compile Include="InventarioHelper.cs" />
+    <Compile Include="ReportDataTableAdapterHelper.cs" />
     <Compile Include="RowVersionHelper.cs" />
     <Compile Include="ValidarCantidadEInventarioHelper.cs" />
     <Compile Include="NudHelper.cs" />
@@ -77,6 +78,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusIconHelper.cs" />
     <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{8cda8642-11bf-47cf-a88b-71626b5000bf}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

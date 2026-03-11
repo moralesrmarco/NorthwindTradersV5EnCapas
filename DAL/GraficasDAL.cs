@@ -42,7 +42,7 @@ namespace DAL
             try
             {
                 using (var cn = new SqlConnection(_connectionString))
-                using (var cmd = new SqlCommand("VentasObtenerMensuales", cn))
+                using (var cmd = new SqlCommand("SpVentasObtenerMensuales", cn))
                 {
                     cmd.Parameters.AddWithValue("@year", year);
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -93,7 +93,7 @@ namespace DAL
             {
                 cn.Open();
 
-                using (SqlCommand cmd = new SqlCommand("VentasObtenerMensualesPorAnios", cn))
+                using (SqlCommand cmd = new SqlCommand("SpVentasObtenerMensualesPorAnios", cn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@years", years);
