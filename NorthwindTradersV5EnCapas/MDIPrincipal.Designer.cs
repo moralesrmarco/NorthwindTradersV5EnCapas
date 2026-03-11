@@ -153,6 +153,7 @@
             this.ventasMensualesPorVendedorPorAñoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.ventasMensualesPorVendedorPorAñobarrasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.gráficaEjemploToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TabControlPrincipal = new NorthwindTradersV5EnCapas.ControlCustomTab();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -173,7 +174,6 @@
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TabControlPrincipal = new NorthwindTradersV5EnCapas.ControlCustomTab();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -1120,6 +1120,7 @@
             this.comparativoDeVentasAnualesToolStripMenuItem1.Name = "comparativoDeVentasAnualesToolStripMenuItem1";
             this.comparativoDeVentasAnualesToolStripMenuItem1.Size = new System.Drawing.Size(413, 26);
             this.comparativoDeVentasAnualesToolStripMenuItem1.Text = "Comparativo de ventas anuales";
+            this.comparativoDeVentasAnualesToolStripMenuItem1.Click += new System.EventHandler(this.comparativoDeVentasAnualesToolStripMenuItem1_Click);
             // 
             // topProductosMásVendidosToolStripMenuItem1
             // 
@@ -1156,6 +1157,20 @@
             this.gráficaEjemploToolStripMenuItem.Name = "gráficaEjemploToolStripMenuItem";
             this.gráficaEjemploToolStripMenuItem.Size = new System.Drawing.Size(413, 26);
             this.gráficaEjemploToolStripMenuItem.Text = "Gráfica ejemplo";
+            // 
+            // TabControlPrincipal
+            // 
+            this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControlPrincipal.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.TabControlPrincipal.Location = new System.Drawing.Point(0, 55);
+            this.TabControlPrincipal.Margin = new System.Windows.Forms.Padding(4);
+            this.TabControlPrincipal.Multiline = true;
+            this.TabControlPrincipal.Name = "TabControlPrincipal";
+            this.TabControlPrincipal.SelectedIndex = 0;
+            this.TabControlPrincipal.ShowToolTips = true;
+            this.TabControlPrincipal.Size = new System.Drawing.Size(1300, 477);
+            this.TabControlPrincipal.TabIndex = 4;
+            this.TabControlPrincipal.SelectedIndexChanged += new System.EventHandler(this.TabControlPrincipal_SelectedIndexChanged);
             // 
             // newToolStripButton
             // 
@@ -1342,20 +1357,6 @@
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             this.searchToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.searchToolStripMenuItem.Text = "&Buscar";
-            // 
-            // TabControlPrincipal
-            // 
-            this.TabControlPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControlPrincipal.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.TabControlPrincipal.Location = new System.Drawing.Point(0, 55);
-            this.TabControlPrincipal.Margin = new System.Windows.Forms.Padding(4);
-            this.TabControlPrincipal.Multiline = true;
-            this.TabControlPrincipal.Name = "TabControlPrincipal";
-            this.TabControlPrincipal.SelectedIndex = 0;
-            this.TabControlPrincipal.ShowToolTips = true;
-            this.TabControlPrincipal.Size = new System.Drawing.Size(1300, 477);
-            this.TabControlPrincipal.TabIndex = 4;
-            this.TabControlPrincipal.SelectedIndexChanged += new System.EventHandler(this.TabControlPrincipal_SelectedIndexChanged);
             // 
             // MDIPrincipal
             // 
