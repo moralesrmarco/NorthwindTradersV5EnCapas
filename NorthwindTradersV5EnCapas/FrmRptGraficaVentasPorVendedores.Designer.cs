@@ -44,7 +44,7 @@
             this.groupBox1.Size = new System.Drawing.Size(1122, 693);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "» Reporte gráfico ventas por vendedores de todos los años «";
+            this.groupBox1.Text = "» Reporte gráfico de ventas por vendedores de todos los años «";
             this.groupBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.GrbPaint);
             // 
             // reportViewer1

@@ -373,7 +373,7 @@
                 </Style>
               </ChartTitle>
               <ChartTitle Name="Title1">
-                <Caption>="Total de ventas: " &amp; Format(Sum(Fields!TotalVentas.Value), "C2")</Caption>
+                <Caption>="Total de ventas del año " &amp; Parameters!Anio.Value &amp; ": " &amp; Format(Sum(Fields!TotalVentas.Value), "C2")</Caption>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontFamily>Arial Rounded MT Bold</FontFamily>
@@ -386,7 +386,7 @@
                 <ChartElementPosition>
                   <Top>6.5</Top>
                   <Left>3</Left>
-                  <Height>3.378</Height>
+                  <Height>3.947</Height>
                   <Width>94</Width>
                 </ChartElementPosition>
               </ChartTitle>
@@ -464,7 +464,21 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Northwind Traders - » Reporte gráfico de ventas por vendedores de todos los años «</Value>
+                      <Value>Northwind Traders - » Reporte gráfico de ventas por vendedores del año </Value>
+                      <Style>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Parameters!Anio.Value</Value>
+                      <Style>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> «</Value>
                       <Style>
                         <FontSize>12pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -614,6 +628,10 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="Anio">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -624,6 +642,11 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>Subtitulo</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Anio</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
