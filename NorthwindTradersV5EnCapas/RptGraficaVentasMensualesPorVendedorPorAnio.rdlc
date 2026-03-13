@@ -103,18 +103,29 @@
                             <Visible>true</Visible>
                           </ChartDataLabel>
                           <Style>
-                            <Border />
+                            <Border>
+                              <Width>1.5pt</Width>
+                            </Border>
                           </Style>
                           <ChartMarker>
-                            <Type>Circle</Type>
+                            <Type>= IIF(Fields!TotalVentas.Value = 0, "None", "Circle")</Type>
                             <Size>5pt</Size>
-                            <Style />
+                            <Style>
+                              <Border>
+                                <Color>White</Color>
+                                <Width>1.5pt</Width>
+                              </Border>
+                            </Style>
                           </ChartMarker>
                           <DataElementOutput>Output</DataElementOutput>
                         </ChartDataPoint>
                       </ChartDataPoints>
                       <Type>Line</Type>
-                      <Style />
+                      <Subtype>Smooth</Subtype>
+                      <Style>
+                        <ShadowColor>#00ffffff</ShadowColor>
+                        <ShadowOffset>0pt</ShadowOffset>
+                      </Style>
                       <ChartEmptyPoints>
                         <Style />
                         <ChartMarker>
@@ -153,7 +164,7 @@
                         </ChartAxisTitle>
                         <Interval>1</Interval>
                         <ChartMajorGridLines>
-                          <Enabled>True</Enabled>
+                          <Enabled>False</Enabled>
                           <Style>
                             <Border>
                               <Color>Gainsboro</Color>
@@ -420,7 +431,29 @@
                     </ChartElementPosition>
                   </ChartTitle>
                 </ChartTitles>
-                <Palette>PacificSemiTransparent</Palette>
+                <Palette>Custom</Palette>
+                <ChartCustomPaletteColors>
+                  <ChartCustomPaletteColor>#1e90ff</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#e74c3c</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#2ecc71</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#9b59b6</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#b8860b</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#ff1493</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#f1c40f</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#1abc9c</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#ffa07a</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#800000</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#000080</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#808000</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#9400d3</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#f0e68c</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#ff8c00</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#48d1cc</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#00a86b</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#ba55d3</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#f08080</ChartCustomPaletteColor>
+                  <ChartCustomPaletteColor>#ff00ff</ChartCustomPaletteColor>
+                </ChartCustomPaletteColors>
                 <ChartBorderSkin>
                   <Style>
                     <BackgroundColor>Gray</BackgroundColor>
@@ -2384,19 +2417,6 @@
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Public Function GetColor(ByVal raw As Object) As String
-  Try
-    Dim idx As Integer = CInt(raw)
-    Dim paleta As String() = {
-      "#FF5733", "#33FF57", "#3357FF",
-      "#FF33A8", "#FFC300", "#00CED1",
-      "#8A2BE2", "#FF4500", "#2E8B57", "#DAA520"
-    }
-    Return paleta((idx - 1) Mod paleta.Length)
-  Catch
-    Return "#000000"  ' Color por defecto ante error
-  End Try
-End Function</Code>
   <EmbeddedImages>
     <EmbeddedImage Name="northwinddb">
       <MIMEType>image/jpeg</MIMEType>

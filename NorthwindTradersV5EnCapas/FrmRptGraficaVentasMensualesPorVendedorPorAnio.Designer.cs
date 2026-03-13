@@ -65,7 +65,7 @@
             this.CmbVentasDelAño.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CmbVentasDelAño.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CmbVentasDelAño.FormattingEnabled = true;
-            this.CmbVentasDelAño.Location = new System.Drawing.Point(424, 0);
+            this.CmbVentasDelAño.Location = new System.Drawing.Point(490, 0);
             this.CmbVentasDelAño.Name = "CmbVentasDelAño";
             this.CmbVentasDelAño.Size = new System.Drawing.Size(163, 28);
             this.CmbVentasDelAño.TabIndex = 1;
@@ -75,7 +75,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 4);
+            this.label1.Location = new System.Drawing.Point(69, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(371, 20);
             this.label1.TabIndex = 0;
@@ -98,7 +98,7 @@
             // reportViewer1
             // 
             this.reportViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "NorthwindTradersV4MySql.RptGraficaVentasMensualesPorVendedorPorAnio.rdlc";
+            this.reportViewer1.LocalReport.ReportEmbeddedResource = "NorthwindTradersV5EnCapas.RptGraficaVentasMensualesPorVendedorPorAnio.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(30, 49);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ServerReport.BearerToken = null;

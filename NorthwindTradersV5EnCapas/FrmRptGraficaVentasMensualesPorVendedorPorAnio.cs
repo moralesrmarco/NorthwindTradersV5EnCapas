@@ -1,4 +1,5 @@
-﻿using Microsoft.Reporting.WinForms;
+﻿using BLL.Services;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Configuration;
 using System.Data;
@@ -10,12 +11,13 @@ namespace NorthwindTradersV5EnCapas
     public partial class FrmRptGraficaVentasMensualesPorVendedorPorAnio : Form
     {
 
-        private readonly string cnStr = ConfigurationManager.ConnectionStrings["NorthwindMySql"].ConnectionString;
+        private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
+        private readonly GraficasService _graficasService;
 
         public FrmRptGraficaVentasMensualesPorVendedorPorAnio()
         {
             InitializeComponent();
-            WindowState = FormWindowState.Maximized;
+            _graficasService = new GraficasService(cnStr);
         }
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint(this, sender, e);
@@ -29,10 +31,10 @@ namespace NorthwindTradersV5EnCapas
         { 
             try
             {
-                //MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                //var dt = new GraficaRepository(cnStr).ObtenerAñosDePedidos();
-                //foreach (DataRow row in dt.Rows)
-                //    CmbVentasDelAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                var dt = _graficasService.ObtenerAñosDeVentas(false);
+                foreach (DataRow row in dt.Rows)
+                    CmbVentasDelAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
             }
             catch (Exception ex)
             {
@@ -52,28 +54,28 @@ namespace NorthwindTradersV5EnCapas
 
         private void LlenarGrafico(int year)
         {
-            //    groupBox1.Text = $"» Reporte gráfico comparativo de ventas mensuales por vendedores del año {year} «";
-            //    DataTable dt;
-            //    try
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-            //        dt = new GraficaRepository(cnStr).ObtenerVentasMensualesPorVendedorRpt(year);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        U.MsgCatchOue(ex);
-            //        return;
-            //    }
-            //    finally
-            //    {
-            //        MDIPrincipal.ActualizarBarraDeEstado();
-            //    }
-            //    reportViewer1.LocalReport.DataSources.Clear();
-            //    var rds = new ReportDataSource("DataSet1", dt);
-            //    reportViewer1.LocalReport.DataSources.Add(rds);
-            //    reportViewer1.LocalReport.SetParameters(new ReportParameter("Subtitulo", $"Ventas mensuales por vendedores del año {year}"));
-            //    reportViewer1.LocalReport.SetParameters(new ReportParameter("Anio", year.ToString()));
-            //    reportViewer1.RefreshReport();
+            groupBox1.Text = $"» Reporte gráfico comparativo de ventas mensuales por vendedores del año {year} «";
+            DataTable dt;
+            try
+            {
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
+                dt = _graficasService.ObtenerVentasMensualesPorVendedoresPorAño(year);
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+                return;
+            }
+            finally
+            {
+                MDIPrincipal.ActualizarBarraDeEstado();
+            }
+            reportViewer1.LocalReport.DataSources.Clear();
+            var rds = new ReportDataSource("DataSet1", dt);
+            reportViewer1.LocalReport.DataSources.Add(rds);
+            reportViewer1.LocalReport.SetParameters(new ReportParameter("Subtitulo", $"Ventas mensuales por vendedores del año {year}"));
+            reportViewer1.LocalReport.SetParameters(new ReportParameter("Anio", year.ToString()));
+            reportViewer1.RefreshReport();
         }
     }
 }

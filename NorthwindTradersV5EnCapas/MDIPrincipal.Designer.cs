@@ -951,6 +951,7 @@
             this.ventasMensualesPorVendedorPorAñoToolStripMenuItem1.Name = "ventasMensualesPorVendedorPorAñoToolStripMenuItem1";
             this.ventasMensualesPorVendedorPorAñoToolStripMenuItem1.Size = new System.Drawing.Size(413, 26);
             this.ventasMensualesPorVendedorPorAñoToolStripMenuItem1.Text = "Ventas mensuales por vendedor por año";
+            this.ventasMensualesPorVendedorPorAñoToolStripMenuItem1.Click += new System.EventHandler(this.ventasMensualesPorVendedorPorAñoToolStripMenuItem1_Click);
             // 
             // ventasMensualesPorVendedorPorAñobarrasToolStripMenuItem1
             // 
