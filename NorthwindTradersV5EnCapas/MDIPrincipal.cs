@@ -550,5 +550,17 @@ namespace NorthwindTradersV5EnCapas
             FrmRptGraficaVentasMensualesPorVendedorPorAnio frm = new FrmRptGraficaVentasMensualesPorVendedorPorAnio();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte gráfico comparativo de ventas mensuales por vendedores por año «");
         }
+
+        private void ventasMensualesPorVendedorPorAñobarrasToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmRptGraficaVentasMensualesPorVendedorPorAnioBarras frm = new FrmRptGraficaVentasMensualesPorVendedorPorAnioBarras();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte gráfico comparativo de ventas mensuales por vendedores por año (barras) «");
+        }
+
+        private void ventasMensualesPorVendedorPorAñobarras2ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FrmRptGraficaVentasMensualesPorVendedorPorAnioBarras2 frm = new FrmRptGraficaVentasMensualesPorVendedorPorAnioBarras2();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Reporte gráfico comparativo de ventas mensuales por vendedores por año (barras 2) «");
+        }
     }
 }
