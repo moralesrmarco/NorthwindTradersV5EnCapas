@@ -355,6 +355,12 @@
     <Compile Include="FrmRptVentasPorRangoFechaVenta.Designer.cs">
       <DependentUpon>FrmRptVentasPorRangoFechaVenta.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmUsuariosCrud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmUsuariosCrud.Designer.cs">
+      <DependentUpon>FrmUsuariosCrud.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVentasCrud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -634,6 +640,9 @@
     <EmbeddedResource Include="FrmRptVentasPorRangoFechaVenta.resx">
       <DependentUpon>FrmRptVentasPorRangoFechaVenta.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmUsuariosCrud.resx">
+      <DependentUpon>FrmUsuariosCrud.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmVentasCrud.resx">
       <DependentUpon>FrmVentasCrud.cs</DependentUpon>
     </EmbeddedResource>
@@ -812,6 +821,8 @@
     <None Include="Resources\pestana.png" />
     <None Include="Resources\pestanaOn.png" />
     <None Include="Resources\pestanaOff.png" />
+    <None Include="Resources\mostrarCh.png" />
+    <None Include="Resources\ocultarCh.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

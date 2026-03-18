@@ -66,6 +66,7 @@
     <Compile Include="Services\GraficasService.cs" />
     <Compile Include="Services\ProductoService.cs" />
     <Compile Include="Services\VentaService.cs" />
+    <Compile Include="UsuarioBLL.cs" />
     <Compile Include="VentaBLL.cs" />
     <Compile Include="ProductoBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

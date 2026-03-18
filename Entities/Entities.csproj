@@ -79,6 +79,7 @@
     <Compile Include="DTOs\DtoProductosPorProveedor.cs" />
     <Compile Include="DTOs\DtoProductosPorProveedorConDetProv.cs" />
     <Compile Include="DTOs\DtoProveedoresBuscar.cs" />
+    <Compile Include="DTOs\DtoUsuariosBuscar.cs" />
     <Compile Include="DTOs\DtoVentaDgv.cs" />
     <Compile Include="DTOs\DtoVentaRpt.cs" />
     <Compile Include="DTOs\DtoVentasBuscar.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="DTOs\DtoVentasMensualesPorAños.cs" />
     <Compile Include="DTOs\Dummy.cs" />
     <Compile Include="Empleado.cs" />
+    <Compile Include="Usuario.cs" />
     <Compile Include="Venta.cs" />
     <Compile Include="VentaDetalle.cs" />
     <Compile Include="Producto.cs" />

@@ -9,6 +9,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 using WinFormsSortOrder = System.Windows.Forms.SortOrder;
 
@@ -60,8 +62,25 @@ namespace Utilities
         public const string nfein = "\n[red]NO fue eliminado en la base de datos, el nuevo inventario del producto sería inválido (negativo).";
 
         public const string ecfm = "Este campo fue modificado, guarde el formulario o cierrelo sin confirmar los cambios";
-
         #endregion
+
+        public static string ComputeSha256Hash(string rawData)
+        {
+            // 1. Instancia el algoritmo
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // 2. Convierte la cadena a bytes (UTF-8)
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // 3. Convierte cada byte a su representación hex (2 dígitos)
+                var builder = new StringBuilder();
+                foreach (byte b in bytes)
+                    builder.Append(b.ToString("x2"));
+
+                // 4. Retorna el string hex completo
+                return builder.ToString();
+            }
+        }
 
         public static DateTime? ObtenerFechaHora(DateTimePicker dtpFecha, DateTimePicker dtpHora)
         {
@@ -182,6 +201,13 @@ namespace Utilities
             }
         }
 
+        public static string GetValorOriginal(string controlName, Dictionary<string, object> valoresOriginales)
+        {
+            return valoresOriginales.TryGetValue(controlName, out var valor)
+                ? valor?.ToString() ?? string.Empty
+                : string.Empty;
+        }
+
         // Captura valores iniciales SOLO de TextBox y ComboBox,
         // ignorando los que empiezan con txtB o cboB
         public static Dictionary<string, object> CapturarValoresOriginales(Control parent)
@@ -242,7 +268,8 @@ namespace Utilities
 
                     if (valoresOriginales.TryGetValue(name, out var original))
                     {
-                        var actual = txt.Text.Trim() ?? string.Empty;
+                        string actual = txt.Text.Trim();
+
                         if (!Equals(original, actual))
                         {
                             hayCambios = true;

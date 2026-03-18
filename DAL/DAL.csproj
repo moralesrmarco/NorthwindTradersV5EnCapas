@@ -65,6 +65,7 @@
     <Compile Include="EmpleadoDAL.cs" />
     <Compile Include="GraficasDAL.cs" />
     <Compile Include="Helpers\ComboDataHelper.cs" />
+    <Compile Include="UsuarioDAL.cs" />
     <Compile Include="VentaDAL.cs" />
     <Compile Include="ProductoDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
