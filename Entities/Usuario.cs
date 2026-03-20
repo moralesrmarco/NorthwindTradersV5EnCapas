@@ -20,9 +20,6 @@ namespace Entities
                 ? BitConverter.ToInt64(RowVersion, 0).ToString()
                 : string.Empty;
         }
-        // del diagrama entidad-relación podemos ver que
-        // un producto tiene muchaas ventasdetalle asociadas
         // aqui debo poner los objetos de navegación, es decir las propiedades que representan las relaciones con otras entidades como es permisos
-        //public List<VentaDetalle> VentaDetalles { get; set; } = new List<VentaDetalle>();
     }
 }

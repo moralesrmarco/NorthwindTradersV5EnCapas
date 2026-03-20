@@ -571,7 +571,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void mantenimientoDePermisosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FrmPermisosCrud frm = new FrmPermisosCrud();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de permisos «");
         }
     }
 }
