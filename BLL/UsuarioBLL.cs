@@ -31,6 +31,21 @@ namespace BLL
             return _usuarioDAL.Eliminar(usuario);
         }
 
+        public byte ActualizarContraseña(string usuario, string nuevaContrasena)
+        {
+            return _usuarioDAL.ActualizarContraseña(usuario, nuevaContrasena);
+        }
+
+        public byte ValidarContraseñaActual(string usuario, string contrasenaActual)
+        {
+            return _usuarioDAL.ValidarContraseñaActual(usuario, contrasenaActual);
+        }
+
+        public int ValidarUsuario(string usuario, string password, out string nombreUsuarioAutenticado)
+        {
+            return _usuarioDAL.ValidarUsuario(usuario, password, out nombreUsuarioAutenticado);
+        }
+
         public DataTable ObtenerUsuarios(DtoUsuariosBuscar dtoUsuariosBuscar)
         {
             DataTable dtTemp = _usuarioDAL.ObtenerUsuarios(dtoUsuariosBuscar);

@@ -181,6 +181,12 @@
     <Compile Include="ControlTotalesDeLaVenta.Designer.cs">
       <DependentUpon>ControlTotalesDeLaVenta.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmCambiarContrasena.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCambiarContrasena.Designer.cs">
+      <DependentUpon>FrmCambiarContrasena.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmCategoriasCrud.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -282,6 +288,12 @@
     </Compile>
     <Compile Include="FrmGraficaVentasPorVendedores.Designer.cs">
       <DependentUpon>FrmGraficaVentasPorVendedores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmNotificacion.cs">
       <SubType>Form</SubType>
@@ -559,6 +571,9 @@
     <EmbeddedResource Include="ControlTotalesDeLaVenta.resx">
       <DependentUpon>ControlTotalesDeLaVenta.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmCambiarContrasena.resx">
+      <DependentUpon>FrmCambiarContrasena.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmCategoriasCrud.resx">
       <DependentUpon>FrmCategoriasCrud.cs</DependentUpon>
     </EmbeddedResource>
@@ -609,6 +624,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmGraficaVentasPorVendedores.resx">
       <DependentUpon>FrmGraficaVentasPorVendedores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmNotificacion.resx">
       <DependentUpon>FrmNotificacion.cs</DependentUpon>

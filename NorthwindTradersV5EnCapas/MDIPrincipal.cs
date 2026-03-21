@@ -12,6 +12,10 @@ namespace NorthwindTradersV5EnCapas
         private int childFormNumber = 0;
         public static MDIPrincipal Instance { get; private set; }
 
+        public string UsuarioAutenticado { get; set; }
+        public string NombreUsuarioAutenticado { get; set; }
+        public int IdUsuarioAutenticado { get; set; }
+
         public ToolStripStatusLabel ToolStripEstado
         {
             get { return toolStripStatus; }
@@ -35,6 +39,8 @@ namespace NorthwindTradersV5EnCapas
 
         private void MDIPrincipal_Load(object sender, EventArgs e)
         {
+            toolStripStatusLabel2.Text = UsuarioAutenticado;
+            ActualizarBarraDeEstado("Sesión iniciada correctamente.     |     Bienvenido " + NombreUsuarioAutenticado + " al sistema " + Utils.nwtr.Substring(2, (Utils.nwtr.Length - 4)) + ". Para comenzar, seleccione una opción del menú correspondiente a sus permisos de usuario.");
             ConfiguracionFiscal.TasaIVA = Convert.ToDecimal(ConfigurationManager.AppSettings["TasaIVA"]);
             foreach (Control ctrl in this.Controls)
             {
@@ -573,6 +579,20 @@ namespace NorthwindTradersV5EnCapas
         {
             FrmPermisosCrud frm = new FrmPermisosCrud();
             Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Mantenimiento de permisos «");
+        }
+
+        private void cambiarContraseñaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (FrmCambiarContrasena frm = new FrmCambiarContrasena())
+            {
+                frm.UsuarioLogueado = toolStripStatusLabel2.Text;
+                frm.ShowDialog();
+            }
+        }
+
+        private void cambiarDeUsuarioLogueadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

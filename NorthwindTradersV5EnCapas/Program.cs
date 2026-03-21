@@ -13,29 +13,49 @@ namespace NorthwindTradersV5EnCapas
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            // Instanciar el MDI principal
-            MDIPrincipal mdiPrincipal = new MDIPrincipal();
+
+            string usuarioAutenticado = null;
+            int idUsuarioAutenticado = 0;
+            string nombreUsuarioAutenticado = null;
 
             // Obtener pantallas
             Screen[] pantallas = Screen.AllScreens;
-
+            Screen pantallaDestino;
             if (pantallas.Length >= 4)
-            {
-                Screen pantalla4 = pantallas[1];
-
-                // Posicionar el MDI en la pantalla 4
-                mdiPrincipal.StartPosition = FormStartPosition.Manual;
-                mdiPrincipal.Location = pantalla4.WorkingArea.Location;
-                mdiPrincipal.Bounds = pantalla4.WorkingArea;
-                //mdiPrincipal.WindowState = FormWindowState.Maximized; // opcional
-            }
+                // Usar la pantalla 2 (índice 1)
+                pantallaDestino = pantallas[1];
             else
             {
-                MessageBox.Show("No hay 4 pantallas conectadas.");
+                // Usar la pantalla principal
+                pantallaDestino = Screen.PrimaryScreen;
+                //MessageBox.Show("No hay 4 pantallas conectadas. Se usará la pantalla principal.");
             }
 
+            // Mostrar el formulario de login en la pantalla seleccionada
+            using (FrmLogin loginForm = new FrmLogin())
+            {
+                loginForm.Location = pantallaDestino.WorkingArea.Location;
+                loginForm.ShowDialog();
+                if (!loginForm.IsAuthenticated)
+                    return;
+                usuarioAutenticado = loginForm.UsuarioAutenticado;
+                idUsuarioAutenticado = loginForm.IdUsuarioAutenticado;
+                nombreUsuarioAutenticado = loginForm.NombreUsuarioAutenticado;
+            }
 
-            //FrmGraficaTopProductosMasVendidos mdiPrincipal = new FrmGraficaTopProductosMasVendidos();
+            // Instanciar el MDIPrincipal en la misma pantalla
+            MDIPrincipal mdiPrincipal = new MDIPrincipal
+            {
+                UsuarioAutenticado = usuarioAutenticado,
+                IdUsuarioAutenticado = idUsuarioAutenticado,
+                NombreUsuarioAutenticado = nombreUsuarioAutenticado,
+                StartPosition = FormStartPosition.Manual,
+                Location = pantallaDestino.WorkingArea.Location,
+            };
+            Application.Run(mdiPrincipal);
+
+            //// Instanciar el MDI principal
+            //MDIPrincipal mdiPrincipal = new MDIPrincipal();
 
             //// Obtener pantallas
             //Screen[] pantallas = Screen.AllScreens;
@@ -48,7 +68,7 @@ namespace NorthwindTradersV5EnCapas
             //    mdiPrincipal.StartPosition = FormStartPosition.Manual;
             //    mdiPrincipal.Location = pantalla4.WorkingArea.Location;
             //    mdiPrincipal.Bounds = pantalla4.WorkingArea;
-            //    mdiPrincipal.WindowState = FormWindowState.Maximized; // opcional
+            //    //mdiPrincipal.WindowState = FormWindowState.Maximized; // opcional
             //}
             //else
             //{
@@ -56,11 +76,7 @@ namespace NorthwindTradersV5EnCapas
             //}
 
             // Ejecutar la aplicación con el MDI principal
-            Application.Run(mdiPrincipal);
-
-
-            //Application.Run(new MDIPrincipal());
-            //Application.Run(new FrmVentasCrud());
+            //Application.Run(mdiPrincipal);
         }
     }
 }
