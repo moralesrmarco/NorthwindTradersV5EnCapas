@@ -23,7 +23,7 @@ namespace NorthwindTradersV5EnCapas
             Screen pantallaDestino;
             if (pantallas.Length >= 4)
                 // Usar la pantalla 2 (índice 1)
-                pantallaDestino = pantallas[1];
+                pantallaDestino = pantallas[3];
             else
             {
                 // Usar la pantalla principal
@@ -34,7 +34,13 @@ namespace NorthwindTradersV5EnCapas
             // Mostrar el formulario de login en la pantalla seleccionada
             using (FrmLogin loginForm = new FrmLogin())
             {
-                loginForm.Location = pantallaDestino.WorkingArea.Location;
+                loginForm.StartPosition = FormStartPosition.Manual;
+                // Centrar el formulario en la pantalla destino
+                var area = pantallaDestino.WorkingArea;
+                loginForm.Location = new System.Drawing.Point(
+                    area.Left + (area.Width - loginForm.Width) / 2,
+                    area.Top + (area.Height - loginForm.Height) / 2
+                );
                 loginForm.ShowDialog();
                 if (!loginForm.IsAuthenticated)
                     return;
