@@ -14,6 +14,51 @@ namespace DAL
             _connectionString = connectionString;
         }
 
+        public void InsertarPermiso(int idUsuario, int permisoId)
+        {
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpPermisoInsertar", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UsuarioId", idUsuario);
+                    cmd.Parameters.AddWithValue("@PermisoId", permisoId);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+            {
+                // Ignorar error de clave duplicada (permiso ya asignado)
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void EliminarPermiso(int idUsuario, int permisoId)
+        {
+            try
+            {
+                using (var cn = new SqlConnection(_connectionString))
+                using (var cmd = new SqlCommand("SpPermisoEliminar", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UsuarioId", idUsuario);
+                    cmd.Parameters.AddWithValue("@PermisoId", permisoId);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
         public void InsertarPermisos(int idUsuario, IEnumerable<int> permisosIds)
         {
             try
@@ -73,30 +118,6 @@ namespace DAL
                 throw new Exception("Error al eliminar los permisos del usuario: " + ex.Message);
             }
             return numRegs;
-        }
-
-        public void InsertarPermiso(int idUsuario, int permisoId)
-        {
-            try
-            {
-                using (var cn = new SqlConnection(_connectionString))
-                using (var cmd = new SqlCommand("SpPermisoInsertar", cn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UsuarioId", idUsuario);
-                    cmd.Parameters.AddWithValue("@PermisoId", permisoId);
-                    cn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
-            {
-                // Ignorar error de clave duplicada (permiso ya asignado)
-            }
-            catch
-            {
-                throw;
-            }
         }
 
         public DataTable ObtenerPermisosDeCatalogo()

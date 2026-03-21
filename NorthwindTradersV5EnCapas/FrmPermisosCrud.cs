@@ -239,6 +239,55 @@ namespace NorthwindTradersV5EnCapas
             }
         }
 
+        private void BtnAgregar_Click(object sender, EventArgs e)
+        {
+            if (listBoxCatalogo.SelectedIndex < 0)
+            {
+                U.NotificacionWarning("Debe seleccionar un permiso del catálogo para agregarlo.");
+                return;
+            }
+            try
+            {
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
+                int permisoId = Convert.ToInt32(listBoxCatalogo.SelectedValue);
+                _permisoBLL.InsertarPermiso(Convert.ToInt32(txtId.Text), permisoId);
+                LlenarListBoxConcedidos();
+
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+            }
+            finally
+            {
+                MDIPrincipal.ActualizarBarraDeEstado();
+            }
+        }
+
+        private void BtnQuitar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listBoxConcedidos.SelectedIndex < 0)
+                {
+                    U.NotificacionWarning("Debe seleccionar un permiso concedido para eliminarlo.");
+                    return;
+                }
+                MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
+                int permisoId = Convert.ToInt32(listBoxConcedidos.SelectedValue);
+                _permisoBLL.EliminarPermiso(Convert.ToInt32(txtId.Text), permisoId);
+                LlenarListBoxConcedidos();
+            }
+            catch (Exception ex)
+            {
+                U.MsgCatchOue(ex);
+            }
+            finally
+            {
+                MDIPrincipal.ActualizarBarraDeEstado();
+            }
+        }
+
         private void BtnAgregarTodos_Click(object sender, EventArgs e)
         {
             try
@@ -285,11 +334,9 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
                 int filasAfectadas = _permisoBLL.EliminarPermisos(Convert.ToInt32(txtId.Text));
+                LlenarListBoxConcedidos();
                 if (filasAfectadas > 0)
-                {
-                    LlenarListBoxConcedidos();
                     U.NotificacionInformation($"Se eliminaron {filasAfectadas} permisos concedidos al usuario {txtUsuario.Text}");
-                }
                 else
                     U.NotificacionInformation($"No se encontraron permisos concedidos al usuario {txtUsuario.Text}");
             }
@@ -301,55 +348,6 @@ namespace NorthwindTradersV5EnCapas
             {
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
-        }
-
-        private void BtnAgregar_Click(object sender, EventArgs e)
-        {
-            if (listBoxCatalogo.SelectedIndex < 0)
-            {
-                U.NotificacionWarning("Debe seleccionar un permiso del catálogo para agregarlo.");
-                return;
-            }
-            try
-            {
-                MDIPrincipal.ActualizarBarraDeEstado(Utils.insertandoRegistro);
-                int permisoId = Convert.ToInt32(listBoxCatalogo.SelectedValue);
-                _permisoBLL.InsertarPermiso(Convert.ToInt32(txtId.Text), permisoId);
-                LlenarListBoxConcedidos();
-
-            }
-            catch (Exception ex)
-            {
-                U.MsgCatchOue(ex);
-            }
-            finally
-            {
-                MDIPrincipal.ActualizarBarraDeEstado();
-            }
-        }
-
-        private void BtnQuitar_Click(object sender, EventArgs e)
-        {
-            //try
-            //{
-            //    if (listBoxConcedidos.SelectedIndex < 0)
-            //    {
-            //        Utils.MensajeExclamation("Debe seleccionar un permiso concedido para eliminarlo.");
-            //        return;
-            //    }
-            //    MDIPrincipal.ActualizarBarraDeEstado(Utils.eliminandoRegistro);
-            //    int permisoId = Convert.ToInt32(listBoxConcedidos.SelectedValue);
-            //    new PermisoRepository(cnStr).EliminarPermiso(Convert.ToInt32(txtId.Text), permisoId);
-            //    LlenarListBoxConcedidos();
-            //}
-            //catch (Exception ex)
-            //{
-            //    Utils.MsgCatchOue(ex);
-            //}
-            //finally
-            //{
-            //    MDIPrincipal.ActualizarBarraDeEstado();
-            //}
         }
 
         private void txtEnter(object sender, EventArgs e)

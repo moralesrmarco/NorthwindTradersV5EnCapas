@@ -12,6 +12,16 @@ namespace BLL
             _permisoDAL = new PermisoDAL(connectionString);
         }
 
+        public void InsertarPermiso(int idUsuario, int permisoId)
+        {
+            _permisoDAL.InsertarPermiso(idUsuario, permisoId);
+        }
+
+        public void EliminarPermiso(int idUsuario, int permisoId)
+        {
+            _permisoDAL.EliminarPermiso(idUsuario, permisoId);
+        }
+
         public void InsertarPermisos(int idUsuario, IEnumerable<int> permisosIds)
         {
             _permisoDAL.InsertarPermisos(idUsuario, permisosIds);
@@ -21,11 +31,5 @@ namespace BLL
         {
             return _permisoDAL.EliminarPermisos(idUsuario);
         }
-
-        public void InsertarPermiso(int idUsuario, int permisoId)
-        {
-            _permisoDAL.InsertarPermiso(idUsuario, permisoId);
-        }
-
     }
 }
