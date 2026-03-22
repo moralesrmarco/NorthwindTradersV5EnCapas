@@ -777,10 +777,10 @@
         private System.Windows.Forms.CheckBox chkbEstatus;
         private System.Windows.Forms.Label lblFechaModificacion;
         private System.Windows.Forms.Label lblFechaCaptura;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btnTogglePwd1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.NumericUpDown nudBIdIni;
         private System.Windows.Forms.NumericUpDown nudBIdFin;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

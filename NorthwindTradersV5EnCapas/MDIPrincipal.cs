@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 
@@ -592,7 +593,186 @@ namespace NorthwindTradersV5EnCapas
 
         private void cambiarDeUsuarioLogueadoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Copiamos la colección a una lista independiente
+            var formularios = Application.OpenForms.Cast<Form>().ToList();
 
+            foreach (Form frm in formularios)
+            {
+                if (frm is FrmEmpleadosCrud empleadosForm)
+                {
+                    if (Utils.HayCambios(empleadosForm, empleadosForm.valoresOriginales, empleadosForm.errorProvider1))
+                    {
+                        // Selecciona la pestaña que contiene el formulario
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(empleadosForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                empleadosForm.Focus(); // ahora sí se verá el ErrorProvider
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en empleados. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return; // Cancela el reinicio
+                    }
+                    empleadosForm.FormClosing -= empleadosForm.FrmEmpleadosCrud_FormClosing;
+                }
+                if (frm is FrmClientesCrud clientesForm)
+                {
+                    if (Utils.HayCambios(clientesForm, clientesForm.valoresOriginales, clientesForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(clientesForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                clientesForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en clientes. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    clientesForm.FormClosing -= clientesForm.FrmClientesCrud_FormClosing;
+                }
+                if (frm is FrmProveedoresCrud proveedoresForm)
+                {
+                    if (Utils.HayCambios(proveedoresForm, proveedoresForm.valoresOriginales, proveedoresForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(proveedoresForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                proveedoresForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en proveedores. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    proveedoresForm.FormClosing -= proveedoresForm.FrmProveedoresCrud_FormClosing;
+                }
+                if (frm is FrmCategoriasCrud categoriasForm)
+                {
+                    if (Utils.HayCambios(categoriasForm, categoriasForm.valoresOriginales, categoriasForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(categoriasForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                categoriasForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en categorias. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    categoriasForm.FormClosing -= categoriasForm.FrmCategoriasCrud_FormClosing;
+                }
+                if (frm is FrmProductosCrud productosForm)
+                {
+                    if (Utils.HayCambios(productosForm, productosForm.valoresOriginales, productosForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(productosForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                productosForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en productos. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    productosForm.FormClosing -= productosForm.FrmProductosCrud_FormClosing;
+                }
+                if (frm is FrmVentasCrud ventasForm)
+                {
+                    if (Utils.HayCambios(ventasForm, ventasForm.valoresOriginales, ventasForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(ventasForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                ventasForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en ventas. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    ventasForm.FormClosing -= ventasForm.FrmVentasCrud_FormClosing;
+                }
+                if (frm is FrmVentasCrudV2 ventasFormV2)
+                {
+                    if (Utils.HayCambios(ventasFormV2, ventasFormV2.valoresOriginales, ventasFormV2.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(ventasFormV2))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                ventasFormV2.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en ventas. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    ventasFormV2.FormClosing -= ventasFormV2.FrmVentasCrud_FormClosing;
+                }
+                if (frm is FrmVentasDetalleCrud ventasDetalleForm)
+                {
+                    if (Utils.HayCambios(ventasDetalleForm, ventasDetalleForm.valoresOriginales, ventasDetalleForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(ventasDetalleForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                ventasDetalleForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en ventas detalle. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    ventasDetalleForm.FormClosing -= ventasDetalleForm.FrmVentasDetalleCrud_FormClosing;
+                }
+                if (frm is FrmUsuariosCrud usuariosCrudForm)
+                {
+                    if (Utils.HayCambios(usuariosCrudForm, usuariosCrudForm.valoresOriginales, usuariosCrudForm.errorProvider1))
+                    {
+                        foreach (TabPage page in TabControlPrincipal.TabPages)
+                        {
+                            if (page.Controls.Contains(usuariosCrudForm))
+                            {
+                                TabControlPrincipal.SelectedTab = page;
+                                usuariosCrudForm.Focus();
+                                break;
+                            }
+                        }
+                        var result = U.NotificacionQuestion("[orange]Hay cambios sin guardar en usuarios. ¿Desea reiniciar de todas formas?");
+                        if (result == DialogResult.No)
+                            return;
+                    }
+                    usuariosCrudForm.FormClosing -= usuariosCrudForm.FrmUsuariosCrud_FormClosing;
+                }
+            }
+            // Reinicia la aplicación
+            Application.Restart();
         }
     }
 }

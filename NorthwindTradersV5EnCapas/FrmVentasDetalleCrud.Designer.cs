@@ -100,7 +100,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 2938);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1849, 1644);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // GrbPedido
@@ -256,7 +256,7 @@
             this.controlBuscarVenta.Margin = new System.Windows.Forms.Padding(5);
             this.controlBuscarVenta.Name = "controlBuscarVenta";
             this.tableLayoutPanel1.SetRowSpan(this.controlBuscarVenta, 7);
-            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 800);
+            this.controlBuscarVenta.Size = new System.Drawing.Size(397, 1254);
             this.controlBuscarVenta.TabIndex = 11;
             // 
             // FrmVentasDetalleCrud
@@ -288,7 +288,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -305,5 +304,6 @@
         private ControlDetalleDeLaVenta controlDetalleDeLaVenta;
         private ControlBuscarVenta controlBuscarVenta;
         private System.Windows.Forms.Button BtnNota;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

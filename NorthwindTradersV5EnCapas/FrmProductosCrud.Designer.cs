@@ -794,12 +794,12 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button btnOperacion;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private Utilities.NudNoWheel nudUInventario;
         private Utilities.NudNoWheel nudPPedido;
         private Utilities.NudNoWheel nudUPedido;
         private Utilities.NudNoWheel nudPrecio;
         private System.Windows.Forms.NumericUpDown nudBIdFin;
         private System.Windows.Forms.NumericUpDown nudBIdIni;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

@@ -834,7 +834,6 @@
         private System.Windows.Forms.TextBox txtBFax;
         private System.Windows.Forms.TextBox txtBTelefono;
         private System.Windows.Forms.TextBox txtBCodigoP;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.TabControl tabcOperacion;
         private System.Windows.Forms.TabPage tbpListar;
         private System.Windows.Forms.Label label1;
@@ -878,5 +877,6 @@
         private System.Windows.Forms.TextBox txtCompañia;
         private System.Windows.Forms.GroupBox grbClientes;
         private System.Windows.Forms.DataGridView dgv;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

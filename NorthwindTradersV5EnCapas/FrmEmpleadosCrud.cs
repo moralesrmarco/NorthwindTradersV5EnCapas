@@ -19,7 +19,7 @@ namespace NorthwindTradersV5EnCapas
         private bool EjecutarConfDgv = true;
         bool EventoCargado = true;
         OpenFileDialog openFileDialog;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
         private byte[] fotoOriginalOle = null;
 
         public FrmEmpleadosCrud()
@@ -47,7 +47,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmEmpleadosCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmEmpleadosCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmEmpleadosCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             // pone un error con errorprovider en cada control que ha cambiado
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))

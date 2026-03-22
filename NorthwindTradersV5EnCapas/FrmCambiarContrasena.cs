@@ -12,6 +12,7 @@ namespace NorthwindTradersV5EnCapas
         private readonly UsuarioBLL _usuarioBLL;
         public string UsuarioLogueado;
         bool _imagenMostrada = true;
+        short numIntentos = 0;
 
         public FrmCambiarContrasena()
         {
@@ -120,6 +121,16 @@ namespace NorthwindTradersV5EnCapas
                         errorProvider1.SetError(txtConfirmarPwd, "La nueva contraseña y la confirmación de la contraseña no coinciden");
                         valida = false;
                     }
+                }
+            }
+            if (!valida)
+            {
+                numIntentos++;
+                if (numIntentos >= 3)
+                {
+                    U.NotificacionError("Demasiados intentos fallidos.\n\nPor favor, inténtelo de nuevo más tarde.");
+                    this.FormClosing -= FrmCambiarContrasena_FormClosing;
+                    this.Close();
                 }
             }
             return valida;

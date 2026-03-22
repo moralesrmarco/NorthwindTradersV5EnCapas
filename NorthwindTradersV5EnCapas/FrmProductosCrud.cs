@@ -21,7 +21,7 @@ namespace NorthwindTradersV5EnCapas
         private readonly CategoriaService _categoriaService;
         private readonly ProveedorService _proveedorService;
         private bool EjecutarConfDgv = true;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
 
         public FrmProductosCrud()
@@ -37,7 +37,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmProductosCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmProductosCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmProductosCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

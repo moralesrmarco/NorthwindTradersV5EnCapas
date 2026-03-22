@@ -864,7 +864,6 @@
         private System.Windows.Forms.TextBox txtBCiudad;
         private System.Windows.Forms.TextBox txtBDomicilio;
         private System.Windows.Forms.TextBox txtBContacto;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.GroupBox grbProveedor;
         private System.Windows.Forms.Button btnOperacion;
         private System.Windows.Forms.TextBox txtFax;
@@ -908,5 +907,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tbpEliminar;
         private System.Windows.Forms.Label label4;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

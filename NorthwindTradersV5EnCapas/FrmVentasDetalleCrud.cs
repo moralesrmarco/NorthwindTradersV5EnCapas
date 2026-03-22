@@ -16,7 +16,7 @@ namespace NorthwindTradersV5EnCapas
     {
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         int numDetalle = 1;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
         private VentaBLL _ventaBLL;
         private VentaDetalleBLL _ventaDetalleBLL;
         private readonly CategoriaService _categoriaService;
@@ -61,7 +61,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmVentasDetalleCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmVentasDetalleCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmVentasDetalleCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

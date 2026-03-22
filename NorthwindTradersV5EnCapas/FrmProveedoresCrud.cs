@@ -16,7 +16,7 @@ namespace NorthwindTradersV5EnCapas
         ProveedorBLL _proveedorBLL;
         private bool EjecutarConfDgv = true;
         bool EventoCargado = true;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
 
         public FrmProveedoresCrud()
         {
@@ -29,7 +29,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmProveedoresCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmProveedoresCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmProveedoresCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

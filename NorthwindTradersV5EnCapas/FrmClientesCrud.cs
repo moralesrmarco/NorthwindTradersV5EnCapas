@@ -15,7 +15,7 @@ namespace NorthwindTradersV5EnCapas
         private ClienteBLL _clienteBLL;
         private bool EjecutarConfDgv = true;
         bool EventoCargado = true;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
 
         public FrmClientesCrud()
         {
@@ -28,7 +28,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmClientesCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmClientesCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmClientesCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

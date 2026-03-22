@@ -27,7 +27,7 @@ namespace NorthwindTradersV5EnCapas
         private CategoriaService _categoriaService;
         private ProductoService _productoService;
         private VentaService _ventaService;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
         int numDetalle = 1;
         bool VentaGenerada = false;
@@ -93,7 +93,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmVentasCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmVentasCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmVentasCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

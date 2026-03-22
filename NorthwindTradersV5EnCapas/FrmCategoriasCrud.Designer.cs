@@ -579,7 +579,6 @@
         private System.Windows.Forms.TextBox txtBCategoria;
         private System.Windows.Forms.TextBox txtBIdFin;
         private System.Windows.Forms.TextBox txtBIdIni;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox grbBuscar;
         private System.Windows.Forms.Label label7;
@@ -594,5 +593,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tbpEliminar;
         private System.Windows.Forms.Label label4;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

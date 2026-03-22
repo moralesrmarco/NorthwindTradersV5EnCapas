@@ -18,7 +18,7 @@ namespace NorthwindTradersV5EnCapas
 
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv ojo no quitar
         bool _imagenMostrada = true;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
 
         public FrmUsuariosCrud()
         {
@@ -30,7 +30,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmUsuariosCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmUsuariosCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmUsuariosCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

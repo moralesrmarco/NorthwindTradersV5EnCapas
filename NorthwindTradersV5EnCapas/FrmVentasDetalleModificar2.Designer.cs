@@ -94,12 +94,12 @@
             // controlAgregarProducto
             // 
             this.controlAgregarProducto.Location = new System.Drawing.Point(24, 62);
-            this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(4);
+            this.controlAgregarProducto.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.controlAgregarProducto.Name = "controlAgregarProducto";
             this.controlAgregarProducto.Size = new System.Drawing.Size(1320, 490);
             this.controlAgregarProducto.TabIndex = 10;
             // 
-            // FrmVentasDetalleModificar
+            // FrmVentasDetalleModificar2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -112,7 +112,7 @@
             this.Controls.Add(this.btnModificar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FrmVentasDetalleModificar";
+            this.Name = "FrmVentasDetalleModificar2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "» Modificar detalle de la venta «";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmVentasDetalleModificar2_FormClosing);
@@ -129,8 +129,8 @@
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtId;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ToolTip toolTip1;
         private ControlAgregarProducto controlAgregarProducto;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

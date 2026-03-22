@@ -18,7 +18,7 @@ namespace NorthwindTradersV5EnCapas
         string _connectionString = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private CategoriaBLL _categoriaBLL;
         private bool EjecutarConfDgv = true;
-        private Dictionary<string, object> valoresOriginales;
+        internal Dictionary<string, object> valoresOriginales;
         bool EventoCargado = true; // esta variable es necesaria para controlar el manejador de eventos de la celda del dgv, ojo no quitar
         OpenFileDialog openFileDialog;
 
@@ -33,7 +33,7 @@ namespace NorthwindTradersV5EnCapas
 
         private void FrmCategoriasCrud_FormClosed(object sender, FormClosedEventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
 
-        private void FrmCategoriasCrud_FormClosing(object sender, FormClosingEventArgs e)
+        internal void FrmCategoriasCrud_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Utils.HayCambios(this, valoresOriginales, errorProvider1))
                 if (U.NotificacionQuestion(Utils.preguntaCerrar) == DialogResult.No)

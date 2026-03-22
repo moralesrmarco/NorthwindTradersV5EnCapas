@@ -1109,6 +1109,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tbpEliminar;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
+        internal System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
