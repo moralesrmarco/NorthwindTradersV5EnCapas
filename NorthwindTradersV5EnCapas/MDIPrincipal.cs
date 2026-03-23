@@ -1,5 +1,7 @@
-﻿using Entities.Config;
+﻿using BLL.Services;
+using Entities.Config;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.Linq;
@@ -16,6 +18,9 @@ namespace NorthwindTradersV5EnCapas
         public string UsuarioAutenticado { get; set; }
         public string NombreUsuarioAutenticado { get; set; }
         public int IdUsuarioAutenticado { get; set; }
+        private HashSet<int> permisosUsuarioAutenticado = new HashSet<int>();
+        private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
+        private readonly PermisoService _permisoService;
 
         public ToolStripStatusLabel ToolStripEstado
         {
@@ -34,6 +39,7 @@ namespace NorthwindTradersV5EnCapas
             {
                 ActualizarBarraDeEstado();
             };
+            _permisoService = new PermisoService(cnStr);
         }
 
         private void TabControlPrincipal_SelectedIndexChanged(object sender, EventArgs e) => MDIPrincipal.ActualizarBarraDeEstado();
@@ -43,12 +49,66 @@ namespace NorthwindTradersV5EnCapas
             toolStripStatusLabel2.Text = UsuarioAutenticado;
             ActualizarBarraDeEstado("Sesión iniciada correctamente.     |     Bienvenido " + NombreUsuarioAutenticado + " al sistema " + Utils.nwtr.Substring(2, (Utils.nwtr.Length - 4)) + ". Para comenzar, seleccione una opción del menú correspondiente a sus permisos de usuario.");
             ConfiguracionFiscal.TasaIVA = Convert.ToDecimal(ConfigurationManager.AppSettings["TasaIVA"]);
-            foreach (Control ctrl in this.Controls)
+            IniciarSesion();
+            if (permisosUsuarioAutenticado.Contains(10))
             {
-                if (ctrl is MdiClient)
+                FrmTableroControlAltaDireccion frmTableroControlAltaDireccion = new FrmTableroControlAltaDireccion
                 {
-                    ctrl.BackColor = SystemColors.GradientInactiveCaption; // el color que quieras
-                }
+                    MdiParent = this
+                };
+                frmTableroControlAltaDireccion.Show();
+            }
+            else if (permisosUsuarioAutenticado.Contains(12))
+            {
+                //FrmTableroControlVendedores frmTableroControlVendedores = new FrmTableroControlVendedores
+                //{
+                //    MdiParent = this
+                //};
+                //frmTableroControlVendedores.Show();
+            }
+
+        }
+
+        private void IniciarSesion()
+        {
+            // Obtener los permisos del usuario logueado
+            permisosUsuarioAutenticado = _permisoService.ObtenerPermisosPorUsuarioId(IdUsuarioAutenticado);
+            // Ajustar el menú por permisos
+            AjustarMenuPorPermisos(permisosUsuarioAutenticado);
+            if (permisosUsuarioAutenticado.Count == 0)
+            {
+                U.NotificacionWarning("El usuario no tiene permisos asignados.");
+            }
+        }
+
+        private void AjustarMenuPorPermisos(HashSet<int> permisos)
+        {
+            empleadosToolStripMenuItem.Enabled = false;
+            clientesToolStripMenuItem.Enabled = false;
+            proveedoresToolStripMenuItem.Enabled = false;
+            categoríasToolStripMenuItem.Enabled = false;
+            productosToolStripMenuItem.Enabled = false;
+            ventasToolStripMenuItem.Enabled = false;
+            administraciónToolStripMenuItem.Enabled = false;
+            gráficasToolStripMenuItem.Enabled = false;
+            foreach (int permisoId in permisos)
+            {
+                if (permisoId == 1)
+                    empleadosToolStripMenuItem.Enabled = true; // Permiso para Empleados
+                else if (permisoId == 2)
+                    clientesToolStripMenuItem.Enabled = true; // Permiso para Clientes
+                else if (permisoId == 3)
+                    proveedoresToolStripMenuItem.Enabled = true; // Permiso para Proveedores
+                else if (permisoId == 4)
+                    categoríasToolStripMenuItem.Enabled = true; // Permiso para Categorías
+                else if (permisoId == 5)
+                    productosToolStripMenuItem.Enabled = true; // Permiso para Productos
+                else if (permisoId == 6)
+                    ventasToolStripMenuItem.Enabled = true; // Permiso para Pedidos
+                else if (permisoId == 7)
+                    administraciónToolStripMenuItem.Enabled = true; // Permiso para Administración
+                else if (permisoId == 8)
+                    gráficasToolStripMenuItem.Enabled = true;
             }
         }
 

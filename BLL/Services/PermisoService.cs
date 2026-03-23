@@ -1,4 +1,5 @@
 ﻿using DAL;
+using System.Collections.Generic;
 using System.Data;
 
 namespace BLL.Services
@@ -21,5 +22,11 @@ namespace BLL.Services
         {
             return _permisoDAL.ObtenerPermisosConcedidos(usuarioId);
         }
+
+        public HashSet<int> ObtenerPermisosPorUsuarioId(int idUsuario)
+        {
+            return _permisoDAL.ObtenerPermisosPorUsuarioId(idUsuario);
+        }
+
     }
 }
