@@ -90,7 +90,6 @@ namespace NorthwindTradersV5EnCapas
             serie.ShadowOffset = 2;
             serie.ShadowColor = Color.FromArgb(100, Color.Gray);
             serie.Color = Color.FromArgb(52, 152, 219);
-            serie["AnimationDuration"] = "1500";
 
             // 3. Agrega puntos al gráfico
             foreach (var punto in datos)

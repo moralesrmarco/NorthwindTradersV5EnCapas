@@ -14,6 +14,8 @@ namespace NorthwindTradersV5EnCapas
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            int numPantalla = 1; // Cambia este número para seleccionar la pantalla deseada (1, 2, 3, 4, etc.)
+
             string usuarioAutenticado = null;
             int idUsuarioAutenticado = 0;
             string nombreUsuarioAutenticado = null;
@@ -23,7 +25,7 @@ namespace NorthwindTradersV5EnCapas
             Screen pantallaDestino;
             if (pantallas.Length >= 4)
                 // Usar la pantalla 2 (índice 1)
-                pantallaDestino = pantallas[3];
+                pantallaDestino = pantallas[numPantalla];
             else
             {
                 // Usar la pantalla principal

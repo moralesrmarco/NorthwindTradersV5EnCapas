@@ -52,11 +52,8 @@ namespace NorthwindTradersV5EnCapas
             IniciarSesion();
             if (permisosUsuarioAutenticado.Contains(10))
             {
-                FrmTableroControlAltaDireccion frmTableroControlAltaDireccion = new FrmTableroControlAltaDireccion
-                {
-                    MdiParent = this
-                };
-                frmTableroControlAltaDireccion.Show();
+                FrmTableroControlAltaDireccion frm = new FrmTableroControlAltaDireccion();
+                Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Tablero de control para la alta dirección «");
             }
             else if (permisosUsuarioAutenticado.Contains(12))
             {
@@ -66,7 +63,6 @@ namespace NorthwindTradersV5EnCapas
                 //};
                 //frmTableroControlVendedores.Show();
             }
-
         }
 
         private void IniciarSesion()

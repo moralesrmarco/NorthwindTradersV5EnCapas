@@ -112,8 +112,6 @@ namespace NorthwindTradersV5EnCapas
                 serie.ShadowOffset = 2;
                 serie.ShadowColor = Color.FromArgb(100, Color.Gray);
 
-                serie["AnimationDuration"] = "1500";
-
                 serie.Color = ChartColors.Paleta[i % ChartColors.Paleta.Length];
 
                 decimal totalAnual = grupo.Sum(x => x.Total);
