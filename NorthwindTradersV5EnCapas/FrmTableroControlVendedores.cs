@@ -13,7 +13,7 @@ using Utilities;
 
 namespace NorthwindTradersV5EnCapas
 {
-    public partial class FrmTableroControlAltaDireccion : Form
+    public partial class FrmTableroControlVendedores : Form
     {
 
         private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
@@ -21,7 +21,7 @@ namespace NorthwindTradersV5EnCapas
         private readonly string[] categorias = { "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
         private readonly double[] valores = { 15, 30, 45, 20, 35, 50, 25, 40, 45, 40, 30, 50 };
 
-        public FrmTableroControlAltaDireccion()
+        public FrmTableroControlVendedores()
         {
             InitializeComponent();
             _graficasService = new GraficasService(cnStr);
@@ -29,11 +29,11 @@ namespace NorthwindTradersV5EnCapas
 
         private void GrbPaint(object sender, PaintEventArgs e) => Utils.GrbPaint(this, sender, e);
 
-        private void FrmTableroControlAltaDireccion_Load(object sender, EventArgs e)
+        private void FrmTableroControlVendedores_Load(object sender, EventArgs e)
         {
-            LlenarCmbVentasMensualesAño();
+            LlenarCmbVentasMensualesPorVendedorPorAño();
             LlenarCmbTipoGrafica1();
-            CmbTipoGrafica1.SelectedIndex = 12;
+            CmbTipoGrafica1.SelectedItem = SeriesChartType.Line;
 
             LlenarCmbUltimosAnios();
             LLenarCmbTipoGrafica2();
@@ -50,134 +50,152 @@ namespace NorthwindTradersV5EnCapas
             LlenarCmbTipoGrafica5();
             CmbTipoGrafica5.SelectedItem = SeriesChartType.Doughnut;
 
-            LlenarCmbVentasMensualesPorVendedorPorAño();
-            LlenarCmbTipoGrafica6();
-            CmbTipoGrafica6.SelectedItem = SeriesChartType.Line;
+            LlenarCmbTipoGrafica();
         }
 
         /******************************************************************************************************/
         #region Grafica1
-        private void LlenarCmbVentasMensualesAño()
+
+        private void LlenarCmbVentasMensualesPorVendedorPorAño()
         {
-            cmbVentasMensualesAño.SelectedIndexChanged -= cmbVentasMensualesAño_SelectedIndexChanged;
+            cmbVentasMensualesPorVendedorPorAño.SelectedIndexChanged -= cmbVentasMensualesPorVendedorPorAño_SelectedIndexChanged;
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
                 var dt = _graficasService.ObtenerAñosDeVentas(false);
                 foreach (DataRow row in dt.Rows)
-                    cmbVentasMensualesAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
-                cmbVentasMensualesAño.SelectedIndex = 0; // Selecciona el primer elemento
+                    cmbVentasMensualesPorVendedorPorAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
                 MDIPrincipal.ActualizarBarraDeEstado();
+                cmbVentasMensualesPorVendedorPorAño.SelectedIndex = 0; // Selecciona el primer elemento
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
             }
-            cmbVentasMensualesAño.SelectedIndexChanged += cmbVentasMensualesAño_SelectedIndexChanged;
+            cmbVentasMensualesPorVendedorPorAño.SelectedIndexChanged += cmbVentasMensualesPorVendedorPorAño_SelectedIndexChanged;
         }
 
         private void LlenarCmbTipoGrafica1()
         {
             CmbTipoGrafica1.SelectedIndexChanged -= CmbTipoGrafica1_SelectedIndexChanged;
-            var tipos = Enum.GetValues(typeof(SeriesChartType))
-                            .Cast<SeriesChartType>()
-                            .OrderBy(t => t.ToString());
-            // Llena el ComboBox
-            CmbTipoGrafica1.DataSource = tipos.ToList();
+            CmbTipoGrafica1.DataSource = Enum.GetValues(typeof(SeriesChartType))
+                .Cast<SeriesChartType>()
+                .Where(t => t != SeriesChartType.Doughnut && t != SeriesChartType.ErrorBar && t != SeriesChartType.Funnel && t != SeriesChartType.Kagi && t != SeriesChartType.Pie && t != SeriesChartType.PointAndFigure && t != SeriesChartType.Polar && t != SeriesChartType.Pyramid && t != SeriesChartType.Renko && t != SeriesChartType.ThreeLineBreak) // Excluye tipos no deseados
+                .OrderBy(t => t.ToString())
+                .ToList();
             CmbTipoGrafica1.SelectedIndexChanged += CmbTipoGrafica1_SelectedIndexChanged;
         }
 
-        private void cmbVentasMensualesAño_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbVentasMensualesPorVendedorPorAño_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DibujarGraficaChart1();
+            CargarVentasMensualesPorVendedorPorAño(Convert.ToInt32(cmbVentasMensualesPorVendedorPorAño.SelectedItem), (SeriesChartType)CmbTipoGrafica1.SelectedItem);
         }
 
         private void CmbTipoGrafica1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DibujarGraficaChart1();
+            CargarVentasMensualesPorVendedorPorAño(Convert.ToInt32(cmbVentasMensualesPorVendedorPorAño.SelectedItem), (SeriesChartType)CmbTipoGrafica1.SelectedItem);
         }
 
-        private void DibujarGraficaChart1()
+        private void CargarVentasMensualesPorVendedorPorAño(int year, SeriesChartType tipoGrafica)
         {
-            CargarVentasMensuales(Convert.ToInt32(cmbVentasMensualesAño.SelectedItem), (SeriesChartType)CmbTipoGrafica1.SelectedItem);
-        }
+            ChartVentas.Series.Clear();
+            ChartVentas.Titles.Clear();
+            Title titulo = new Title
+            {
+                Text = $"Ventas mensuales por vendedores del año {year}",
+                Font = new Font("Segoe UI", 8, FontStyle.Bold)
+            };
+            ChartVentas.Titles.Add(titulo);
+            groupBox1.Text = $"» {titulo.Text} Tipo de gráfica: {tipoGrafica} «";
+            // Configurar la fuente de la leyenda
+            ChartVentas.Legends[0].Font = new Font("Segoe UI", 6, FontStyle.Regular);
+            // ChartArea
+            var area = ChartVentas.ChartAreas[0];
+            area.AxisX.Interval = 1;
+            area.AxisX.CustomLabels.Clear();
+            area.AxisX.MajorGrid.Enabled = true;
+            area.AxisX.MajorGrid.LineColor = Color.LightGray;
+            area.AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+            area.AxisX.MinorGrid.Enabled = false;
+            area.AxisX.LabelStyle.Angle = -45;
+            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Regular);
+            area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+            area.AxisX.Title = "Meses";
 
-        private void CargarVentasMensuales(int year, SeriesChartType tipoGrafica)
-        {
-            // 1. Obtiene los datos
-            List<DtoVentasMensuales> datos = null;
+            area.AxisY.Title = "Ventas totales";
+            area.AxisY.LabelStyle.Format = "C0";
+            area.AxisY.MajorGrid.Enabled = true;
+            area.AxisY.MajorGrid.LineColor = Color.Gray;
+            area.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Solid;
+            area.AxisY.MinorGrid.Enabled = false;
+            area.AxisY.MinorGrid.LineColor = Color.LightGray;
+            area.AxisY.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
+            area.AxisY.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
+            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+            area.AxisY.LabelStyle.Angle = -45;
+            // Leer datos
+            var dt = new DataTable();
             try
             {
                 MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                datos = _graficasService.ObtenerVentasMensuales(year);
-                MDIPrincipal.ActualizarBarraDeEstado();
+                dt = _graficasService.ObtenerVentasMensualesPorVendedoresPorAño(year);
             }
             catch (Exception ex)
             {
                 U.MsgCatchOue(ex);
                 return;
             }
-            // 2. Prepara la serie del Chart
-            var serie = chart1.Series["Ventas"];
-            serie.Points.Clear();
-            serie.ChartType = tipoGrafica;
-            serie.BorderWidth = 2;
-            serie.ToolTip = "Ventas de #VALX: #VALY{C2}";
-            serie.IsValueShownAsLabel = true;
-            serie.LabelFormat = "C2"; // Formato de moneda con 2 decimales
-            serie.MarkerStyle = MarkerStyle.Circle;
-            serie.MarkerSize = 5;
-            serie["LineTension"] = "0.4";             // suavizado de línea
-            serie.ShadowOffset = 1;
-            serie.ShadowColor = Color.FromArgb(100, Color.Gray);
-            serie.Color = Color.FromArgb(52, 152, 219);
-
-            // 3. Agrega puntos al gráfico
-            foreach (var punto in datos)
+            finally
             {
-                //string nombreMes = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(punto.Mes);
-                int index = serie.Points.AddXY(punto.NombreMes, punto.Total);
-                DataPoint dataPoint = serie.Points[index];
-
-                dataPoint.Label = $"${punto.Total:#,##0.00}";
-                dataPoint.Font = new Font("Segoe UI", 7, FontStyle.Bold);
+                MDIPrincipal.ActualizarBarraDeEstado();
             }
-            var area = chart1.ChartAreas[0];
 
-            // PRIMERO: forzar cada mes
-            area.AxisX.Interval = 1;
-            // LUEGO: asignar formato al label
-            area.AxisX.LabelStyle.Angle = -45;
-            area.AxisX.MajorGrid.Enabled = false;
-            // Títulos de ejes
-            area.AxisX.Title = "Meses";
-            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
-            area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
+            // Agrupar y calcular totales y ordena de mayor a menor
+            var grupos = dt.AsEnumerable()
+                           .GroupBy(r => r.Field<string>("Vendedor"))
+                           .Select(g => new
+                           {
+                               Vendedor = g.Key,
+                               Datos = g,
+                               Total = g.Sum(r => r.Field<object>("TotalVentas") != DBNull.Value
+                                                  ? Convert.ToDouble(r["TotalVentas"])
+                                                  : 0D)
+                           })
+                           .OrderByDescending(x => x.Total); // ordenar de mayor a menor
+            int i = 0;
+            foreach (var grupo in grupos)
+            {
+                // Serie por vendedor
+                var serie = new Series(grupo.Vendedor)
+                {
+                    ChartType = tipoGrafica,
+                    BorderWidth = 2,
+                    MarkerStyle = MarkerStyle.Circle,
+                    MarkerSize = 4,
+                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
+                    LabelForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 6, FontStyle.Regular),
+                    IsValueShownAsLabel = false,
+                    LabelFormat = "C2",
+                    Color = ChartColors.Paleta[i % ChartColors.Paleta.Length]
+                };
+                foreach (var row in grupo.Datos)
+                {
+                    string nombreMes = row.Field<string>("NombreMes");
 
-            chart1.Legends[0].Enabled = false;
-            area.AxisX.MajorGrid.Enabled = true;
-            area.AxisX.MajorGrid.LineColor = Color.LightGray;
-            area.AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+                    object raw = row["TotalVentas"];
+                    double ventas = raw != DBNull.Value
+                                    ? Convert.ToDouble(raw)
+                                    : 0D;
 
-            area.AxisY.LabelStyle.Format = "C0";
-            area.AxisY.Title = "Ventas Totales";
-            area.AxisY.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
-            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-            area.AxisY.LabelStyle.Angle = -45;
-
-            // Crear el título
-            Title titulo = new Title();
-            //titulo.Text = $"Ventas mensuales del año: {year}.\nTipo de gráfica: {tipoGrafica}.";
-            titulo.Text = $"Ventas mensuales del año: {year}.";
-            titulo.ForeColor = Color.Black;
-            titulo.Font = new Font("Segoe UI", 8, FontStyle.Bold);
-            titulo.Alignment = ContentAlignment.TopCenter;
-
-            // Agregar el título al chart
-            chart1.Titles.Clear(); // Limpiar títulos previos
-            chart1.Titles.Add(titulo);
-
-            groupBox1.Text = $"» Ventas mensuales del año: {year}. Tipo de gráfica: {tipoGrafica}. «";
+                    serie.Points.AddXY(nombreMes, ventas);
+                }
+                serie.LegendText = $"{serie.Name}\n(Total: {grupo.Total:C2})";
+                ChartVentas.Series.Add(serie);
+                i++;
+            }
+            // ————— Aquí forzamos el recálculo de la escala del eje Y —————
+            ChartVentas.ResetAutoValues();
         }
         #endregion
         /******************************************************************************************************/
@@ -681,146 +699,60 @@ namespace NorthwindTradersV5EnCapas
         #endregion
         /******************************************************************************************************/
         #region Grafica6
-        private void LlenarCmbVentasMensualesPorVendedorPorAño()
+        private void LlenarCmbTipoGrafica()
         {
-            cmbVentasMensualesPorVendedorPorAño.SelectedIndexChanged -= cmbVentasMensualesPorVendedorPorAño_SelectedIndexChanged;
-            try
+            // Obtiene todos los valores del enum
+            var tipos = Enum.GetValues(typeof(SeriesChartType))
+                            .Cast<SeriesChartType>()
+                            .OrderBy(t => t.ToString());
+            // Llena el ComboBox
+            cmbTipoGrafica.DataSource = tipos.ToList();
+        }
+
+        private void DibujarGraficaChart6(SeriesChartType tipo)
+        {
+            chart6.Series.Clear();
+            chart6.Titles.Clear();
+            chart6.Titles.Add(new Title
             {
-                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                var dt = _graficasService.ObtenerAñosDeVentas(false);
-                foreach (DataRow row in dt.Rows)
-                    cmbVentasMensualesPorVendedorPorAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
-                MDIPrincipal.ActualizarBarraDeEstado();
-                cmbVentasMensualesPorVendedorPorAño.SelectedIndex = 0; // Selecciona el primer elemento
-            }
-            catch (Exception ex)
-            {
-                U.MsgCatchOue(ex);
-            }
-            cmbVentasMensualesPorVendedorPorAño.SelectedIndexChanged += cmbVentasMensualesPorVendedorPorAño_SelectedIndexChanged;
-        }
-
-        private void LlenarCmbTipoGrafica6()
-        {
-            CmbTipoGrafica6.SelectedIndexChanged -= CmbTipoGrafica6_SelectedIndexChanged;
-            CmbTipoGrafica6.DataSource = Enum.GetValues(typeof(SeriesChartType))
-                .Cast<SeriesChartType>()
-                .Where(t => t != SeriesChartType.Doughnut && t != SeriesChartType.ErrorBar && t != SeriesChartType.Funnel && t != SeriesChartType.Kagi && t != SeriesChartType.Pie && t != SeriesChartType.PointAndFigure && t != SeriesChartType.Polar && t != SeriesChartType.Pyramid && t != SeriesChartType.Renko && t != SeriesChartType.ThreeLineBreak) // Excluye tipos no deseados
-                .OrderBy(t => t.ToString())
-                .ToList();
-            CmbTipoGrafica6.SelectedIndexChanged += CmbTipoGrafica6_SelectedIndexChanged;
-        }
-
-        private void cmbVentasMensualesPorVendedorPorAño_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CargarVentasMensualesPorVendedorPorAño(Convert.ToInt32(cmbVentasMensualesPorVendedorPorAño.SelectedItem), (SeriesChartType)CmbTipoGrafica6.SelectedItem);
-        }
-
-        private void CmbTipoGrafica6_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CargarVentasMensualesPorVendedorPorAño(Convert.ToInt32(cmbVentasMensualesPorVendedorPorAño.SelectedItem), (SeriesChartType)CmbTipoGrafica6.SelectedItem);
-        }
-
-        private void CargarVentasMensualesPorVendedorPorAño(int year, SeriesChartType tipoGrafica)
-        {
-            ChartVentas.Series.Clear();
-            ChartVentas.Titles.Clear();
-            Title titulo = new Title
-            {
-                Text = $"Ventas mensuales por vendedores del año {year}",
+                Text = $"Tipo de gráfica: {tipo}",
+                Docking = Docking.Top,
                 Font = new Font("Segoe UI", 8, FontStyle.Bold)
+            });
+            var serie = new Series("Ventas")
+            {
+                ChartType = tipo,
+                BorderWidth = 2,
+                MarkerStyle = MarkerStyle.Circle,
+                MarkerSize = 10,
+                ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}"
             };
-            ChartVentas.Titles.Add(titulo);
-            groupBox1.Text = $"» {titulo.Text} Tipo de gráfica: {tipoGrafica} «";
-            // Configurar la fuente de la leyenda
-            ChartVentas.Legends[0].Font = new Font("Segoe UI", 6, FontStyle.Regular);
-            // ChartArea
-            var area = ChartVentas.ChartAreas[0];
-            area.AxisX.Interval = 1;
-            area.AxisX.CustomLabels.Clear();
-            area.AxisX.MajorGrid.Enabled = true;
-            area.AxisX.MajorGrid.LineColor = Color.LightGray;
-            area.AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
-            area.AxisX.MinorGrid.Enabled = false;
-            area.AxisX.LabelStyle.Angle = -45;
-            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Regular);
-            area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-            area.AxisX.Title = "Meses";
-
-            area.AxisY.Title = "Ventas totales";
-            area.AxisY.LabelStyle.Format = "C0";
-            area.AxisY.MajorGrid.Enabled = true;
-            area.AxisY.MajorGrid.LineColor = Color.Gray;
-            area.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Solid;
-            area.AxisY.MinorGrid.Enabled = false;
-            area.AxisY.MinorGrid.LineColor = Color.LightGray;
-            area.AxisY.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
-            area.AxisY.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
-            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-            area.AxisY.LabelStyle.Angle = -45;
-            // Leer datos
-            var dt = new DataTable();
-            try
+            for (int i = 0; i < categorias.Length; i++)
             {
-                MDIPrincipal.ActualizarBarraDeEstado(Utils.clbdd);
-                dt = _graficasService.ObtenerVentasMensualesPorVendedoresPorAño(year);
+                serie.Points.AddXY(categorias[i], valores[i]);
             }
-            catch (Exception ex)
-            {
-                U.MsgCatchOue(ex);
-                return;
-            }
-            finally
-            {
-                MDIPrincipal.ActualizarBarraDeEstado();
-            }
+            chart6.Series.Add(serie);
+            // Ajusta automáticamente las escalas de ejes
+            chart6.ResetAutoValues();
+            // Configuración del eje X
+            chart6.ChartAreas[0].AxisX.LabelStyle.Angle = -45; // Inclina los labels 45 grados hacia la izquierda
+            chart6.ChartAreas[0].AxisX.LabelStyle.Font = new Font("Segoe UI", 7); // Fuente más pequeña
+            chart6.ChartAreas[0].AxisX.Interval = 1; // Asegura que se muestren todos los meses (cada categoría)
+            // Configuración del eje Y
+            chart6.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Segoe UI", 7); // Fuente más pequeña
+            chart6.ChartAreas[0].AxisY.LabelStyle.Format = "$#,##0"; // Formato con símbolo de dólar
+            double maxValor = valores.Max();
+            // Configura el eje Y para que el máximo sea justo un poco mayor (opcional para espacio visual)
+            chart6.ChartAreas[0].AxisY.Maximum = Math.Ceiling(maxValor * 1.0); // 5% de margen por estética
+            // Si lo deseas, también puedes fijar el mínimo
+            chart6.ChartAreas[0].AxisY.Minimum = 0; // Para que siempre comience en cero
+            // Establecer fuente más pequeña para el nombre de la serie en la leyenda
+            chart6.Legends[0].Font = new Font("Segoe UI", 7); // Tamaño de fuente reducido
+        }
 
-            // Agrupar y calcular totales y ordena de mayor a menor
-            var grupos = dt.AsEnumerable()
-                           .GroupBy(r => r.Field<string>("Vendedor"))
-                           .Select(g => new
-                           {
-                               Vendedor = g.Key,
-                               Datos = g,
-                               Total = g.Sum(r => r.Field<object>("TotalVentas") != DBNull.Value
-                                                  ? Convert.ToDouble(r["TotalVentas"])
-                                                  : 0D)
-                           })
-                           .OrderByDescending(x => x.Total); // ordenar de mayor a menor
-            int i = 0;
-            foreach (var grupo in grupos)
-            {
-                // Serie por vendedor
-                var serie = new Series(grupo.Vendedor)
-                {
-                    ChartType = tipoGrafica,
-                    BorderWidth = 2,
-                    MarkerStyle = MarkerStyle.Circle,
-                    MarkerSize = 4,
-                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
-                    LabelForeColor = Color.Black,
-                    Font = new Font("Segoe UI", 6, FontStyle.Regular),
-                    IsValueShownAsLabel = false,
-                    LabelFormat = "C2",
-                    Color = ChartColors.Paleta[i % ChartColors.Paleta.Length]
-                };
-                foreach (var row in grupo.Datos)
-                {
-                    string nombreMes = row.Field<string>("NombreMes");
-
-                    object raw = row["TotalVentas"];
-                    double ventas = raw != DBNull.Value
-                                    ? Convert.ToDouble(raw)
-                                    : 0D;
-
-                    serie.Points.AddXY(nombreMes, ventas);
-                }
-                serie.LegendText = $"{serie.Name}\n(Total: {grupo.Total:C2})";
-                ChartVentas.Series.Add(serie);
-                i++;
-            }
-            // ————— Aquí forzamos el recálculo de la escala del eje Y —————
-            ChartVentas.ResetAutoValues();
+        private void cmbTipoGrafica_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DibujarGraficaChart6((SeriesChartType)cmbTipoGrafica.SelectedItem);
         }
         #endregion
     }

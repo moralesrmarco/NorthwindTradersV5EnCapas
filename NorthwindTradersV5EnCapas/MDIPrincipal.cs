@@ -57,11 +57,8 @@ namespace NorthwindTradersV5EnCapas
             }
             else if (permisosUsuarioAutenticado.Contains(12))
             {
-                //FrmTableroControlVendedores frmTableroControlVendedores = new FrmTableroControlVendedores
-                //{
-                //    MdiParent = this
-                //};
-                //frmTableroControlVendedores.Show();
+                FrmTableroControlVendedores frm = new FrmTableroControlVendedores();
+                Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Tablero de control para los vendedores «");
             }
         }
 
@@ -136,11 +133,6 @@ namespace NorthwindTradersV5EnCapas
                 Instance.ToolStripEstado.Text = mensaje;
                 Instance.Refresh();
             }
-        }
-
-        private void CloseForms()
-        {
-            Utils.CloseForms(() => MDIPrincipal.ActualizarBarraDeEstado());
         }
 
         private void ShowNewForm(object sender, EventArgs e)

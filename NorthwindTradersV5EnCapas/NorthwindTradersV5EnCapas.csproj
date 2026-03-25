@@ -373,6 +373,12 @@
     <Compile Include="FrmRptVentasPorRangoFechaVenta.Designer.cs">
       <DependentUpon>FrmRptVentasPorRangoFechaVenta.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmTableroControlVendedores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTableroControlVendedores.Designer.cs">
+      <DependentUpon>FrmTableroControlVendedores.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmTableroControlAltaDireccion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -672,6 +678,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRptVentasPorRangoFechaVenta.resx">
       <DependentUpon>FrmRptVentasPorRangoFechaVenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTableroControlVendedores.resx">
+      <DependentUpon>FrmTableroControlVendedores.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmTableroControlAltaDireccion.resx">
       <DependentUpon>FrmTableroControlAltaDireccion.cs</DependentUpon>
