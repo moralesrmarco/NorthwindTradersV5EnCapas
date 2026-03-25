@@ -18,8 +18,6 @@ namespace NorthwindTradersV5EnCapas
 
         private readonly string cnStr = ConfigurationManager.ConnectionStrings["Northwind2ConnectionString"].ConnectionString;
         private readonly GraficasService _graficasService;
-        private readonly string[] categorias = { "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
-        private readonly double[] valores = { 15, 30, 45, 20, 35, 50, 25, 40, 45, 40, 30, 50 };
 
         public FrmTableroControlAltaDireccion()
         {
