@@ -14,7 +14,7 @@ namespace NorthwindTradersV5EnCapas
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            int numPantalla = 1; // Cambia este número para seleccionar la pantalla deseada (1, 2, 3, 4, etc.)
+            int numPantalla = 0; // Cambia este número para seleccionar la pantalla deseada (1, 2, 3, 4, etc.)
 
             string usuarioAutenticado = null;
             int idUsuarioAutenticado = 0;
