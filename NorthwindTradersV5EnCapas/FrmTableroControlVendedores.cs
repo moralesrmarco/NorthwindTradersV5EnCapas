@@ -133,6 +133,11 @@ namespace NorthwindTradersV5EnCapas
             area.AxisY.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
             area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisY.LabelStyle.Angle = -45;
+
+            area.AxisY.LabelStyle.Enabled = false;
+            area.AxisY.Title = string.Empty;
+            area.AxisY.MajorGrid.Enabled = false;
+            area.AxisY.MinorGrid.Enabled = false;
             // Leer datos
             var dt = new DataTable();
             try
@@ -172,7 +177,7 @@ namespace NorthwindTradersV5EnCapas
                     BorderWidth = 2,
                     MarkerStyle = MarkerStyle.Circle,
                     MarkerSize = 4,
-                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
+                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL",
                     LabelForeColor = Color.Black,
                     Font = new Font("Segoe UI", 6, FontStyle.Regular),
                     IsValueShownAsLabel = false,
@@ -190,7 +195,7 @@ namespace NorthwindTradersV5EnCapas
 
                     serie.Points.AddXY(nombreMes, ventas);
                 }
-                serie.LegendText = $"{serie.Name}\n(Total: {grupo.Total:C2})";
+                serie.LegendText = $"{serie.Name}";
                 ChartVentas.Series.Add(serie);
                 i++;
             }
@@ -456,10 +461,10 @@ namespace NorthwindTradersV5EnCapas
             series.ShadowOffset = 3;
             series.ShadowColor = Color.FromArgb(120, Color.Black);
 
-            series.IsValueShownAsLabel = true;
-            series.Label = "#VALY{n0}";
+            series.IsValueShownAsLabel = false;
+            series.Label = string.Empty;
             series.BorderWidth = 2;
-            series.ToolTip = "Producto: #VALX, Cantidad vendida: #VALY{n0}";
+            series.ToolTip = "Producto: #VALX";
             series.Font = new Font("Segoe UI", 7, FontStyle.Bold);
             series.Points.Clear();
 
@@ -494,6 +499,10 @@ namespace NorthwindTradersV5EnCapas
             area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisY.Title = "Cantidad vendida (unidades)";
             area.AxisY.MajorGrid.Enabled = false;
+            area.AxisY.LabelStyle.Enabled = false;   // oculta los números
+            area.AxisY.Title = string.Empty;         // elimina el título
+            area.AxisY.MajorGrid.Enabled = false;    // quita la cuadrícula
+            area.AxisY.MinorGrid.Enabled = false;    // quita la cuadrícula menor
         }
         #endregion
         /******************************************************************************************************/
@@ -530,10 +539,11 @@ namespace NorthwindTradersV5EnCapas
         {
             ChartVentas4.Series.Clear();
             ChartVentas4.Titles.Clear();
+
             Title titulo = new Title()
             {
                 Text = $"Ventas mensuales por vendedores del año {anio}",
-                Font = new Font("Segoe_UI", 8, FontStyle.Bold)
+                Font = new Font("Segoe UI", 8, FontStyle.Bold)
             };
             ChartVentas4.Titles.Add(titulo);
             groupBox4.Text = $"» {titulo.Text} (barras) «";
@@ -550,21 +560,15 @@ namespace NorthwindTradersV5EnCapas
             area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisX.Title = "Meses";
 
-            area.AxisY.Title = "Ventas totales";
-            area.AxisY.LabelStyle.Format = "C0";
-            area.AxisY.MajorGrid.Enabled = true;
-            area.AxisY.MajorGrid.LineColor = Color.Gray;
-            area.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Solid;
+            // Ocultar eje Y y cantidades
+            area.AxisY.LabelStyle.Enabled = false;
+            area.AxisY.Title = string.Empty;
+            area.AxisY.MajorGrid.Enabled = false;
             area.AxisY.MinorGrid.Enabled = false;
-            area.AxisY.MinorGrid.LineColor = Color.LightGray;
-            area.AxisY.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
-            area.AxisY.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
-            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-            area.AxisY.LabelStyle.Angle = -45;
 
             ChartVentas4.Legends[0].Font = new Font("Segoe UI", 6, FontStyle.Regular);
 
-            // Aquí habilitas 3D
+            // Habilitar 3D
             area.Area3DStyle.Enable3D = true;
             area.Area3DStyle.Inclination = 30;
             area.Area3DStyle.Rotation = 30;
@@ -589,7 +593,8 @@ namespace NorthwindTradersV5EnCapas
             }
 
             var nombresMes = dt.AsEnumerable()
-                .OrderBy(r => {
+                .OrderBy(r =>
+                {
                     var v = r["Mes"];
                     return (v == DBNull.Value) ? int.MaxValue : Convert.ToInt32(v);
                 })
@@ -597,7 +602,6 @@ namespace NorthwindTradersV5EnCapas
                 .Distinct()
                 .ToList();
 
-            // Agrupar y calcular totales
             var grupos = dt.AsEnumerable()
                 .GroupBy(row => row.Field<string>("Vendedor"))
                 .Select(g => new
@@ -608,7 +612,7 @@ namespace NorthwindTradersV5EnCapas
                                        ? Convert.ToDouble(r["TotalVentas"])
                                        : 0D)
                 })
-                .OrderByDescending(x => x.Total); // ordenar de mayor a menor
+                .OrderByDescending(x => x.Total);
 
             int colorIndex = 0;
             foreach (var grupo in grupos)
@@ -618,27 +622,32 @@ namespace NorthwindTradersV5EnCapas
                     ChartType = SeriesChartType.Column,
                     IsValueShownAsLabel = false,
                     Font = new Font("Segoe UI", 6, FontStyle.Regular),
-                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
+                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL", // sin cantidades
                     LabelFormat = "C2",
                     Color = ChartColors.Paleta[colorIndex % ChartColors.Paleta.Length]
                 };
                 serie["DrawingStyle"] = "Cylinder";
+
                 foreach (var nombreMes in nombresMes)
                     serie.Points.AddXY(nombreMes, 0D);
 
                 foreach (var row in grupo.Datos)
                 {
                     object rawMes = row["Mes"];
-                    int mes = rawMes == DBNull.Value ? 0 : Convert.ToInt32(rawMes); // validar 1..n
+                    int mes = rawMes == DBNull.Value ? 0 : Convert.ToInt32(rawMes);
                     object raw = row["TotalVentas"];
                     double ventas = (raw == DBNull.Value) ? 0.0 : Convert.ToDouble(raw);
                     if (mes >= 1 && mes <= serie.Points.Count)
                         serie.Points[mes - 1].YValues[0] = ventas;
                 }
-                serie.LegendText = $"{serie.Name}\n(Total: {grupo.Total:C2})";
+
+                // Leyenda solo con nombre del vendedor
+                serie.LegendText = $"{serie.Name}";
+
                 ChartVentas4.Series.Add(serie);
                 colorIndex++;
             }
+
             ChartVentas4.ResetAutoValues();
         }
         #endregion
@@ -716,7 +725,7 @@ namespace NorthwindTradersV5EnCapas
                 IsValueShownAsLabel = false,
                 ChartType = tipoGrafica,
                 Label = "#AXISLABEL: #VALY{C2}",
-                ToolTip = "Vendedor: #AXISLABEL\nTotal ventas: #VALY{C2}",
+                ToolTip = "Vendedor: #AXISLABEL",
                 Legend = leyenda.Name,
                 LegendText = "#AXISLABEL: #VALY{C2}"
             };
@@ -748,7 +757,7 @@ namespace NorthwindTradersV5EnCapas
                     int puntoIndex = serie.Points.AddXY(vendedor, totalVentas);
                     serie.Points[puntoIndex].LegendText = string.Format(
                     CultureInfo.GetCultureInfo("es-MX"),
-                    "{0}:\n{1:C2}",
+                    "{0}",
                     vendedor,
                     totalVentas
                     );
@@ -820,17 +829,11 @@ namespace NorthwindTradersV5EnCapas
             area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisX.Title = "Meses";
 
-            area.AxisY.Title = "Ventas totales";
-            area.AxisY.LabelStyle.Format = "C0";
-            area.AxisY.MajorGrid.Enabled = true;
-            area.AxisY.MajorGrid.LineColor = Color.Gray;
-            area.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Solid;
+            // Ocultar eje Y y cantidades
+            area.AxisY.LabelStyle.Enabled = false;
+            area.AxisY.Title = string.Empty;
+            area.AxisY.MajorGrid.Enabled = false;
             area.AxisY.MinorGrid.Enabled = false;
-            area.AxisY.MinorGrid.LineColor = Color.LightGray;
-            area.AxisY.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
-            area.AxisY.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
-            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
-            area.AxisY.LabelStyle.Angle = -45;
 
             ChartVentas6.Legends[0].Font = new Font("Segoe UI", 6, FontStyle.Regular);
 
@@ -881,12 +884,10 @@ namespace NorthwindTradersV5EnCapas
                     ChartType = SeriesChartType.Column,
                     IsValueShownAsLabel = false,
                     Font = new Font("Segoe UI", 8, FontStyle.Regular),
-                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL\nVentas: #VALY{C2}",
+                    ToolTip = "#SERIESNAME\nMes: #AXISLABEL",
                     LabelFormat = "C2",
                     Color = ChartColors.Paleta[colorIndex % ChartColors.Paleta.Length]
                 };
-
-                //serie["PointWidth"] = "0.8";
 
                 foreach (var nombreMes in nombresMes)
                     serie.Points.AddXY(nombreMes, 0D);
@@ -900,7 +901,7 @@ namespace NorthwindTradersV5EnCapas
                     if (mes >= 1 && mes <= serie.Points.Count)
                         serie.Points[mes - 1].YValues[0] = ventas;
                 }
-                serie.LegendText = $"{serie.Name}\n(Total: {grupo.Total:C2})";
+                serie.LegendText = $"{serie.Name})";
                 ChartVentas6.Series.Add(serie);
                 colorIndex++;
             }
