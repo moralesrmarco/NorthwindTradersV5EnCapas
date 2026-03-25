@@ -64,7 +64,7 @@ namespace NorthwindTradersV5EnCapas
                 var dt = _graficasService.ObtenerAñosDeVentas(false);
                 foreach (DataRow row in dt.Rows)
                     cmbVentasMensualesAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
-                cmbVentasMensualesAño.SelectedIndex = 0; // Selecciona el primer elemento
+                cmbVentasMensualesAño.SelectedItem = 1997; 
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
             catch (Exception ex)
@@ -149,7 +149,7 @@ namespace NorthwindTradersV5EnCapas
             area.AxisX.MajorGrid.Enabled = false;
             // Títulos de ejes
             area.AxisX.Title = "Meses";
-            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
+            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
 
             chart1.Legends[0].Enabled = false;
@@ -197,7 +197,7 @@ namespace NorthwindTradersV5EnCapas
             cmbUltimosAnios.DataSource = items;
             cmbUltimosAnios.DisplayMember = "Key";
             cmbUltimosAnios.ValueMember = "Value";
-            cmbUltimosAnios.SelectedIndex = 0; // Selecciona el primer elemento
+            cmbUltimosAnios.SelectedIndex = cmbUltimosAnios.Items.Count - 1;
             cmbUltimosAnios.SelectedIndexChanged += cmbUltimosAnios_SelectedIndexChanged;
         }
 
@@ -314,7 +314,7 @@ namespace NorthwindTradersV5EnCapas
             area.AxisX.Interval = 1;
             area.AxisX.LabelStyle.Angle = -45;
             area.AxisX.Title = "Meses";
-            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Bold);
+            area.AxisX.TitleFont = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisX.LabelStyle.Font = new Font("Segoe UI", 7, FontStyle.Regular);
             area.AxisX.MajorGrid.Enabled = true;
             area.AxisX.MajorGrid.LineColor = Color.LightGray;
@@ -378,7 +378,7 @@ namespace NorthwindTradersV5EnCapas
                 CmbAñoTopProd.DataSource = _graficasService.ObtenerTop10AñosDeVentas(false);
                 CmbAñoTopProd.DisplayMember = "Texto";
                 CmbAñoTopProd.ValueMember = "Valor";
-                CmbAñoTopProd.SelectedIndex = 0;
+                CmbAñoTopProd.SelectedValue = 1997;
                 MDIPrincipal.ActualizarBarraDeEstado();
             }
             catch (Exception ex)
@@ -543,8 +543,12 @@ namespace NorthwindTradersV5EnCapas
                 foreach (var (vendedor, totalVentas) in ventas)
                 {
                     int puntoIndex = serie.Points.AddXY(vendedor, totalVentas);
-                    serie.Points[puntoIndex].Color =
-                        ChartColors.Paleta[i % ChartColors.Paleta.Length];
+                    var punto = serie.Points[puntoIndex];
+                    punto.Color = ChartColors.Paleta[i % ChartColors.Paleta.Length];
+
+                    // Aquí personalizas la leyenda con salto de línea
+                    punto.LegendText = $"{vendedor}\n{totalVentas:C2}";
+
                     i++;
                 }
             }
@@ -567,7 +571,7 @@ namespace NorthwindTradersV5EnCapas
                 cmbVentasVendedorAño.DataSource = _graficasService.ObtenerAñosDeVentas(false);
                 cmbVentasVendedorAño.DisplayMember = "YearOrderDate";
                 cmbVentasVendedorAño.ValueMember = "YearOrderDate";
-                cmbVentasVendedorAño.SelectedIndex = 0;
+                cmbVentasVendedorAño.SelectedValue = 1997;
             }
             catch (Exception ex)
             {
@@ -662,7 +666,7 @@ namespace NorthwindTradersV5EnCapas
                     int puntoIndex = serie.Points.AddXY(vendedor, totalVentas);
                     serie.Points[puntoIndex].LegendText = string.Format(
                     CultureInfo.GetCultureInfo("es-MX"),
-                    "{0}: {1:C2}",
+                    "{0}:\n{1:C2}",
                     vendedor,
                     totalVentas
                     );
@@ -689,7 +693,7 @@ namespace NorthwindTradersV5EnCapas
                 foreach (DataRow row in dt.Rows)
                     cmbVentasMensualesPorVendedorPorAño.Items.Add(Convert.ToInt32(row["YearOrderDate"]));
                 MDIPrincipal.ActualizarBarraDeEstado();
-                cmbVentasMensualesPorVendedorPorAño.SelectedIndex = 0; // Selecciona el primer elemento
+                cmbVentasMensualesPorVendedorPorAño.SelectedItem = 1997; 
             }
             catch (Exception ex)
             {
@@ -729,7 +733,7 @@ namespace NorthwindTradersV5EnCapas
                 Font = new Font("Segoe UI", 8, FontStyle.Bold)
             };
             ChartVentas.Titles.Add(titulo);
-            groupBox1.Text = $"» {titulo.Text} Tipo de gráfica: {tipoGrafica} «";
+            groupBox6.Text = $"» {titulo.Text} Tipo de gráfica: {tipoGrafica} «";
             // Configurar la fuente de la leyenda
             ChartVentas.Legends[0].Font = new Font("Segoe UI", 6, FontStyle.Regular);
             // ChartArea
