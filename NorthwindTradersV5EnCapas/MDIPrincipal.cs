@@ -84,6 +84,9 @@ namespace NorthwindTradersV5EnCapas
             ventasToolStripMenuItem.Enabled = false;
             administraciónToolStripMenuItem.Enabled = false;
             gráficasToolStripMenuItem.Enabled = false;
+            tablerosControlToolStripMenuItem.Enabled = false;
+            tableroDeControlParaLaAltaDirecciónToolStripMenuItem.Enabled = false;
+            tableroDeControlParaLosVendedoresToolStripMenuItem.Enabled = false;
             foreach (int permisoId in permisos)
             {
                 if (permisoId == 1)
@@ -102,6 +105,14 @@ namespace NorthwindTradersV5EnCapas
                     administraciónToolStripMenuItem.Enabled = true; // Permiso para Administración
                 else if (permisoId == 8)
                     gráficasToolStripMenuItem.Enabled = true;
+                else if (permisoId == 10 || permisoId == 12)
+                {
+                    tablerosControlToolStripMenuItem.Enabled = true; // Permiso para Tableros de control
+                    if (permisoId == 10)
+                        tableroDeControlParaLaAltaDirecciónToolStripMenuItem.Enabled = true; // Permiso para Tablero de control para la alta dirección
+                    else if (permisoId == 12)
+                        tableroDeControlParaLosVendedoresToolStripMenuItem.Enabled = true; // Permiso para Tablero de control para los vendedores
+                }
             }
         }
 
@@ -821,6 +832,18 @@ namespace NorthwindTradersV5EnCapas
             }
             // Reinicia la aplicación
             Application.Restart();
+        }
+
+        private void tableroDeControlParaLaAltaDirecciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmTableroControlAltaDireccion frm = new FrmTableroControlAltaDireccion();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Tablero de control para la alta dirección «");
+        }
+
+        private void tableroDeControlParaLosVendedoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmTableroControlVendedores frm = new FrmTableroControlVendedores();
+            Utils.AgregarFormularioEnTab(TabControlPrincipal, frm, "» Tablero de control para los vendedores «");
         }
     }
 }
