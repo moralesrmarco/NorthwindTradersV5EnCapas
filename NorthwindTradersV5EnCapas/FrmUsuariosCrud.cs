@@ -446,11 +446,11 @@ namespace NorthwindTradersV5EnCapas
                         if (numRegs > 0)
                             U.NotificacionInformation(nombreUsuario + Utils.ses);
                         else if (numRegs == -1)
-                            U.NotificacionError(nombreUsuario + Utils.nfmfe);
+                            U.NotificacionError(nombreUsuario + Utils.nfefe);
                         else if (numRegs == -2)
-                            U.NotificacionError(nombreUsuario + Utils.nfmfm);
+                            U.NotificacionError(nombreUsuario + Utils.nfefm);
                         else
-                            U.NotificacionError(nombreUsuario + Utils.nfmmd);
+                            U.NotificacionError(nombreUsuario + Utils.nfemd);
                     }
                     catch (Exception ex)
                     {
