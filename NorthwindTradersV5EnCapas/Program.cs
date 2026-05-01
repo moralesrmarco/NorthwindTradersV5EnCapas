@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace NorthwindTradersV5EnCapas
@@ -20,18 +21,22 @@ namespace NorthwindTradersV5EnCapas
             int idUsuarioAutenticado = 0;
             string nombreUsuarioAutenticado = null;
 
-            // Obtener pantallas
-            Screen[] pantallas = Screen.AllScreens;
-            Screen pantallaDestino;
-            if (pantallas.Length >= 4)
-                // Usar la pantalla 2 (índice 1)
-                pantallaDestino = pantallas[numPantalla];
-            else
-            {
-                // Usar la pantalla principal
-                pantallaDestino = Screen.PrimaryScreen;
-                //MessageBox.Show("No hay 4 pantallas conectadas. Se usará la pantalla principal.");
-            }
+            //// Obtener pantallas
+            //Screen[] pantallas = Screen.AllScreens;
+            //Screen pantallaDestino;
+            //if (pantallas.Length >= 4)
+            //    // Usar la pantalla 2 (índice 1)
+            //    pantallaDestino = pantallas[numPantalla];
+            //else
+            //{
+            //    // Usar la pantalla principal
+            //    pantallaDestino = Screen.PrimaryScreen;
+            //    //MessageBox.Show("No hay 4 pantallas conectadas. Se usará la pantalla principal.");
+            //}
+            
+            // Detectar la pantalla en la que está el cursor
+            Point posicionCursor = Cursor.Position;
+            Screen pantallaDestino = Screen.FromPoint(posicionCursor);
 
             // Mostrar el formulario de login en la pantalla seleccionada
             using (FrmLogin loginForm = new FrmLogin())
@@ -51,6 +56,10 @@ namespace NorthwindTradersV5EnCapas
                 nombreUsuarioAutenticado = loginForm.NombreUsuarioAutenticado;
             }
 
+            // Detectar la pantalla en la que está el cursor
+            Point posicionCursor2 = Cursor.Position;
+            Screen pantallaDestino2 = Screen.FromPoint(posicionCursor2);
+
             // Instanciar el MDIPrincipal en la misma pantalla
             MDIPrincipal mdiPrincipal = new MDIPrincipal
             {
@@ -58,7 +67,7 @@ namespace NorthwindTradersV5EnCapas
                 IdUsuarioAutenticado = idUsuarioAutenticado,
                 NombreUsuarioAutenticado = nombreUsuarioAutenticado,
                 StartPosition = FormStartPosition.Manual,
-                Location = pantallaDestino.WorkingArea.Location,
+                Location = pantallaDestino2.WorkingArea.Location,
             };
             Application.Run(mdiPrincipal);
 
